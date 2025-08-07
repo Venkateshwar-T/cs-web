@@ -13,8 +13,13 @@ function FacebookIcon(props: React.SVGProps<SVGSVGElement>) {
         >
             <path
                 fill="white"
-                d="M20,2H4A2,2,0,0,0,2,4V20a2,2,0,0,0,2,2H20a2,2,0,0,0,2-2V4A2,2,0,0,0,20,2ZM15,8H17V5H14.5A2.5,2.5,0,0,0,12,7.5V10H10V13H12V22H15V13H17L17.5,10H15V8Z"
+                d="M22,2H2A2,2,0,0,0,0,4V20a2,2,0,0,0,2,2H22a2,2,0,0,0,2-2V4A2,2,0,0,0,22,2ZM15,8H17V5H14.5A2.5,2.5,0,0,0,12,7.5V10H10V13H12V22H15V13H17L17.5,10H15V8Z"
+                fillRule="nonzero"
+                clipPath="url(#clipPath)"
             />
+            <defs>
+                <rect id="clipPath" width="24" height="24" rx="3" />
+            </defs>
         </svg>
     )
 }
@@ -70,6 +75,8 @@ export default function Home() {
         <div className="relative h-10 bg-yellow-400 flex-grow rounded-l-full mt-4 shadow-md -ml-12 flex items-center justify-between pr-12">
           <div className="ml-3 w-6 h-6 bg-white rounded-full"></div>
           <div className="flex items-center gap-4">
+            <button className="bg-white text-yellow-400 px-4 py-1 rounded-full text-sm font-bold">ENQUIRE NOW</button>
+            <div className="w-px h-6 bg-white" />
             <InstagramIcon className="h-6 w-6 text-white cursor-pointer" />
             <FacebookIcon className="h-6 w-6 cursor-pointer" />
             <Avatar className="h-12 w-12 border-2 border-black">
