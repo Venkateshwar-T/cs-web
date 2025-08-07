@@ -13,7 +13,7 @@ function FacebookIcon(props: React.SVGProps<SVGSVGElement>) {
         >
             <path
                 fill="white"
-                d="M22,2H2V22H22V2ZM15,8H17V5H14.5A2.5,2.5,0,0,0,12,7.5V10H10V13H12V22H15V13H17L17.5,10H15V8Z"
+                d="M20,2H4A2,2,0,0,0,2,4V20a2,2,0,0,0,2,2H20a2,2,0,0,0,2-2V4A2,2,0,0,0,20,2ZM15,8H17V5H14.5A2.5,2.5,0,0,0,12,7.5V10H10V13H12V22H15V13H17L17.5,10H15V8Z"
             />
         </svg>
     )
@@ -70,8 +70,8 @@ export default function Home() {
         <div className="relative h-10 bg-yellow-400 flex-grow rounded-l-full mt-4 shadow-md -ml-12 flex items-center justify-between pr-12">
           <div className="ml-3 w-6 h-6 bg-white rounded-full"></div>
           <div className="flex items-center gap-4">
-            <InstagramIcon className="h-6 w-6 text-white cursor-pointer" />
             <FacebookIcon className="h-6 w-6 cursor-pointer" />
+            <InstagramIcon className="h-6 w-6 text-white cursor-pointer" />
             <Avatar className="h-12 w-12 border-2 border-black">
                 <AvatarImage src="https://placehold.co/64x64.png" alt="User" data-ai-hint="person portrait" />
                 <AvatarFallback>U</AvatarFallback>
