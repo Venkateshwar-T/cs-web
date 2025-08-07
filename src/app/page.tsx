@@ -8,18 +8,12 @@ function FacebookIcon(props: React.SVGProps<SVGSVGElement>) {
             width="24"
             height="24"
             viewBox="0 0 24 24"
-            fillRule="evenodd"
-            clipRule="evenodd"
         >
+            <rect width="24" height="24" rx="3" fill="white" />
             <path
-                fill="white"
-                d="M22,2H2A2,2,0,0,0,0,4V20a2,2,0,0,0,2,2H22a2,2,0,0,0,2-2V4A2,2,0,0,0,22,2ZM15,8H17V5H14.5A2.5,2.5,0,0,0,12,7.5V10H10V13H12V22H15V13H17L17.5,10H15V8Z"
-                fillRule="nonzero"
-                clipPath="url(#clipPath)"
+                d="M15 8h2V5h-2.5a2.5 2.5 0 0 0-2.5 2.5V10h-2v3h2v9h3v-9h2l.5-3h-2.5V8z"
+                fill="black" 
             />
-            <defs>
-                <rect id="clipPath" width="24" height="24" rx="3" />
-            </defs>
         </svg>
     )
 }
@@ -75,7 +69,7 @@ export default function Home() {
         <div className="relative h-10 bg-yellow-400 flex-grow rounded-l-full mt-4 shadow-md -ml-12 flex items-center justify-between pr-12">
           <div className="ml-3 w-6 h-6 bg-white rounded-full"></div>
           <div className="flex items-center gap-4">
-            <button className="bg-white text-yellow-400 px-4 py-1 rounded-full text-sm font-bold">ENQUIRE NOW</button>
+            <button className="bg-white text-yellow-400 px-4 py-1 rounded-full text-sm font-bold">Enquire now</button>
             <div className="w-px h-6 bg-white" />
             <InstagramIcon className="h-6 w-6 text-white cursor-pointer" />
             <FacebookIcon className="h-6 w-6 cursor-pointer" />
