@@ -70,8 +70,8 @@ export default function Home() {
         <div className="relative h-10 bg-yellow-400 flex-grow rounded-l-full mt-4 shadow-md -ml-12 flex items-center justify-between pr-12">
           <div className="ml-3 w-6 h-6 bg-white rounded-full"></div>
           <div className="flex items-center gap-4">
-            <FacebookIcon className="h-6 w-6 cursor-pointer" />
             <InstagramIcon className="h-6 w-6 text-white cursor-pointer" />
+            <FacebookIcon className="h-6 w-6 cursor-pointer" />
             <Avatar className="h-12 w-12 border-2 border-black">
                 <AvatarImage src="https://placehold.co/64x64.png" alt="User" data-ai-hint="person portrait" />
                 <AvatarFallback>U</AvatarFallback>
