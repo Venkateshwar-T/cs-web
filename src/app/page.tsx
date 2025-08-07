@@ -1,9 +1,7 @@
-import { Header } from "@/components/header";
-
 export default function Home() {
   return (
-    <div>
-      <Header />
-    </div>
+    <main className="p-4">
+      <div className="w-5/6 h-24 bg-secondary rounded-r-2xl shadow-md"></div>
+    </main>
   );
 }
