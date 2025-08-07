@@ -8,10 +8,19 @@ function FacebookIcon(props: React.SVGProps<SVGSVGElement>) {
             width="24"
             height="24"
             viewBox="0 0 24 24"
-            fill="white"
         >
-            <path d="M22 0H2a2 2 0 0 0-2 2v20a2 2 0 0 0 2 2h20a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z" />
-            <path fill="transparent" d="M15.402 24v-9.255h3.102l.464-3.6h-3.566V8.82c0-1.042.29-1.752 1.783-1.752h1.905V3.725a26.115 26.115 0 0 0-2.775-.145c-2.747 0-4.627 1.676-4.627 4.757v2.618H8.583v3.6h3.102V24h3.717z" />
+            <defs>
+                <clipPath id="f-clip">
+                    <path d="M15.402 24v-9.255h3.102l.464-3.6h-3.566V8.82c0-1.042.29-1.752 1.783-1.752h1.905V3.725a26.115 26.115 0 0 0-2.775-.145c-2.747 0-4.627 1.676-4.627 4.757v2.618H8.583v3.6h3.102V24h3.717z" />
+                </clipPath>
+            </defs>
+            <rect 
+                width="24" 
+                height="24" 
+                fill="white" 
+                clipPath="url(#f-clip)" 
+                style={{ clipRule: 'evenodd' }} 
+            />
         </svg>
     )
 }
