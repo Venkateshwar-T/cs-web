@@ -1,7 +1,7 @@
 export default function Home() {
   return (
-    <main className="p-4">
-      <div className="w-5/6 h-24 bg-secondary rounded-r-2xl shadow-md"></div>
+    <main>
+      <div className="w-1/2 h-24 bg-[#5d2b79] rounded-r-2xl shadow-md"></div>
     </main>
   );
 }
