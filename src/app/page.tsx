@@ -69,7 +69,7 @@ export default function Home() {
         <div className="relative h-10 bg-yellow-400 flex-grow rounded-l-full mt-4 shadow-md -ml-12 flex items-center justify-between pr-12">
           <div className="ml-3 w-6 h-6 bg-white rounded-full"></div>
           <div className="flex items-center gap-4">
-            <button className="bg-white text-yellow-400 px-4 py-1 rounded-full text-sm font-bold">enquire now</button>
+            <button className="bg-white text-yellow-400 px-4 py-1 rounded-full text-sm font-bold">Enquire Now</button>
             <div className="w-px h-6 bg-white" />
             <InstagramIcon className="h-6 w-6 text-white cursor-pointer" />
             <FacebookIcon className="h-6 w-6 text-yellow-400 cursor-pointer" />
