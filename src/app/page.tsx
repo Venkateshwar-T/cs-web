@@ -12,7 +12,7 @@ function FacebookIcon(props: React.SVGProps<SVGSVGElement>) {
             <rect width="24" height="24" rx="3" fill="white" />
             <path
                 d="M15 8h2V5h-2.5a2.5 2.5 0 0 0-2.5 2.5V10h-2v3h2v9h3v-9h2l.5-3h-2.5V8z"
-                fill="black" 
+                fill="currentColor" 
             />
         </svg>
     )
@@ -69,10 +69,10 @@ export default function Home() {
         <div className="relative h-10 bg-yellow-400 flex-grow rounded-l-full mt-4 shadow-md -ml-12 flex items-center justify-between pr-12">
           <div className="ml-3 w-6 h-6 bg-white rounded-full"></div>
           <div className="flex items-center gap-4">
-            <button className="bg-white text-yellow-400 px-4 py-1 rounded-full text-sm font-bold">Enquire now</button>
+            <button className="bg-white text-yellow-400 px-4 py-1 rounded-full text-sm font-bold">enquire now</button>
             <div className="w-px h-6 bg-white" />
             <InstagramIcon className="h-6 w-6 text-white cursor-pointer" />
-            <FacebookIcon className="h-6 w-6 cursor-pointer" />
+            <FacebookIcon className="h-6 w-6 text-yellow-400 cursor-pointer" />
             <Avatar className="h-12 w-12 border-2 border-black">
                 <AvatarImage src="https://placehold.co/64x64.png" alt="User" data-ai-hint="person portrait" />
                 <AvatarFallback>U</AvatarFallback>
