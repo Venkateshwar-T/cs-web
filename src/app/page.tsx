@@ -1,5 +1,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Link from 'next/link';
+import { Search } from "lucide-react";
 
 function FacebookIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
@@ -81,6 +82,10 @@ export default function Home() {
                 <Link href="/" className="text-white font-bold hover:text-gray-200 transition-colors">Home</Link>
                 <Link href="/about" className="text-white font-bold hover:text-gray-200 transition-colors">About</Link>
                 <Link href="/faq" className="text-white font-bold hover:text-gray-200 transition-colors">FAQ</Link>
+                <button className="flex items-center gap-1 text-white font-bold hover:text-gray-200 transition-colors">
+                  <Search className="h-4 w-4" />
+                  <span>Search</span>
+                </button>
             </nav>
           </div>
           <div className="flex items-center gap-4">
