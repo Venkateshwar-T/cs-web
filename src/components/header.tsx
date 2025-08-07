@@ -10,8 +10,9 @@ export function Header() {
   const [isSheetOpen, setSheetOpen] = useState(false);
 
   const navLinks = [
-    { href: "#services", label: "Services" },
-    { href: "#testimonials", label: "Testimonials" },
+    { href: "/", label: "Home" },
+    { href: "/about", label: "About" },
+    { href: "/faq", label: "FAQ" },
   ];
 
   return (
@@ -24,13 +25,13 @@ export function Header() {
           </Link>
           <nav className="hidden md:flex items-center gap-6 text-sm">
             {navLinks.map((link) => (
-              <a
+              <Link
                 key={link.href}
                 href={link.href}
                 className="transition-colors hover:text-foreground/80 text-foreground/60"
               >
                 {link.label}
-              </a>
+              </Link>
             ))}
           </nav>
         </div>
@@ -51,22 +52,19 @@ export function Header() {
                 </Link>
                 <nav className="grid gap-4">
                   {navLinks.map((link) => (
-                    <a
+                    <Link
                       key={link.href}
                       href={link.href}
                       className="flex items-center space-x-2 rounded-md p-2 hover:bg-accent"
                       onClick={() => setSheetOpen(false)}
                     >
                       <span>{link.label}</span>
-                    </a>
+                    </Link>
                   ))}
                 </nav>
               </SheetContent>
             </Sheet>
           </div>
-          <Button asChild className="hidden md:flex">
-            <a href="#contact">Get Started</a>
-          </Button>
         </div>
       </div>
     </header>
