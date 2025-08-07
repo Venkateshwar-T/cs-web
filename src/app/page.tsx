@@ -76,7 +76,7 @@ export default function Home() {
         <div className="w-1/3 h-20 bg-[#5d2b79] rounded-r-full shadow-md mt-4"></div>
         <div className="relative h-10 bg-yellow-400 flex-grow rounded-l-full mt-4 shadow-md -ml-12 flex items-center justify-between pr-12">
           <div className="flex items-center gap-6">
-            <div className="ml-3 w-7 h-7 bg-white rounded-full shadow-lg"></div>
+            <div className="ml-1.5 w-7 h-7 bg-white rounded-full shadow-lg"></div>
             <nav className="flex items-center gap-6 text-sm">
                 <Link href="/" className="text-white font-bold hover:text-gray-200 transition-colors">Home</Link>
                 <Link href="/about" className="text-white font-bold hover:text-gray-200 transition-colors">About</Link>

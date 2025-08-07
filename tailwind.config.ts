@@ -9,6 +9,9 @@ export default {
   ],
   theme: {
     extend: {
+      spacing: {
+        '1.5': '0.375rem',
+      },
       fontFamily: {
         body: ['PT Sans', 'sans-serif'],
         headline: ['PT Sans', 'sans-serif'],
