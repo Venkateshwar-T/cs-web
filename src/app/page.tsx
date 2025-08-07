@@ -1,21 +1,28 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 function FacebookIcon(props: React.SVGProps<SVGSVGElement>) {
-    return (
-        <svg
-            {...props}
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-        >
-            <rect width="24" height="24" rx="3" fill="white" />
-            <path
-                d="M15 8h2V5h-2.5a2.5 2.5 0 0 0-2.5 2.5V10h-2v3h2v9h3v-9h2l.5-3h-2.5V8z"
-                fill="currentColor" 
-            />
-        </svg>
-    )
+  return (
+    <svg
+      {...props}
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+    >
+      <defs>
+        <clipPath id="f-clip">
+          <path d="M15 8h2V5h-2.5a2.5 2.5 0 0 0-2.5 2.5V10h-2v3h2v9h3v-9h2l.5-3h-2.5V8z" />
+        </clipPath>
+      </defs>
+      <rect width="24" height="24" rx="3" fill="white" />
+      <path
+        d="M15 8h2V5h-2.5a2.5 2.5 0 0 0-2.5 2.5V10h-2v3h2v9h3v-9h2l.5-3h-2.5V8z"
+        fill="currentColor"
+        clipPath="url(#f-clip)"
+        fillRule="evenodd"
+      />
+    </svg>
+  );
 }
 
 
@@ -69,7 +76,7 @@ export default function Home() {
         <div className="relative h-10 bg-yellow-400 flex-grow rounded-l-full mt-4 shadow-md -ml-12 flex items-center justify-between pr-12">
           <div className="ml-3 w-6 h-6 bg-white rounded-full"></div>
           <div className="flex items-center gap-4">
-            <button className="bg-white text-yellow-400 px-4 py-1 rounded-full text-sm font-bold">Enquire Now</button>
+            <button className="bg-white text-yellow-400 px-4 py-1 rounded-full text-sm font-bold hover:bg-yellow-400 hover:text-white transition-colors">Enquire Now</button>
             <div className="w-px h-6 bg-white" />
             <InstagramIcon className="h-6 w-6 text-white cursor-pointer" />
             <FacebookIcon className="h-6 w-6 text-yellow-400 cursor-pointer" />
