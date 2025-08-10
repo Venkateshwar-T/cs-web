@@ -2,11 +2,11 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { IoLogoFacebook } from "react-icons/io";
 import { AiOutlineInstagram } from "react-icons/ai";
+import { CgProfile } from "react-icons/cg";
 
 export function Header() {
   const navLinks = [
@@ -61,7 +61,7 @@ export function Header() {
                 <IoLogoFacebook className="h-6 w-6 transition-colors hover:text-primary" />
               </Link>
               <Link href="#" aria-label="Profile">
-                <User className="h-6 w-6 transition-colors hover:text-primary" />
+                <CgProfile className="h-6 w-6 transition-colors hover:text-primary" />
               </Link>
             </div>
           </div>
