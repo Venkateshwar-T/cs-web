@@ -148,7 +148,7 @@ export function Header() {
           </div>
           <Input 
             placeholder={placeholder}
-            className={`w-full pl-12 pr-4 py-3 rounded-full bg-transparent border-none focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-black text-xl ${isSearchFocused ? 'text-custom-gold' : ''}`}
+            className={`w-full pl-12 pr-4 py-3 rounded-full bg-transparent border-none focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-gray-600 text-xl ${isSearchFocused ? 'text-custom-gold' : ''}`}
             onFocus={() => setIsSearchFocused(true)}
             onBlur={() => setIsSearchFocused(false)}
           />
