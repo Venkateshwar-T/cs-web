@@ -6,7 +6,7 @@ import { Header } from "@/components/header";
 import { ExploreCategories } from '@/components/explore-categories';
 import { cn } from '@/lib/utils';
 import { Loader } from '@/components/loader';
-import { SearchResultsContainer } from '@/components/search-results-container';
+import { FilterContainer } from '@/components/filter-container';
 import { SearchResultsDetails } from '@/components/search-results-details';
 
 export default function Home() {
@@ -43,7 +43,7 @@ export default function Home() {
         {isLoading && <Loader className="-mt-24" />}
         {isSearchActive && !isLoading && (
           <div className="flex w-full h-full">
-            <SearchResultsContainer />
+            <FilterContainer />
             <SearchResultsDetails />
           </div>
         )}
