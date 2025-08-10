@@ -4,6 +4,7 @@
 import { useState } from 'react';
 import { Header } from "@/components/header";
 import { ExploreCategories } from '@/components/explore-categories';
+import { SearchResults } from '@/components/search-results';
 
 export default function Home() {
   const [isSearchActive, setIsSearchActive] = useState(false);
@@ -22,11 +23,7 @@ export default function Home() {
           <ExploreCategories />
         </main>
       ) : (
-        <main className="flex-grow pt-48">
-            <div className="bg-white h-full mx-8 md:mx-32 rounded-t-2xl p-8">
-                {/* Search results will go here */}
-            </div>
-        </main>
+        <SearchResults />
       )}
     </div>
   );
