@@ -51,7 +51,7 @@ export function Header() {
         
         <div className="flex flex-1 justify-end">
           <div className="flex items-center gap-4">
-            <Button asChild size="default" className="bg-white text-custom-gold rounded-full font-normal text-base hover:bg-white/90 px-4 py-2">
+            <Button asChild size="default" className="bg-white text-custom-gold rounded-full font-normal text-base hover:bg-transparent border border-white px-4 py-2">
               <a href="mailto:contact@bizhome.com">Enquire Now</a>
             </Button>
             <Separator orientation="vertical" className="h-6 bg-foreground/50" />
