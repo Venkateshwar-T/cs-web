@@ -8,12 +8,6 @@ export default function Home() {
       <main className="flex-grow pt-72 overflow-hidden">
         <div className="bg-white/50 h-full rounded-t-2xl mx-8 md:mx-32 p-8 overflow-y-auto no-scrollbar">
           <h2 className="text-2xl font-bold text-white">Explore Categories</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-6">
-            <div className="w-full h-40 md:h-64 bg-[#D9D9D9] rounded-lg"></div>
-            <div className="w-full h-40 md:h-64 bg-[#D9D9D9] rounded-lg"></div>
-            <div className="w-full h-40 md:h-64 bg-[#D9D9D9] rounded-lg"></div>
-            <div className="w-full h-40 md:h-64 bg-[#D9D9D9] rounded-lg"></div>
-          </div>
         </div>
       </main>
     </div>
