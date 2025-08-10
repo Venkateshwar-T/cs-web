@@ -1,4 +1,5 @@
 import { CategoryCard } from "@/components/category-card";
+import { SectionTitle } from "./section-title";
 
 export function ExploreCategories() {
   const categories = [
@@ -10,9 +11,9 @@ export function ExploreCategories() {
 
   return (
     <div className="bg-white/50 h-full rounded-t-2xl p-8 overflow-y-auto no-scrollbar mx-8 md:mx-32 flex-grow">
-      <h2 className="text-2xl font-bold text-white mb-8 pl-4">
+      <SectionTitle>
         Explore Categories
-      </h2>
+      </SectionTitle>
       <div className="flex flex-wrap justify-around gap-8">
         {categories.map((category) => (
           <CategoryCard key={category.id} />
