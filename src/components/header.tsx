@@ -14,22 +14,22 @@ export function Header() {
   ];
 
   return (
-    <header className="fixed top-0 z-50 w-full bg-transparent">
-      <div className="container flex h-20 max-w-screen-2xl items-center justify-between">
+    <header className="fixed top-0 z-50 w-full bg-transparent pt-4">
+      <div className="container flex h-20 max-w-screen-2xl items-center justify-between px-4 md:px-6">
         <div className="flex items-center gap-4">
           <Link href="/" className="flex items-center gap-2">
             <Image 
               src="/Choco Smiley Logo.png" 
               alt="Choco Smiley Logo" 
-              width={40} 
-              height={40}
+              width={60} 
+              height={60}
             />
           </Link>
           <Image 
             src="/Online Chocolate Store.png" 
             alt="Online Chocolate Store" 
-            width={200} 
-            height={40}
+            width={180} 
+            height={60}
           />
         </div>
         
