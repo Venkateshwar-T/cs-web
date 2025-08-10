@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { IoSearch } from "react-icons/io5";
+import { Search } from "lucide-react";
 import { AiOutlineInstagram } from "react-icons/ai";
 import { IoLogoFacebook } from "react-icons/io5";
 import { CgProfile } from "react-icons/cg";
@@ -19,29 +19,35 @@ export function Header() {
   ];
 
   const [placeholder, setPlaceholder] = useState("");
-  const textToType = "Corporate gifts";
+  const textsToType = ["Corporate gifts", "Family presents", "Festive gifts"];
 
   useEffect(() => {
-    let currentIndex = 0;
+    let textIndex = 0;
+    let charIndex = 0;
     let isDeleting = false;
     let timeoutId: NodeJS.Timeout;
 
     const type = () => {
-      const currentText = isDeleting
-        ? textToType.substring(0, currentIndex - 1)
-        : textToType.substring(0, currentIndex + 1);
+      const currentText = textsToType[textIndex];
+      const displayedText = isDeleting
+        ? currentText.substring(0, charIndex - 1)
+        : currentText.substring(0, charIndex + 1);
 
-      setPlaceholder(currentText);
+      setPlaceholder(displayedText);
 
-      if (!isDeleting && currentText === textToType) {
+      if (!isDeleting && displayedText === currentText) {
+        // Finished typing the word, start deleting
         isDeleting = true;
         timeoutId = setTimeout(type, 2000); // Pause before deleting
-      } else if (isDeleting && currentText === "") {
+      } else if (isDeleting && displayedText === "") {
+        // Finished deleting, move to the next word
         isDeleting = false;
-        currentIndex = 0;
-        timeoutId = setTimeout(type, 500);
+        charIndex = 0;
+        textIndex = (textIndex + 1) % textsToType.length;
+        timeoutId = setTimeout(type, 500); // Pause before typing next word
       } else {
-        currentIndex = isDeleting ? currentIndex - 1 : currentIndex + 1;
+        // Continue typing or deleting
+        charIndex = isDeleting ? charIndex - 1 : charIndex + 1;
         timeoutId = setTimeout(type, isDeleting ? 100 : 150);
       }
     };
@@ -107,10 +113,10 @@ export function Header() {
       </div>
       <div className="container max-w-screen-2xl px-8 md:px-12 mt-16">
         <div className="relative max-w-3xl mx-auto">
-          <IoSearch className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-600" />
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
           <Input 
             placeholder={placeholder}
-            className="w-full pl-12 pr-4 py-2 rounded-full bg-white/50 border-none focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-gray-600"
+            className="w-full pl-12 pr-4 py-2 rounded-full bg-white border-none focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-gray-400"
           />
         </div>
       </div>
