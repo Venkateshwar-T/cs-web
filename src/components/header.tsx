@@ -58,7 +58,7 @@ export function Header() {
 
   return (
     <header className="fixed top-0 z-50 w-full bg-transparent pt-6">
-      <div className="container flex h-20 max-w-screen-2xl items-center justify-between px-8 md:px-12">
+      <div className="container flex h-20 max-w-screen-2xl items-center justify-between px-8 md:px-24">
         <div className="flex flex-1 justify-start">
           <div className="flex items-center gap-8">
             <Link href="/" className="flex items-center gap-2">
