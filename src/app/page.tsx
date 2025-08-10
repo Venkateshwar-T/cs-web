@@ -31,7 +31,7 @@ export default function Home() {
       <Header onSearchSubmit={handleSearchSubmit} onSearchActiveChange={setIsSearchActive} />
       <main className={cn(
         "flex-grow overflow-hidden flex justify-start transition-all duration-500",
-        isSearchActive ? 'pt-24' : 'pt-72',
+        isSearchActive ? 'pt-32' : 'pt-72',
         isLoading ? 'items-center justify-center' : 'items-start'
       )}>
         {!isSearchActive && (
@@ -39,7 +39,7 @@ export default function Home() {
             <ExploreCategories />
           </div>
         )}
-        {isLoading && <Loader className="mt-[-6rem]" />}
+        {isLoading && <Loader className="-mt-24" />}
         {isSearchActive && !isLoading && <SearchResultsContainer />}
       </main>
     </div>
