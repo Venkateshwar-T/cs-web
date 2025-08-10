@@ -13,14 +13,6 @@ export default function Home() {
             <div className="w-full h-40 md:h-48 bg-[#D9D9D9] rounded-lg"></div>
             <div className="w-full h-40 md:h-48 bg-[#D9D9D9] rounded-lg"></div>
             <div className="w-full h-40 md:h-48 bg-[#D9D9D9] rounded-lg"></div>
-            <div className="w-full h-40 md:h-48 bg-[#D9D9D9] rounded-lg"></div>
-            <div className="w-full h-40 md:h-48 bg-[#D9D9D9] rounded-lg"></div>
-            <div className="w-full h-40 md:h-48 bg-[#D9D9D9] rounded-lg"></div>
-            <div className="w-full h-40 md:h-48 bg-[#D9D9D9] rounded-lg"></div>
-            <div className="w-full h-40 md:h-48 bg-[#D9D9D9] rounded-lg"></div>
-            <div className="w-full h-40 md:h-48 bg-[#D9D9D9] rounded-lg"></div>
-            <div className="w-full h-40 md:h-48 bg-[#D9D9D9] rounded-lg"></div>
-            <div className="w-full h-40 md:h-48 bg-[#D9D9D9] rounded-lg"></div>
           </div>
         </div>
       </main>
