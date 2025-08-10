@@ -19,19 +19,17 @@ export function Header() {
         <div className="flex items-center gap-4">
           <Link href="/" className="flex items-center gap-2">
             <Image 
-              src="https://placehold.co/40x40.png" 
+              src="/Choco Smiley Logo.png" 
               alt="Choco Smiley Logo" 
               width={40} 
               height={40}
-              data-ai-hint="company logo"
             />
           </Link>
           <Image 
-            src="https://placehold.co/200x40.png" 
+            src="/Online Chocolate Store.png" 
             alt="Online Chocolate Store" 
             width={200} 
             height={40}
-            data-ai-hint="brand name text"
           />
         </div>
         
