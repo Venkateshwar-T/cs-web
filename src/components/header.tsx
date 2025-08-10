@@ -115,9 +115,9 @@ export function Header() {
       </div>
       <div className="container max-w-screen-2xl px-8 md:px-12 mt-16">
         <div className="relative max-w-3xl mx-auto">
-          <div className="absolute inset-0 rounded-full bg-gradient-to-r from-white to-white/20 backdrop-blur-sm -z-10"></div>
-          <div className="absolute left-4 top-1/2 -translate-y-1/2">
-            <Search className={`h-5 w-5 transition-colors ${isSearchFocused ? 'text-white' : 'text-gray-400'}`} />
+          <div className="absolute inset-0 rounded-full bg-gradient-to-br from-white/20 via-white to-white/20 backdrop-blur-sm -z-10"></div>
+          <div className="absolute left-4 top-1/2 -translate-y-1/2 z-10">
+            <Search className={`h-5 w-5 transition-colors ${isSearchFocused ? 'text-white' : 'text-gray-600'}`} />
           </div>
           <Input 
             placeholder={placeholder}
