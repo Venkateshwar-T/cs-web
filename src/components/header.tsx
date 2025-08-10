@@ -42,7 +42,7 @@ export function Header() {
             <Link
               key={link.href}
               href={link.href}
-              className="transition-colors hover:text-primary text-foreground/80"
+              className="transition-colors hover:text-custom-gold text-foreground/80"
             >
               {link.label}
             </Link>
@@ -54,16 +54,16 @@ export function Header() {
             <Button asChild size="default" className="bg-white text-custom-gold rounded-full font-normal text-base hover:bg-transparent border border-white px-4 py-2">
               <a href="mailto:contact@bizhome.com">Enquire Now</a>
             </Button>
-            <Separator orientation="vertical" className="h-6 bg-foreground/50" />
+            <Separator orientation="vertical" className="h-6 bg-foreground/50 mx-2" />
             <div className="flex items-center gap-1">
               <Link href="#" aria-label="Instagram">
-                <AiOutlineInstagram className="h-8 w-8 transition-colors hover:text-primary" />
+                <AiOutlineInstagram className="h-8 w-8 transition-colors hover:text-custom-gold" />
               </Link>
               <Link href="#" aria-label="Facebook">
-                <IoLogoFacebook className="h-8 w-8 transition-colors hover:text-primary" />
+                <IoLogoFacebook className="h-8 w-8 transition-colors hover:text-custom-gold" />
               </Link>
               <Link href="#" aria-label="Profile" className="ml-2">
-                <CgProfile className="h-9 w-9 transition-colors hover:text-primary" />
+                <CgProfile className="h-9 w-9 transition-colors hover:text-custom-gold" />
               </Link>
             </div>
           </div>
