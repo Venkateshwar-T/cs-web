@@ -18,7 +18,7 @@ export default {
         code: ['monospace'],
       },
       colors: {
-        'custom-gold': '#D4AF37',
+        'custom-gold': '#FFD139',
         'custom-purple-light': '#E1BEE7',
         'custom-purple-dark': '#5D2B79',
         background: 'hsl(var(--background))',
