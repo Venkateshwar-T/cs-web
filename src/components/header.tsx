@@ -14,21 +14,22 @@ import { useState, useEffect } from "react";
 import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 
 interface HeaderProps {
-  isSearchFocused: boolean;
-  onFocusChange: (isFocused: boolean) => void;
+  isSearchActive: boolean;
+  onSearchSubmit: () => void;
 }
 
-export function Header({ isSearchFocused, onFocusChange }: HeaderProps) {
+export function Header({ isSearchActive, onSearchSubmit }: HeaderProps) {
   const navLinks = [
     { href: "/about", label: "About" },
     { href: "/faq", label: "FAQ" },
   ];
 
+  const [isSearchFocused, setIsSearchFocused] = useState(false);
   const [placeholder, setPlaceholder] = useState("");
   const textsToType = ["Corporate gifts", "Family presents", "Festive gifts", "Birthday surprises", "Anniversary specials"];
 
   useEffect(() => {
-    if (isSearchFocused) return;
+    if (isSearchFocused || isSearchActive) return;
     let textIndex = 0;
     let charIndex = 0;
     let isDeleting = false;
@@ -59,7 +60,17 @@ export function Header({ isSearchFocused, onFocusChange }: HeaderProps) {
     timeoutId = setTimeout(type, 200);
 
     return () => clearTimeout(timeoutId);
-  }, [isSearchFocused]);
+  }, [isSearchFocused, isSearchActive]);
+  
+  const handleSearchSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const searchInput = formData.get('search') as string;
+    if (searchInput.trim()) {
+      onSearchSubmit();
+    }
+  };
+
 
   return (
     <header className="fixed top-0 z-50 w-full bg-transparent pt-6">
@@ -85,7 +96,7 @@ export function Header({ isSearchFocused, onFocusChange }: HeaderProps) {
           </div>
         </div>
         
-        <nav className={`hidden md:flex flex-1 justify-center items-center gap-8 text-lg transition-opacity duration-300 ${isSearchFocused ? 'opacity-0' : 'opacity-100'}`}>
+        <nav className={`hidden md:flex flex-1 justify-center items-center gap-8 text-lg transition-opacity duration-300 ${isSearchActive ? 'opacity-0' : 'opacity-100'}`}>
           {navLinks.map((link) => (
             <Link
               key={link.href}
@@ -144,19 +155,20 @@ export function Header({ isSearchFocused, onFocusChange }: HeaderProps) {
           </div>
         </div>
       </div>
-      <div className={`container max-w-screen-2xl px-8 md:px-12 transition-all duration-500 ease-in-out ${isSearchFocused ? '-mt-[3.75rem]' : 'mt-16'}`}>
-        <div className="relative max-w-sm sm:max-w-sm md:max-w-md lg:max-w-lg mx-auto">
+      <div className={`container max-w-screen-2xl px-8 md:px-12 transition-all duration-500 ease-in-out ${isSearchActive ? '-mt-[3.75rem]' : 'mt-16'}`}>
+        <form onSubmit={handleSearchSubmit} className="relative max-w-sm sm:max-w-sm md:max-w-md lg:max-w-lg mx-auto">
           <div className="absolute inset-0 rounded-full bg-gradient-to-br from-white/80 to-white/20 backdrop-blur-sm -z-10"></div>
           <div className="absolute left-4 top-1/2 -translate-y-1/2 z-10">
             <Search className={`h-5 w-5 transition-colors ${isSearchFocused ? 'text-white' : 'text-white'}`} />
           </div>
           <Input 
-            placeholder={isSearchFocused ? 'Search for gifts...' : placeholder}
-            className={`w-full pl-12 pr-4 py-3 rounded-full bg-transparent border-none focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-gray-600 text-xl ${isSearchFocused ? 'text-white' : ''}`}
-            onFocus={() => onFocusChange(true)}
-            onBlur={() => onFocusChange(false)}
+            name="search"
+            placeholder={isSearchFocused || isSearchActive ? 'Search for gifts...' : placeholder}
+            className={`w-full pl-12 pr-4 py-3 rounded-full bg-transparent border-none focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-gray-600 text-xl ${isSearchFocused || isSearchActive ? 'text-white' : ''}`}
+            onFocus={() => setIsSearchFocused(true)}
+            onBlur={() => setIsSearchFocused(false)}
           />
-        </div>
+        </form>
       </div>
     </header>
   );
