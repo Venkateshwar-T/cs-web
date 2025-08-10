@@ -8,7 +8,7 @@ import { IoLogoFacebook } from "react-icons/io";
 import { AiOutlineInstagram } from "react-icons/ai";
 import { CgProfile } from "react-icons/cg";
 import { Input } from "@/components/ui/input";
-import { Search } from "lucide-react";
+import { FaSearch } from "react-icons/fa";
 
 export function Header() {
   const navLinks = [
@@ -73,10 +73,10 @@ export function Header() {
       </div>
       <div className="container max-w-screen-2xl px-8 md:px-12 mt-16">
         <div className="relative max-w-3xl mx-auto">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-card-foreground" />
+          <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-card-foreground" />
           <Input 
             placeholder="Search for anything..."
-            className="w-full pl-10 pr-4 py-2 rounded-full bg-white/50 border-none focus-visible:ring-0 focus-visible:ring-offset-0"
+            className="w-full pl-12 pr-4 py-2 rounded-full bg-white/50 border-none focus-visible:ring-0 focus-visible:ring-offset-0"
           />
         </div>
       </div>
