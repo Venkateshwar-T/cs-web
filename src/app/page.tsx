@@ -6,6 +6,7 @@ import { Header } from "@/components/header";
 import { ExploreCategories } from '@/components/explore-categories';
 import { cn } from '@/lib/utils';
 import { Loader } from '@/components/loader';
+import { SearchResultsContainer } from '@/components/search-results-container';
 
 export default function Home() {
   const [isSearchActive, setIsSearchActive] = useState(false);
@@ -29,15 +30,17 @@ export default function Home() {
     <div className="flex flex-col h-screen">
       <Header onSearchSubmit={handleSearchSubmit} onSearchActiveChange={setIsSearchActive} />
       <main className={cn(
-        "flex-grow overflow-hidden flex items-center justify-center transition-all duration-500",
-        isSearchActive ? 'pt-8' : 'pt-72'
+        "flex-grow overflow-hidden flex transition-all duration-500",
+        isSearchActive ? 'pt-8' : 'pt-72',
+        isLoading ? 'items-center justify-center' : 'items-stretch'
       )}>
         {isSearchActive ? (
           <>
             {isLoading && <Loader />}
+            {!isLoading && <SearchResultsContainer />}
           </>
         ) : (
-          <div className={cn("transition-opacity duration-500", isSearchActive ? 'opacity-0' : 'opacity-100 h-full w-full')}>
+          <div className={cn("transition-opacity duration-500 w-full", isSearchActive ? 'opacity-0' : 'opacity-100 h-full')}>
             <ExploreCategories />
           </div>
         )}
