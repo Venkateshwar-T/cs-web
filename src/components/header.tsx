@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from "next/link";
@@ -19,6 +20,7 @@ export function Header() {
   ];
 
   const [placeholder, setPlaceholder] = useState("");
+  const [isSearchFocused, setIsSearchFocused] = useState(false);
   const textsToType = ["Corporate gifts", "Family presents", "Festive gifts"];
 
   useEffect(() => {
@@ -115,11 +117,13 @@ export function Header() {
         <div className="relative max-w-3xl mx-auto">
           <div className="absolute inset-0 rounded-full bg-white/30 backdrop-blur-sm -z-10"></div>
           <div className="absolute left-4 top-1/2 -translate-y-1/2">
-            <Search className="h-5 w-5 text-gray-400" />
+            <Search className={`h-5 w-5 transition-colors ${isSearchFocused ? 'text-white' : 'text-gray-400'}`} />
           </div>
           <Input 
             placeholder={placeholder}
             className="w-full pl-12 pr-4 py-2 rounded-full bg-transparent border-none focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-gray-400"
+            onFocus={() => setIsSearchFocused(true)}
+            onBlur={() => setIsSearchFocused(false)}
           />
         </div>
       </div>
