@@ -6,7 +6,7 @@ import { Header } from "@/components/header";
 import { SearchResults } from '@/components/search-results';
 import { ExploreCategories } from '@/components/explore-categories';
 
-export default function Home({ params }: { params?: any }) {
+export default function Home() {
   const [isSearchActive, setIsSearchActive] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
