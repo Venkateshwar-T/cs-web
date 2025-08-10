@@ -18,6 +18,7 @@ export default {
         code: ['monospace'],
       },
       colors: {
+        'custom-gold': '#D4AF37',
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
         card: {

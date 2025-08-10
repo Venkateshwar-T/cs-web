@@ -51,7 +51,7 @@ export function Header() {
         
         <div className="flex flex-1 justify-end">
           <div className="flex items-center gap-4">
-            <Button>Enquire Now</Button>
+            <Button className="bg-white text-custom-gold rounded-full hover:bg-white/90">Enquire Now</Button>
             <Separator orientation="vertical" className="h-6 bg-foreground/50" />
             <div className="flex items-center gap-3">
               <Link href="#" aria-label="Instagram">
