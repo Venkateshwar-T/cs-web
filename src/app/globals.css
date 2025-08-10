@@ -7,7 +7,7 @@
     @apply scroll-smooth;
   }
   :root {
-    --background: 279 49% 32%;
+    --background: 275 53% 33%;
     --foreground: 0 0% 98%;
     --card: 279 49% 38%;
     --card-foreground: 0 0% 98%;
@@ -42,7 +42,7 @@
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
   .dark {
-    --background: 279 49% 32%;
+    --background: 275 53% 33%;
     --foreground: 0 0% 98%;
     --card: 279 49% 38%;
     --card-foreground: 0 0% 98%;
