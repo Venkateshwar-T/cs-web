@@ -30,16 +30,16 @@ export default function Home() {
     <div className="flex flex-col h-screen">
       <Header onSearchSubmit={handleSearchSubmit} onSearchActiveChange={setIsSearchActive} />
       <main className={cn(
-        "flex-grow overflow-hidden flex justify-center transition-all duration-500",
-        isSearchActive ? 'pt-8' : 'pt-72',
-        isLoading || !isSearchActive ? 'items-center' : 'items-start'
+        "flex-grow overflow-hidden flex justify-start transition-all duration-500",
+        isSearchActive ? 'pt-24' : 'pt-72',
+        isLoading ? 'items-center justify-center' : 'items-start'
       )}>
         {!isSearchActive && (
           <div className={cn("transition-opacity duration-500 w-full", isSearchActive ? 'opacity-0' : 'opacity-100 h-full')}>
             <ExploreCategories />
           </div>
         )}
-        {isLoading && <Loader />}
+        {isLoading && <Loader className="mt-[-6rem]" />}
         {isSearchActive && !isLoading && <SearchResultsContainer />}
       </main>
     </div>
