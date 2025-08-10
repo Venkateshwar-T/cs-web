@@ -12,13 +12,13 @@ import { CgProfile } from "react-icons/cg";
 import { Input } from "@/components/ui/input";
 import { useState, useEffect } from "react";
 import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetHeader, SheetTitle } from "@/components/ui/sheet";
+import { useRouter, usePathname } from 'next/navigation';
 
-interface HeaderProps {
-  isSearchActive: boolean;
-  onSearchSubmit: (query: string) => void;
-}
+export function Header() {
+  const router = useRouter();
+  const pathname = usePathname();
+  const isSearchPage = pathname === '/search';
 
-export function Header({ isSearchActive, onSearchSubmit }: HeaderProps) {
   const navLinks = [
     { href: "/about", label: "About" },
     { href: "/faq", label: "FAQ" },
@@ -29,7 +29,7 @@ export function Header({ isSearchActive, onSearchSubmit }: HeaderProps) {
   const textsToType = ["Corporate gifts", "Family presents", "Festive gifts", "Birthday surprises", "Anniversary specials"];
 
   useEffect(() => {
-    if (isSearchFocused || isSearchActive) return;
+    if (isSearchFocused || isSearchPage) return;
     let textIndex = 0;
     let charIndex = 0;
     let isDeleting = false;
@@ -60,14 +60,14 @@ export function Header({ isSearchActive, onSearchSubmit }: HeaderProps) {
     timeoutId = setTimeout(type, 200);
 
     return () => clearTimeout(timeoutId);
-  }, [isSearchFocused, isSearchActive]);
+  }, [isSearchFocused, isSearchPage]);
   
   const handleSearchSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const searchInput = formData.get('search') as string;
     if (searchInput.trim()) {
-      onSearchSubmit(searchInput.trim());
+      router.push(`/search?q=${encodeURIComponent(searchInput.trim())}`);
     }
   };
 
@@ -96,7 +96,7 @@ export function Header({ isSearchActive, onSearchSubmit }: HeaderProps) {
           </div>
         </div>
         
-        <nav className={`hidden md:flex flex-1 justify-center items-center gap-8 text-lg transition-opacity duration-300 ${isSearchActive ? 'opacity-0' : 'opacity-100'}`}>
+        <nav className={`hidden md:flex flex-1 justify-center items-center gap-8 text-lg transition-opacity duration-300 ${isSearchPage ? 'opacity-0' : 'opacity-100'}`}>
           {navLinks.map((link) => (
             <Link
               key={link.href}
@@ -155,7 +155,7 @@ export function Header({ isSearchActive, onSearchSubmit }: HeaderProps) {
           </div>
         </div>
       </div>
-      <div className={`container max-w-screen-2xl px-8 md:px-12 transition-all duration-500 ease-in-out ${isSearchActive ? '-mt-[3.75rem]' : 'mt-16'}`}>
+      <div className={`container max-w-screen-2xl px-8 md:px-12 transition-all duration-500 ease-in-out ${isSearchPage ? '-mt-[3.75rem]' : 'mt-16'}`}>
         <form onSubmit={handleSearchSubmit} className="relative max-w-sm sm:max-w-sm md:max-w-md lg:max-w-lg mx-auto">
           <div className="absolute inset-0 rounded-full bg-gradient-to-br from-white/80 to-white/20 backdrop-blur-sm -z-10"></div>
           <div className="absolute left-4 top-1/2 -translate-y-1/2 z-10">
@@ -163,8 +163,8 @@ export function Header({ isSearchActive, onSearchSubmit }: HeaderProps) {
           </div>
           <Input 
             name="search"
-            placeholder={isSearchFocused || isSearchActive ? 'Search for gifts...' : placeholder}
-            className={`w-full pl-12 pr-4 py-3 rounded-full bg-transparent border-none focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-gray-600 text-xl ${isSearchFocused || isSearchActive ? 'text-white' : ''}`}
+            placeholder={isSearchFocused || isSearchPage ? 'Search for gifts...' : placeholder}
+            className={`w-full pl-12 pr-4 py-3 rounded-full bg-transparent border-none focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-gray-600 text-xl ${isSearchFocused || isSearchPage ? 'text-white' : ''}`}
             onFocus={() => setIsSearchFocused(true)}
             onBlur={() => setIsSearchFocused(false)}
           />
