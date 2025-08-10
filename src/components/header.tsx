@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { Instagram, Facebook, User } from "lucide-react";
+import { Instagram, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 
@@ -12,6 +12,23 @@ export function Header() {
     { href: "/about", label: "About" },
     { href: "/faq", label: "FAQ" },
   ];
+
+  const FacebookIcon = () => (
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className="transition-colors hover:opacity-80"
+    >
+      <circle cx="12" cy="12" r="12" fill="white" />
+      <path
+        d="M15.12 12.8214H13.2V20H9.84V12.8214H8V10.0357H9.84V8.19643C9.84 6.65357 10.644 5 13.008 5H15.12V7.78571H13.728C13.248 7.78571 13.2 7.96429 13.2 8.44286V10.0357H15.228L15.12 12.8214Z"
+        fill="hsl(var(--background))"
+      />
+    </svg>
+  );
 
   return (
     <header className="fixed top-0 z-50 w-full bg-transparent pt-6">
@@ -56,7 +73,7 @@ export function Header() {
                 <Instagram className="h-6 w-6 transition-colors hover:text-primary" />
               </Link>
               <Link href="#" aria-label="Facebook">
-                <Facebook className="h-6 w-6 transition-colors hover:text-primary" />
+                <FacebookIcon />
               </Link>
               <Link href="#" aria-label="Profile">
                 <User className="h-6 w-6 transition-colors hover:text-primary" />
