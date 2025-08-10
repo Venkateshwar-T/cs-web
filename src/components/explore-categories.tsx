@@ -10,7 +10,7 @@ export function ExploreCategories() {
   ];
 
   return (
-    <div className="bg-white/50 h-full rounded-t-2xl p-8 overflow-y-auto no-scrollbar mx-8 md:mx-32 flex-grow">
+    <div className="bg-white/50 h-full rounded-t-3xl p-8 overflow-y-auto no-scrollbar mx-8 md:mx-32 flex-grow">
       <SectionTitle>
         Explore Categories
       </SectionTitle>
