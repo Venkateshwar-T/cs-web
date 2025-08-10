@@ -73,7 +73,7 @@ export function Header() {
       </div>
       <div className="container max-w-screen-2xl px-8 md:px-12 mt-16">
         <div className="relative max-w-3xl mx-auto">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-500" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-white" />
           <Input 
             placeholder="Search for anything..."
             className="w-full pl-10 pr-4 py-2 rounded-full bg-white/50 backdrop-blur-lg border-none focus-visible:ring-0 focus-visible:ring-offset-0"
