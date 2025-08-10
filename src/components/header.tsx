@@ -22,7 +22,7 @@ export function Header() {
       xmlns="http://www.w3.org/2000/svg"
       className="transition-colors hover:opacity-80"
     >
-      <circle cx="12" cy="12" r="12" fill="white" />
+      <rect width="24" height="24" rx="4" fill="white" />
       <path
         d="M15.12 12.8214H13.2V20H9.84V12.8214H8V10.0357H9.84V8.19643C9.84 6.65357 10.644 5 13.008 5H15.12V7.78571H13.728C13.248 7.78571 13.2 7.96429 13.2 8.44286V10.0357H15.228L15.12 12.8214Z"
         fill="hsl(var(--background))"
