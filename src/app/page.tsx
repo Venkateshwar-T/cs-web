@@ -12,8 +12,12 @@ export default function Home() {
   return (
     <div className="flex flex-col h-screen">
       <Header onSearchActiveChange={setIsSearchActive} />
-      <main className={cn("flex-grow pt-72 overflow-hidden transition-opacity duration-500", !isSearchActive ? "opacity-100" : "opacity-0 h-0")}>
-        <ExploreCategories />
+      <main className="flex-grow pt-72 overflow-hidden">
+        {!isSearchActive && (
+          <div className="transition-opacity duration-500 opacity-100">
+            <ExploreCategories />
+          </div>
+        )}
       </main>
     </div>
   );
