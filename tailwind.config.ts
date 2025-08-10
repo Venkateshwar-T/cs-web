@@ -19,7 +19,7 @@ export default {
       },
       colors: {
         'custom-gold': '#D4AF37',
-        'custom-purple-light': '#EADCF2',
+        'custom-purple-light': '#F3E5F5',
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
         card: {
