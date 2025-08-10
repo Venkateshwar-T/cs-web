@@ -55,7 +55,7 @@ export function Header() {
               <a href="mailto:contact@bizhome.com">Enquire Now</a>
             </Button>
             <Separator orientation="vertical" className="h-6 bg-foreground/50" />
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1">
               <Link href="#" aria-label="Instagram">
                 <AiOutlineInstagram className="h-8 w-8 transition-colors hover:text-primary" />
               </Link>
