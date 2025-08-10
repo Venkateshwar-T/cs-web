@@ -51,17 +51,19 @@ export function Header() {
         
         <div className="flex flex-1 justify-end">
           <div className="flex items-center gap-4">
-            <Button className="bg-white text-custom-gold rounded-full font-normal text-base hover:bg-white/90">Enquire Now</Button>
+            <Button asChild size="lg" className="bg-white text-custom-gold rounded-full font-normal text-base hover:bg-white/90">
+              <a href="mailto:contact@bizhome.com">Enquire Now</a>
+            </Button>
             <Separator orientation="vertical" className="h-6 bg-foreground/50" />
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-4">
               <Link href="#" aria-label="Instagram">
-                <AiOutlineInstagram className="h-6 w-6 transition-colors hover:text-primary" />
+                <AiOutlineInstagram className="h-8 w-8 transition-colors hover:text-primary" />
               </Link>
               <Link href="#" aria-label="Facebook">
-                <IoLogoFacebook className="h-6 w-6 transition-colors hover:text-primary" />
+                <IoLogoFacebook className="h-8 w-8 transition-colors hover:text-primary" />
               </Link>
               <Link href="#" aria-label="Profile">
-                <CgProfile className="h-6 w-6 transition-colors hover:text-primary" />
+                <CgProfile className="h-8 w-8 transition-colors hover:text-primary" />
               </Link>
             </div>
           </div>
