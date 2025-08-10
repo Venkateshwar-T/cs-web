@@ -7,6 +7,7 @@ import { ExploreCategories } from '@/components/explore-categories';
 import { cn } from '@/lib/utils';
 import { Loader } from '@/components/loader';
 import { SearchResultsContainer } from '@/components/search-results-container';
+import { SearchResultsDetails } from '@/components/search-results-details';
 
 export default function Home() {
   const [isSearchActive, setIsSearchActive] = useState(false);
@@ -30,7 +31,7 @@ export default function Home() {
     <div className="flex flex-col h-screen">
       <Header onSearchSubmit={handleSearchSubmit} onSearchActiveChange={setIsSearchActive} />
       <main className={cn(
-        "flex-grow overflow-hidden flex justify-start transition-all duration-500",
+        "flex-grow overflow-hidden flex transition-all duration-500",
         isSearchActive ? 'pt-48' : 'pt-72',
         isLoading ? 'items-center justify-center' : 'items-start'
       )}>
@@ -40,7 +41,12 @@ export default function Home() {
           </div>
         )}
         {isLoading && <Loader className="-mt-24" />}
-        {isSearchActive && !isLoading && <SearchResultsContainer />}
+        {isSearchActive && !isLoading && (
+          <div className="flex w-full h-full gap-8 px-8">
+            <SearchResultsContainer />
+            <SearchResultsDetails />
+          </div>
+        )}
       </main>
     </div>
   );
