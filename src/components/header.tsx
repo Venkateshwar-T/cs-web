@@ -75,7 +75,7 @@ export function Header() {
           <IoSearch className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-card-foreground" />
           <Input 
             placeholder="Search......"
-            className="w-full pl-12 pr-4 py-2 rounded-full bg-white/50 border-none focus-visible:ring-0 focus-visible:ring-offset-0"
+            className="w-full pl-12 pr-4 py-2 rounded-full bg-white/50 border-none focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-card-foreground"
           />
         </div>
       </div>
