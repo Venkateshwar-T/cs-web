@@ -56,8 +56,8 @@ export function Header() {
             <Button asChild size="sm" className="bg-white text-custom-gold rounded-full font-normal text-base hover:bg-transparent border border-white px-3 py-1">
               <a href="mailto:contact@bizhome.com">Enquire Now</a>
             </Button>
-            <Separator orientation="vertical" className="h-6 bg-foreground/50 mx-0.5" />
-            <div className="flex items-center">
+            <Separator orientation="vertical" className="h-6 bg-foreground/50 mx-2" />
+            <div className="flex items-center gap-2">
               <Link href="#" aria-label="Instagram">
                 <AiOutlineInstagram className="h-8 w-8 transition-colors hover:text-custom-gold" />
               </Link>
@@ -71,8 +71,8 @@ export function Header() {
           </div>
         </div>
       </div>
-      <div className="container max-w-screen-2xl px-8 md:px-12 mt-4">
-        <div className="relative max-w-lg mx-auto">
+      <div className="container max-w-screen-2xl px-8 md:px-12 mt-8">
+        <div className="relative max-w-xl mx-auto">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-500" />
           <Input 
             placeholder="Search for anything..."
