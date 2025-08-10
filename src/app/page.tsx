@@ -42,7 +42,7 @@ export default function Home() {
         )}
         {isLoading && <Loader className="-mt-24" />}
         {isSearchActive && !isLoading && (
-          <div className="flex w-full h-full gap-8 px-8">
+          <div className="flex w-full h-full">
             <SearchResultsContainer />
             <SearchResultsDetails />
           </div>
