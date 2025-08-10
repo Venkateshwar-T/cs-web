@@ -144,11 +144,11 @@ export function Header() {
         <div className="relative max-w-xs sm:max-w-md md:max-w-lg lg:max-w-3xl mx-auto">
           <div className="absolute inset-0 rounded-full bg-gradient-to-br from-white/80 to-white/20 backdrop-blur-sm -z-10"></div>
           <div className="absolute left-4 top-1/2 -translate-y-1/2 z-10">
-            <Search className={`h-5 w-5 transition-colors ${isSearchFocused ? 'text-white' : 'text-gray-600'}`} />
+            <Search className={`h-5 w-5 transition-colors ${isSearchFocused ? 'text-custom-gold' : 'text-gray-600'}`} />
           </div>
           <Input 
             placeholder={placeholder}
-            className="w-full pl-12 pr-4 py-3 rounded-full bg-transparent border-none focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-xl text-xl"
+            className={`w-full pl-12 pr-4 py-3 rounded-full bg-transparent border-none focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-black text-xl ${isSearchFocused ? 'text-custom-gold' : ''}`}
             onFocus={() => setIsSearchFocused(true)}
             onBlur={() => setIsSearchFocused(false)}
           />
