@@ -28,7 +28,10 @@ export default function Home() {
   return (
     <div className="flex flex-col h-screen">
       <Header onSearchSubmit={handleSearchSubmit} onSearchActiveChange={setIsSearchActive} />
-      <main className="flex-grow pt-72 overflow-hidden flex items-center justify-center">
+      <main className={cn(
+        "flex-grow overflow-hidden flex items-center justify-center transition-all duration-500",
+        isSearchActive ? 'pt-36' : 'pt-72'
+      )}>
         {isSearchActive ? (
           <>
             {isLoading && <Loader />}
