@@ -54,7 +54,7 @@ export function Header() {
             <Button asChild size="default" className="bg-white text-custom-gold rounded-full font-normal text-base hover:bg-transparent border border-white px-3 py-1">
               <a href="mailto:contact@bizhome.com">Enquire Now</a>
             </Button>
-            <Separator orientation="vertical" className="h-6 bg-foreground/50 mx-1" />
+            <Separator orientation="vertical" className="h-6 bg-foreground/50 mx-0.5" />
             <div className="flex items-center gap-1">
               <Link href="#" aria-label="Instagram">
                 <AiOutlineInstagram className="h-8 w-8 transition-colors hover:text-custom-gold" />
