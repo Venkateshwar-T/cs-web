@@ -12,8 +12,10 @@ import { SearchResultsDetails } from '@/components/search-results-details';
 export default function Home() {
   const [isSearchActive, setIsSearchActive] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
 
-  const handleSearchSubmit = () => {
+  const handleSearchSubmit = (query: string) => {
+    setSearchQuery(query);
     setIsSearchActive(true);
     setIsLoading(true);
   };
@@ -44,7 +46,7 @@ export default function Home() {
         {isSearchActive && !isLoading && (
           <div className="flex w-full h-full">
             <FilterContainer />
-            <SearchResultsDetails />
+            <SearchResultsDetails query={searchQuery} />
           </div>
         )}
       </main>
