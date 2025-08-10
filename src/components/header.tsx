@@ -7,6 +7,8 @@ import { Separator } from "@/components/ui/separator";
 import { IoLogoFacebook } from "react-icons/io";
 import { AiOutlineInstagram } from "react-icons/ai";
 import { CgProfile } from "react-icons/cg";
+import { Input } from "@/components/ui/input";
+import { Search } from "lucide-react";
 
 export function Header() {
   const navLinks = [
@@ -50,12 +52,12 @@ export function Header() {
         </nav>
         
         <div className="flex flex-1 justify-end">
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-1">
             <Button asChild size="default" className="bg-white text-custom-gold rounded-full font-normal text-base hover:bg-transparent border border-white px-3 py-1">
               <a href="mailto:contact@bizhome.com">Enquire Now</a>
             </Button>
             <Separator orientation="vertical" className="h-6 bg-foreground/50 mx-0.5" />
-            <div className="flex items-center gap-1">
+            <div className="flex items-center">
               <Link href="#" aria-label="Instagram">
                 <AiOutlineInstagram className="h-8 w-8 transition-colors hover:text-custom-gold" />
               </Link>
@@ -67,6 +69,15 @@ export function Header() {
               </Link>
             </div>
           </div>
+        </div>
+      </div>
+      <div className="container max-w-screen-2xl px-8 md:px-12 mt-4">
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-500" />
+          <Input 
+            placeholder="Search for anything..."
+            className="w-full pl-10 pr-4 py-2 rounded-full bg-gradient-to-br from-white to-custom-purple-light border-none focus:ring-2 focus:ring-primary"
+          />
         </div>
       </div>
     </header>
