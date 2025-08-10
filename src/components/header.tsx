@@ -2,10 +2,11 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { Instagram, User } from "lucide-react";
+import { User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { IoLogoFacebook } from "react-icons/io";
+import { FaInstagram } from "react-icons/fa";
 
 export function Header() {
   const navLinks = [
@@ -54,7 +55,7 @@ export function Header() {
             <Separator orientation="vertical" className="h-6 bg-foreground/50" />
             <div className="flex items-center gap-3">
               <Link href="#" aria-label="Instagram">
-                <Instagram className="h-6 w-6 transition-colors hover:text-primary" />
+                <FaInstagram className="h-6 w-6 transition-colors hover:text-primary" />
               </Link>
               <Link href="#" aria-label="Facebook">
                 <IoLogoFacebook className="h-6 w-6 transition-colors hover:text-primary" />
