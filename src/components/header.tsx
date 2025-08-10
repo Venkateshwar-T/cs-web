@@ -21,15 +21,15 @@ export function Header() {
             <Image 
               src="/Choco Smiley Logo.png" 
               alt="Choco Smiley Logo" 
-              width={60} 
-              height={60}
+              width={230} 
+              height={88}
             />
           </Link>
           <Image 
             src="/Online Chocolate Store.png" 
             alt="Online Chocolate Store" 
-            width={180} 
-            height={60}
+            width={140} 
+            height={75}
           />
         </div>
         
