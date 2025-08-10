@@ -11,7 +11,7 @@ import { IoLogoFacebook } from "react-icons/io5";
 import { CgProfile } from "react-icons/cg";
 import { Input } from "@/components/ui/input";
 import { useState, useEffect } from "react";
-import { Sheet, SheetContent, SheetTrigger, SheetClose } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 
 export function Header() {
   const navLinks = [
@@ -120,6 +120,9 @@ export function Header() {
                 </Button>
               </SheetTrigger>
               <SheetContent side="right" className="w-[300px] sm:w-[400px]">
+                <SheetHeader>
+                  <SheetTitle className="sr-only">Menu</SheetTitle>
+                </SheetHeader>
                 <nav className="flex flex-col gap-8 text-lg mt-12">
                   {navLinks.map((link) => (
                     <SheetClose asChild key={link.href}>
