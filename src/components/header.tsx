@@ -15,7 +15,7 @@ import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetHeader, SheetTitle 
 
 interface HeaderProps {
   isSearchActive: boolean;
-  onSearchSubmit: () => void;
+  onSearchSubmit: (query: string) => void;
 }
 
 export function Header({ isSearchActive, onSearchSubmit }: HeaderProps) {
@@ -67,7 +67,7 @@ export function Header({ isSearchActive, onSearchSubmit }: HeaderProps) {
     const formData = new FormData(e.currentTarget);
     const searchInput = formData.get('search') as string;
     if (searchInput.trim()) {
-      onSearchSubmit();
+      onSearchSubmit(searchInput.trim());
     }
   };
 
