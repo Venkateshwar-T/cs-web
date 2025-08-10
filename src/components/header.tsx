@@ -12,24 +12,30 @@ import { CgProfile } from "react-icons/cg";
 import { Input } from "@/components/ui/input";
 import { useState, useEffect } from "react";
 import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetHeader, SheetTitle } from "@/components/ui/sheet";
-import { useRouter, usePathname } from 'next/navigation';
 
-export function Header() {
-  const router = useRouter();
-  const pathname = usePathname();
-  const isSearchPage = pathname === '/search';
+interface HeaderProps {
+  onSearchActiveChange: (isActive: boolean) => void;
+}
+
+export function Header({ onSearchActiveChange }: HeaderProps) {
+  const [isSearchFocused, setIsSearchFocused] = useState(false);
+  const [isSearchSubmitted, setIsSearchSubmitted] = useState(false);
+  const isSearchUIActive = isSearchFocused || isSearchSubmitted;
+
+  useEffect(() => {
+    onSearchActiveChange(isSearchSubmitted);
+  }, [isSearchSubmitted, onSearchActiveChange]);
 
   const navLinks = [
     { href: "/about", label: "About" },
     { href: "/faq", label: "FAQ" },
   ];
 
-  const [isSearchFocused, setIsSearchFocused] = useState(false);
   const [placeholder, setPlaceholder] = useState("");
   const textsToType = ["Corporate gifts", "Family presents", "Festive gifts", "Birthday surprises", "Anniversary specials"];
 
   useEffect(() => {
-    if (isSearchFocused || isSearchPage) return;
+    if (isSearchUIActive) return;
     let textIndex = 0;
     let charIndex = 0;
     let isDeleting = false;
@@ -60,24 +66,23 @@ export function Header() {
     timeoutId = setTimeout(type, 200);
 
     return () => clearTimeout(timeoutId);
-  }, [isSearchFocused, isSearchPage]);
+  }, [isSearchUIActive]);
   
   const handleSearchSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const searchInput = formData.get('search') as string;
     if (searchInput.trim()) {
-      router.push(`/search?q=${encodeURIComponent(searchInput.trim())}`);
+      setIsSearchSubmitted(true);
     }
   };
-
 
   return (
     <header className="fixed top-0 z-50 w-full bg-transparent pt-6">
       <div className="container flex h-20 max-w-screen-2xl items-center justify-between px-8 md:px-24">
         <div className="flex flex-1 justify-start">
           <div className="flex items-center gap-8">
-            <Link href="/" className="flex items-center gap-2">
+            <Link href="/" className="flex items-center gap-2" onClick={() => setIsSearchSubmitted(false)}>
               <Image 
                 src="/Choco Smiley Logo.png" 
                 alt="Choco Smiley Logo" 
@@ -96,7 +101,7 @@ export function Header() {
           </div>
         </div>
         
-        <nav className={`hidden md:flex flex-1 justify-center items-center gap-8 text-lg transition-opacity duration-300 ${isSearchPage ? 'opacity-0' : 'opacity-100'}`}>
+        <nav className={`hidden md:flex flex-1 justify-center items-center gap-8 text-lg transition-opacity duration-300 ${isSearchSubmitted ? 'opacity-0' : 'opacity-100'}`}>
           {navLinks.map((link) => (
             <Link
               key={link.href}
@@ -155,16 +160,16 @@ export function Header() {
           </div>
         </div>
       </div>
-      <div className={`container max-w-screen-2xl px-8 md:px-12 transition-all duration-500 ease-in-out ${isSearchPage ? '-mt-[3.75rem]' : 'mt-16'}`}>
+      <div className={`container max-w-screen-2xl px-8 md:px-12 transition-all duration-500 ease-in-out ${isSearchSubmitted ? '-mt-[3.75rem]' : 'mt-16'}`}>
         <form onSubmit={handleSearchSubmit} className="relative max-w-sm sm:max-w-sm md:max-w-md lg:max-w-lg mx-auto">
           <div className="absolute inset-0 rounded-full bg-gradient-to-br from-white/80 to-white/20 backdrop-blur-sm -z-10"></div>
           <div className="absolute left-4 top-1/2 -translate-y-1/2 z-10">
-            <Search className={`h-5 w-5 transition-colors ${isSearchFocused ? 'text-white' : 'text-white'}`} />
+            <Search className={`h-5 w-5 transition-colors ${isSearchUIActive ? 'text-white' : 'text-white'}`} />
           </div>
           <Input 
             name="search"
-            placeholder={isSearchFocused || isSearchPage ? 'Search for gifts...' : placeholder}
-            className={`w-full pl-12 pr-4 py-3 rounded-full bg-transparent border-none focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-gray-600 text-xl ${isSearchFocused || isSearchPage ? 'text-white' : ''}`}
+            placeholder={isSearchUIActive ? 'Search for gifts...' : placeholder}
+            className={`w-full pl-12 pr-4 py-3 rounded-full bg-transparent border-none focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-gray-600 text-xl ${isSearchUIActive ? 'text-white' : ''}`}
             onFocus={() => setIsSearchFocused(true)}
             onBlur={() => setIsSearchFocused(false)}
           />
