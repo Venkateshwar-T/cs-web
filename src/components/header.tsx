@@ -15,9 +15,10 @@ import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetHeader, SheetTitle 
 
 interface HeaderProps {
   onSearchActiveChange: (isActive: boolean) => void;
+  onSearchSubmit: () => void;
 }
 
-export function Header({ onSearchActiveChange }: HeaderProps) {
+export function Header({ onSearchActiveChange, onSearchSubmit }: HeaderProps) {
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const [isSearchSubmitted, setIsSearchSubmitted] = useState(false);
   const isSearchUIActive = isSearchFocused || isSearchSubmitted;
@@ -74,6 +75,7 @@ export function Header({ onSearchActiveChange }: HeaderProps) {
     const searchInput = formData.get('search') as string;
     if (searchInput.trim()) {
       setIsSearchSubmitted(true);
+      onSearchSubmit();
     }
   };
 
