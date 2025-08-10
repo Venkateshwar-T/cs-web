@@ -32,7 +32,7 @@ export default function Home() {
       <Header onSearchSubmit={handleSearchSubmit} onSearchActiveChange={setIsSearchActive} />
       <main className={cn(
         "flex-grow overflow-hidden flex transition-all duration-500",
-        isSearchActive ? 'pt-32' : 'pt-72',
+        isSearchActive ? 'pt-36' : 'pt-72',
         isLoading ? 'items-center justify-center' : 'items-start'
       )}>
         {!isSearchActive && (
