@@ -62,7 +62,7 @@ export function Header() {
               <Link href="#" aria-label="Facebook">
                 <IoLogoFacebook className="h-8 w-8 transition-colors hover:text-primary" />
               </Link>
-              <Link href="#" aria-label="Profile">
+              <Link href="#" aria-label="Profile" className="ml-2">
                 <CgProfile className="h-9 w-9 transition-colors hover:text-primary" />
               </Link>
             </div>
