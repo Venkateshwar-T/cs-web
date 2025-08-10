@@ -15,7 +15,6 @@ import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetHeader, SheetTitle 
 
 export function Header() {
   const navLinks = [
-    { href: "/", label: "Home" },
     { href: "/about", label: "About" },
     { href: "/faq", label: "FAQ" },
   ];
@@ -144,7 +143,7 @@ export function Header() {
         <div className="relative max-w-sm sm:max-w-sm md:max-w-md lg:max-w-lg mx-auto">
           <div className="absolute inset-0 rounded-full bg-gradient-to-br from-white/80 to-white/20 backdrop-blur-sm -z-10"></div>
           <div className="absolute left-4 top-1/2 -translate-y-1/2 z-10">
-            <Search className={`h-5 w-5 transition-colors ${isSearchFocused ? 'text-white' : 'text-gray-600'}`} />
+            <Search className={`h-5 w-5 transition-colors ${isSearchFocused ? 'text-white' : 'text-white'}`} />
           </div>
           <Input 
             placeholder={placeholder}
