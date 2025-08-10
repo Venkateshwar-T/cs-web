@@ -5,12 +5,13 @@ import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { Search } from "lucide-react";
+import { Search, Menu } from "lucide-react";
 import { AiOutlineInstagram } from "react-icons/ai";
 import { IoLogoFacebook } from "react-icons/io5";
 import { CgProfile } from "react-icons/cg";
 import { Input } from "@/components/ui/input";
 import { useState, useEffect } from "react";
+import { Sheet, SheetContent, SheetTrigger, SheetClose } from "@/components/ui/sheet";
 
 export function Header() {
   const navLinks = [
@@ -38,17 +39,14 @@ export function Header() {
       setPlaceholder(displayedText);
 
       if (!isDeleting && displayedText === currentText) {
-        // Finished typing the word, start deleting
         isDeleting = true;
-        timeoutId = setTimeout(type, 2000); // Pause before deleting
+        timeoutId = setTimeout(type, 2000); 
       } else if (isDeleting && displayedText === "") {
-        // Finished deleting, move to the next word
         isDeleting = false;
         charIndex = 0;
         textIndex = (textIndex + 1) % textsToType.length;
-        timeoutId = setTimeout(type, 500); // Pause before typing next word
+        timeoutId = setTimeout(type, 500);
       } else {
-        // Continue typing or deleting
         charIndex = isDeleting ? charIndex - 1 : charIndex + 1;
         timeoutId = setTimeout(type, isDeleting ? 100 : 150);
       }
@@ -70,6 +68,7 @@ export function Header() {
                 alt="Choco Smiley Logo" 
                 width={180} 
                 height={70}
+                className="w-32 md:w-44"
               />
             </Link>
             <Image 
@@ -77,6 +76,7 @@ export function Header() {
               alt="Online Chocolate Store" 
               width={120} 
               height={55}
+              className="hidden sm:block w-24 md:w-32"
             />
           </div>
         </div>
@@ -94,7 +94,7 @@ export function Header() {
         </nav>
         
         <div className="flex flex-1 justify-end">
-          <div className="flex items-center gap-1">
+          <div className="hidden md:flex items-center gap-1">
             <Button asChild size="sm" className="bg-white text-custom-gold rounded-full font-normal text-base hover:bg-transparent border border-white px-3 py-1">
               <a href="mailto:contact@bizhome.com">Enquire Now</a>
             </Button>
@@ -110,6 +110,30 @@ export function Header() {
                 <CgProfile className="h-9 w-9 transition-colors hover:text-custom-gold" />
               </Link>
             </div>
+          </div>
+          <div className="md:hidden">
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="icon">
+                  <Menu className="h-6 w-6" />
+                  <span className="sr-only">Open menu</span>
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="right" className="w-[300px] sm:w-[400px]">
+                <nav className="flex flex-col gap-8 text-lg mt-12">
+                  {navLinks.map((link) => (
+                    <SheetClose asChild key={link.href}>
+                      <Link
+                        href={link.href}
+                        className="transition-colors hover:text-custom-gold text-foreground/80"
+                      >
+                        {link.label}
+                      </Link>
+                    </SheetClose>
+                  ))}
+                </nav>
+              </SheetContent>
+            </Sheet>
           </div>
         </div>
       </div>
