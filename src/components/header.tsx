@@ -22,7 +22,7 @@ export function Header() {
 
   const [placeholder, setPlaceholder] = useState("");
   const [isSearchFocused, setIsSearchFocused] = useState(false);
-  const textsToType = ["Corporate gifts", "Family presents", "Festive gifts"];
+  const textsToType = ["Corporate gifts", "Family presents", "Festive gifts", "Birthday surprises", "Anniversary specials"];
 
   useEffect(() => {
     let textIndex = 0;
