@@ -9,6 +9,7 @@ import { AiOutlineInstagram } from "react-icons/ai";
 import { IoLogoFacebook } from "react-icons/io5";
 import { CgProfile } from "react-icons/cg";
 import { Input } from "@/components/ui/input";
+import { useState, useEffect } from "react";
 
 export function Header() {
   const navLinks = [
@@ -16,6 +17,39 @@ export function Header() {
     { href: "/about", label: "About" },
     { href: "/faq", label: "FAQ" },
   ];
+
+  const [placeholder, setPlaceholder] = useState("");
+  const textToType = "Corporate gifts";
+
+  useEffect(() => {
+    let currentIndex = 0;
+    let isDeleting = false;
+    let timeoutId: NodeJS.Timeout;
+
+    const type = () => {
+      const currentText = isDeleting
+        ? textToType.substring(0, currentIndex - 1)
+        : textToType.substring(0, currentIndex + 1);
+
+      setPlaceholder(currentText);
+
+      if (!isDeleting && currentText === textToType) {
+        isDeleting = true;
+        timeoutId = setTimeout(type, 2000); // Pause before deleting
+      } else if (isDeleting && currentText === "") {
+        isDeleting = false;
+        currentIndex = 0;
+        timeoutId = setTimeout(type, 500);
+      } else {
+        currentIndex = isDeleting ? currentIndex - 1 : currentIndex + 1;
+        timeoutId = setTimeout(type, isDeleting ? 100 : 150);
+      }
+    };
+
+    timeoutId = setTimeout(type, 200);
+
+    return () => clearTimeout(timeoutId);
+  }, []);
 
   return (
     <header className="fixed top-0 z-50 w-full bg-transparent pt-6">
@@ -73,9 +107,9 @@ export function Header() {
       </div>
       <div className="container max-w-screen-2xl px-8 md:px-12 mt-16">
         <div className="relative max-w-3xl mx-auto">
-          <IoSearch className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-card-foreground" />
+          <IoSearch className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-600" />
           <Input 
-            placeholder="Search......"
+            placeholder={placeholder}
             className="w-full pl-12 pr-4 py-2 rounded-full bg-white/50 border-none focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-gray-600"
           />
         </div>
