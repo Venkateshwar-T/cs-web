@@ -28,7 +28,12 @@ export function ProductCard() {
             </div>
             <Badge variant="outline" className="text-xs mb-0.5 border-none text-custom-gold bg-transparent">25% OFF</Badge>
           </div>
-          <Button size="sm">Add</Button>
+          <Button
+            size="sm"
+            className="px-6 rounded-full uppercase bg-transparent border border-custom-purple-dark text-custom-purple-dark hover:bg-custom-purple-dark hover:text-white"
+          >
+            Add
+          </Button>
         </div>
       </div>
     </div>
