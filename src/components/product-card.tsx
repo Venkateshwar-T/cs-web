@@ -1,6 +1,5 @@
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 
 export function ProductCard() {
   return (
@@ -26,7 +25,7 @@ export function ProductCard() {
                 <p className="text-sm text-gray-500 line-through">₹1000</p>
                 <p className="font-bold text-base">₹750</p>
               </div>
-              <Badge variant="outline" className="text-xs mb-0.5 border-none text-custom-gold bg-transparent ml-1">25% OFF</Badge>
+              <p className="text-xs mb-0.5 text-custom-gold font-semibold ml-1">25% OFF</p>
             </div>
             <Button
                 size="sm"
