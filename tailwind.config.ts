@@ -13,7 +13,7 @@ export default {
         '1.5': '0.375rem',
       },
       fontFamily: {
-        body: ['PT Sans', 'sans-serif'],
+        body: ['Inter', 'sans-serif'],
         code: ['monospace'],
       },
       colors: {
