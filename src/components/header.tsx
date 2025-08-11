@@ -90,7 +90,7 @@ export function Header({ onSearchActiveChange, onSearchSubmit }: HeaderProps) {
                 alt="Choco Smiley Logo" 
                 width={180} 
                 height={70}
-                className="w-28 sm:w-32 md:w-36 xl:w-40 2xl:w-44"
+                className="w-28 sm:w-32 md:w-36 xl:w-36 2xl:w-44"
               />
             </Link>
             <Image 
@@ -98,7 +98,7 @@ export function Header({ onSearchActiveChange, onSearchSubmit }: HeaderProps) {
               alt="Online Chocolate Store" 
               width={120} 
               height={55}
-              className="hidden sm:block w-20 md:w-24 xl:w-28 2xl:w-32"
+              className="hidden sm:block w-20 md:w-24 xl:w-24 2xl:w-32"
             />
           </div>
         </div>
