@@ -59,7 +59,7 @@ export function ProductCard({ productName, onAddToCart, quantity }: ProductCardP
                 <Button
                   size="sm"
                   onClick={handleAddToCartClick}
-                  className="w-full rounded-full uppercase bg-transparent border border-b-4 border-custom-purple-dark text-custom-purple-dark hover:bg-custom-purple-dark hover:text-white"
+                  className="w-full rounded-full uppercase bg-transparent border-2 border-b-[3px] border-custom-purple-dark text-custom-purple-dark hover:bg-custom-purple-dark hover:text-white"
                 >
                   Add
                 </Button>
