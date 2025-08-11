@@ -178,7 +178,7 @@ export function Header({ onSearchActiveChange, onSearchSubmit }: HeaderProps) {
         </div>
       </div>
       <div className={`container max-w-screen-2xl px-8 md:px-12 transition-all duration-500 ease-in-out ${isSearchSubmitted ? '-mt-[3.75rem]' : 'mt-8 sm:mt-12 md:mt-16'}`}>
-        <form onSubmit={handleSearchSubmit} className={`relative mx-auto transition-all duration-500 ease-in-out ${isSearchSubmitted ? 'max-w-[calc(50%-1rem)] sm:max-w-[calc(50%-1rem)] md:max-w-[calc(50%-1rem)] lg:max-w-[calc(50%-1rem)] xl:max-w-[calc(50%-1rem)]' : 'max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl'}`}>
+        <form onSubmit={handleSearchSubmit} className={`relative mx-auto transition-all duration-500 ease-in-out ${isSearchSubmitted ? 'max-w-sm' : 'max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl'}`}>
           <div className="absolute inset-0 rounded-full bg-gradient-to-br from-white/80 to-white/20 backdrop-blur-sm -z-10"></div>
           <div className="absolute left-4 top-1/2 -translate-y-1/2 z-10">
             <Search className={`h-5 w-5 transition-colors ${isSearchSubmitted ? 'text-white' : 'text-white'}`} />
