@@ -14,11 +14,22 @@ export default function Home() {
   const [isSearchActive, setIsSearchActive] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [cartMessage, setCartMessage] = useState('');
+  const [isCartButtonExpanded, setIsCartButtonExpanded] = useState(false);
 
   const handleSearchSubmit = (query: string) => {
     setSearchQuery(query);
     setIsSearchActive(true);
     setIsLoading(true);
+  };
+  
+  const handleAddToCart = (productName: string, quantity: number) => {
+    setCartMessage(`${quantity} ${productName} added`);
+    setIsCartButtonExpanded(true);
+
+    setTimeout(() => {
+      setIsCartButtonExpanded(false);
+    }, 1500);
   };
 
   useEffect(() => {
@@ -48,13 +59,20 @@ export default function Home() {
           <>
             <div className="flex w-full h-full">
               <FilterContainer />
-              <SearchResultsDetails query={searchQuery} />
+              <SearchResultsDetails query={searchQuery} onAddToCart={handleAddToCart} />
             </div>
             <Button
-              className="absolute bottom-8 right-8 rounded-full h-16 w-16 shadow-lg bg-custom-gold hover:bg-custom-gold/90"
+              className={cn(
+                "absolute bottom-8 right-8 shadow-lg bg-custom-gold hover:bg-custom-gold/90 transition-all duration-300 ease-in-out flex items-center justify-center overflow-hidden",
+                isCartButtonExpanded ? 'w-72 h-16 rounded-lg' : 'w-16 h-16 rounded-full'
+              )}
               size="icon"
             >
-              <Image src="/icons/cart.png" alt="Cart" width={28} height={28} />
+              {isCartButtonExpanded ? (
+                <span className="text-white font-semibold whitespace-nowrap">{cartMessage}</span>
+              ) : (
+                <Image src="/icons/cart.png" alt="Cart" width={28} height={28} />
+              )}
             </Button>
           </>
         )}

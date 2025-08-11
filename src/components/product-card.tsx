@@ -6,20 +6,33 @@ import { Heart, Plus, Minus } from 'lucide-react';
 import { useState } from 'react';
 import { cn } from '@/lib/utils';
 
-export function ProductCard() {
+interface ProductCardProps {
+  onAddToCart: (productName: string, quantity: number) => void;
+}
+
+export function ProductCard({ onAddToCart }: ProductCardProps) {
   const [isLiked, setIsLiked] = useState(false);
   const [quantity, setQuantity] = useState(0);
+  const productName = "Diwali Collection Box";
 
-  const handleAddToCart = () => {
-    setQuantity(1);
+  const handleAddToCartClick = () => {
+    const newQuantity = 1;
+    setQuantity(newQuantity);
+    onAddToCart(productName, newQuantity);
   };
 
   const handleIncrement = () => {
-    setQuantity(prev => prev + 1);
+    const newQuantity = quantity + 1;
+    setQuantity(newQuantity);
+    onAddToCart(productName, newQuantity);
   };
 
   const handleDecrement = () => {
-    setQuantity(prev => (prev > 0 ? prev - 1 : 0));
+    const newQuantity = quantity - 1;
+    setQuantity(newQuantity > 0 ? newQuantity : 0);
+    if (newQuantity > 0) {
+      onAddToCart(productName, newQuantity);
+    }
   };
 
   return (
@@ -53,7 +66,7 @@ export function ProductCard() {
               {quantity === 0 ? (
                 <Button
                   size="sm"
-                  onClick={handleAddToCart}
+                  onClick={handleAddToCartClick}
                   className="w-full rounded-full uppercase border-2 bg-transparent border-custom-purple-dark text-custom-purple-dark hover:bg-custom-purple-dark hover:text-white"
                 >
                   Add
