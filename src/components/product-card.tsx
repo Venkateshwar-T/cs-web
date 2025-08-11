@@ -28,14 +28,14 @@ export function ProductCard({ productName, onAddToCart, quantity }: ProductCardP
   };
 
   return (
-    <div className="bg-white text-black rounded-2xl shadow-lg overflow-hidden flex flex-col h-full">
+    <div className="bg-white text-black rounded-3xl shadow-lg overflow-hidden flex flex-col h-full">
       <div className="relative w-full pt-[100%]">
         <Image
           src="https://placehold.co/600x600.png"
           alt={productName}
           layout="fill"
           objectFit="cover"
-          className="rounded-t-2xl"
+          className="rounded-t-3xl"
           data-ai-hint="gift box"
         />
       </div>
