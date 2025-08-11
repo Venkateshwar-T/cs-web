@@ -8,6 +8,8 @@ import { cn } from '@/lib/utils';
 import { Loader } from '@/components/loader';
 import { FilterContainer } from '@/components/filter-container';
 import { SearchResultsDetails } from '@/components/search-results-details';
+import { Button } from '@/components/ui/button';
+import { Plus } from 'lucide-react';
 
 export default function Home() {
   const [isSearchActive, setIsSearchActive] = useState(false);
@@ -33,7 +35,7 @@ export default function Home() {
     <div className="flex flex-col h-screen">
       <Header onSearchSubmit={handleSearchSubmit} onSearchActiveChange={setIsSearchActive} />
       <main className={cn(
-        "flex-grow overflow-hidden flex transition-all duration-500",
+        "flex-grow overflow-hidden flex transition-all duration-500 relative",
         isSearchActive ? 'pt-36' : 'pt-72',
         isLoading ? 'items-center justify-center' : 'items-start'
       )}>
@@ -44,10 +46,18 @@ export default function Home() {
         )}
         {isLoading && <Loader className="-mt-24" />}
         {isSearchActive && !isLoading && (
-          <div className="flex w-full h-full">
-            <FilterContainer />
-            <SearchResultsDetails query={searchQuery} />
-          </div>
+          <>
+            <div className="flex w-full h-full">
+              <FilterContainer />
+              <SearchResultsDetails query={searchQuery} />
+            </div>
+            <Button
+              className="absolute bottom-8 right-8 rounded-full h-16 w-16 shadow-lg"
+              size="icon"
+            >
+              <Plus className="h-8 w-8" />
+            </Button>
+          </>
         )}
       </main>
     </div>
