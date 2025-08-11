@@ -22,14 +22,12 @@ export function ProductCard() {
         </div>
         <div className="mt-4">
           <p className="text-sm text-gray-500 line-through">₹1000</p>
-          <div className="flex justify-between items-center">
-            <div className="flex items-center">
-              <p className="font-bold text-base">₹750</p>
-              <Badge variant="outline" className="text-custom-gold border-none text-xs font-semibold ml-1">25% OFF</Badge>
-            </div>
+          <div className="flex items-center gap-2">
+            <p className="font-bold text-base">₹750</p>
+            <Badge variant="outline" className="text-custom-gold border-none text-xs font-semibold">25% OFF</Badge>
             <Button
               size="sm"
-              className="rounded-full uppercase bg-transparent border border-custom-purple-dark text-custom-purple-dark hover:bg-custom-purple-dark hover:text-white flex-grow-0 ml-2"
+              className="rounded-full uppercase bg-transparent border border-custom-purple-dark text-custom-purple-dark hover:bg-custom-purple-dark hover:text-white flex-grow"
             >
               Add
             </Button>
