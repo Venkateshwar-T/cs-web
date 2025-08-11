@@ -69,7 +69,7 @@ export function Header({ onSearchActiveChange, onSearchSubmit }: HeaderProps) {
     e.preventDefault();
     if (formRef.current) {
       const isLargeDesktop = window.innerWidth >= 1280;
-      const reductionFactor = isLargeDesktop ? 0.8 : 0.5; // 20% reduction for large desktop, 50% for others
+      const reductionFactor = isLargeDesktop ? 0.85 : 0.5; // 15% reduction for large desktop, 50% for others
       setTargetWidth(formRef.current.offsetWidth * reductionFactor);
     }
     const formData = new FormData(e.currentTarget);
