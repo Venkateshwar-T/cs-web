@@ -10,13 +10,13 @@ export function ExploreCategories() {
   ];
 
   return (
-    <div className="bg-white/50 h-full rounded-t-3xl p-8 overflow-y-auto overflow-x-auto no-scrollbar mx-8 md:mx-32 flex-grow">
+    <div className="bg-white/50 h-full rounded-t-3xl p-8 overflow-y-auto no-scrollbar mx-8 md:mx-32 flex flex-col">
       <SectionTitle>
         Explore Categories
       </SectionTitle>
-      <div className="flex flex-nowrap justify-start gap-8 py-4">
+      <div className="flex flex-1 justify-around items-center gap-8 py-4">
         {images.map((image) => (
-          <div key={image.id} className="flex-shrink-0 w-48 h-56 sm:w-56 sm:h-64 md:w-64 md:h-72">
+          <div key={image.id} className="w-full h-auto max-w-64 aspect-[3/4]">
             <Image
               src={image.src}
               alt={image.alt}
