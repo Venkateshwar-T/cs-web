@@ -52,7 +52,7 @@ export default function Home() {
               <SearchResultsDetails query={searchQuery} />
             </div>
             <Button
-              className="absolute bottom-8 right-8 rounded-full h-16 w-16 shadow-lg"
+              className="absolute bottom-8 right-8 rounded-full h-16 w-16 shadow-lg bg-custom-gold hover:bg-custom-gold/90"
               size="icon"
             >
               <Image src="/icons/cart.png" alt="Cart" width={28} height={28} />
