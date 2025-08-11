@@ -64,12 +64,12 @@ export default function Home() {
             <Button
               className={cn(
                 "absolute bottom-8 right-8 shadow-lg bg-custom-gold hover:bg-custom-gold/90 transition-all duration-300 ease-in-out flex items-center justify-center overflow-hidden",
-                isCartButtonExpanded ? 'w-72 h-16 rounded-lg' : 'w-16 h-16 rounded-full'
+                isCartButtonExpanded ? 'w-72 h-16 rounded-full' : 'w-16 h-16 rounded-full'
               )}
               size="icon"
             >
               {isCartButtonExpanded ? (
-                <span className="text-white font-semibold whitespace-nowrap">{cartMessage}</span>
+                <span className="text-custom-purple-dark font-semibold whitespace-nowrap">{cartMessage}</span>
               ) : (
                 <Image src="/icons/cart.png" alt="Cart" width={28} height={28} />
               )}
