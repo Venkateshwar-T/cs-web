@@ -10,11 +10,11 @@ export function ExploreCategories() {
   ];
 
   return (
-    <div className="bg-white/50 h-full rounded-t-3xl p-8 overflow-y-auto no-scrollbar mx-8 md:mx-32 flex-grow">
+    <div className="bg-white/50 h-full rounded-t-3xl p-8 overflow-y-auto overflow-x-auto no-scrollbar mx-8 md:mx-32 flex-grow">
       <SectionTitle>
         Explore Categories
       </SectionTitle>
-      <div className="flex flex-wrap justify-around gap-8">
+      <div className="flex flex-nowrap justify-start gap-8">
         {categories.map((category) => (
           <CategoryCard key={category.id} />
         ))}
