@@ -53,6 +53,7 @@ export function ProductCard() {
               {quantity === 0 ? (
                 <Button
                   size="sm"
+                  variant="outline"
                   onClick={handleAddToCart}
                   className="w-full rounded-full uppercase border-2 border-custom-purple-dark text-custom-purple-dark hover:bg-custom-purple-dark hover:text-white"
                 >
