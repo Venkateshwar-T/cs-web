@@ -23,7 +23,7 @@ export function ProductCard() {
       </div>
       <div className="p-4 flex flex-col flex-grow">
         <div className="flex-grow">
-          <div className="flex justify-between items-start">
+          <div className="flex justify-between items-center">
             <h3 className="font-bold text-base leading-tight">Diwali Collection Box</h3>
             <button onClick={() => setIsLiked(!isLiked)} className="p-1">
               <Heart className={cn("h-6 w-6 stroke-current", isLiked ? 'text-red-500 fill-red-500' : 'text-gray-400')} />
@@ -33,14 +33,14 @@ export function ProductCard() {
         </div>
         <div className="mt-4">
           <p className="text-sm text-gray-500 line-through">₹1000</p>
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-1 mt-1">
             <div className="flex items-center">
-              <p className="font-bold text-base">₹750</p>
+              <p className="font-bold text-base mr-1">₹750</p>
+              <p className="text-custom-gold text-xs font-semibold">25% OFF</p>
             </div>
-            <p className="text-custom-gold text-xs font-semibold">25% OFF</p>
             <Button
               size="sm"
-              className="rounded-full uppercase bg-transparent border border-custom-purple-dark text-custom-purple-dark hover:bg-custom-purple-dark hover:text-white flex-grow ml-2"
+              className="rounded-full uppercase bg-transparent border border-custom-purple-dark text-custom-purple-dark hover:bg-custom-purple-dark hover:text-white flex-grow ml-auto"
             >
               Add
             </Button>
