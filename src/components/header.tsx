@@ -200,7 +200,7 @@ export function Header({ onSearchActiveChange, onSearchSubmit }: HeaderProps) {
             name="search"
             autoComplete="off"
             placeholder={isSearchSubmitted ? 'Search for gifts...' : placeholder}
-            className={`w-full pl-12 pr-4 py-3 rounded-full bg-transparent border-none focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-gray-600 text-lg md:text-xl ${isSearchSubmitted ? 'text-white' : ''}`}
+            className={`w-full pl-12 pr-4 py-4 rounded-full bg-transparent border-none focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-gray-600 text-lg md:text-xl ${isSearchSubmitted ? 'text-white' : ''}`}
           />
         </form>
       </div>
