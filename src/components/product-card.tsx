@@ -7,32 +7,24 @@ import { useState } from 'react';
 import { cn } from '@/lib/utils';
 
 interface ProductCardProps {
+  productName: string;
   onAddToCart: (productName: string, quantity: number) => void;
+  quantity: number;
 }
 
-export function ProductCard({ onAddToCart }: ProductCardProps) {
+export function ProductCard({ productName, onAddToCart, quantity }: ProductCardProps) {
   const [isLiked, setIsLiked] = useState(false);
-  const [quantity, setQuantity] = useState(0);
-  const productName = "Diwali Collection Box";
 
   const handleAddToCartClick = () => {
-    const newQuantity = 1;
-    setQuantity(newQuantity);
-    onAddToCart(productName, newQuantity);
+    onAddToCart(productName, 1);
   };
 
   const handleIncrement = () => {
-    const newQuantity = quantity + 1;
-    setQuantity(newQuantity);
-    onAddToCart(productName, newQuantity);
+    onAddToCart(productName, quantity + 1);
   };
 
   const handleDecrement = () => {
-    const newQuantity = quantity - 1;
-    setQuantity(newQuantity > 0 ? newQuantity : 0);
-    if (newQuantity > 0) {
-      onAddToCart(productName, newQuantity);
-    }
+    onAddToCart(productName, quantity - 1);
   };
 
   return (
@@ -40,7 +32,7 @@ export function ProductCard({ onAddToCart }: ProductCardProps) {
       <div className="relative w-full pt-[100%]">
         <Image
           src="https://placehold.co/600x600.png"
-          alt="Diwali Collection Box"
+          alt={productName}
           layout="fill"
           objectFit="cover"
           className="rounded-t-2xl"
@@ -50,7 +42,7 @@ export function ProductCard({ onAddToCart }: ProductCardProps) {
       <div className="p-4 flex flex-col flex-grow">
         <div className="flex-grow">
           <div className="flex justify-between items-center">
-            <h3 className="font-bold text-base leading-tight">Diwali Collection Box</h3>
+            <h3 className="font-bold text-base leading-tight">{productName}</h3>
             <button onClick={() => setIsLiked(!isLiked)} className="p-1">
               <Heart className={cn("h-6 w-6 stroke-current", isLiked ? 'text-red-500 fill-red-500' : 'text-gray-400')} />
             </button>
