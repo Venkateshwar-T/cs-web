@@ -81,16 +81,16 @@ export function Header({ onSearchActiveChange, onSearchSubmit }: HeaderProps) {
 
   return (
     <header className="fixed top-0 z-50 w-full bg-transparent pt-6">
-      <div className="container flex h-20 max-w-screen-2xl items-center justify-between px-8 md:px-24">
+      <div className="container flex h-20 max-w-screen-2xl items-center justify-between px-4 sm:px-6 md:px-8 lg:px-12 xl:px-24">
         <div className="flex flex-1 justify-start">
-          <div className="flex items-center gap-8">
+          <div className="flex items-center gap-2 md:gap-4 lg:gap-8">
             <Link href="/" className="flex items-center gap-2" onClick={() => setIsSearchSubmitted(false)}>
               <Image 
                 src="/Choco Smiley Logo.png" 
                 alt="Choco Smiley Logo" 
                 width={180} 
                 height={70}
-                className="w-32 md:w-44"
+                className="w-28 sm:w-32 md:w-36 lg:w-44"
               />
             </Link>
             <Image 
@@ -98,12 +98,12 @@ export function Header({ onSearchActiveChange, onSearchSubmit }: HeaderProps) {
               alt="Online Chocolate Store" 
               width={120} 
               height={55}
-              className="hidden sm:block w-24 md:w-32"
+              className="hidden sm:block w-20 md:w-24 lg:w-32"
             />
           </div>
         </div>
         
-        <nav className={`hidden md:flex flex-1 justify-center items-center gap-8 text-lg transition-opacity duration-300 ${isSearchSubmitted ? 'opacity-0' : 'opacity-100'}`}>
+        <nav className={`hidden md:flex flex-1 justify-center items-center gap-4 lg:gap-8 text-base lg:text-lg transition-opacity duration-300 ${isSearchSubmitted ? 'opacity-0' : 'opacity-100'}`}>
           {navLinks.map((link) => (
             <Link
               key={link.href}
@@ -117,19 +117,19 @@ export function Header({ onSearchActiveChange, onSearchSubmit }: HeaderProps) {
         
         <div className="flex flex-1 justify-end">
           <div className="hidden md:flex items-center gap-1">
-            <Button asChild size="sm" className="bg-white text-custom-gold rounded-full font-normal text-base hover:bg-transparent border border-white px-3 py-1">
+            <Button asChild size="sm" className="bg-white text-custom-gold rounded-full font-normal text-sm lg:text-base hover:bg-transparent border border-white px-3 py-1">
               <a href="mailto:contact@bizhome.com">Enquire Now</a>
             </Button>
-            <Separator orientation="vertical" className="h-6 bg-foreground/50 mx-2" />
-            <div className="flex items-center gap-2">
+            <Separator orientation="vertical" className="h-6 bg-foreground/50 mx-1 lg:mx-2" />
+            <div className="flex items-center gap-1 lg:gap-2">
               <Link href="#" aria-label="Instagram">
-                <AiOutlineInstagram className="h-8 w-8 transition-colors hover:text-custom-gold" />
+                <AiOutlineInstagram className="h-7 w-7 lg:h-8 lg:w-8 transition-colors hover:text-custom-gold" />
               </Link>
               <Link href="#" aria-label="Facebook">
-                <IoLogoFacebook className="h-8 w-8 transition-colors hover:text-custom-gold" />
+                <IoLogoFacebook className="h-7 w-7 lg:h-8 lg:w-8 transition-colors hover:text-custom-gold" />
               </Link>
-              <Link href="#" aria-label="Profile" className="ml-2">
-                <CgProfile className="h-9 w-9 transition-colors hover:text-custom-gold" />
+              <Link href="#" aria-label="Profile" className="ml-1 lg:ml-2">
+                <CgProfile className="h-8 w-8 lg:h-9 lg:w-9 transition-colors hover:text-custom-gold" />
               </Link>
             </div>
           </div>
@@ -162,8 +162,8 @@ export function Header({ onSearchActiveChange, onSearchSubmit }: HeaderProps) {
           </div>
         </div>
       </div>
-      <div className={`container max-w-screen-2xl px-8 md:px-12 transition-all duration-500 ease-in-out ${isSearchSubmitted ? '-mt-[3.75rem]' : 'mt-16'}`}>
-        <form onSubmit={handleSearchSubmit} className="relative max-w-sm sm:max-w-sm md:max-w-md lg:max-w-lg mx-auto">
+      <div className={`container max-w-screen-2xl px-8 md:px-12 transition-all duration-500 ease-in-out ${isSearchSubmitted ? '-mt-[3.75rem]' : 'mt-8 sm:mt-12 md:mt-16'}`}>
+        <form onSubmit={handleSearchSubmit} className="relative max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg mx-auto">
           <div className="absolute inset-0 rounded-full bg-gradient-to-br from-white/80 to-white/20 backdrop-blur-sm -z-10"></div>
           <div className="absolute left-4 top-1/2 -translate-y-1/2 z-10">
             <Search className={`h-5 w-5 transition-colors ${isSearchUIActive ? 'text-white' : 'text-white'}`} />
@@ -172,7 +172,7 @@ export function Header({ onSearchActiveChange, onSearchSubmit }: HeaderProps) {
             name="search"
             autoComplete="off"
             placeholder={isSearchUIActive ? 'Search for gifts...' : placeholder}
-            className={`w-full pl-12 pr-4 py-3 rounded-full bg-transparent border-none focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-gray-600 text-xl ${isSearchUIActive ? 'text-white' : ''}`}
+            className={`w-full pl-12 pr-4 py-3 rounded-full bg-transparent border-none focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-gray-600 text-lg md:text-xl ${isSearchUIActive ? 'text-white' : ''}`}
             onFocus={() => setIsSearchFocused(true)}
             onBlur={() => setIsSearchFocused(false)}
           />
