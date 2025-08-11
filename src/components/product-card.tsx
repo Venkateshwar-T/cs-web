@@ -50,7 +50,7 @@ export function ProductCard({ productName, onAddToCart, quantity }: ProductCardP
           <p className="text-xs text-[#9A7DAB] mt-1">250g | Assorted | Hard Box</p>
         </div>
         <div className="mt-4">
-          <p className="text-sm text-gray-500 line-through">₹1000</p>
+          <p className="text-sm text-gray-500 line-through font-bold">₹1000</p>
           <div className="flex items-center">
             <p className="font-bold text-base">₹750</p>
             <p className="text-custom-gold text-xs font-semibold ml-2">25% OFF</p>
@@ -59,7 +59,7 @@ export function ProductCard({ productName, onAddToCart, quantity }: ProductCardP
                 <Button
                   size="sm"
                   onClick={handleAddToCartClick}
-                  className="w-full rounded-full uppercase border-2 bg-transparent border-custom-purple-dark text-custom-purple-dark hover:bg-custom-purple-dark hover:text-white"
+                  className="w-full rounded-full uppercase bg-transparent border-b-4 border-custom-purple-dark text-custom-purple-dark hover:bg-custom-purple-dark hover:text-white"
                 >
                   Add
                 </Button>
