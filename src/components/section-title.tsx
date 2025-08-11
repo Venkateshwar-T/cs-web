@@ -6,7 +6,7 @@ interface SectionTitleProps extends React.HTMLAttributes<HTMLHeadingElement> {
 
 export function SectionTitle({ children, className, ...props }: SectionTitleProps) {
   return (
-    <h2 className={cn("text-2xl font-bold text-white mb-8 pl-4", className)} {...props}>
+    <h2 className={cn("text-2xl font-bold text-white mb-4 pl-4", className)} {...props}>
       {children}
     </h2>
   )
