@@ -55,7 +55,7 @@ export default function Home() {
               className="absolute bottom-8 right-8 rounded-full h-16 w-16 shadow-lg"
               size="icon"
             >
-              <Image src="/icons/cart.png" alt="Cart" width={32} height={32} />
+              <Image src="/icons/cart.png" alt="Cart" width={28} height={28} />
             </Button>
           </>
         )}
