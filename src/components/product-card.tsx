@@ -29,7 +29,7 @@ export function ProductCard({ productName, onAddToCart, quantity }: ProductCardP
 
   return (
     <div className="bg-white text-black rounded-3xl shadow-lg overflow-hidden flex flex-col h-full">
-      <div className="relative w-full pt-[100%]">
+      <div className="relative w-full pt-[85%]">
         <Image
           src="https://placehold.co/600x600.png"
           alt={productName}
@@ -42,9 +42,9 @@ export function ProductCard({ productName, onAddToCart, quantity }: ProductCardP
       <div className="p-4 flex flex-col flex-grow">
         <div className="flex-grow">
           <div className="flex justify-between items-center">
-            <h3 className="font-bold text-base leading-tight">{productName}</h3>
+            <h3 className="font-bold text-lg leading-tight">{productName}</h3>
             <button onClick={() => setIsLiked(!isLiked)} className="p-1">
-              <Heart className={cn("h-6 w-6 stroke-current", isLiked ? 'text-red-500 fill-red-500' : 'text-gray-400')} />
+              <Heart className={cn("h-6 w-6 stroke-current", isLiked ? 'text-red-500 fill-red-500' : 'text-black')} />
             </button>
           </div>
           <p className="text-xs text-gray-500 mt-1">250g | Assorted | Hard Box</p>
