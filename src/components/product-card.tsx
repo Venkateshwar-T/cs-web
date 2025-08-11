@@ -43,7 +43,7 @@ export function ProductCard({ productName, onAddToCart, quantity }: ProductCardP
         <div className="flex-grow pt-2">
           <div className="flex justify-between items-center">
             <h3 className="font-bold text-lg leading-tight">{productName}</h3>
-            <button onClick={() => setIsLiked(!isLiked)} className="p-1">
+            <button onClick={() => setIsLiked(!isLiked)} className="pl-1 py-1">
               <Heart className={cn("h-6 w-6 stroke-current", isLiked ? 'text-red-500 fill-red-500' : 'text-black')} />
             </button>
           </div>
