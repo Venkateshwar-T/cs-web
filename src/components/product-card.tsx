@@ -21,7 +21,7 @@ export function ProductCard() {
           <p className="text-xs text-gray-500 mt-1">250g | Assorted | Hard Box</p>
         </div>
         <div className="flex justify-between items-end mt-4 gap-2">
-            <div className="flex items-end gap-2">
+            <div className="flex items-end gap-1">
               <div>
                 <p className="text-sm text-gray-500 line-through">₹1000</p>
                 <p className="font-bold text-base">₹750</p>
