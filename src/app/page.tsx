@@ -2,6 +2,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { Header } from "@/components/header";
 import { ExploreCategories } from '@/components/explore-categories';
 import { cn } from '@/lib/utils';
@@ -9,7 +10,6 @@ import { Loader } from '@/components/loader';
 import { FilterContainer } from '@/components/filter-container';
 import { SearchResultsDetails } from '@/components/search-results-details';
 import { Button } from '@/components/ui/button';
-import { Plus } from 'lucide-react';
 
 export default function Home() {
   const [isSearchActive, setIsSearchActive] = useState(false);
@@ -55,7 +55,7 @@ export default function Home() {
               className="absolute bottom-8 right-8 rounded-full h-16 w-16 shadow-lg"
               size="icon"
             >
-              <Plus className="h-8 w-8" />
+              <Image src="/icons/cart.png" alt="Cart" width={32} height={32} />
             </Button>
           </>
         )}
