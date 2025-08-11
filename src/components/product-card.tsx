@@ -22,7 +22,7 @@ export function ProductCard() {
         </div>
         <div className="mt-4">
           <p className="text-sm text-gray-500 line-through">₹1000</p>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1">
             <p className="font-bold text-base">₹750</p>
             <Badge variant="outline" className="text-custom-gold border-none text-xs font-semibold">25% OFF</Badge>
             <Button
