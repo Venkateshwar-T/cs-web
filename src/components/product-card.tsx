@@ -2,12 +2,25 @@
 
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
-import { Heart } from 'lucide-react';
+import { Heart, Plus, Minus } from 'lucide-react';
 import { useState } from 'react';
 import { cn } from '@/lib/utils';
 
 export function ProductCard() {
   const [isLiked, setIsLiked] = useState(false);
+  const [quantity, setQuantity] = useState(0);
+
+  const handleAddToCart = () => {
+    setQuantity(1);
+  };
+
+  const handleIncrement = () => {
+    setQuantity(prev => prev + 1);
+  };
+
+  const handleDecrement = () => {
+    setQuantity(prev => (prev > 0 ? prev - 1 : 0));
+  };
 
   return (
     <div className="bg-white text-black rounded-2xl shadow-lg overflow-hidden flex flex-col h-full">
@@ -36,12 +49,37 @@ export function ProductCard() {
           <div className="flex items-center">
             <p className="font-bold text-base">₹750</p>
             <p className="text-custom-gold text-xs font-semibold ml-2">25% OFF</p>
-            <Button
-              size="sm"
-              className="rounded-full uppercase bg-transparent border-2 border-custom-purple-dark text-custom-purple-dark hover:bg-custom-purple-dark hover:text-white flex-grow ml-2"
-            >
-              Add
-            </Button>
+            <div className="flex-grow ml-2">
+              {quantity === 0 ? (
+                <Button
+                  size="sm"
+                  onClick={handleAddToCart}
+                  className="w-full rounded-full uppercase bg-transparent border-2 border-custom-purple-dark text-custom-purple-dark hover:bg-custom-purple-dark hover:text-white"
+                >
+                  Add
+                </Button>
+              ) : (
+                <div className="flex items-center justify-center w-full rounded-full border-2 border-custom-purple-dark h-9">
+                  <Button
+                    size="icon"
+                    variant="ghost"
+                    onClick={handleDecrement}
+                    className="h-full w-10 text-custom-purple-dark rounded-r-none rounded-l-full hover:bg-custom-purple-dark/10 hover:text-custom-purple-dark"
+                  >
+                    <Minus className="h-4 w-4" />
+                  </Button>
+                  <span className="font-bold text-custom-purple-dark px-2">{quantity}</span>
+                  <Button
+                    size="icon"
+                    variant="ghost"
+                    onClick={handleIncrement}
+                    className="h-full w-10 text-custom-purple-dark rounded-l-none rounded-r-full hover:bg-custom-purple-dark/10 hover:text-custom-purple-dark"
+                  >
+                    <Plus className="h-4 w-4" />
+                  </Button>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
