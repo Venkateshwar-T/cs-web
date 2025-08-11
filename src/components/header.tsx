@@ -68,7 +68,9 @@ export function Header({ onSearchActiveChange, onSearchSubmit }: HeaderProps) {
   const handleSearchSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (formRef.current) {
-      setTargetWidth(formRef.current.offsetWidth / 2);
+      const isLargeDesktop = window.innerWidth >= 1280;
+      const reductionFactor = isLargeDesktop ? 0.8 : 0.5; // 20% reduction for large desktop, 50% for others
+      setTargetWidth(formRef.current.offsetWidth * reductionFactor);
     }
     const formData = new FormData(e.currentTarget);
     const searchInput = formData.get('search') as string;
