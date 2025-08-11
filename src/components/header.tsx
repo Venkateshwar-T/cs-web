@@ -170,6 +170,7 @@ export function Header({ onSearchActiveChange, onSearchSubmit }: HeaderProps) {
           </div>
           <Input 
             name="search"
+            autoComplete="off"
             placeholder={isSearchUIActive ? 'Search for gifts...' : placeholder}
             className={`w-full pl-12 pr-4 py-3 rounded-full bg-transparent border-none focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-gray-600 text-xl ${isSearchUIActive ? 'text-white' : ''}`}
             onFocus={() => setIsSearchFocused(true)}
