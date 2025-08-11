@@ -34,10 +34,8 @@ export function ProductCard() {
         <div className="mt-4">
           <p className="text-sm text-gray-500 line-through">₹1000</p>
           <div className="flex items-center mt-1">
-            <div className="flex items-center">
-              <p className="font-bold text-base mr-1">₹750</p>
-              <p className="text-custom-gold text-xs font-semibold">25% OFF</p>
-            </div>
+            <p className="font-bold text-base">₹750</p>
+            <p className="text-custom-gold text-xs font-semibold ml-2">25% OFF</p>
             <Button
               size="sm"
               className="rounded-full uppercase bg-transparent border border-custom-purple-dark text-custom-purple-dark hover:bg-custom-purple-dark hover:text-white flex-grow ml-2"
