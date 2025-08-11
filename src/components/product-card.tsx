@@ -40,7 +40,7 @@ export function ProductCard({ productName, onAddToCart, quantity }: ProductCardP
         />
       </div>
       <div className="px-4 pb-4 flex flex-col flex-grow">
-        <div className="flex-grow">
+        <div className="flex-grow pt-2">
           <div className="flex justify-between items-center">
             <h3 className="font-bold text-lg leading-tight">{productName}</h3>
             <button onClick={() => setIsLiked(!isLiked)} className="p-1">
