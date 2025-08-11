@@ -16,14 +16,14 @@ export function ExploreCategories() {
       </SectionTitle>
       <div className="flex flex-1 justify-around items-center gap-8 pb-8">
         {images.map((image) => (
-          <div key={image.id} className="w-full h-auto max-w-64 aspect-[3/4]">
+          <div key={image.id} className="flex-1 max-w-64 aspect-[3/4]">
             <Image
               src={image.src}
               alt={image.alt}
               width={600}
               height={400}
               data-ai-hint={image.hint}
-              className="w-full h-full object-cover rounded-lg"
+              className="w-full h-full object-cover rounded-3xl"
             />
           </div>
         ))}
