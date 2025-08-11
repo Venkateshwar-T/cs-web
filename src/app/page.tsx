@@ -44,7 +44,7 @@ export default function Home() {
             <ExploreCategories />
           </div>
         )}
-        {isLoading && <Loader className="-mt-24" />}
+        {isLoading && <Loader />}
         {isSearchActive && !isLoading && (
           <>
             <div className="flex w-full h-full">

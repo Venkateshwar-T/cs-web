@@ -19,9 +19,7 @@ interface HeaderProps {
 }
 
 export function Header({ onSearchActiveChange, onSearchSubmit }: HeaderProps) {
-  const [isSearchFocused, setIsSearchFocused] = useState(false);
   const [isSearchSubmitted, setIsSearchSubmitted] = useState(false);
-  const isSearchUIActive = isSearchFocused || isSearchSubmitted;
 
   useEffect(() => {
     onSearchActiveChange(isSearchSubmitted);
@@ -36,7 +34,7 @@ export function Header({ onSearchActiveChange, onSearchSubmit }: HeaderProps) {
   const textsToType = ["Corporate gifts", "Family presents", "Festive gifts", "Birthday surprises", "Anniversary specials"];
 
   useEffect(() => {
-    if (isSearchUIActive) return;
+    if (isSearchSubmitted) return;
     let textIndex = 0;
     let charIndex = 0;
     let isDeleting = false;
@@ -67,7 +65,7 @@ export function Header({ onSearchActiveChange, onSearchSubmit }: HeaderProps) {
     timeoutId = setTimeout(type, 200);
 
     return () => clearTimeout(timeoutId);
-  }, [isSearchUIActive]);
+  }, [isSearchSubmitted]);
   
   const handleSearchSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -183,15 +181,13 @@ export function Header({ onSearchActiveChange, onSearchSubmit }: HeaderProps) {
         <form onSubmit={handleSearchSubmit} className="relative max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl mx-auto">
           <div className="absolute inset-0 rounded-full bg-gradient-to-br from-white/80 to-white/20 backdrop-blur-sm -z-10"></div>
           <div className="absolute left-4 top-1/2 -translate-y-1/2 z-10">
-            <Search className={`h-5 w-5 transition-colors ${isSearchUIActive ? 'text-white' : 'text-white'}`} />
+            <Search className={`h-5 w-5 transition-colors ${isSearchSubmitted ? 'text-white' : 'text-white'}`} />
           </div>
           <Input 
             name="search"
             autoComplete="off"
-            placeholder={isSearchUIActive ? 'Search for gifts...' : placeholder}
-            className={`w-full pl-12 pr-4 py-3 rounded-full bg-transparent border-none focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-gray-600 text-lg md:text-xl ${isSearchUIActive ? 'text-white' : ''}`}
-            onFocus={() => setIsSearchFocused(true)}
-            onBlur={() => setIsSearchFocused(false)}
+            placeholder={isSearchSubmitted ? 'Search for gifts...' : placeholder}
+            className={`w-full pl-12 pr-4 py-3 rounded-full bg-transparent border-none focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-gray-600 text-lg md:text-xl ${isSearchSubmitted ? 'text-white' : ''}`}
           />
         </form>
       </div>
