@@ -47,7 +47,7 @@ export function ProductCard({ productName, onAddToCart, quantity }: ProductCardP
               <Heart className={cn("h-6 w-6 stroke-current", isLiked ? 'text-red-500 fill-red-500' : 'text-black')} />
             </button>
           </div>
-          <p className="text-xs text-gray-500 mt-1">250g | Assorted | Hard Box</p>
+          <p className="text-xs text-[#9A7DAB] mt-1">250g | Assorted | Hard Box</p>
         </div>
         <div className="mt-4">
           <p className="text-sm text-gray-500 line-through">₹1000</p>
