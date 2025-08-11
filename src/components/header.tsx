@@ -103,7 +103,7 @@ export function Header({ onSearchActiveChange, onSearchSubmit }: HeaderProps) {
           </div>
         </div>
         
-        <nav className={`hidden lg:flex flex-1 justify-center items-center gap-4 lg:gap-8 text-base lg:text-lg transition-opacity duration-300 ${isSearchSubmitted ? 'opacity-0' : 'opacity-100'}`}>
+        <nav className={`hidden md:flex flex-1 justify-center items-center gap-4 lg:gap-8 text-base lg:text-lg transition-opacity duration-300 ${isSearchSubmitted ? 'opacity-0' : 'opacity-100'}`}>
           {navLinks.map((link) => (
             <Link
               key={link.href}
@@ -116,7 +116,7 @@ export function Header({ onSearchActiveChange, onSearchSubmit }: HeaderProps) {
         </nav>
         
         <div className="flex flex-1 justify-end">
-          <div className="hidden lg:flex items-center gap-1">
+          <div className="hidden md:flex items-center gap-1">
             <Button asChild size="sm" className="bg-white text-custom-gold rounded-full font-normal text-sm lg:text-base hover:bg-transparent border border-white px-3 py-1">
               <a href="mailto:contact@bizhome.com">Enquire Now</a>
             </Button>
@@ -133,7 +133,7 @@ export function Header({ onSearchActiveChange, onSearchSubmit }: HeaderProps) {
               </Link>
             </div>
           </div>
-          <div className="lg:hidden">
+          <div className="md:hidden">
             <Sheet>
               <SheetTrigger asChild>
                 <Button variant="ghost" size="icon">
