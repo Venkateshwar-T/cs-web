@@ -18,7 +18,7 @@ export function ExploreCategories() {
   ];
 
   return (
-    <div className="bg-white/70 h-full rounded-t-[40px] p-8 overflow-y-auto no-scrollbar mx-8 md:mx-32">
+    <div className="bg-white/20 h-full rounded-t-[40px] p-8 overflow-y-auto no-scrollbar mx-8 md:mx-32">
       <SectionTitle>
         Explore Categories
       </SectionTitle>
