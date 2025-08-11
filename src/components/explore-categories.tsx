@@ -31,7 +31,7 @@ export function ExploreCategories() {
               width={600}
               height={400}
               data-ai-hint={image.hint}
-              className="w-full h-full object-cover rounded-3xl"
+              className="w-full h-full object-cover rounded-[32px]"
             />
           </div>
         ))}
@@ -49,7 +49,7 @@ export function ExploreCategories() {
               width={600}
               height={400}
               data-ai-hint={image.hint}
-              className="w-full h-full object-cover rounded-3xl"
+              className="w-full h-full object-cover rounded-[32px]"
             />
           </div>
         ))}
