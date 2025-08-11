@@ -2,15 +2,7 @@ import { CategoryCard } from "@/components/category-card";
 import { SectionTitle } from "./section-title";
 
 export function ExploreCategories() {
-  const categories = [
-    { id: 1 },
-    { id: 2 },
-    { id: 3 },
-    { id: 4 },
-    { id: 5 },
-    { id: 6 },
-    { id: 7 },
-  ];
+  const categories: { id: number }[] = [];
 
   return (
     <div className="bg-white/50 h-full rounded-t-3xl p-8 overflow-y-auto overflow-x-auto no-scrollbar mx-8 md:mx-32 flex-grow">
