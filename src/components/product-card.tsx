@@ -54,26 +54,26 @@ export function ProductCard() {
                 <Button
                   size="sm"
                   onClick={handleAddToCart}
-                  className="w-full rounded-full uppercase bg-transparent border-2 border-custom-purple-dark text-custom-purple-dark hover:bg-custom-purple-dark hover:text-white"
+                  className="w-full rounded-full uppercase border-2 border-custom-purple-dark text-custom-purple-dark hover:bg-custom-purple-dark hover:text-white"
                 >
                   Add
                 </Button>
               ) : (
-                <div className="flex items-center justify-center w-full rounded-full border-2 border-custom-purple-dark h-9">
+                <div className="flex items-center justify-center w-full rounded-full bg-custom-purple-dark text-white h-9">
                   <Button
                     size="icon"
                     variant="ghost"
                     onClick={handleDecrement}
-                    className="h-full w-10 text-custom-purple-dark rounded-r-none rounded-l-full hover:bg-custom-purple-dark/10 hover:text-custom-purple-dark"
+                    className="h-full w-10 rounded-r-none rounded-l-full hover:bg-white/10 hover:text-white"
                   >
                     <Minus className="h-4 w-4" />
                   </Button>
-                  <span className="font-bold text-custom-purple-dark px-2">{quantity}</span>
+                  <span className="font-bold px-2">{quantity}</span>
                   <Button
                     size="icon"
                     variant="ghost"
                     onClick={handleIncrement}
-                    className="h-full w-10 text-custom-purple-dark rounded-l-none rounded-r-full hover:bg-custom-purple-dark/10 hover:text-custom-purple-dark"
+                    className="h-full w-10 rounded-l-none rounded-r-full hover:bg-white/10 hover:text-white"
                   >
                     <Plus className="h-4 w-4" />
                   </Button>
