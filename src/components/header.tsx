@@ -81,7 +81,7 @@ export function Header({ onSearchActiveChange, onSearchSubmit }: HeaderProps) {
 
   return (
     <header className="fixed top-0 z-50 w-full bg-transparent pt-6">
-      <div className="container flex h-20 max-w-screen-2xl items-center justify-between px-4 sm:px-6 md:px-8 lg:px-12 xl:px-24">
+      <div className="container flex h-20 max-w-screen-2xl items-center justify-between px-4 sm:px-6 lg:px-8 xl:px-24">
         <div className="flex flex-1 justify-start">
           <div className="flex items-center gap-2 md:gap-4 lg:gap-8">
             <Link href="/" className="flex items-center gap-2" onClick={() => setIsSearchSubmitted(false)}>
@@ -90,7 +90,7 @@ export function Header({ onSearchActiveChange, onSearchSubmit }: HeaderProps) {
                 alt="Choco Smiley Logo" 
                 width={180} 
                 height={70}
-                className="w-28 sm:w-32 md:w-36 xl:w-36 2xl:w-44"
+                className="w-28 sm:w-32 md:w-36 lg:w-44"
               />
             </Link>
             <Image 
@@ -98,12 +98,12 @@ export function Header({ onSearchActiveChange, onSearchSubmit }: HeaderProps) {
               alt="Online Chocolate Store" 
               width={120} 
               height={55}
-              className="hidden sm:block w-20 md:w-24 xl:w-24 2xl:w-32"
+              className="hidden sm:block w-20 md:w-24 lg:w-32"
             />
           </div>
         </div>
         
-        <nav className={`hidden md:flex flex-1 justify-center items-center gap-4 lg:gap-8 text-base lg:text-lg transition-opacity duration-300 ${isSearchSubmitted ? 'opacity-0' : 'opacity-100'}`}>
+        <nav className={`hidden lg:flex flex-1 justify-center items-center gap-4 lg:gap-8 text-base lg:text-lg transition-opacity duration-300 ${isSearchSubmitted ? 'opacity-0' : 'opacity-100'}`}>
           {navLinks.map((link) => (
             <Link
               key={link.href}
@@ -116,7 +116,7 @@ export function Header({ onSearchActiveChange, onSearchSubmit }: HeaderProps) {
         </nav>
         
         <div className="flex flex-1 justify-end">
-          <div className="hidden md:flex items-center gap-1">
+          <div className="hidden lg:flex items-center gap-1">
             <Button asChild size="sm" className="bg-white text-custom-gold rounded-full font-normal text-sm lg:text-base hover:bg-transparent border border-white px-3 py-1">
               <a href="mailto:contact@bizhome.com">Enquire Now</a>
             </Button>
@@ -133,7 +133,7 @@ export function Header({ onSearchActiveChange, onSearchSubmit }: HeaderProps) {
               </Link>
             </div>
           </div>
-          <div className="md:hidden">
+          <div className="lg:hidden">
             <Sheet>
               <SheetTrigger asChild>
                 <Button variant="ghost" size="icon">
@@ -157,13 +157,30 @@ export function Header({ onSearchActiveChange, onSearchSubmit }: HeaderProps) {
                     </SheetClose>
                   ))}
                 </nav>
+                <Separator className="my-8" />
+                <div className="flex flex-col gap-4">
+                  <Button asChild size="lg" className="bg-white text-custom-gold rounded-full font-normal text-base hover:bg-transparent border border-white">
+                    <a href="mailto:contact@bizhome.com">Enquire Now</a>
+                  </Button>
+                  <div className="flex items-center justify-center gap-4 mt-4">
+                    <Link href="#" aria-label="Instagram">
+                      <AiOutlineInstagram className="h-8 w-8 transition-colors hover:text-custom-gold" />
+                    </Link>
+                    <Link href="#" aria-label="Facebook">
+                      <IoLogoFacebook className="h-8 w-8 transition-colors hover:text-custom-gold" />
+                    </Link>
+                    <Link href="#" aria-label="Profile">
+                      <CgProfile className="h-9 w-9 transition-colors hover:text-custom-gold" />
+                    </Link>
+                  </div>
+                </div>
               </SheetContent>
             </Sheet>
           </div>
         </div>
       </div>
       <div className={`container max-w-screen-2xl px-8 md:px-12 transition-all duration-500 ease-in-out ${isSearchSubmitted ? '-mt-[3.75rem]' : 'mt-8 sm:mt-12 md:mt-16'}`}>
-        <form onSubmit={handleSearchSubmit} className="relative max-w-xs sm:max-w-sm md:max-w-xs lg:max-w-lg xl:max-w-lg mx-auto">
+        <form onSubmit={handleSearchSubmit} className="relative max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl mx-auto">
           <div className="absolute inset-0 rounded-full bg-gradient-to-br from-white/80 to-white/20 backdrop-blur-sm -z-10"></div>
           <div className="absolute left-4 top-1/2 -translate-y-1/2 z-10">
             <Search className={`h-5 w-5 transition-colors ${isSearchUIActive ? 'text-white' : 'text-white'}`} />
