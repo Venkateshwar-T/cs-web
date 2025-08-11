@@ -29,7 +29,7 @@ export function ProductCard({ productName, onAddToCart, quantity }: ProductCardP
 
   return (
     <div className="bg-white text-black rounded-3xl shadow-lg overflow-hidden flex flex-col h-full">
-      <div className="relative w-full pt-[85%]">
+      <div className="relative w-full pt-[80%]">
         <Image
           src="https://placehold.co/600x600.png"
           alt={productName}
@@ -39,8 +39,8 @@ export function ProductCard({ productName, onAddToCart, quantity }: ProductCardP
           data-ai-hint="gift box"
         />
       </div>
-      <div className="p-4 flex flex-col flex-grow">
-        <div className="flex-grow">
+      <div className="px-4 pb-4 flex flex-col flex-grow">
+        <div className="flex-grow pt-4">
           <div className="flex justify-between items-center">
             <h3 className="font-bold text-lg leading-tight">{productName}</h3>
             <button onClick={() => setIsLiked(!isLiked)} className="p-1">
