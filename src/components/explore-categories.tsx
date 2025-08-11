@@ -14,7 +14,7 @@ export function ExploreCategories() {
       <SectionTitle>
         Explore Categories
       </SectionTitle>
-      <div className="flex flex-1 justify-around items-center gap-8 py-4">
+      <div className="flex flex-1 justify-around items-center gap-8 pb-8">
         {images.map((image) => (
           <div key={image.id} className="w-full h-auto max-w-64 aspect-[3/4]">
             <Image
