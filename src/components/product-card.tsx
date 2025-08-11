@@ -39,8 +39,8 @@ export function ProductCard({ productName, onAddToCart, quantity }: ProductCardP
           data-ai-hint="gift box"
         />
       </div>
-      <div className="px-3 pb-3 flex flex-col flex-grow">
-        <div className="flex-grow pt-3">
+      <div className="p-3 flex flex-col flex-grow">
+        <div className="flex-grow">
           <div className="flex justify-between items-center">
             <h3 className="font-bold text-lg leading-tight">{productName}</h3>
             <button onClick={() => setIsLiked(!isLiked)} className="pl-1 py-1">
