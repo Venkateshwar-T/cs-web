@@ -20,8 +20,7 @@ export function ProductCard() {
           <h3 className="font-bold text-base leading-tight">Diwali Collection Box</h3>
           <p className="text-xs text-gray-500 mt-1">250g | Assorted | Hard Box</p>
         </div>
-        <div className="flex justify-between items-end mt-4">
-          <div>
+        <div className="flex justify-between items-end mt-4 gap-2">
             <div className="flex items-end gap-2">
               <div>
                 <p className="text-sm text-gray-500 line-through">₹1000</p>
@@ -29,12 +28,9 @@ export function ProductCard() {
               </div>
               <Badge variant="outline" className="text-xs mb-0.5 border-none text-custom-gold bg-transparent">25% OFF</Badge>
             </div>
-          </div>
-        </div>
-        <div className="mt-2">
             <Button
                 size="sm"
-                className="w-full rounded-full uppercase bg-transparent border border-custom-purple-dark text-custom-purple-dark hover:bg-custom-purple-dark hover:text-white"
+                className="rounded-full uppercase bg-transparent border border-custom-purple-dark text-custom-purple-dark hover:bg-custom-purple-dark hover:text-white flex-grow"
             >
                 Add
             </Button>
