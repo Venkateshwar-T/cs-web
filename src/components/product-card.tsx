@@ -39,7 +39,7 @@ export function ProductCard({ productName, onAddToCart, quantity }: ProductCardP
           data-ai-hint="gift box"
         />
       </div>
-      <div className="px-4 pb-4 flex flex-col flex-grow">
+      <div className="px-3 pb-4 flex flex-col flex-grow">
         <div className="flex-grow pt-2">
           <div className="flex justify-between items-center">
             <h3 className="font-bold text-lg leading-tight">{productName}</h3>
