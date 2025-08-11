@@ -31,12 +31,11 @@ export function ProductCard({ productName, onAddToCart, quantity }: ProductCardP
     <div className="bg-white text-black rounded-3xl shadow-lg overflow-hidden flex flex-col h-full">
       <div className="relative w-full pt-[80%]">
         <Image
-          src="https://placehold.co/600x600.png"
+          src="/choco img.png"
           alt={productName}
           layout="fill"
           objectFit="cover"
           className="rounded-t-3xl"
-          data-ai-hint="gift box"
         />
       </div>
       <div className="p-3 flex flex-col flex-grow">
