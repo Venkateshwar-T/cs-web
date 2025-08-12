@@ -10,7 +10,7 @@ export default {
   theme: {
     extend: {
       boxShadow: {
-        'custom-dark': '8px 8px 5px hsla(278, 47%, 22%, 0.8)',
+        'custom-dark': '5px 5px 3px rgba(0, 0, 0, 0.8)',
       },
       spacing: {
         '1.5': '0.375rem',
