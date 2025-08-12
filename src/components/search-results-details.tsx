@@ -13,8 +13,8 @@ export function SearchResultsDetails({ query, onAddToCart, cart }: SearchResults
   }));
 
   return (
-    <div className="bg-white/20 h-full flex-grow rounded-t-[40px] p-8 ml-12 mr-8">
-      <div className="h-full overflow-y-auto custom-scrollbar">
+    <div className="bg-white/20 h-full flex-grow rounded-t-[40px] pt-8 pb-8 pl-8 ml-12 mr-8">
+      <div className="h-full overflow-y-auto custom-scrollbar pr-8">
         <h2 className="text-xl text-white mb-6">
           Showing results for <span className="italic text-custom-gold">{query}</span>
         </h2>
