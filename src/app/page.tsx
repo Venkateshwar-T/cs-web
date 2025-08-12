@@ -17,6 +17,7 @@ export default function Home() {
   const [cart, setCart] = useState<Record<string, number>>({});
   const [cartMessage, setCartMessage] = useState('');
   const [isCartButtonExpanded, setIsCartButtonExpanded] = useState(false);
+  const [selectedProductId, setSelectedProductId] = useState<number | null>(null);
 
   const handleSearchSubmit = (query: string) => {
     setSearchQuery(query);
@@ -71,7 +72,13 @@ export default function Home() {
           <>
             <div className="flex w-full h-full">
               <FilterContainer />
-              <SearchResultsDetails query={searchQuery} onAddToCart={handleAddToCart} cart={cart} />
+              <SearchResultsDetails 
+                query={searchQuery} 
+                onAddToCart={handleAddToCart} 
+                cart={cart}
+                onProductClick={setSelectedProductId}
+                selectedProductId={selectedProductId}
+              />
             </div>
             <Button
               className={cn(

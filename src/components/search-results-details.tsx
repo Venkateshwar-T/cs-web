@@ -8,9 +8,11 @@ interface SearchResultsDetailsProps {
   query: string;
   onAddToCart: (productName: string, quantity: number) => void;
   cart: Record<string, number>;
+  onProductClick: (productId: number) => void;
+  selectedProductId: number | null;
 }
 
-export function SearchResultsDetails({ query, onAddToCart, cart }: SearchResultsDetailsProps) {
+export function SearchResultsDetails({ query, onAddToCart, cart, onProductClick, selectedProductId }: SearchResultsDetailsProps) {
   const products = Array.from({ length: 8 }).map((_, i) => ({
     id: i,
     name: `Diwali Collection Box ${i + 1}`,
@@ -48,7 +50,15 @@ export function SearchResultsDetails({ query, onAddToCart, cart }: SearchResults
   }, []);
 
   return (
-    <div className="bg-white/20 h-full flex-grow rounded-t-[40px] pt-8 pb-8 pl-8 ml-12 mr-8">
+    <div className="bg-white/20 h-full flex-grow rounded-t-[40px] pt-8 pl-8 ml-12 mr-8 relative">
+       {selectedProductId !== null && (
+        <div 
+          className="absolute inset-0 bg-white/20 rounded-t-[40px] z-10 flex items-center justify-center"
+          onClick={() => onProductClick(null as any)}
+        >
+          <p className="text-white text-4xl font-bold">You clicked</p>
+        </div>
+      )}
       <div 
         ref={scrollContainerRef}
         className={cn(
@@ -63,8 +73,10 @@ export function SearchResultsDetails({ query, onAddToCart, cart }: SearchResults
           {products.map((product) => (
             <ProductCard
               key={product.id}
+              productId={product.id}
               productName={product.name}
               onAddToCart={onAddToCart}
+              onProductClick={onProductClick}
               quantity={cart[product.name] || 0}
             />
           ))}

@@ -5,27 +5,24 @@ import { Button } from '@/components/ui/button';
 import { Heart, Plus, Minus } from 'lucide-react';
 import { useState } from 'react';
 import { cn } from '@/lib/utils';
-import { useToast } from '@/hooks/use-toast';
 
 interface ProductCardProps {
+  productId: number;
   productName: string;
   onAddToCart: (productName: string, quantity: number) => void;
+  onProductClick: (productId: number) => void;
   quantity: number;
 }
 
-export function ProductCard({ productName, onAddToCart, quantity }: ProductCardProps) {
+export function ProductCard({ productId, productName, onAddToCart, onProductClick, quantity }: ProductCardProps) {
   const [isLiked, setIsLiked] = useState(false);
-  const { toast } = useToast();
 
   const handleCardClick = (e: React.MouseEvent<HTMLDivElement>) => {
     // Stop propagation if the click is on a button to avoid double events
     if ((e.target as HTMLElement).closest('button')) {
       return;
     }
-    toast({
-      title: "You clicked",
-      description: `You clicked on ${productName}`,
-    });
+    onProductClick(productId);
   };
 
   const handleAddToCartClick = () => {
