@@ -108,15 +108,15 @@
     transition: background-color 0.3s ease-in-out;
   }
   
-  .custom-scrollbar:hover::-webkit-scrollbar-track {
+  .custom-scrollbar.is-scrolling::-webkit-scrollbar-track {
     background: #E5E7EB; /* A light grey from Tailwind's palette */
   }
 
-  .custom-scrollbar:hover::-webkit-scrollbar-thumb {
+  .custom-scrollbar.is-scrolling::-webkit-scrollbar-thumb {
     background: #FFD139;
   }
 
-  .custom-scrollbar:hover::-webkit-scrollbar-thumb:hover {
+  .custom-scrollbar.is-scrolling::-webkit-scrollbar-thumb:hover {
     background: #e6b834;
   }
 }

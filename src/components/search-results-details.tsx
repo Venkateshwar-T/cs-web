@@ -1,4 +1,8 @@
+'use client';
+
 import { ProductCard } from "./product-card";
+import { useState, useEffect, useRef } from "react";
+import { cn } from "@/lib/utils";
 
 interface SearchResultsDetailsProps {
   query: string;
@@ -12,9 +16,46 @@ export function SearchResultsDetails({ query, onAddToCart, cart }: SearchResults
     name: `Diwali Collection Box ${i + 1}`,
   }));
 
+  const [isScrolling, setIsScrolling] = useState(false);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  useEffect(() => {
+    const scrollContainer = scrollContainerRef.current;
+
+    const handleScroll = () => {
+      setIsScrolling(true);
+      if (scrollTimeoutRef.current) {
+        clearTimeout(scrollTimeoutRef.current);
+      }
+      scrollTimeoutRef.current = setTimeout(() => {
+        setIsScrolling(false);
+      }, 1500);
+    };
+
+    if (scrollContainer) {
+      scrollContainer.addEventListener('scroll', handleScroll);
+    }
+
+    return () => {
+      if (scrollContainer) {
+        scrollContainer.removeEventListener('scroll', handleScroll);
+      }
+      if (scrollTimeoutRef.current) {
+        clearTimeout(scrollTimeoutRef.current);
+      }
+    };
+  }, []);
+
   return (
     <div className="bg-white/20 h-full flex-grow rounded-t-[40px] pt-8 pb-8 pl-8 ml-12 mr-8">
-      <div className="h-full overflow-y-auto custom-scrollbar pr-8">
+      <div 
+        ref={scrollContainerRef}
+        className={cn(
+          "h-full overflow-y-auto custom-scrollbar pr-8",
+          isScrolling && "is-scrolling"
+        )}
+      >
         <h2 className="text-xl text-white mb-6">
           Showing results for <span className="italic text-custom-gold">{query}</span>
         </h2>
