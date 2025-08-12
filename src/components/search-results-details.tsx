@@ -3,12 +3,14 @@
 import { ProductCard } from "./product-card";
 import { useState, useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { ArrowLeft } from "lucide-react";
 
 interface SearchResultsDetailsProps {
   query: string;
   onAddToCart: (productName: string, quantity: number) => void;
   cart: Record<string, number>;
-  onProductClick: (productId: number) => void;
+  onProductClick: (productId: number | null) => void;
   selectedProductId: number | null;
 }
 
@@ -53,9 +55,17 @@ export function SearchResultsDetails({ query, onAddToCart, cart, onProductClick,
     <div className="bg-white/20 h-full flex-grow rounded-t-[40px] pt-8 pl-8 ml-12 mr-8 relative">
        {selectedProductId !== null && (
         <div 
-          className="absolute inset-0 bg-white/20 rounded-t-[40px] z-10 flex items-center justify-center"
-          onClick={() => onProductClick(null as any)}
+          className="absolute inset-0 bg-background rounded-t-[40px] z-10 flex items-center justify-center p-4"
         >
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            className="absolute top-6 left-6 text-white hover:bg-white/10 hover:text-white"
+            onClick={() => onProductClick(null)}
+          >
+            <ArrowLeft className="h-6 w-6" />
+            <span className="sr-only">Back</span>
+          </Button>
           <p className="text-white text-4xl font-bold">You clicked</p>
         </div>
       )}
