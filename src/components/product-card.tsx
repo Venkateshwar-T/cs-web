@@ -28,7 +28,7 @@ export function ProductCard({ productName, onAddToCart, quantity }: ProductCardP
   };
 
   return (
-    <div className="bg-white text-black rounded-3xl shadow-lg overflow-hidden flex flex-col h-full">
+    <div className="bg-white text-black rounded-3xl shadow-lg shadow-custom-purple-dark/50 overflow-hidden flex flex-col h-full">
       <div className="relative w-full pt-[80%]">
         <Image
           src="/choco img.png"
