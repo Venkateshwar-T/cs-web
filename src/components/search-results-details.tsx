@@ -52,7 +52,7 @@ export function SearchResultsDetails({ query, onAddToCart, cart }: SearchResults
       <div 
         ref={scrollContainerRef}
         className={cn(
-          "h-full overflow-y-auto custom-scrollbar pr-8",
+          "h-full overflow-y-auto custom-scrollbar pr-8 pb-8",
           isScrolling && "is-scrolling"
         )}
       >
