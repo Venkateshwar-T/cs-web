@@ -99,14 +99,24 @@
     width: 12px;
   }
   .custom-scrollbar::-webkit-scrollbar-track {
-    background: #E5E7EB; /* A light grey from Tailwind's palette */
+    background: transparent;
     border-radius: 10px;
   }
   .custom-scrollbar::-webkit-scrollbar-thumb {
-    background: #FFD139;
+    background: transparent;
     border-radius: 10px;
+    transition: background-color 0.3s ease-in-out;
   }
-  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  
+  .custom-scrollbar:hover::-webkit-scrollbar-track {
+    background: #E5E7EB; /* A light grey from Tailwind's palette */
+  }
+
+  .custom-scrollbar:hover::-webkit-scrollbar-thumb {
+    background: #FFD139;
+  }
+
+  .custom-scrollbar:hover::-webkit-scrollbar-thumb:hover {
     background: #e6b834;
   }
 }
