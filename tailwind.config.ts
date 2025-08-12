@@ -9,6 +9,9 @@ export default {
   ],
   theme: {
     extend: {
+      boxShadow: {
+        'custom-dark': '8px 8px 5px rgba(0, 0, 0, 0.8)',
+      },
       spacing: {
         '1.5': '0.375rem',
       },
