@@ -55,7 +55,7 @@ export function SearchResultsDetails({ query, onAddToCart, cart, onProductClick,
     <div className="bg-white/20 h-full flex-grow rounded-t-[40px] pt-8 pl-8 ml-12 mr-8 relative">
        {selectedProductId !== null && (
         <div 
-          className="absolute inset-0 bg-background rounded-t-[40px] z-10 flex items-center justify-center p-4"
+          className="absolute inset-0 bg-[#9A7DAB] rounded-t-[40px] z-10 flex items-center justify-center p-4"
         >
           <Button 
             variant="ghost" 
