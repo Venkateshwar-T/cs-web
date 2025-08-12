@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Heart, Plus, Minus } from 'lucide-react';
 import { useState } from 'react';
 import { cn } from '@/lib/utils';
+import { useToast } from '@/hooks/use-toast';
 
 interface ProductCardProps {
   productName: string;
@@ -14,6 +15,18 @@ interface ProductCardProps {
 
 export function ProductCard({ productName, onAddToCart, quantity }: ProductCardProps) {
   const [isLiked, setIsLiked] = useState(false);
+  const { toast } = useToast();
+
+  const handleCardClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    // Stop propagation if the click is on a button to avoid double events
+    if ((e.target as HTMLElement).closest('button')) {
+      return;
+    }
+    toast({
+      title: "You clicked",
+      description: `You clicked on ${productName}`,
+    });
+  };
 
   const handleAddToCartClick = () => {
     onAddToCart(productName, 1);
@@ -28,7 +41,10 @@ export function ProductCard({ productName, onAddToCart, quantity }: ProductCardP
   };
 
   return (
-    <div className="bg-white text-black rounded-3xl overflow-hidden flex flex-col h-full shadow-custom-dark">
+    <div
+      onClick={handleCardClick}
+      className="bg-white text-black rounded-3xl overflow-hidden flex flex-col h-full shadow-custom-dark cursor-pointer transition-transform duration-200 hover:-translate-y-1"
+    >
       <div className="relative w-full pt-[80%]">
         <Image
           src="/choco img.png"
