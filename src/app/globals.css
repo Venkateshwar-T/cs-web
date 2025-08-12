@@ -99,13 +99,13 @@
     width: 12px;
   }
   .custom-scrollbar::-webkit-scrollbar-track {
-    background: hsl(var(--muted));
+    background: #E5E7EB; /* A light grey from Tailwind's palette */
     border-radius: 10px;
   }
   .custom-scrollbar::-webkit-scrollbar-thumb {
     background: #FFD139;
     border-radius: 10px;
-    border: 3px solid hsl(var(--muted));
+    border: 3px solid #E5E7EB; /* A light grey from Tailwind's palette */
   }
   .custom-scrollbar::-webkit-scrollbar-thumb:hover {
     background: #e6b834;
