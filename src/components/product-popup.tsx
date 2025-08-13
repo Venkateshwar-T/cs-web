@@ -74,7 +74,7 @@ export function ProductPopup({ product, onClose, onAddToCart, cart }: ProductPop
       </button>
       
       <div className="flex flex-col lg:flex-row h-full w-full gap-8">
-        <div className="w-full lg:w-2/5 flex flex-col justify-center">
+        <div className="w-full lg:w-1/3 flex flex-col justify-center">
             <div className="flex flex-col gap-4">
                 <div className="relative w-full aspect-square">
                     <Image
@@ -124,7 +124,7 @@ export function ProductPopup({ product, onClose, onAddToCart, cart }: ProductPop
 
         <div className="hidden lg:block w-px bg-white/30 self-stretch"></div>
 
-        <div className="w-full lg:w-3/5 flex flex-col">
+        <div className="w-full lg:w-2/3 flex flex-col">
           <h2 className="text-3xl font-bold">{product.name}</h2>
           <div className="flex items-center gap-2 mt-2">
             <div className="w-5 h-5 border border-green-400 flex items-center justify-center p-0.5">
