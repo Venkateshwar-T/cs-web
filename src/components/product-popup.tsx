@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 import type { Product } from '@/app/page';
 import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
 
 interface ProductPopupProps {
   product: Product;
@@ -106,8 +107,24 @@ export function ProductPopup({ product, onClose }: ProductPopupProps) {
             </div>
             <p className="text-sm text-white/80">250g | Assorted | Hard Box</p>
           </div>
-          <div className="mt-auto bg-custom-purple-dark h-24 rounded-t-2xl -mx-8 -mb-8">
-            {/* Content for the purple box can go here */}
+          <div className="mt-auto bg-custom-purple-dark rounded-t-2xl -mx-8 -mb-8 px-6 py-4">
+             <div className="flex items-center justify-between gap-4">
+                <div className="flex items-center gap-4">
+                    <div>
+                        <p className="text-sm text-gray-400 line-through">₹1000</p>
+                        <p className="text-xs font-semibold text-custom-gold">25% OFF</p>
+                    </div>
+                    <p className="text-3xl font-bold">₹750</p>
+                </div>
+                <div className="flex items-center gap-2">
+                    <Button size="lg" className="rounded-full font-semibold text-base bg-custom-gold text-custom-purple-dark hover:bg-custom-gold/90 border-2 border-custom-gold">
+                        Add to cart
+                    </Button>
+                    <Button size="lg" className="rounded-full font-semibold text-base bg-white text-custom-purple-dark hover:bg-gray-200 border-2 border-white">
+                        Buy Now
+                    </Button>
+                </div>
+             </div>
           </div>
         </div>
       </div>
