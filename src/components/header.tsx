@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from "next/link";
@@ -11,7 +12,7 @@ import { CgProfile } from "react-icons/cg";
 import { Input } from "@/components/ui/input";
 import { useState, useEffect, useRef } from "react";
 import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetHeader } from "@/components/ui/sheet";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 
 interface HeaderProps {
   onSearchActiveChange: (isActive: boolean) => void;
@@ -125,15 +126,14 @@ export function Header({ onSearchActiveChange, onSearchSubmit }: HeaderProps) {
         
         <div className="flex flex-1 justify-end">
           <div className="hidden md:flex items-center gap-1">
-            <Popover>
-              <PopoverTrigger asChild>
+            <Dialog>
+              <DialogTrigger asChild>
                 <Button size="sm" className="bg-custom-gold text-white rounded-full font-normal text-sm lg:text-base hover:bg-white hover:text-custom-gold border border-custom-gold px-3 py-1">
                   Enquire Now
                 </Button>
-              </PopoverTrigger>
-              <PopoverContent
-                align="end"
-                className="w-auto max-w-[280px] bg-white/80 backdrop-blur-md border-white/30 text-black p-4 rounded-3xl flex flex-col items-start text-left gap-1"
+              </DialogTrigger>
+              <DialogContent
+                className="w-auto max-w-[280px] bg-white/80 backdrop-blur-md border-white/30 text-black p-4 rounded-3xl"
               >
                 <div className="flex flex-col items-start text-left gap-1 w-full">
                   <h3 className="text-xl font-bold text-custom-purple-dark font-plex-sans">Looking for a Perfect Gift?</h3>
@@ -151,8 +151,8 @@ export function Header({ onSearchActiveChange, onSearchSubmit }: HeaderProps) {
                     </a>
                   </Button>
                 </div>
-              </PopoverContent>
-            </Popover>
+              </DialogContent>
+            </Dialog>
             <Separator orientation="vertical" className="h-6 bg-foreground/50 mx-1 lg:mx-2" />
             <div className="flex items-center gap-1 lg:gap-2">
               <Link href="#" aria-label="Instagram">
