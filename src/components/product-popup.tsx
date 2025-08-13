@@ -1,9 +1,8 @@
-
 'use client';
 
 import { useState } from 'react';
 import Image from 'next/image';
-import { X, ChevronLeft, ChevronRight } from 'lucide-react';
+import { X, ChevronLeft, ChevronRight, Plus, Minus } from 'lucide-react';
 import type { Product } from '@/app/page';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -11,17 +10,20 @@ import { Button } from '@/components/ui/button';
 interface ProductPopupProps {
   product: Product;
   onClose: () => void;
+  onAddToCart: (productName: string, quantity: number) => void;
+  cart: Record<string, number>;
 }
 
 const images = [
-  { id: 1, src: '/choco img.png', alt: 'Chocolate Box 1' },
-  { id: 2, src: 'https://placehold.co/600x600.png', alt: 'Chocolate Box 2', hint: 'chocolate box' },
-  { id: 3, src: 'https://placehold.co/600x600.png', alt: 'Chocolate Box 3', hint: 'assorted chocolate' },
-  { id: 4, src: 'https://placehold.co/600x600.png', alt: 'Chocolate Box 4', hint: 'gift box' },
+  { id: 1, src: '/categories/choco1.png', alt: 'Chocolate Box 1' },
+  { id: 2, src: '/categories/choco2.png', alt: 'Chocolate Box 2', hint: 'chocolate box' },
+  { id: 3, src: '/categories/choco3.png', alt: 'Chocolate Box 3', hint: 'assorted chocolate' },
+  { id: 4, src: '/categories/choco4.png', alt: 'Chocolate Box 4', hint: 'gift box' },
 ];
 
-export function ProductPopup({ product, onClose }: ProductPopupProps) {
+export function ProductPopup({ product, onClose, onAddToCart, cart }: ProductPopupProps) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const quantity = cart[product.name] || 0;
 
   const handlePrevImage = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -35,6 +37,21 @@ export function ProductPopup({ product, onClose }: ProductPopupProps) {
   
   const handleThumbnailClick = (index: number) => {
     setCurrentImageIndex(index);
+  };
+  
+  const handleAddToCartClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    onAddToCart(product.name, 1);
+  };
+
+  const handleIncrement = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    onAddToCart(product.name, quantity + 1);
+  };
+
+  const handleDecrement = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    onAddToCart(product.name, quantity - 1);
   };
 
   return (
@@ -119,9 +136,35 @@ export function ProductPopup({ product, onClose }: ProductPopupProps) {
                     <p className="text-3xl font-bold">₹750</p>
                 </div>
                 <div className="flex items-center gap-2">
-                    <Button size="lg" className="rounded-full font-semibold text-base bg-custom-gold text-custom-purple-dark hover:bg-custom-gold/90">
-                        Add to cart
-                    </Button>
+                    {quantity === 0 ? (
+                      <Button 
+                        size="lg"
+                        onClick={handleAddToCartClick}
+                        className="rounded-full font-semibold text-base bg-custom-gold text-custom-purple-dark hover:bg-custom-gold/90"
+                      >
+                          Add to cart
+                      </Button>
+                    ) : (
+                      <div className="flex items-center justify-center rounded-full bg-custom-gold text-custom-purple-dark h-11 px-1">
+                        <Button
+                          size="icon"
+                          variant="ghost"
+                          onClick={handleDecrement}
+                          className="h-full w-10 rounded-r-none rounded-l-full hover:bg-black/10 text-custom-purple-dark hover:text-custom-purple-dark"
+                        >
+                          <Minus className="h-4 w-4" />
+                        </Button>
+                        <span className="font-bold px-2 text-base">{quantity}</span>
+                        <Button
+                          size="icon"
+                          variant="ghost"
+                          onClick={handleIncrement}
+                          className="h-full w-10 rounded-l-none rounded-r-full hover:bg-black/10 text-custom-purple-dark hover:text-custom-purple-dark"
+                        >
+                          <Plus className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    )}
                     <Button size="lg" className="rounded-full font-semibold text-base bg-white text-custom-purple-dark hover:bg-gray-200">
                         Buy Now
                     </Button>

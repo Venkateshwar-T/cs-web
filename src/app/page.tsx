@@ -42,7 +42,7 @@ export default function Home() {
   
   const handleAddToCart = (productName: string, quantity: number) => {
     const newCart = { ...cart, [productName]: quantity };
-    if (quantity === 0) {
+    if (quantity <= 0) {
       delete newCart[productName];
     }
     setCart(newCart);
@@ -128,7 +128,12 @@ export default function Home() {
           <div className="fixed inset-0 z-40 bg-black/50" />
           <div className="fixed inset-0 z-50 flex items-start justify-center pt-36">
               <div className="h-full flex-grow ml-[calc(18%+3rem)] mr-8 relative w-[calc(82%-4rem)]">
-                  <ProductPopup product={selectedProduct} onClose={handleClosePopup} />
+                  <ProductPopup 
+                    product={selectedProduct} 
+                    onClose={handleClosePopup}
+                    onAddToCart={handleAddToCart}
+                    cart={cart}
+                  />
               </div>
           </div>
         </>
