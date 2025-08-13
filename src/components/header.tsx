@@ -132,18 +132,18 @@ export function Header({ onSearchActiveChange, onSearchSubmit }: HeaderProps) {
                   Enquire Now
                 </Button>
               </PopoverTrigger>
-              <PopoverContent align="end" className="w-72 bg-white/80 backdrop-blur-md border-white/30 text-black p-6 rounded-2xl">
-                <div className="flex flex-col items-center text-center gap-4">
-                  <h3 className="text-xl font-bold text-custom-purple-dark">Looking for a Perfect Gift?</h3>
-                  <p className="text-sm">Get personalized advice on flavours, packaging, and more.</p>
-                  <Separator className="my-2 bg-custom-purple-dark/50" />
-                  <Button asChild className="w-full bg-custom-purple-dark hover:bg-custom-purple-dark/90 text-white rounded-full">
+              <PopoverContent align="end" className="w-80 bg-white/80 backdrop-blur-md border-white/30 text-black p-4 rounded-2xl">
+                <div className="flex flex-col items-center text-center gap-3">
+                  <h3 className="text-lg font-bold text-custom-purple-dark">Looking for a Perfect Gift?</h3>
+                  <p className="text-xs">Get personalized advice on flavours, packaging, and more.</p>
+                  <Separator className="my-1 bg-custom-purple-dark/50" />
+                  <Button asChild className="w-full bg-custom-purple-dark hover:bg-custom-purple-dark/90 text-white rounded-full text-sm h-9">
                     <a href="tel:+1234567890">
                       <Phone className="mr-2 h-4 w-4" /> Call Us
                     </a>
                   </Button>
-                  <p className="text-sm font-medium">-OR-</p>
-                  <Button asChild className="w-full bg-custom-purple-dark hover:bg-custom-purple-dark/90 text-white rounded-full">
+                  <p className="text-xs font-medium">-OR-</p>
+                  <Button asChild className="w-full bg-custom-purple-dark hover:bg-custom-purple-dark/90 text-white rounded-full text-sm h-9">
                     <a href="https://wa.me/1234567890" target="_blank" rel="noopener noreferrer">
                       <AiOutlineWhatsApp className="mr-2 h-5 w-5" /> Whatsapp Us
                     </a>
