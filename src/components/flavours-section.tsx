@@ -21,8 +21,10 @@ const flavours: Flavour[] = [
 
 export function FlavoursSection({ onAddToCart, cart }: FlavoursSectionProps) {
   return (
-    <div className="bg-white/20 rounded-[40px] p-4">
-      <SectionTitle className="pl-0 mb-2">Flavours & Fillings</SectionTitle>
+    // MODIFIED: Reduced padding from p-4 to p-3 for a tighter container
+    <div className="bg-white/20 rounded-[40px] p-3">
+      {/* MODIFIED: Reduced the bottom margin from mb-2 to mb-1 */}
+      <SectionTitle className="pl-0 mb-1">Flavours & Fillings</SectionTitle>
       <div className="flex overflow-x-auto no-scrollbar gap-3">
         {flavours.map((flavour) => (
           <FlavourCard

@@ -2,9 +2,8 @@
 
 import { X } from 'lucide-react';
 import type { Product } from '@/app/page';
-import { ImageGallery } from './image-gallery';
-import { FlavoursSection } from './flavours-section';
 
+// The Flavour type is no longer needed as FlavoursSection is removed.
 export type Flavour = {
   id: number;
   name: string;
@@ -20,12 +19,8 @@ interface ProductPopupProps {
 }
 
 export function ProductPopup({ product, onClose, onAddToCart, cart }: ProductPopupProps) {
-
-  const handleFlavourAddToCart = (flavourId: number, quantity: number) => {
-    // This can be expanded later to handle flavour-specific cart logic
-    console.log(`Added flavour ${flavourId}, quantity ${quantity}`);
-  };
-
+  // All internal components and logic have been removed as requested.
+  // The popup now provides a clean container.
   return (
     <div className="bg-[#9A7DAB] rounded-t-[40px] p-8 text-white h-full overflow-hidden relative flex">
       <button 
@@ -35,20 +30,8 @@ export function ProductPopup({ product, onClose, onAddToCart, cart }: ProductPop
         <X size={24} />
       </button>
       
-      {/* Main container for image gallery and product details */}
-      <div className="w-full flex items-start gap-8">
-
-        {/* Left column for image gallery and flavours */}
-        <div className="w-1/2 flex flex-col gap-4">
-            <ImageGallery product={product} />
-            <FlavoursSection onAddToCart={handleFlavourAddToCart} cart={{}} />
-        </div>
-        
-        {/* Right Side for future content */}
-        <div className="w-1/2 h-full">
-          {/* Content will go here */}
-        </div>
-      </div>
+      {/* The content area of the popup is now empty. */}
+      
     </div>
   );
 }
