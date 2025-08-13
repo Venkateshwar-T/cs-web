@@ -30,22 +30,40 @@ export function ProductPopup({ product, onClose, onAddToCart, cart }: ProductPop
       </button>
       
       <div className="w-full flex items-start gap-8">
-        {/* Left side with the small, square image */}
-        <div className="w-1/5">
-          <div className="relative w-full aspect-square">
-              <Image
-                  src="https://placehold.co/600x600.png"
-                  alt={product.name}
-                  layout="fill"
-                  objectFit="cover"
-                  className="rounded-3xl"
-                  data-ai-hint="chocolate box"
-              />
-          </div>
+        <div className="flex w-2/5 gap-2">
+            {/* Left side with the small, square image */}
+            <div className="w-4/5">
+              <div className="relative w-full aspect-square">
+                  <Image
+                      src="https://placehold.co/600x600.png"
+                      alt={product.name}
+                      layout="fill"
+                      objectFit="cover"
+                      className="rounded-3xl"
+                      data-ai-hint="chocolate box"
+                  />
+              </div>
+            </div>
+
+            {/* Right side with 4 smaller images */}
+            <div className="w-1/5 flex flex-col justify-between">
+                {Array.from({ length: 4 }).map((_, index) => (
+                    <div key={index} className="relative w-full aspect-square">
+                        <Image
+                            src="https://placehold.co/200x200.png"
+                            alt={`Thumbnail ${index + 1}`}
+                            layout="fill"
+                            objectFit="cover"
+                            className="rounded-lg"
+                            data-ai-hint="chocolate"
+                        />
+                    </div>
+                ))}
+            </div>
         </div>
         
-        {/* Right side will be empty for now */}
-        <div className="w-4/5 h-full">
+        {/* Right side content */}
+        <div className="w-3/5 h-full">
           {/* Content for the right side will go here later */}
         </div>
       </div>
