@@ -31,7 +31,7 @@ export function ProductPopup({ product, onClose, onAddToCart, cart }: ProductPop
       
       <div className="w-full flex items-start gap-8">
         {/* Left side with the small, square image */}
-        <div className="w-1/3">
+        <div className="w-1/4">
           <div className="relative w-full aspect-square">
               <Image
                   src="https://placehold.co/600x600.png"
@@ -45,7 +45,7 @@ export function ProductPopup({ product, onClose, onAddToCart, cart }: ProductPop
         </div>
         
         {/* Right side will be empty for now */}
-        <div className="w-2/3 h-full">
+        <div className="w-3/4 h-full">
           {/* Content for the right side will go here later */}
         </div>
       </div>
