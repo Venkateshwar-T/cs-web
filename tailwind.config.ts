@@ -18,6 +18,8 @@ export default {
       fontFamily: {
         body: ['Inter', 'sans-serif'],
         code: ['monospace'],
+        'plex-sans': ['"IBM Plex Sans"', 'sans-serif'],
+        'plex-sans-condensed': ['"IBM Plex Sans Condensed"', 'sans-serif'],
       },
       colors: {
         'custom-gold': '#FFD139',

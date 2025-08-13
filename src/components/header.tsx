@@ -133,17 +133,17 @@ export function Header({ onSearchActiveChange, onSearchSubmit }: HeaderProps) {
                 </Button>
               </PopoverTrigger>
               <PopoverContent align="end" className="w-auto max-w-xs bg-white/80 backdrop-blur-md border-white/30 text-black p-4 rounded-3xl flex items-center justify-center">
-                <div className="flex flex-col items-center text-center gap-2">
-                  <h3 className="text-xl font-bold text-custom-purple-dark">Looking for a Perfect Gift?</h3>
-                  <p className="text-base">Get personalized advice on flavours, packaging, and more.</p>
+                <div className="flex flex-col items-center text-center gap-1">
+                  <h3 className="text-xl font-bold text-custom-purple-dark font-plex-sans">Looking for a Perfect Gift?</h3>
+                  <p className="text-base text-center font-plex-sans-condensed">Get personalized advice on flavours, packaging, and more.</p>
                   <Separator className="my-1 bg-custom-purple-dark/50" />
-                  <Button asChild className="w-full h-auto py-2 bg-custom-purple-dark hover:bg-custom-purple-dark/90 text-white rounded-full text-lg">
+                  <Button asChild className="w-full h-auto py-2 bg-custom-purple-dark hover:bg-custom-purple-dark/90 text-white rounded-full text-lg font-plex-sans">
                     <a href="tel:+1234567890">
                       <Phone className="mr-2 h-4 w-4" /> Call Us
                     </a>
                   </Button>
                   <p className="text-xs font-medium my-1">-OR-</p>
-                  <Button asChild className="w-full h-auto py-2 bg-custom-purple-dark hover:bg-custom-purple-dark/90 text-white rounded-full text-lg">
+                  <Button asChild className="w-full h-auto py-2 bg-custom-purple-dark hover:bg-custom-purple-dark/90 text-white rounded-full text-lg font-plex-sans">
                     <a href="https://wa.me/1234567890" target="_blank" rel="noopener noreferrer">
                       <AiOutlineWhatsApp className="mr-2 h-5 w-5" /> Whatsapp Us
                     </a>
