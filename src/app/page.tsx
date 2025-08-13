@@ -97,7 +97,7 @@ export default function Home() {
         </main>
       </div>
 
-       <div className={cn("fixed bottom-8 right-8 z-50 transition-all duration-300", selectedProduct && 'opacity-50 pointer-events-none')}>
+       <div className={cn("fixed bottom-8 right-8 z-50 transition-all duration-300")}>
           {isSearchActive && (
             <Button
               className={cn(
