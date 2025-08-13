@@ -5,13 +5,14 @@ import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { Search, Menu } from "lucide-react";
-import { AiOutlineInstagram } from "react-icons/ai";
+import { Search, Menu, Phone } from "lucide-react";
+import { AiOutlineInstagram, AiOutlineWhatsapp } from "react-icons/ai";
 import { IoLogoFacebook } from "react-icons/io5";
 import { CgProfile } from "react-icons/cg";
 import { Input } from "@/components/ui/input";
 import { useState, useEffect, useRef } from "react";
 import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetHeader } from "@/components/ui/sheet";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
 interface HeaderProps {
   onSearchActiveChange: (isActive: boolean) => void;
@@ -125,9 +126,31 @@ export function Header({ onSearchActiveChange, onSearchSubmit }: HeaderProps) {
         
         <div className="flex flex-1 justify-end">
           <div className="hidden md:flex items-center gap-1">
-            <Button asChild size="sm" className="bg-custom-gold text-white rounded-full font-normal text-sm lg:text-base hover:bg-white hover:text-custom-gold border border-custom-gold px-3 py-1">
-              <a href="mailto:contact@bizhome.com">Enquire Now</a>
-            </Button>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button size="sm" className="bg-custom-gold text-white rounded-full font-normal text-sm lg:text-base hover:bg-white hover:text-custom-gold border border-custom-gold px-3 py-1">
+                  Enquire Now
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent align="end" className="w-80 bg-white/80 backdrop-blur-md border-white/30 text-black p-6">
+                <div className="flex flex-col items-center text-center gap-4">
+                  <h3 className="text-xl font-bold text-custom-purple-dark">Looking for a Perfect Gift?</h3>
+                  <p className="text-sm">Get personalized advice on flavours, packaging, and more.</p>
+                  <Separator className="my-2 bg-custom-purple-dark/50" />
+                  <Button asChild className="w-full bg-custom-purple-dark hover:bg-custom-purple-dark/90 text-white rounded-full">
+                    <a href="tel:+1234567890">
+                      <Phone className="mr-2 h-4 w-4" /> Call Us
+                    </a>
+                  </Button>
+                  <p className="text-sm font-medium">-OR-</p>
+                  <Button asChild className="w-full bg-custom-purple-dark hover:bg-custom-purple-dark/90 text-white rounded-full">
+                    <a href="https://wa.me/1234567890" target="_blank" rel="noopener noreferrer">
+                      <AiOutlineWhatsapp className="mr-2 h-5 w-5" /> Whatsapp Us
+                    </a>
+                  </Button>
+                </div>
+              </PopoverContent>
+            </Popover>
             <Separator orientation="vertical" className="h-6 bg-foreground/50 mx-1 lg:mx-2" />
             <div className="flex items-center gap-1 lg:gap-2">
               <Link href="#" aria-label="Instagram">
