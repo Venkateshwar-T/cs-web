@@ -58,9 +58,6 @@ export default function Home() {
 
   return (
     <>
-      {selectedProduct && (
-        <div className="fixed inset-0 z-40 bg-black/50" />
-      )}
       <div className={cn("flex flex-col h-screen", selectedProduct ? 'opacity-50' : '')}>
         <Header onSearchSubmit={handleSearchSubmit} onSearchActiveChange={setIsSearchActive} />
         <main className={cn(
@@ -73,48 +70,53 @@ export default function Home() {
             </div>
           )}
           {isSearchActive && (
-            <>
-              <div className="flex w-full h-full">
-                <FilterContainer />
-                <div className="h-full flex-grow ml-12 mr-8 relative">
-                    <SearchResultsDetails 
-                      query={searchQuery} 
-                      onAddToCart={handleAddToCart} 
-                      cart={cart}
-                      onProductClick={handleProductClick}
-                    />
-                </div>
+            <div className="flex w-full h-full">
+              <FilterContainer />
+              <div className="h-full flex-grow ml-12 mr-8 relative">
+                  <SearchResultsDetails 
+                    query={searchQuery} 
+                    onAddToCart={handleAddToCart} 
+                    cart={cart}
+                    onProductClick={handleProductClick}
+                  />
               </div>
-              <Button
-                className={cn(
-                  "absolute bottom-8 right-8 shadow-lg bg-custom-gold hover:bg-custom-gold/90 transition-all duration-100 ease-in-out flex items-center justify-center overflow-visible",
-                  isCartButtonExpanded ? 'w-72 h-16 rounded-full' : 'w-16 h-16 rounded-full'
-                )}
-                size="icon"
-              >
-                {isCartButtonExpanded ? (
-                  <span className="text-custom-purple-dark font-semibold whitespace-nowrap">{cartMessage}</span>
-                ) : (
-                  <>
-                    <Image src="/icons/cart.png" alt="Cart" width={28} height={28} />
-                    {totalQuantity > 0 && (
-                      <div className="absolute -top-1 -right-1 bg-custom-purple-dark text-white text-xs font-bold rounded-full h-6 w-6 flex items-center justify-center">
-                        {totalQuantity}
-                      </div>
-                    )}
-                  </>
-                )}
-              </Button>
-            </>
+            </div>
           )}
         </main>
       </div>
+
+      {isSearchActive && (
+        <Button
+          className={cn(
+            "absolute bottom-8 right-8 shadow-lg bg-custom-gold hover:bg-custom-gold/90 transition-all duration-100 ease-in-out flex items-center justify-center overflow-visible z-50",
+            isCartButtonExpanded ? 'w-72 h-16 rounded-full' : 'w-16 h-16 rounded-full'
+          )}
+          size="icon"
+        >
+          {isCartButtonExpanded ? (
+            <span className="text-custom-purple-dark font-semibold whitespace-nowrap">{cartMessage}</span>
+          ) : (
+            <>
+              <Image src="/icons/cart.png" alt="Cart" width={28} height={28} />
+              {totalQuantity > 0 && (
+                <div className="absolute -top-1 -right-1 bg-custom-purple-dark text-white text-xs font-bold rounded-full h-6 w-6 flex items-center justify-center">
+                  {totalQuantity}
+                </div>
+              )}
+            </>
+          )}
+        </Button>
+      )}
+
       {selectedProduct && (
-        <div className="fixed inset-0 z-50 flex items-start justify-center pt-36">
-            <div className="h-full flex-grow ml-[calc(18%+3rem)] mr-8 relative w-[calc(82%-4rem)]">
-                <ProductPopup product={selectedProduct} onClose={handleClosePopup} />
-            </div>
-        </div>
+        <>
+          <div className="fixed inset-0 z-40 bg-black/50" />
+          <div className="fixed inset-0 z-40 flex items-start justify-center pt-36">
+              <div className="h-full flex-grow ml-[calc(18%+3rem)] mr-8 relative w-[calc(82%-4rem)]">
+                  <ProductPopup product={selectedProduct} onClose={handleClosePopup} />
+              </div>
+          </div>
+        </>
       )}
     </>
   );
