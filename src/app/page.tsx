@@ -57,11 +57,15 @@ export default function Home() {
 
   return (
     <>
+    {selectedProduct && (
+      <div className="fixed inset-0 z-40 bg-black/50" />
+    )}
     <div className="flex flex-col h-screen">
       <Header onSearchSubmit={handleSearchSubmit} onSearchActiveChange={setIsSearchActive} />
       <main className={cn(
         "flex-grow overflow-hidden flex transition-all duration-500 relative items-start",
-        isSearchActive ? 'pt-36' : 'pt-72'
+        isSearchActive ? 'pt-36' : 'pt-72',
+        selectedProduct ? 'opacity-50' : ''
       )}>
         {!isSearchActive && (
           <div className={cn("transition-opacity duration-500 w-full", isSearchActive ? 'opacity-0' : 'opacity-100 h-full')}>
