@@ -131,8 +131,11 @@ export function Header({ onSearchActiveChange, onSearchSubmit }: HeaderProps) {
                   Enquire Now
                 </Button>
               </PopoverTrigger>
-              <PopoverContent align="end" className="w-auto max-w-[300px] bg-white/80 backdrop-blur-md border-white/30 text-black p-4 rounded-3xl flex flex-col items-start text-left gap-1">
-                <div className="flex flex-col items-start text-left gap-2 w-full">
+              <PopoverContent
+                align="end"
+                className="w-auto max-w-[280px] bg-white/80 backdrop-blur-md border-white/30 text-black p-4 rounded-3xl flex flex-col items-start text-left gap-1"
+              >
+                <div className="flex flex-col items-start text-left gap-1 w-full">
                   <h3 className="text-xl font-bold text-custom-purple-dark font-plex-sans">Looking for a Perfect Gift?</h3>
                   <p className="text-base text-left font-plex-sans-condensed">Get personalized advice on flavours, packaging, and more.</p>
                   <Separator className="my-1 bg-custom-purple-dark h-[2px] w-1/2" />
