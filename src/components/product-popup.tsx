@@ -39,13 +39,13 @@ export function ProductPopup({ product, onClose, onAddToCart, cart }: ProductPop
       <div className="w-full flex items-start gap-8">
 
         {/* Left column for image gallery and flavours */}
-        <div className="w-2/5 grid gap-4">
+        <div className="w-1/2 grid gap-4">
             <ImageGallery product={product} />
             <FlavoursSection onAddToCart={handleFlavourAddToCart} cart={{}} />
         </div>
         
         {/* Right Side for future content */}
-        <div className="w-3/5 h-full">
+        <div className="w-1/2 h-full">
           {/* Content will go here */}
         </div>
       </div>
