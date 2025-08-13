@@ -33,9 +33,9 @@ export function ProductPopup({ product, onClose, onAddToCart, cart }: ProductPop
       <div className="w-full flex items-start gap-8">
 
         {/* Image Gallery Section */}
-        <div className="w-1/3 grid grid-cols-5 gap-2">
+        <div className="w-1/3 grid grid-cols-6 gap-2">
           {/* Main Image */}
-          <div className="col-span-4">
+          <div className="col-span-5">
             <div className="relative w-full aspect-square">
               <Image
                 src="https://placehold.co/600x600.png"
@@ -49,19 +49,21 @@ export function ProductPopup({ product, onClose, onAddToCart, cart }: ProductPop
           </div>
 
           {/* Thumbnails */}
-          <div className="col-span-1 flex flex-col gap-2">
-            {Array.from({ length: 4 }).map((_, index) => (
-              <div key={index} className="relative w-full aspect-square">
-                <Image
-                  src="https://placehold.co/200x200.png"
-                  alt={`Thumbnail ${index + 1}`}
-                  layout="fill"
-                  objectFit="cover"
-                  className="rounded-md"
-                  data-ai-hint="chocolate"
-                />
-              </div>
-            ))}
+          <div className="col-span-1 flex flex-col justify-center">
+            <div className="flex flex-col gap-2">
+              {Array.from({ length: 4 }).map((_, index) => (
+                <div key={index} className="relative w-full aspect-square">
+                  <Image
+                    src="https://placehold.co/200x200.png"
+                    alt={`Thumbnail ${index + 1}`}
+                    layout="fill"
+                    objectFit="cover"
+                    className="rounded-md"
+                    data-ai-hint="chocolate"
+                  />
+                </div>
+              ))}
+            </div>
           </div>
         </div>
         
