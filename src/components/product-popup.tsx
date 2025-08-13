@@ -31,8 +31,9 @@ export function ProductPopup({ product, onClose, onAddToCart, cart }: ProductPop
       
       <div className="w-full flex items-start gap-8">
         {/* Image Gallery Section */}
-        <div className="w-2/5 flex gap-2">
-          <div className="w-2/3">
+        <div className="w-1/3 flex gap-2">
+          {/* Main Image */}
+          <div className="w-3/4">
             <div className="relative w-full aspect-square">
               <Image
                 src="https://placehold.co/600x600.png"
@@ -45,6 +46,7 @@ export function ProductPopup({ product, onClose, onAddToCart, cart }: ProductPop
             </div>
           </div>
 
+          {/* Thumbnails */}
           <div className="w-1/4 flex flex-col gap-2">
             {Array.from({ length: 4 }).map((_, index) => (
               <div key={index} className="relative w-full aspect-square">
@@ -62,7 +64,7 @@ export function ProductPopup({ product, onClose, onAddToCart, cart }: ProductPop
         </div>
         
         {/* Right Side for future content */}
-        <div className="w-3/5 h-full">
+        <div className="w-2/3 h-full">
         </div>
       </div>
     </div>
