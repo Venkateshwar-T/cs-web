@@ -46,8 +46,8 @@ export function ProductPopup({ product, onClose }: ProductPopupProps) {
         <X size={24} />
       </button>
       
-      <div className="flex flex-col lg:flex-row h-full w-full gap-8">
-        <div className="w-full lg:w-1/3 flex flex-col gap-4">
+      <div className="flex flex-col lg:flex-row h-full w-full gap-8 lg:items-center">
+        <div className="w-full lg:w-1/3 flex flex-col">
           <div className="relative w-full aspect-square">
             <Image
               key={images[currentImageIndex].id}
@@ -71,7 +71,7 @@ export function ProductPopup({ product, onClose }: ProductPopupProps) {
               <ChevronRight size={24} />
             </button>
           </div>
-          <div className="grid grid-cols-4 gap-2">
+          <div className="grid grid-cols-4 gap-2 mt-4">
             {images.map((image, index) => (
               <div 
                 key={image.id} 
@@ -93,7 +93,7 @@ export function ProductPopup({ product, onClose }: ProductPopupProps) {
           </div>
         </div>
 
-        <div className="hidden lg:block w-px bg-white/30 h-full"></div>
+        <div className="hidden lg:block w-px bg-white/30 h-full self-stretch"></div>
 
         <div className="w-full lg:w-2/3 flex flex-col">
           <h2 className="text-3xl font-bold">{product.name}</h2>
