@@ -12,7 +12,8 @@ import { CgProfile } from "react-icons/cg";
 import { Input } from "@/components/ui/input";
 import { useState, useEffect, useRef } from "react";
 import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetHeader } from "@/components/ui/sheet";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { Popover, PopoverContent, PopoverTrigger, PopoverPortal, PopoverOverlay } from "@/components/ui/popover";
+
 
 interface HeaderProps {
   onSearchActiveChange: (isActive: boolean) => void;
@@ -126,33 +127,37 @@ export function Header({ onSearchActiveChange, onSearchSubmit }: HeaderProps) {
         
         <div className="flex flex-1 justify-end">
           <div className="hidden md:flex items-center gap-1">
-            <Dialog>
-              <DialogTrigger asChild>
+            <Popover>
+              <PopoverTrigger asChild>
                 <Button size="sm" className="bg-custom-gold text-white rounded-full font-normal text-sm lg:text-base hover:bg-white hover:text-custom-gold border border-custom-gold px-3 py-1">
                   Enquire Now
                 </Button>
-              </DialogTrigger>
-              <DialogContent
-                className="w-auto max-w-[280px] bg-white/80 backdrop-blur-md border-white/30 text-black p-4 rounded-3xl"
-              >
-                <div className="flex flex-col items-start text-left gap-1 w-full">
-                  <h3 className="text-xl font-bold text-custom-purple-dark font-plex-sans">Looking for a Perfect Gift?</h3>
-                  <p className="text-base text-center font-plex-sans-condensed font-semibold">Get personalized advice on flavours, packaging, and more.</p>
-                  <Separator className="my-2 bg-custom-purple-dark h-[1px] w-3/4 self-center" />
-                  <Button asChild className="w-full h-auto py-2 bg-custom-purple-dark hover:bg-custom-purple-dark/90 text-white rounded-full text-lg font-plex-sans">
-                    <a href="tel:+1234567890">
-                      <Phone className="mr-2 h-4 w-4" /> Call Us
-                    </a>
-                  </Button>
-                  <p className="text-xs font-medium self-center">-OR-</p>
-                  <Button asChild className="w-full h-auto py-2 bg-custom-purple-dark hover:bg-custom-purple-dark/90 text-white rounded-full text-lg font-plex-sans">
-                    <a href="https://wa.me/1234567890" target="_blank" rel="noopener noreferrer">
-                      <AiOutlineWhatsApp className="mr-2 h-5 w-5" /> Whatsapp Us
-                    </a>
-                  </Button>
-                </div>
-              </DialogContent>
-            </Dialog>
+              </PopoverTrigger>
+              <PopoverPortal>
+                <PopoverOverlay />
+                <PopoverContent
+                  sideOffset={8}
+                  className="z-50 w-auto max-w-[280px] bg-white/80 backdrop-blur-md border-white/30 text-black p-4 rounded-3xl"
+                >
+                  <div className="flex flex-col items-start text-left gap-1 w-full">
+                    <h3 className="text-xl font-bold text-custom-purple-dark font-plex-sans">Looking for a Perfect Gift?</h3>
+                    <p className="text-base text-center font-plex-sans-condensed font-semibold">Get personalized advice on flavours, packaging, and more.</p>
+                    <Separator className="my-2 bg-custom-purple-dark h-[1px] w-3/4 self-center" />
+                    <Button asChild className="w-full h-auto py-2 bg-custom-purple-dark hover:bg-custom-purple-dark/90 text-white rounded-full text-lg font-plex-sans">
+                      <a href="tel:+1234567890">
+                        <Phone className="mr-2 h-4 w-4" /> Call Us
+                      </a>
+                    </Button>
+                    <p className="text-xs font-medium self-center">-OR-</p>
+                    <Button asChild className="w-full h-auto py-2 bg-custom-purple-dark hover:bg-custom-purple-dark/90 text-white rounded-full text-lg font-plex-sans">
+                      <a href="https://wa.me/1234567890" target="_blank" rel="noopener noreferrer">
+                        <AiOutlineWhatsApp className="mr-2 h-5 w-5" /> Whatsapp Us
+                      </a>
+                    </Button>
+                  </div>
+                </PopoverContent>
+              </PopoverPortal>
+            </Popover>
             <Separator orientation="vertical" className="h-6 bg-foreground/50 mx-1 lg:mx-2" />
             <div className="flex items-center gap-1 lg:gap-2">
               <Link href="#" aria-label="Instagram">
