@@ -29,25 +29,27 @@ export function ProductPopup({ product, onClose, onAddToCart, cart }: ProductPop
         <X size={24} />
       </button>
       
+      {/* Main container for image gallery and product details */}
       <div className="w-full flex items-start gap-8">
+
         {/* Image Gallery Section */}
-        <div className="w-1/3 flex gap-2">
+        <div className="w-1/3 grid grid-cols-5 gap-2">
           {/* Main Image */}
-          <div className="w-3/4">
+          <div className="col-span-4">
             <div className="relative w-full aspect-square">
               <Image
                 src="https://placehold.co/600x600.png"
                 alt={product.name}
                 layout="fill"
                 objectFit="cover"
-                className="rounded-3xl"
+                className="rounded-xl"
                 data-ai-hint="chocolate box"
               />
             </div>
           </div>
 
           {/* Thumbnails */}
-          <div className="w-1/4 flex flex-col gap-2">
+          <div className="col-span-1 flex flex-col gap-2">
             {Array.from({ length: 4 }).map((_, index) => (
               <div key={index} className="relative w-full aspect-square">
                 <Image
@@ -55,7 +57,7 @@ export function ProductPopup({ product, onClose, onAddToCart, cart }: ProductPop
                   alt={`Thumbnail ${index + 1}`}
                   layout="fill"
                   objectFit="cover"
-                  className="rounded-lg"
+                  className="rounded-md"
                   data-ai-hint="chocolate"
                 />
               </div>
@@ -65,6 +67,7 @@ export function ProductPopup({ product, onClose, onAddToCart, cart }: ProductPop
         
         {/* Right Side for future content */}
         <div className="w-2/3 h-full">
+          {/* Content will go here */}
         </div>
       </div>
     </div>
