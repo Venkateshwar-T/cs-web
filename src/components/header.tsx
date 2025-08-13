@@ -6,7 +6,7 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Search, Menu, Phone } from "lucide-react";
-import { AiOutlineInstagram, AiOutlineWhatsapp } from "react-icons/ai";
+import { AiOutlineInstagram, AiOutlineWhatsApp } from "react-icons/ai";
 import { IoLogoFacebook } from "react-icons/io5";
 import { CgProfile } from "react-icons/cg";
 import { Input } from "@/components/ui/input";
@@ -145,7 +145,7 @@ export function Header({ onSearchActiveChange, onSearchSubmit }: HeaderProps) {
                   <p className="text-sm font-medium">-OR-</p>
                   <Button asChild className="w-full bg-custom-purple-dark hover:bg-custom-purple-dark/90 text-white rounded-full">
                     <a href="https://wa.me/1234567890" target="_blank" rel="noopener noreferrer">
-                      <AiOutlineWhatsapp className="mr-2 h-5 w-5" /> Whatsapp Us
+                      <AiOutlineWhatsApp className="mr-2 h-5 w-5" /> Whatsapp Us
                     </a>
                   </Button>
                 </div>
