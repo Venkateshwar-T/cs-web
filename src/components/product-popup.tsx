@@ -1,8 +1,8 @@
 'use client';
 
-import Image from 'next/image';
 import { X } from 'lucide-react';
 import type { Product } from '@/app/page';
+import { ImageGallery } from './image-gallery';
 
 export type Flavour = {
   id: number;
@@ -33,38 +33,8 @@ export function ProductPopup({ product, onClose, onAddToCart, cart }: ProductPop
       <div className="w-full flex items-start gap-8">
 
         {/* Image Gallery Section */}
-        <div className="w-1/3 grid grid-cols-6 gap-4">
-          {/* Main Image */}
-          <div className="col-span-5">
-            <div className="relative w-full aspect-square">
-              <Image
-                src="https://placehold.co/600x600.png"
-                alt={product.name}
-                layout="fill"
-                objectFit="cover"
-                className="rounded-xl"
-                data-ai-hint="chocolate box"
-              />
-            </div>
-          </div>
-
-          {/* Thumbnails */}
-          <div className="col-span-1 flex flex-col justify-center">
-            <div className="flex flex-col gap-2">
-              {Array.from({ length: 4 }).map((_, index) => (
-                <div key={index} className="relative w-full aspect-square">
-                  <Image
-                    src="https://placehold.co/200x200.png"
-                    alt={`Thumbnail ${index + 1}`}
-                    layout="fill"
-                    objectFit="cover"
-                    className="rounded-md"
-                    data-ai-hint="chocolate"
-                  />
-                </div>
-              ))}
-            </div>
-          </div>
+        <div className="w-1/3">
+          <ImageGallery product={product} />
         </div>
         
         {/* Right Side for future content */}
