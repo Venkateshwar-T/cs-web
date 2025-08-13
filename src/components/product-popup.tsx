@@ -109,7 +109,7 @@ export function ProductPopup({ product, onClose }: ProductPopupProps) {
             </div>
             <p className="text-sm text-white/80">250g | Assorted | Hard Box</p>
           </div>
-          <div className="mt-auto -mb-8 self-end max-w-max">
+          <div className="mt-auto self-center max-w-max -mb-8">
              <div className="bg-custom-purple-dark rounded-t-2xl px-6 py-4 flex items-center justify-between gap-4">
                 <div className="flex items-center gap-4">
                     <div>
@@ -119,10 +119,10 @@ export function ProductPopup({ product, onClose }: ProductPopupProps) {
                     <p className="text-3xl font-bold">₹750</p>
                 </div>
                 <div className="flex items-center gap-2">
-                    <Button size="lg" className="rounded-full font-semibold text-base bg-custom-gold text-custom-purple-dark hover:bg-custom-gold/90 border-2 border-custom-gold">
+                    <Button size="lg" className="rounded-full font-semibold text-base bg-custom-gold text-custom-purple-dark hover:bg-custom-gold/90">
                         Add to cart
                     </Button>
-                    <Button size="lg" className="rounded-full font-semibold text-base bg-white text-custom-purple-dark hover:bg-gray-200 border-2 border-white">
+                    <Button size="lg" className="rounded-full font-semibold text-base bg-white text-custom-purple-dark hover:bg-gray-200">
                         Buy Now
                     </Button>
                 </div>
