@@ -94,9 +94,6 @@ export function ProductPopup({ product, onClose }: ProductPopupProps) {
               ))}
             </div>
           </div>
-          <div className="mt-auto bg-custom-purple-dark h-24 rounded-t-2xl -mx-8 -mb-8">
-            {/* Content for the purple box can go here */}
-          </div>
         </div>
 
         <div className="hidden lg:block w-px bg-white/30 self-stretch"></div>
@@ -108,6 +105,9 @@ export function ProductPopup({ product, onClose }: ProductPopupProps) {
                 <div className="w-3 h-3 bg-green-400 rounded-full"></div>
             </div>
             <p className="text-sm text-white/80">250g | Assorted | Hard Box</p>
+          </div>
+          <div className="mt-auto bg-custom-purple-dark h-24 rounded-t-2xl -mx-8 -mb-8">
+            {/* Content for the purple box can go here */}
           </div>
         </div>
       </div>
