@@ -76,12 +76,19 @@ export default function Home() {
             <>
               <div className="flex w-full h-full">
                 <FilterContainer />
-                <SearchResultsDetails 
-                  query={searchQuery} 
-                  onAddToCart={handleAddToCart} 
-                  cart={cart}
-                  onProductClick={handleProductClick}
-                />
+                <div className="h-full flex-grow ml-12 mr-8 relative">
+                    <SearchResultsDetails 
+                      query={searchQuery} 
+                      onAddToCart={handleAddToCart} 
+                      cart={cart}
+                      onProductClick={handleProductClick}
+                    />
+                    {selectedProduct && (
+                        <div className="absolute inset-0 z-50">
+                            <ProductPopup product={selectedProduct} onClose={handleClosePopup} />
+                        </div>
+                    )}
+                </div>
               </div>
               <Button
                 className={cn(
@@ -107,13 +114,6 @@ export default function Home() {
           )}
         </main>
       </div>
-      {selectedProduct && (
-        <div className="fixed inset-0 flex items-center justify-center z-50">
-            <div className="w-full h-full max-w-4xl max-h-[80vh] relative">
-                 <ProductPopup product={selectedProduct} onClose={handleClosePopup} />
-            </div>
-        </div>
-      )}
     </>
   );
 }
