@@ -21,22 +21,6 @@ interface ProductPopupProps {
 }
 
 export function ProductPopup({ product, onClose, onAddToCart, cart }: ProductPopupProps) {
-  const [addedFlavours, setAddedFlavours] = useState<Record<number, number>>({});
-
-  const flavours: Flavour[] = Array.from({ length: 6 }).map((_, i) => ({
-    id: i,
-    name: `Flavour ${i + 1}`,
-    src: "https://placehold.co/200x200.png",
-    hint: "chocolate flavour",
-  }));
-
-  const handleAddFlavour = (flavourId: number, quantity: number) => {
-    const newFlavours = { ...addedFlavours, [flavourId]: quantity };
-    if (quantity <= 0) {
-      delete newFlavours[flavourId];
-    }
-    setAddedFlavours(newFlavours);
-  };
 
   return (
     <div className="bg-[#9A7DAB] rounded-t-[40px] p-8 text-white h-full overflow-hidden relative flex">
@@ -50,21 +34,19 @@ export function ProductPopup({ product, onClose, onAddToCart, cart }: ProductPop
       <div className="w-full flex items-start gap-8">
         <div className="w-1/2 flex flex-col">
             <div className="flex w-full gap-2">
-                {/* Left side with the main, square image */}
                 <div className="w-2/3">
-                <div className="relative w-full aspect-square">
-                    <Image
-                        src="https://placehold.co/600x600.png"
-                        alt={product.name}
-                        layout="fill"
-                        objectFit="cover"
-                        className="rounded-3xl"
-                        data-ai-hint="chocolate box"
-                    />
-                </div>
+                    <div className="relative w-full aspect-square">
+                        <Image
+                            src="https://placehold.co/600x600.png"
+                            alt={product.name}
+                            layout="fill"
+                            objectFit="cover"
+                            className="rounded-3xl"
+                            data-ai-hint="chocolate box"
+                        />
+                    </div>
                 </div>
 
-                {/* Right side with 4 smaller images */}
                 <div className="w-1/5 flex flex-col gap-2">
                     {Array.from({ length: 4 }).map((_, index) => (
                         <div key={index} className="relative w-full aspect-square">
@@ -80,24 +62,8 @@ export function ProductPopup({ product, onClose, onAddToCart, cart }: ProductPop
                     ))}
                 </div>
             </div>
-
-            <div className="mt-8 bg-white/10 rounded-[40px] p-6 w-full">
-                <h3 className="text-xl font-bold mb-4">Flavours & Fillings</h3>
-                <div className="flex gap-3 overflow-x-auto no-scrollbar -mx-1 px-1">
-                    {flavours.map((flavour) => (
-                        <FlavourCard 
-                            key={flavour.id} 
-                            flavour={flavour}
-                            onAddToCart={handleAddFlavour}
-                            quantity={addedFlavours[flavour.id] || 0}
-                        />
-                    ))}
-                </div>
-            </div>
-
         </div>
         
-        {/* Right side content */}
         <div className="w-1/2 h-full">
           {/* Content for the right side will go here later */}
         </div>
