@@ -127,7 +127,7 @@ export function ProductPopup({ product, onClose, onAddToCart, cart }: ProductPop
             <p className="text-sm text-white/80">250g | Assorted | Hard Box</p>
           </div>
           <div className="mt-auto self-center max-w-max -mb-8">
-             <div className="bg-custom-purple-dark rounded-t-2xl px-6 py-4 flex items-center justify-between gap-4">
+             <div className="bg-custom-purple-dark rounded-t-[40px] px-6 py-4 flex items-center justify-between gap-4">
                 <div className="flex items-center gap-4">
                     <div>
                         <p className="text-xs text-gray-400 line-through">₹1000</p>
