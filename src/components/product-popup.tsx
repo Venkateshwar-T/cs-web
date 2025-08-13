@@ -85,7 +85,7 @@ export function ProductPopup({ product, onClose, onAddToCart, cart }: ProductPop
                             layout="fill"
                             objectFit="cover"
                             className="rounded-2xl"
-                            data-ai-hint={images[currentImageImageIndex]?.hint}
+                            data-ai-hint={images[currentImageIndex]?.hint}
                         />
                         <button 
                             onClick={handlePrevImage}
