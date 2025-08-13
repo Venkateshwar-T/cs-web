@@ -94,7 +94,7 @@ export function Header({ onSearchActiveChange, onSearchSubmit }: HeaderProps) {
   return (
     <>
       {isEnquireOpen && (
-          <div className="fixed inset-0 z-40 bg-black/50" />
+          <div className="fixed inset-0 z-40 bg-black/50 transition-opacity duration-300" />
       )}
       <header className="fixed top-0 z-50 w-full bg-transparent pt-6">
         <div className="container flex h-20 max-w-screen-2xl items-center justify-between px-4 sm:px-6 lg:px-8 xl:px-24">
@@ -149,7 +149,7 @@ export function Header({ onSearchActiveChange, onSearchSubmit }: HeaderProps) {
                 >
                   <div className="flex flex-col items-start text-left gap-1 w-full">
                     <h3 className="text-xl font-bold text-custom-purple-dark font-plex-sans">Looking for a Perfect Gift?</h3>
-                    <p className="text-base font-semibold font-plex-sans-condensed w-full text-center">Get personalized advice on flavours, packaging, and more.</p>
+                    <p className="text-base font-medium font-plex-sans-condensed w-full text-center">Get personalized advice on flavours, packaging, and more.</p>
                     <Separator className="my-2 bg-custom-purple-dark h-[1px] w-3/4 self-center" />
                     <Button asChild className="w-full h-auto py-2 bg-custom-purple-dark hover:bg-custom-purple-dark/90 text-white rounded-full text-lg font-plex-sans">
                       <a href="tel:+1234567890">
