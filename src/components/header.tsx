@@ -132,11 +132,11 @@ export function Header({ onSearchActiveChange, onSearchSubmit }: HeaderProps) {
                   Enquire Now
                 </Button>
               </PopoverTrigger>
-              <PopoverContent align="end" className="w-auto max-w-xs bg-white/80 backdrop-blur-md border-white/30 text-black p-4 rounded-3xl flex items-center justify-center">
+              <PopoverContent align="end" className="w-auto max-w-[260px] bg-white/80 backdrop-blur-md border-white/30 text-black p-4 rounded-3xl flex items-center justify-center">
                 <div className="flex flex-col items-center text-center gap-1">
                   <h3 className="text-xl font-bold text-custom-purple-dark font-plex-sans">Looking for a Perfect Gift?</h3>
                   <p className="text-base text-center font-plex-sans-condensed">Get personalized advice on flavours, packaging, and more.</p>
-                  <Separator className="my-1 bg-custom-purple-dark/50" />
+                  <Separator className="my-1 bg-custom-purple-dark h-[2px] w-1/2 mx-auto" />
                   <Button asChild className="w-full h-auto py-2 bg-custom-purple-dark hover:bg-custom-purple-dark/90 text-white rounded-full text-lg font-plex-sans">
                     <a href="tel:+1234567890">
                       <Phone className="mr-2 h-4 w-4" /> Call Us
