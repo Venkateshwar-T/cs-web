@@ -119,21 +119,22 @@ export function Header({ onSearchActiveChange, onSearchSubmit }: HeaderProps) {
             </div>
           </div>
           
-          <nav className={cn(
-            "hidden md:flex flex-1 justify-center items-center gap-4 lg:gap-8 text-base lg:text-lg transition-opacity duration-100",
-            isSearchSubmitted ? 'opacity-0' : 'opacity-100',
-            isEnquireOpen && "opacity-50"
-          )}>
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="transition-colors hover:text-custom-gold text-foreground/80"
-              >
-                {link.label}
-              </Link>
-            ))}
-          </nav>
+          {!isSearchSubmitted && (
+            <nav className={cn(
+              "hidden md:flex flex-1 justify-center items-center gap-4 lg:gap-8 text-base lg:text-lg transition-opacity duration-100",
+              isEnquireOpen && "opacity-50"
+            )}>
+              {navLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="transition-colors hover:text-custom-gold text-foreground/80"
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </nav>
+          )}
           
           <div className="flex flex-1 justify-end">
             <div className="hidden md:flex items-center gap-1">
@@ -149,7 +150,7 @@ export function Header({ onSearchActiveChange, onSearchSubmit }: HeaderProps) {
                 >
                   <div className="flex flex-col items-start text-left gap-1 w-full">
                     <h3 className="text-xl font-bold text-custom-purple-dark font-plex-sans">Looking for a Perfect Gift?</h3>
-                    <p className="text-base font-medium font-plex-sans-condensed w-full text-center">Get personalized advice on flavours, packaging, and more.</p>
+                    <p className="text-base font-semibold font-plex-sans-condensed w-full text-center">Get personalized advice on flavours, packaging, and more.</p>
                     <Separator className="my-2 bg-custom-purple-dark h-[1px] w-3/4 self-center" />
                     <Button asChild className="w-full h-auto py-2 bg-custom-purple-dark hover:bg-custom-purple-dark/90 text-white rounded-full text-lg font-plex-sans">
                       <a href="tel:+1234567890">
