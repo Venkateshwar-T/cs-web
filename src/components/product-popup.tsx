@@ -30,40 +30,39 @@ export function ProductPopup({ product, onClose, onAddToCart, cart }: ProductPop
       </button>
       
       <div className="w-full flex items-start gap-8">
-        <div className="w-1/2 flex flex-col">
-          <div className="flex w-full gap-2">
-            <div className="w-2/3">
-              <div className="relative w-full aspect-square">
+        {/* Image Gallery Section */}
+        <div className="w-2/5 flex gap-2">
+          <div className="w-2/3">
+            <div className="relative w-full aspect-square">
+              <Image
+                src="https://placehold.co/600x600.png"
+                alt={product.name}
+                layout="fill"
+                objectFit="cover"
+                className="rounded-3xl"
+                data-ai-hint="chocolate box"
+              />
+            </div>
+          </div>
+
+          <div className="w-1/4 flex flex-col gap-2">
+            {Array.from({ length: 4 }).map((_, index) => (
+              <div key={index} className="relative w-full aspect-square">
                 <Image
-                  src="https://placehold.co/600x600.png"
-                  alt={product.name}
+                  src="https://placehold.co/200x200.png"
+                  alt={`Thumbnail ${index + 1}`}
                   layout="fill"
                   objectFit="cover"
-                  className="rounded-3xl"
-                  data-ai-hint="chocolate box"
+                  className="rounded-lg"
+                  data-ai-hint="chocolate"
                 />
               </div>
-            </div>
-
-            <div className="w-1/4 flex flex-col gap-2">
-              {Array.from({ length: 4 }).map((_, index) => (
-                <div key={index} className="relative w-full aspect-square">
-                  <Image
-                    src="https://placehold.co/200x200.png"
-                    alt={`Thumbnail ${index + 1}`}
-                    layout="fill"
-                    objectFit="cover"
-                    className="rounded-lg"
-                    data-ai-hint="chocolate"
-                  />
-                </div>
-              ))}
-            </div>
+            ))}
           </div>
         </div>
         
-        <div className="w-1/2 h-full">
-          {/* Content for the right side will go here later */}
+        {/* Right Side for future content */}
+        <div className="w-3/5 h-full">
         </div>
       </div>
     </div>
