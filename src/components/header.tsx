@@ -94,11 +94,11 @@ export function Header({ onSearchActiveChange, onSearchSubmit }: HeaderProps) {
   return (
     <>
       {isEnquireOpen && (
-          <div className="fixed inset-0 z-40 bg-black/50 transition-opacity duration-300" />
+          <div className="fixed inset-0 z-40 bg-black/50 transition-opacity duration-100" />
       )}
       <header className="fixed top-0 z-50 w-full bg-transparent pt-6">
         <div className="container flex h-20 max-w-screen-2xl items-center justify-between px-4 sm:px-6 lg:px-8 xl:px-24">
-          <div className={cn("flex flex-1 justify-start transition-opacity", isEnquireOpen && "opacity-50")}>
+          <div className={cn("flex flex-1 justify-start transition-opacity duration-100", isEnquireOpen && "opacity-50")}>
             <div className="flex items-center gap-2 md:gap-4 lg:gap-8">
               <Link href="/" className="flex items-center gap-2" onClick={handleLogoClick}>
                 <Image 
@@ -120,7 +120,7 @@ export function Header({ onSearchActiveChange, onSearchSubmit }: HeaderProps) {
           </div>
           
           <nav className={cn(
-            "hidden md:flex flex-1 justify-center items-center gap-4 lg:gap-8 text-base lg:text-lg transition-opacity duration-300",
+            "hidden md:flex flex-1 justify-center items-center gap-4 lg:gap-8 text-base lg:text-lg transition-opacity duration-100",
             isSearchSubmitted ? 'opacity-0' : 'opacity-100',
             isEnquireOpen && "opacity-50"
           )}>
@@ -165,7 +165,7 @@ export function Header({ onSearchActiveChange, onSearchSubmit }: HeaderProps) {
                   </div>
                 </PopoverContent>
               </Popover>
-              <div className={cn("flex items-center gap-1 transition-opacity", isEnquireOpen && "opacity-50")}>
+              <div className={cn("flex items-center gap-1 transition-opacity duration-100", isEnquireOpen && "opacity-50")}>
                 <Separator orientation="vertical" className="h-6 bg-foreground/50 mx-1 lg:mx-2" />
                 <div className="flex items-center gap-1 lg:gap-2">
                   <Link href="#" aria-label="Instagram">
@@ -180,7 +180,7 @@ export function Header({ onSearchActiveChange, onSearchSubmit }: HeaderProps) {
                 </div>
               </div>
             </div>
-            <div className={cn("md:hidden transition-opacity", isEnquireOpen && "opacity-50")}>
+            <div className={cn("md:hidden transition-opacity duration-100", isEnquireOpen && "opacity-50")}>
               <Sheet>
                 <SheetTrigger asChild>
                   <Button variant="ghost" size="icon">
@@ -226,7 +226,7 @@ export function Header({ onSearchActiveChange, onSearchSubmit }: HeaderProps) {
         </div>
         <div className={cn(
             `container max-w-screen-2xl px-8 md:px-12 transition-all duration-500 ease-in-out ${isSearchSubmitted ? '-mt-[3.75rem]' : 'mt-8 sm:mt-12 md:mt-16'}`,
-            isEnquireOpen && "opacity-50"
+            isEnquireOpen && "opacity-50 transition-opacity duration-100"
         )}>
           <form 
             ref={formRef}
