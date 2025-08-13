@@ -74,39 +74,37 @@ export function ProductPopup({ product, onClose, onAddToCart, cart }: ProductPop
       </button>
       
       <div className="flex flex-col lg:flex-row h-full w-full gap-8">
-        <div className="w-full lg:w-1/2 flex flex-col justify-center">
-            <div className="flex gap-4">
-                <div className="flex-grow relative">
-                    <div className="relative w-full aspect-square">
-                        <Image
-                            key={images[currentImageIndex].id}
-                            src={images[currentImageIndex].src}
-                            alt={images[currentImageIndex].alt}
-                            layout="fill"
-                            objectFit="cover"
-                            className="rounded-2xl"
-                            data-ai-hint={images[currentImageIndex]?.hint}
-                        />
-                        <button 
-                            onClick={handlePrevImage}
-                            className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/30 text-white p-1 rounded-full hover:bg-black/50 transition-colors"
-                        >
-                            <ChevronLeft size={24} />
-                        </button>
-                        <button 
-                            onClick={handleNextImage}
-                            className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/30 text-white p-1 rounded-full hover:bg-black/50 transition-colors"
-                        >
-                            <ChevronRight size={24} />
-                        </button>
-                    </div>
+        <div className="w-full lg:w-2/5 flex flex-col justify-center">
+            <div className="flex flex-col gap-4">
+                <div className="relative w-full aspect-square">
+                    <Image
+                        key={images[currentImageIndex].id}
+                        src={images[currentImageIndex].src}
+                        alt={images[currentImageIndex].alt}
+                        layout="fill"
+                        objectFit="cover"
+                        className="rounded-2xl"
+                        data-ai-hint={images[currentImageIndex]?.hint}
+                    />
+                    <button 
+                        onClick={handlePrevImage}
+                        className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/30 text-white p-1 rounded-full hover:bg-black/50 transition-colors"
+                    >
+                        <ChevronLeft size={24} />
+                    </button>
+                    <button 
+                        onClick={handleNextImage}
+                        className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/30 text-white p-1 rounded-full hover:bg-black/50 transition-colors"
+                    >
+                        <ChevronRight size={24} />
+                    </button>
                 </div>
-                <div className="flex flex-col w-24 gap-2">
+                <div className="flex gap-4">
                     {images.map((image, index) => (
                         <div 
                             key={image.id} 
                             className={cn(
-                                "relative aspect-square cursor-pointer rounded-md overflow-hidden",
+                                "relative flex-1 aspect-square cursor-pointer rounded-md overflow-hidden",
                                 index === currentImageIndex ? 'ring-2 ring-white' : 'opacity-70 hover:opacity-100'
                             )}
                             onClick={() => handleThumbnailClick(index)}
@@ -126,7 +124,7 @@ export function ProductPopup({ product, onClose, onAddToCart, cart }: ProductPop
 
         <div className="hidden lg:block w-px bg-white/30 self-stretch"></div>
 
-        <div className="w-full lg:w-1/2 flex flex-col">
+        <div className="w-full lg:w-3/5 flex flex-col">
           <h2 className="text-3xl font-bold">{product.name}</h2>
           <div className="flex items-center gap-2 mt-2">
             <div className="w-5 h-5 border border-green-400 flex items-center justify-center p-0.5">
