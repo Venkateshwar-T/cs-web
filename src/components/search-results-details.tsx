@@ -3,15 +3,20 @@
 import { ProductCard } from "./product-card";
 import { useState, useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
+import type { Product } from "@/app/page";
+import { ProductPopup } from "./product-popup";
 
 interface SearchResultsDetailsProps {
   query: string;
   onAddToCart: (productName: string, quantity: number) => void;
   cart: Record<string, number>;
+  onProductClick: (product: Product) => void;
+  selectedProduct: Product | null;
+  onClosePopup: () => void;
 }
 
-export function SearchResultsDetails({ query, onAddToCart, cart }: SearchResultsDetailsProps) {
-  const products = Array.from({ length: 8 }).map((_, i) => ({
+export function SearchResultsDetails({ query, onAddToCart, cart, onProductClick, selectedProduct, onClosePopup }: SearchResultsDetailsProps) {
+  const products: Product[] = Array.from({ length: 8 }).map((_, i) => ({
     id: i,
     name: `Diwali Collection Box ${i + 1}`,
   }));
@@ -65,14 +70,21 @@ export function SearchResultsDetails({ query, onAddToCart, cart }: SearchResults
                 {products.map((product) => (
                     <ProductCard
                     key={product.id}
-                    productName={product.name}
+                    product={product}
                     onAddToCart={onAddToCart}
                     quantity={cart[product.name] || 0}
+                    onProductClick={onProductClick}
                     />
                 ))}
                 </div>
             </div>
         </div>
+        {selectedProduct && (
+          <ProductPopup 
+            product={selectedProduct} 
+            onClose={onClosePopup} 
+          />
+        )}
     </div>
   );
 }

@@ -5,29 +5,31 @@ import { Button } from '@/components/ui/button';
 import { Heart, Plus, Minus } from 'lucide-react';
 import { useState } from 'react';
 import { cn } from '@/lib/utils';
+import type { Product } from '@/app/page';
 
 interface ProductCardProps {
-  productName: string;
+  product: Product;
   onAddToCart: (productName: string, quantity: number) => void;
   quantity: number;
+  onProductClick: (product: Product) => void;
 }
 
-export function ProductCard({ productName, onAddToCart, quantity }: ProductCardProps) {
+export function ProductCard({ product, onAddToCart, quantity, onProductClick }: ProductCardProps) {
   const [isLiked, setIsLiked] = useState(false);
 
   const handleAddToCartClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    onAddToCart(productName, 1);
+    onAddToCart(product.name, 1);
   };
 
   const handleIncrement = (e: React.MouseEvent) => {
     e.stopPropagation();
-    onAddToCart(productName, quantity + 1);
+    onAddToCart(product.name, quantity + 1);
   };
 
   const handleDecrement = (e: React.MouseEvent) => {
     e.stopPropagation();
-    onAddToCart(productName, quantity - 1);
+    onAddToCart(product.name, quantity - 1);
   };
   
   const handleLikeClick = (e: React.MouseEvent) => {
@@ -37,12 +39,13 @@ export function ProductCard({ productName, onAddToCart, quantity }: ProductCardP
 
   return (
     <div
+      onClick={() => onProductClick(product)}
       className="bg-white text-black rounded-3xl overflow-hidden flex flex-col h-full shadow-custom-dark cursor-pointer transition-transform duration-200 hover:-translate-y-1"
     >
       <div className="relative w-full pt-[80%]">
         <Image
           src="/choco img.png"
-          alt={productName}
+          alt={product.name}
           layout="fill"
           objectFit="cover"
           className="rounded-t-3xl"
@@ -51,7 +54,7 @@ export function ProductCard({ productName, onAddToCart, quantity }: ProductCardP
       <div className="p-3 flex flex-col flex-grow">
         <div className="flex-grow">
           <div className="flex justify-between items-center">
-            <h3 className="font-bold text-lg leading-tight">{productName}</h3>
+            <h3 className="font-bold text-lg leading-tight">{product.name}</h3>
             <button onClick={handleLikeClick} className="pl-1 py-1">
               <Heart className={cn("h-6 w-6 stroke-current", isLiked ? 'text-red-500 fill-red-500' : 'text-black')} />
             </button>

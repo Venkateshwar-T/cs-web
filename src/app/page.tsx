@@ -9,12 +9,18 @@ import { FilterContainer } from '@/components/filter-container';
 import { SearchResultsDetails } from '@/components/search-results-details';
 import { Button } from '@/components/ui/button';
 
+export type Product = {
+  id: number;
+  name: string;
+};
+
 export default function Home() {
   const [isSearchActive, setIsSearchActive] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [cart, setCart] = useState<Record<string, number>>({});
   const [cartMessage, setCartMessage] = useState('');
   const [isCartButtonExpanded, setIsCartButtonExpanded] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
   const handleSearchSubmit = (query: string) => {
     setSearchQuery(query);
@@ -37,6 +43,14 @@ export default function Home() {
         setIsCartButtonExpanded(false);
       }, 1500);
     }
+  };
+
+  const handleProductClick = (product: Product) => {
+    setSelectedProduct(product);
+  };
+
+  const handleClosePopup = () => {
+    setSelectedProduct(null);
   };
 
   const totalQuantity = Object.values(cart).reduce((acc, cur) => acc + cur, 0);
@@ -62,6 +76,9 @@ export default function Home() {
                 query={searchQuery} 
                 onAddToCart={handleAddToCart} 
                 cart={cart}
+                onProductClick={handleProductClick}
+                selectedProduct={selectedProduct}
+                onClosePopup={handleClosePopup}
               />
             </div>
             <Button
