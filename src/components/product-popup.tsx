@@ -11,11 +11,11 @@ interface ProductPopupProps {
 export function ProductPopup({ product, onClose }: ProductPopupProps) {
   return (
     <div 
-      className="absolute inset-0 bg-[#9A7DAB] rounded-t-[40px] z-50 p-8 text-white"
+      className="absolute inset-0 bg-[#9A7DAB] rounded-[40px] p-8 text-white"
     >
       <button 
         onClick={onClose} 
-        className="absolute top-4 right-4 text-white hover:text-gray-200"
+        className="absolute top-4 right-4 text-white hover:text-gray-200 z-10"
       >
         <X size={24} />
       </button>
