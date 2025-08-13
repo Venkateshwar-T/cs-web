@@ -50,11 +50,13 @@ export function SearchResultsDetails({ query, onAddToCart, cart, onProductClick,
       }
     };
   }, []);
+  
+  const isProductDetailVisible = selectedProductId !== null;
 
   return (
     <div className="bg-[#5D2B79] h-full flex-grow rounded-t-[40px] ml-12 mr-8 relative">
         <div className="bg-white/20 h-full w-full rounded-t-[40px] pt-8 pl-8">
-            {selectedProductId !== null && (
+            {isProductDetailVisible && (
                 <div 
                   className="absolute inset-0 bg-[#9A7DAB] rounded-t-[40px] z-50 flex items-center justify-center p-4"
                 >
