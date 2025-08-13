@@ -103,15 +103,17 @@ export function ProductPopup({ product, onClose }: ProductPopupProps) {
           <h2 className="text-3xl font-bold">{product.name}</h2>
           <div className="flex items-center gap-2 mt-2">
             <div className="w-5 h-5 border border-green-400 flex items-center justify-center p-0.5">
-                <div className="w-3 h-3 bg-green-400 rounded-full"></div>
+                <svg className="w-3 h-3 text-green-400" viewBox="0 0 10 10" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="5" cy="5" r="5" />
+                </svg>
             </div>
             <p className="text-sm text-white/80">250g | Assorted | Hard Box</p>
           </div>
-          <div className="mt-auto bg-custom-purple-dark rounded-t-2xl -mx-8 -mb-8 px-6 py-4">
-             <div className="flex items-center justify-between gap-4">
+          <div className="mt-auto -mb-8 self-end max-w-max">
+             <div className="bg-custom-purple-dark rounded-t-2xl px-6 py-4 flex items-center justify-between gap-4">
                 <div className="flex items-center gap-4">
                     <div>
-                        <p className="text-sm text-gray-400 line-through">₹1000</p>
+                        <p className="text-xs text-gray-400 line-through">₹1000</p>
                         <p className="text-xs font-semibold text-custom-gold">25% OFF</p>
                     </div>
                     <p className="text-3xl font-bold">₹750</p>
