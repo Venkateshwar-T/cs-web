@@ -130,17 +130,15 @@ export function Header({ onSearchActiveChange, onSearchSubmit }: HeaderProps) {
           
           <div className="flex flex-1 justify-end">
             <div className="hidden md:flex items-center gap-1">
-              <Popover open={isEnquireOpen} onOpenChange={setIsEnquireOpen} modal={false}>
-                <div className="relative z-[60]">
-                  <PopoverTrigger asChild>
-                    <Button size="sm" className="bg-custom-gold text-white rounded-full font-normal text-sm lg:text-base hover:bg-white hover:text-custom-gold border border-custom-gold px-3 py-1">
-                      Enquire Now
-                    </Button>
-                  </PopoverTrigger>
-                </div>
+              <Popover open={isEnquireOpen} onOpenChange={setIsEnquireOpen}>
+                <PopoverTrigger asChild>
+                  <Button size="sm" className="relative z-[60] bg-custom-gold text-white rounded-full font-normal text-sm lg:text-base hover:bg-white hover:text-custom-gold border border-custom-gold px-3 py-1">
+                    Enquire Now
+                  </Button>
+                </PopoverTrigger>
                 <PopoverContent
                   sideOffset={8}
-                  className="w-auto max-w-[280px] bg-white/80 backdrop-blur-md border-white/30 text-black p-4 rounded-3xl"
+                  className="relative z-[60] w-auto max-w-[280px] bg-white/80 backdrop-blur-md border-white/30 text-black p-4 rounded-3xl"
                 >
                   <div className="flex flex-col items-start text-left gap-1 w-full">
                     <h3 className="text-xl font-bold text-custom-purple-dark font-plex-sans">Looking for a Perfect Gift?</h3>
