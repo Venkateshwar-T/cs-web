@@ -3,8 +3,6 @@
 import Image from 'next/image';
 import { X } from 'lucide-react';
 import type { Product } from '@/app/page';
-import { useState } from 'react';
-import { FlavourCard } from './flavour-card';
 
 export type Flavour = {
   id: number;
@@ -33,35 +31,35 @@ export function ProductPopup({ product, onClose, onAddToCart, cart }: ProductPop
       
       <div className="w-full flex items-start gap-8">
         <div className="w-1/2 flex flex-col">
-            <div className="flex w-full gap-2">
-                <div className="w-2/3">
-                    <div className="relative w-full aspect-square">
-                        <Image
-                            src="https://placehold.co/600x600.png"
-                            alt={product.name}
-                            layout="fill"
-                            objectFit="cover"
-                            className="rounded-3xl"
-                            data-ai-hint="chocolate box"
-                        />
-                    </div>
-                </div>
-
-                <div className="w-1/5 flex flex-col gap-2">
-                    {Array.from({ length: 4 }).map((_, index) => (
-                        <div key={index} className="relative w-full aspect-square">
-                            <Image
-                                src="https://placehold.co/200x200.png"
-                                alt={`Thumbnail ${index + 1}`}
-                                layout="fill"
-                                objectFit="cover"
-                                className="rounded-lg"
-                                data-ai-hint="chocolate"
-                            />
-                        </div>
-                    ))}
-                </div>
+          <div className="flex w-full gap-2">
+            <div className="w-2/3">
+              <div className="relative w-full aspect-square">
+                <Image
+                  src="https://placehold.co/600x600.png"
+                  alt={product.name}
+                  layout="fill"
+                  objectFit="cover"
+                  className="rounded-3xl"
+                  data-ai-hint="chocolate box"
+                />
+              </div>
             </div>
+
+            <div className="w-1/4 flex flex-col gap-2">
+              {Array.from({ length: 4 }).map((_, index) => (
+                <div key={index} className="relative w-full aspect-square">
+                  <Image
+                    src="https://placehold.co/200x200.png"
+                    alt={`Thumbnail ${index + 1}`}
+                    layout="fill"
+                    objectFit="cover"
+                    className="rounded-lg"
+                    data-ai-hint="chocolate"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
         
         <div className="w-1/2 h-full">
