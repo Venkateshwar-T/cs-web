@@ -13,6 +13,7 @@ import { Input } from "@/components/ui/input";
 import { useState, useEffect, useRef } from "react";
 import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetHeader } from "@/components/ui/sheet";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { cn } from "@/lib/utils";
 
 
 interface HeaderProps {
@@ -92,10 +93,9 @@ export function Header({ onSearchActiveChange, onSearchSubmit }: HeaderProps) {
 
   return (
     <>
-      {isEnquireOpen && <div className="fixed inset-0 z-50 bg-black/60" />}
       <header className="fixed top-0 z-50 w-full bg-transparent pt-6">
         <div className="container flex h-20 max-w-screen-2xl items-center justify-between px-4 sm:px-6 lg:px-8 xl:px-24">
-          <div className="flex flex-1 justify-start">
+          <div className={cn("flex flex-1 justify-start transition-opacity", isEnquireOpen && "opacity-50")}>
             <div className="flex items-center gap-2 md:gap-4 lg:gap-8">
               <Link href="/" className="flex items-center gap-2" onClick={handleLogoClick}>
                 <Image 
@@ -116,7 +116,11 @@ export function Header({ onSearchActiveChange, onSearchSubmit }: HeaderProps) {
             </div>
           </div>
           
-          <nav className={`hidden md:flex flex-1 justify-center items-center gap-4 lg:gap-8 text-base lg:text-lg transition-opacity duration-300 ${isSearchSubmitted ? 'opacity-0' : 'opacity-100'}`}>
+          <nav className={cn(
+            "hidden md:flex flex-1 justify-center items-center gap-4 lg:gap-8 text-base lg:text-lg transition-opacity duration-300",
+            isSearchSubmitted ? 'opacity-0' : 'opacity-100',
+            isEnquireOpen && "opacity-50"
+          )}>
             {navLinks.map((link) => (
               <Link
                 key={link.href}
@@ -132,17 +136,17 @@ export function Header({ onSearchActiveChange, onSearchSubmit }: HeaderProps) {
             <div className="hidden md:flex items-center gap-1">
               <Popover open={isEnquireOpen} onOpenChange={setIsEnquireOpen}>
                 <PopoverTrigger asChild>
-                  <Button size="sm" className="relative z-[60] bg-custom-gold text-white rounded-full font-normal text-sm lg:text-base hover:bg-white hover:text-custom-gold border border-custom-gold px-3 py-1">
+                  <Button size="sm" className="bg-custom-gold text-white rounded-full font-normal text-sm lg:text-base hover:bg-white hover:text-custom-gold border border-custom-gold px-3 py-1">
                     Enquire Now
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent
                   sideOffset={8}
-                  className="relative z-[60] w-auto max-w-[280px] bg-white/80 backdrop-blur-md border-white/30 text-black p-4 rounded-3xl"
+                  className="w-auto max-w-[280px] bg-white/80 backdrop-blur-md border-white/30 text-black p-4 rounded-3xl"
                 >
                   <div className="flex flex-col items-start text-left gap-1 w-full">
                     <h3 className="text-xl font-bold text-custom-purple-dark font-plex-sans">Looking for a Perfect Gift?</h3>
-                    <p className="text-base text-center font-semibold font-plex-sans-condensed w-full">Get personalized advice on flavours, packaging, and more.</p>
+                    <p className="text-base font-semibold font-plex-sans-condensed w-full text-center">Get personalized advice on flavours, packaging, and more.</p>
                     <Separator className="my-2 bg-custom-purple-dark h-[1px] w-3/4 self-center" />
                     <Button asChild className="w-full h-auto py-2 bg-custom-purple-dark hover:bg-custom-purple-dark/90 text-white rounded-full text-lg font-plex-sans">
                       <a href="tel:+1234567890">
@@ -158,20 +162,22 @@ export function Header({ onSearchActiveChange, onSearchSubmit }: HeaderProps) {
                   </div>
                 </PopoverContent>
               </Popover>
-              <Separator orientation="vertical" className="h-6 bg-foreground/50 mx-1 lg:mx-2" />
-              <div className="flex items-center gap-1 lg:gap-2">
-                <Link href="#" aria-label="Instagram">
-                  <AiOutlineInstagram className="h-7 w-7 lg:h-8 lg:w-8 transition-colors hover:text-custom-gold" />
-                </Link>
-                <Link href="#" aria-label="Facebook">
-                  <IoLogoFacebook className="h-7 w-7 lg:h-8 lg:w-8 transition-colors hover:text-custom-gold" />
-                </Link>
-                <Link href="#" aria-label="Profile" className="ml-1 lg:ml-2">
-                  <CgProfile className="h-8 w-8 lg:h-9 lg:w-9 transition-colors hover:text-custom-gold" />
-                </Link>
+              <div className={cn("flex items-center gap-1 transition-opacity", isEnquireOpen && "opacity-50")}>
+                <Separator orientation="vertical" className="h-6 bg-foreground/50 mx-1 lg:mx-2" />
+                <div className="flex items-center gap-1 lg:gap-2">
+                  <Link href="#" aria-label="Instagram">
+                    <AiOutlineInstagram className="h-7 w-7 lg:h-8 lg:w-8 transition-colors hover:text-custom-gold" />
+                  </Link>
+                  <Link href="#" aria-label="Facebook">
+                    <IoLogoFacebook className="h-7 w-7 lg:h-8 lg:w-8 transition-colors hover:text-custom-gold" />
+                  </Link>
+                  <Link href="#" aria-label="Profile" className="ml-1 lg:ml-2">
+                    <CgProfile className="h-8 w-8 lg:h-9 lg:w-9 transition-colors hover:text-custom-gold" />
+                  </Link>
+                </div>
               </div>
             </div>
-            <div className="md:hidden">
+            <div className={cn("md:hidden transition-opacity", isEnquireOpen && "opacity-50")}>
               <Sheet>
                 <SheetTrigger asChild>
                   <Button variant="ghost" size="icon">
@@ -215,7 +221,10 @@ export function Header({ onSearchActiveChange, onSearchSubmit }: HeaderProps) {
             </div>
           </div>
         </div>
-        <div className={`container max-w-screen-2xl px-8 md:px-12 transition-all duration-500 ease-in-out ${isSearchSubmitted ? '-mt-[3.75rem]' : 'mt-8 sm:mt-12 md:mt-16'}`}>
+        <div className={cn(
+            `container max-w-screen-2xl px-8 md:px-12 transition-all duration-500 ease-in-out ${isSearchSubmitted ? '-mt-[3.75rem]' : 'mt-8 sm:mt-12 md:mt-16'}`,
+            isEnquireOpen && "opacity-50"
+        )}>
           <form 
             ref={formRef}
             onSubmit={handleSearchSubmit} 
