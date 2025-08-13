@@ -47,8 +47,7 @@ export function ProductPopup({ product, onClose }: ProductPopupProps) {
       </button>
       
       <div className="flex h-full w-full gap-8">
-        {/* Left Column: Image Gallery */}
-        <div className="w-1/2 flex flex-col gap-4">
+        <div className="w-[45%] flex flex-col gap-4">
           <div className="relative w-full aspect-square">
             <Image
               key={images[currentImageIndex].id}
@@ -94,14 +93,12 @@ export function ProductPopup({ product, onClose }: ProductPopupProps) {
           </div>
         </div>
 
-        {/* Vertical Divider */}
         <div className="w-px bg-white/30 h-full"></div>
 
-        {/* Right Column: Product Details */}
         <div className="w-1/2 flex flex-col">
           <h2 className="text-3xl font-bold">{product.name}</h2>
           <div className="flex items-center gap-2 mt-2">
-             <div className="w-5 h-5 border border-green-400 flex items-center justify-center">
+            <div className="w-5 h-5 border border-green-400 flex items-center justify-center p-0.5">
                 <div className="w-3 h-3 bg-green-400 rounded-full"></div>
             </div>
             <p className="text-sm text-white/80">250g | Assorted | Hard Box</p>
