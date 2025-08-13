@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { X } from 'lucide-react';
 import type { Product } from '@/app/page';
 
@@ -13,7 +13,7 @@ interface ProductPopupProps {
 
 export function ProductPopup({ product, onClose, onAddToCart, cart }: ProductPopupProps) {
   return (
-    <div className="bg-[#9A7DAB] rounded-t-[40px] p-8 text-white h-full overflow-hidden relative">
+    <div className="bg-[#9A7DAB] rounded-t-[40px] p-8 text-white h-full overflow-hidden relative flex">
       <button 
         onClick={onClose} 
         className="absolute top-4 right-4 text-white hover:text-gray-200 z-10"
@@ -21,8 +21,26 @@ export function ProductPopup({ product, onClose, onAddToCart, cart }: ProductPop
         <X size={24} />
       </button>
       
-      {/* Content will go here */}
-
+      <div className="w-full flex items-center gap-8">
+        {/* Left side will be empty for now */}
+        <div className="w-1/2 h-full">
+          {/* Content for the left side will go here later */}
+        </div>
+        
+        {/* Right side with the big image */}
+        <div className="w-1/2 h-full">
+          <div className="relative w-full h-full">
+              <Image
+                  src="https://placehold.co/600x800.png"
+                  alt={product.name}
+                  layout="fill"
+                  objectFit="cover"
+                  className="rounded-3xl"
+                  data-ai-hint="chocolate box"
+              />
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
