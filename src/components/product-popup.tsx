@@ -49,48 +49,53 @@ export function ProductPopup({ product, onClose }: ProductPopupProps) {
       
       <div className="flex flex-col lg:flex-row h-full w-full gap-8">
         <div className="w-full lg:w-1/3 flex flex-col lg:self-center">
-          <div className="relative w-full aspect-square">
-            <Image
-              key={images[currentImageIndex].id}
-              src={images[currentImageIndex].src}
-              alt={images[currentImageIndex].alt}
-              layout="fill"
-              objectFit="cover"
-              className="rounded-2xl"
-              data-ai-hint={images[currentImageIndex].hint}
-            />
-            <button 
-              onClick={handlePrevImage}
-              className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/30 text-white p-1 rounded-full hover:bg-black/50 transition-colors"
-            >
-              <ChevronLeft size={24} />
-            </button>
-            <button 
-              onClick={handleNextImage}
-              className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/30 text-white p-1 rounded-full hover:bg-black/50 transition-colors"
-            >
-              <ChevronRight size={24} />
-            </button>
-          </div>
-          <div className="grid grid-cols-4 gap-2 mt-4">
-            {images.map((image, index) => (
-              <div 
-                key={image.id} 
-                className={cn(
-                  "relative aspect-square cursor-pointer rounded-md overflow-hidden",
-                  index === currentImageIndex ? 'ring-2 ring-white' : 'opacity-70 hover:opacity-100'
-                )}
-                onClick={() => handleThumbnailClick(index)}
+          <div>
+            <div className="relative w-full aspect-square">
+              <Image
+                key={images[currentImageIndex].id}
+                src={images[currentImageIndex].src}
+                alt={images[currentImageIndex].alt}
+                layout="fill"
+                objectFit="cover"
+                className="rounded-2xl"
+                data-ai-hint={images[currentImageIndex].hint}
+              />
+              <button 
+                onClick={handlePrevImage}
+                className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/30 text-white p-1 rounded-full hover:bg-black/50 transition-colors"
               >
-                <Image
-                  src={image.src}
-                  alt={image.alt}
-                  layout="fill"
-                  objectFit="cover"
-                  data-ai-hint={image.hint}
-                />
-              </div>
-            ))}
+                <ChevronLeft size={24} />
+              </button>
+              <button 
+                onClick={handleNextImage}
+                className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/30 text-white p-1 rounded-full hover:bg-black/50 transition-colors"
+              >
+                <ChevronRight size={24} />
+              </button>
+            </div>
+            <div className="grid grid-cols-4 gap-2 mt-4">
+              {images.map((image, index) => (
+                <div 
+                  key={image.id} 
+                  className={cn(
+                    "relative aspect-square cursor-pointer rounded-md overflow-hidden",
+                    index === currentImageIndex ? 'ring-2 ring-white' : 'opacity-70 hover:opacity-100'
+                  )}
+                  onClick={() => handleThumbnailClick(index)}
+                >
+                  <Image
+                    src={image.src}
+                    alt={image.alt}
+                    layout="fill"
+                    objectFit="cover"
+                    data-ai-hint={image.hint}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="mt-auto bg-custom-purple-dark h-24 rounded-t-2xl -mx-8 -mb-8">
+            {/* Content for the purple box can go here */}
           </div>
         </div>
 
