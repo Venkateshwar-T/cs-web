@@ -3,6 +3,14 @@
 import Image from 'next/image';
 import { X } from 'lucide-react';
 import type { Product } from '@/app/page';
+import { useState } from 'react';
+
+export type Flavour = {
+  id: number;
+  name: string;
+  src: string;
+  hint: string;
+};
 
 interface ProductPopupProps {
   product: Product;
@@ -21,12 +29,12 @@ export function ProductPopup({ product, onClose, onAddToCart, cart }: ProductPop
         <X size={24} />
       </button>
       
-      <div className="w-full flex items-center gap-8">
-        {/* Left side with the small image */}
-        <div className="w-2/5 h-full">
-          <div className="relative w-full h-full">
+      <div className="w-full flex items-start gap-8">
+        {/* Left side with the small, square image */}
+        <div className="w-1/3">
+          <div className="relative w-full aspect-square">
               <Image
-                  src="https://placehold.co/600x800.png"
+                  src="https://placehold.co/600x600.png"
                   alt={product.name}
                   layout="fill"
                   objectFit="cover"
@@ -37,7 +45,7 @@ export function ProductPopup({ product, onClose, onAddToCart, cart }: ProductPop
         </div>
         
         {/* Right side will be empty for now */}
-        <div className="w-3/5 h-full">
+        <div className="w-2/3 h-full">
           {/* Content for the right side will go here later */}
         </div>
       </div>
