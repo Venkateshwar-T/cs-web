@@ -4,7 +4,7 @@ import { ProductCard } from "./product-card";
 import { useState, useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft } from "lucide-react";
+import { X } from "lucide-react";
 
 interface SearchResultsDetailsProps {
   query: string;
@@ -56,18 +56,17 @@ export function SearchResultsDetails({ query, onAddToCart, cart, onProductClick,
         <div className="bg-white/20 h-full w-full rounded-t-[40px] pt-8 pl-8">
             {selectedProductId !== null && (
                 <div 
-                className="absolute inset-0 bg-[#9A7DAB] rounded-t-[40px] z-10 flex items-center justify-center p-4"
+                  className="absolute inset-0 bg-[#9A7DAB] rounded-t-[40px] z-50 flex items-center justify-center p-4"
                 >
-                <Button 
-                    variant="ghost" 
-                    size="icon" 
-                    className="absolute top-6 left-6 text-white hover:bg-white/10 hover:text-white"
-                    onClick={() => onProductClick(null)}
-                >
-                    <ArrowLeft className="h-6 w-6" />
-                    <span className="sr-only">Back</span>
-                </Button>
-                <p className="text-white text-4xl font-bold">You clicked</p>
+                  <Button 
+                      variant="ghost" 
+                      size="icon" 
+                      className="absolute top-4 right-4 text-white hover:bg-white/10 hover:text-white rounded-full"
+                      onClick={() => onProductClick(null)}
+                  >
+                      <X className="h-6 w-6" />
+                      <span className="sr-only">Close</span>
+                  </Button>
                 </div>
             )}
             <div 
