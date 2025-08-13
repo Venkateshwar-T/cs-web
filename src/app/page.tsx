@@ -59,7 +59,7 @@ export default function Home() {
   return (
     <>
       {selectedProduct && (
-        <div className="fixed inset-0 z-40 bg-black/50" onClick={handleClosePopup} />
+        <div className="fixed inset-0 z-40 bg-black/50" />
       )}
       <div className={cn("flex flex-col h-screen", selectedProduct ? 'opacity-50' : '')}>
         <Header onSearchSubmit={handleSearchSubmit} onSearchActiveChange={setIsSearchActive} />
@@ -83,11 +83,6 @@ export default function Home() {
                       cart={cart}
                       onProductClick={handleProductClick}
                     />
-                    {selectedProduct && (
-                        <div className="absolute inset-0 z-50">
-                            <ProductPopup product={selectedProduct} onClose={handleClosePopup} />
-                        </div>
-                    )}
                 </div>
               </div>
               <Button
@@ -114,6 +109,13 @@ export default function Home() {
           )}
         </main>
       </div>
+      {selectedProduct && (
+        <div className="fixed inset-0 z-50 flex items-start justify-center pt-36">
+            <div className="h-full flex-grow ml-[calc(18%+3rem)] mr-8 relative w-[calc(82%-4rem)]">
+                <ProductPopup product={selectedProduct} onClose={handleClosePopup} />
+            </div>
+        </div>
+      )}
     </>
   );
 }

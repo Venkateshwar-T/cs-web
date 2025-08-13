@@ -11,7 +11,7 @@ interface ProductPopupProps {
 export function ProductPopup({ product, onClose }: ProductPopupProps) {
   return (
     <div 
-      className="absolute inset-0 bg-[#9A7DAB] rounded-[40px] p-8 text-white"
+      className="absolute inset-0 bg-[#9A7DAB] rounded-t-[40px] p-8 text-white"
     >
       <button 
         onClick={onClose} 
