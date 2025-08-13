@@ -3,10 +3,10 @@ import { SectionTitle } from "./section-title";
 
 export function ExploreCategories() {
   const categoryImages = [
-    { id: 1, src: "https://placehold.co/600x400.png", alt: "Category 1", hint: "chocolate gift" },
-    { id: 2, src: "https://placehold.co/600x400.png", alt: "Category 2", hint: "gift basket" },
-    { id: 3, src: "https://placehold.co/600x400.png", alt: "Category 3", hint: "artisan chocolate" },
-    { id: 4, src: "https://placehold.co/600x400.png", alt: "Category 4", hint: "luxury gifts" },
+    { id: 1, src: "/categories/choco1.png", alt: "Category 1", hint: "chocolate gift" },
+    { id: 2, src: "/categories/choco2.png", alt: "Category 2", hint: "gift basket" },
+    { id: 3, src: "/categories/choco3.png", alt: "Category 3", hint: "artisan chocolate" },
+    { id: 4, src: "/categories/choco4.png", alt: "Category 4", hint: "luxury gifts" },
   ];
 
   const flavourImages = [
