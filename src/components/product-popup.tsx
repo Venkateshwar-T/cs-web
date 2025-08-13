@@ -6,6 +6,7 @@ import { X, ChevronLeft, ChevronRight, Plus, Minus } from 'lucide-react';
 import type { Product } from '@/app/page';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
+import { FlavourCard } from './flavour-card';
 
 interface ProductPopupProps {
   product: Product;
@@ -21,9 +22,26 @@ const images = [
   { id: 4, src: '/categories/choco4.png', alt: 'Chocolate Box 4', hint: 'gift box' },
 ];
 
+export type Flavour = {
+  id: number;
+  name: string;
+  src: string;
+  hint: string;
+}
+
+const flavours: Flavour[] = [
+    { id: 1, name: 'Dark Truffle', src: 'https://placehold.co/200x200.png', hint: 'dark chocolate' },
+    { id: 2, name: 'Milk Hazelnut', src: 'https://placehold.co/200x200.png', hint: 'milk chocolate' },
+    { id: 3, name: 'White Raspberry', src: 'https://placehold.co/200x200.png', hint: 'white chocolate' },
+    { id: 4, name: 'Salted Caramel', src: 'https://placehold.co/200x200.png', hint: 'caramel' },
+    { id: 5, name: 'Almond Praline', src: 'https://placehold.co/200x200.png', hint: 'almond praline' },
+    { id: 6, name: 'Coffee Cream', src: 'https://placehold.co/200x200.png', hint: 'coffee chocolate' },
+];
+
 export function ProductPopup({ product, onClose, onAddToCart, cart }: ProductPopupProps) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isAnimated, setIsAnimated] = useState(false);
+  const [addedFlavours, setAddedFlavours] = useState<Record<number, number>>({});
   const quantity = cart[product.name] || 0;
 
   useEffect(() => {
@@ -61,10 +79,20 @@ export function ProductPopup({ product, onClose, onAddToCart, cart }: ProductPop
     e.stopPropagation();
     onAddToCart(product.name, quantity - 1);
   };
+  
+  const handleFlavourAddToCart = (flavourId: number, quantity: number) => {
+    setAddedFlavours(prev => {
+        const newFlavours = { ...prev, [flavourId]: quantity };
+        if (quantity <= 0) {
+            delete newFlavours[flavourId];
+        }
+        return newFlavours;
+    });
+  };
 
   return (
     <div 
-      className="bg-[#9A7DAB] rounded-t-[40px] p-8 text-white h-full overflow-hidden no-scrollbar"
+      className="bg-[#9A7DAB] rounded-t-[40px] p-8 text-white h-full overflow-hidden"
     >
       <button 
         onClick={onClose} 
@@ -74,8 +102,8 @@ export function ProductPopup({ product, onClose, onAddToCart, cart }: ProductPop
       </button>
       
       <div className="flex flex-col lg:flex-row h-full w-full gap-8">
-        <div className="w-full lg:w-1/3 flex items-center">
-            <div className="flex w-full gap-4 items-center justify-center">
+        <div className="w-full lg:w-1/3 flex flex-col gap-4">
+            <div className="flex w-full gap-4 items-start justify-center">
                 <div className="relative w-4/5 aspect-square">
                     <Image
                         key={images[currentImageIndex].id}
@@ -117,6 +145,20 @@ export function ProductPopup({ product, onClose, onAddToCart, cart }: ProductPop
                                 data-ai-hint={image.hint}
                             />
                         </div>
+                    ))}
+                </div>
+            </div>
+
+            <div className="bg-custom-purple-dark p-4 rounded-[40px]">
+                <h3 className="text-white font-bold text-lg mb-3">Flavours &amp; Fillings</h3>
+                <div className="flex gap-3 overflow-x-auto pb-2 no-scrollbar">
+                    {flavours.map(flavour => (
+                        <FlavourCard 
+                            key={flavour.id}
+                            flavour={flavour}
+                            quantity={addedFlavours[flavour.id] || 0}
+                            onAddToCart={handleFlavourAddToCart}
+                        />
                     ))}
                 </div>
             </div>
