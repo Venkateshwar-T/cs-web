@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { Header } from "@/components/header";
 import { ExploreCategories } from '@/components/explore-categories';
@@ -22,6 +22,18 @@ export default function Home() {
   const [cartMessage, setCartMessage] = useState('');
   const [isCartButtonExpanded, setIsCartButtonExpanded] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+
+  useEffect(() => {
+    if (selectedProduct) {
+      document.body.classList.add('overflow-hidden');
+    } else {
+      document.body.classList.remove('overflow-hidden');
+    }
+    // Cleanup function to remove the class if the component unmounts
+    return () => {
+      document.body.classList.remove('overflow-hidden');
+    };
+  }, [selectedProduct]);
 
   const handleSearchSubmit = (query: string) => {
     setSearchQuery(query);
@@ -85,33 +97,36 @@ export default function Home() {
         </main>
       </div>
 
-      {isSearchActive && (
-        <Button
-          className={cn(
-            "absolute bottom-8 right-8 shadow-lg bg-custom-gold hover:bg-custom-gold/90 transition-all duration-100 ease-in-out flex items-center justify-center overflow-visible z-50",
-            isCartButtonExpanded ? 'w-72 h-16 rounded-full' : 'w-16 h-16 rounded-full'
-          )}
-          size="icon"
-        >
-          {isCartButtonExpanded ? (
-            <span className="text-custom-purple-dark font-semibold whitespace-nowrap">{cartMessage}</span>
-          ) : (
-            <>
-              <Image src="/icons/cart.png" alt="Cart" width={28} height={28} />
-              {totalQuantity > 0 && (
-                <div className="absolute -top-1 -right-1 bg-custom-purple-dark text-white text-xs font-bold rounded-full h-6 w-6 flex items-center justify-center">
-                  {totalQuantity}
-                </div>
+       <div className={cn("fixed bottom-8 right-8 z-50 transition-all duration-300", selectedProduct && 'opacity-50 pointer-events-none')}>
+          {isSearchActive && (
+            <Button
+              className={cn(
+                "shadow-lg bg-custom-gold hover:bg-custom-gold/90 transition-all duration-100 ease-in-out flex items-center justify-center overflow-visible",
+                isCartButtonExpanded ? 'w-72 h-16 rounded-full' : 'w-16 h-16 rounded-full'
               )}
-            </>
+              size="icon"
+            >
+              {isCartButtonExpanded ? (
+                <span className="text-custom-purple-dark font-semibold whitespace-nowrap">{cartMessage}</span>
+              ) : (
+                <>
+                  <Image src="/icons/cart.png" alt="Cart" width={28} height={28} />
+                  {totalQuantity > 0 && (
+                    <div className="absolute -top-1 -right-1 bg-custom-purple-dark text-white text-xs font-bold rounded-full h-6 w-6 flex items-center justify-center">
+                      {totalQuantity}
+                    </div>
+                  )}
+                </>
+              )}
+            </Button>
           )}
-        </Button>
-      )}
+       </div>
+
 
       {selectedProduct && (
         <>
           <div className="fixed inset-0 z-40 bg-black/50" />
-          <div className="fixed inset-0 z-40 flex items-start justify-center pt-36">
+          <div className="fixed inset-0 z-50 flex items-start justify-center pt-36">
               <div className="h-full flex-grow ml-[calc(18%+3rem)] mr-8 relative w-[calc(82%-4rem)]">
                   <ProductPopup product={selectedProduct} onClose={handleClosePopup} />
               </div>
