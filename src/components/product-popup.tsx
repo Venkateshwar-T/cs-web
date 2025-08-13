@@ -37,7 +37,7 @@ export function ProductPopup({ product, onClose }: ProductPopupProps) {
 
   return (
     <div 
-      className="bg-[#9A7DAB] rounded-t-[40px] p-8 text-white h-full"
+      className="bg-[#9A7DAB] rounded-t-[40px] p-8 text-white h-full overflow-y-auto no-scrollbar"
     >
       <button 
         onClick={onClose} 
@@ -46,8 +46,8 @@ export function ProductPopup({ product, onClose }: ProductPopupProps) {
         <X size={24} />
       </button>
       
-      <div className="flex h-full w-full gap-8">
-        <div className="w-2/5 flex flex-col gap-4">
+      <div className="flex flex-col lg:flex-row h-full w-full gap-8">
+        <div className="w-full lg:w-1/3 flex flex-col gap-4">
           <div className="relative w-full aspect-square">
             <Image
               key={images[currentImageIndex].id}
@@ -93,9 +93,9 @@ export function ProductPopup({ product, onClose }: ProductPopupProps) {
           </div>
         </div>
 
-        <div className="w-px bg-white/30 h-full"></div>
+        <div className="hidden lg:block w-px bg-white/30 h-full"></div>
 
-        <div className="w-3/5 flex flex-col">
+        <div className="w-full lg:w-2/3 flex flex-col">
           <h2 className="text-3xl font-bold">{product.name}</h2>
           <div className="flex items-center gap-2 mt-2">
             <div className="w-5 h-5 border border-green-400 flex items-center justify-center p-0.5">
