@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState } from 'react';
@@ -46,8 +47,8 @@ export function ProductPopup({ product, onClose }: ProductPopupProps) {
         <X size={24} />
       </button>
       
-      <div className="flex flex-col lg:flex-row h-full w-full gap-8 lg:items-center">
-        <div className="w-full lg:w-1/3 flex flex-col">
+      <div className="flex flex-col lg:flex-row h-full w-full gap-8">
+        <div className="w-full lg:w-1/3 flex flex-col lg:self-center">
           <div className="relative w-full aspect-square">
             <Image
               key={images[currentImageIndex].id}
@@ -93,7 +94,7 @@ export function ProductPopup({ product, onClose }: ProductPopupProps) {
           </div>
         </div>
 
-        <div className="hidden lg:block w-px bg-white/30 h-full self-stretch"></div>
+        <div className="hidden lg:block w-px bg-white/30 self-stretch"></div>
 
         <div className="w-full lg:w-2/3 flex flex-col">
           <h2 className="text-3xl font-bold">{product.name}</h2>
