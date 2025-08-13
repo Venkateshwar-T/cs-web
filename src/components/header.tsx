@@ -192,7 +192,7 @@ export function Header({ onSearchActiveChange, onSearchSubmit }: HeaderProps) {
                 <SheetContent side="right" className="w-[300px] sm:w-[400px]">
                   <SheetHeader />
                   <nav className="flex flex-col gap-8 text-lg mt-12">
-                    {navLinks.map((link) => (
+                    {!isSearchSubmitted && navLinks.map((link) => (
                       <SheetClose asChild key={link.href}>
                         <Link
                           href={link.href}
@@ -243,7 +243,7 @@ export function Header({ onSearchActiveChange, onSearchSubmit }: HeaderProps) {
               name="search"
               autoComplete="off"
               placeholder={isSearchSubmitted ? 'Search for gifts...' : placeholder}
-              className={`w-full pl-12 pr-4 py-4 rounded-full bg-transparent border-none focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-gray-600 text-lg md:text-xl ${isSearchSubmitted ? 'text-white' : ''}`}
+              className={`w-full pl-12 pr-4 py-6 rounded-full bg-transparent border-none focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-gray-600 text-lg md:text-xl ${isSearchSubmitted ? 'text-white' : ''}`}
             />
           </form>
         </div>
