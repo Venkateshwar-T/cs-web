@@ -98,7 +98,10 @@ export function Header({ onSearchActiveChange, onSearchSubmit }: HeaderProps) {
       )}
       <header className="fixed top-0 z-50 w-full bg-transparent pt-6">
         <div className="container flex h-20 max-w-screen-2xl items-center justify-between px-4 sm:px-6 lg:px-8 xl:px-24">
-          <div className={cn("flex flex-1 justify-start transition-opacity duration-100", isEnquireOpen && "opacity-50")}>
+          <div className={cn(
+            "flex flex-1 justify-start transition-opacity duration-100", 
+            isEnquireOpen && "opacity-50"
+          )}>
             <div className="flex items-center gap-2 md:gap-4 lg:gap-8">
               <Link href="/" className="flex items-center gap-2" onClick={handleLogoClick}>
                 <Image 
@@ -119,28 +122,32 @@ export function Header({ onSearchActiveChange, onSearchSubmit }: HeaderProps) {
             </div>
           </div>
           
-          {!isSearchSubmitted && (
-            <nav className={cn(
-              "hidden md:flex flex-1 justify-center items-center gap-4 lg:gap-8 text-base lg:text-lg transition-opacity duration-100",
-              isEnquireOpen && "opacity-50"
-            )}>
-              {navLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className="transition-colors hover:text-custom-gold text-foreground/80"
-                >
-                  {link.label}
-                </Link>
-              ))}
-            </nav>
-          )}
+          <nav className={cn(
+            "hidden md:flex flex-1 justify-center items-center gap-4 lg:gap-8 text-base lg:text-lg transition-opacity duration-100",
+            isEnquireOpen && "opacity-50"
+          )}>
+            {!isSearchSubmitted && navLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="transition-colors hover:text-custom-gold text-foreground/80"
+              >
+                {link.label}
+              </Link>
+            ))}
+          </nav>
           
           <div className="flex flex-1 justify-end">
             <div className="hidden md:flex items-center gap-1">
               <Popover open={isEnquireOpen} onOpenChange={setIsEnquireOpen}>
                 <PopoverTrigger asChild>
-                  <Button size="sm" className="bg-custom-gold text-white rounded-full font-normal text-sm lg:text-base hover:bg-white hover:text-custom-gold border border-custom-gold px-3 py-1">
+                  <Button 
+                    size="sm" 
+                    className={cn(
+                      "rounded-full font-normal text-sm lg:text-base border border-custom-gold px-3 py-1 transition-colors",
+                      isEnquireOpen ? 'bg-white text-custom-gold' : 'bg-custom-gold text-white'
+                    )}
+                  >
                     Enquire Now
                   </Button>
                 </PopoverTrigger>
@@ -166,7 +173,10 @@ export function Header({ onSearchActiveChange, onSearchSubmit }: HeaderProps) {
                   </div>
                 </PopoverContent>
               </Popover>
-              <div className={cn("flex items-center gap-1 transition-opacity duration-100", isEnquireOpen && "opacity-50")}>
+              <div className={cn(
+                "flex items-center gap-1 transition-opacity duration-100", 
+                isEnquireOpen && "opacity-50"
+              )}>
                 <Separator orientation="vertical" className="h-6 bg-foreground/50 mx-1 lg:mx-2" />
                 <div className="flex items-center gap-1 lg:gap-2">
                   <Link href="#" aria-label="Instagram">
@@ -181,7 +191,10 @@ export function Header({ onSearchActiveChange, onSearchSubmit }: HeaderProps) {
                 </div>
               </div>
             </div>
-            <div className={cn("md:hidden transition-opacity duration-100", isEnquireOpen && "opacity-50")}>
+            <div className={cn(
+              "md:hidden transition-opacity duration-100", 
+              isEnquireOpen && "opacity-50"
+            )}>
               <Sheet>
                 <SheetTrigger asChild>
                   <Button variant="ghost" size="icon">
