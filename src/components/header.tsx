@@ -144,8 +144,8 @@ export function Header({ onSearchActiveChange, onSearchSubmit }: HeaderProps) {
                   <Button 
                     size="sm" 
                     className={cn(
-                      "rounded-full font-normal text-sm lg:text-base border border-custom-gold px-3 py-1 transition-colors",
-                      isEnquireOpen ? 'bg-white text-custom-gold hover:bg-white' : 'bg-custom-gold text-white hover:bg-custom-gold'
+                      "rounded-full font-normal text-sm lg:text-base border border-custom-gold px-3 py-1 transition-all duration-100 hover:opacity-90",
+                      isEnquireOpen ? 'bg-white text-custom-gold' : 'bg-custom-gold text-white'
                     )}
                   >
                     Enquire Now
