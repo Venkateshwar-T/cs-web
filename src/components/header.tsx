@@ -132,7 +132,7 @@ export function Header({ onSearchActiveChange, onSearchSubmit }: HeaderProps) {
                   Enquire Now
                 </Button>
               </PopoverTrigger>
-              <PopoverContent align="end" className="w-80 bg-white/80 backdrop-blur-md border-white/30 text-black p-4 rounded-2xl">
+              <PopoverContent align="end" className="w-80 h-80 bg-white/80 backdrop-blur-md border-white/30 text-black p-4 rounded-3xl flex items-center justify-center">
                 <div className="flex flex-col items-center text-center gap-3">
                   <h3 className="text-lg font-bold text-custom-purple-dark">Looking for a Perfect Gift?</h3>
                   <p className="text-xs">Get personalized advice on flavours, packaging, and more.</p>
