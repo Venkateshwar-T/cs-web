@@ -3,6 +3,7 @@
 import { X } from 'lucide-react';
 import type { Product } from '@/app/page';
 import { ImageGallery } from './image-gallery';
+import { FlavoursSection } from './flavours-section';
 
 export type Flavour = {
   id: number;
@@ -20,6 +21,11 @@ interface ProductPopupProps {
 
 export function ProductPopup({ product, onClose, onAddToCart, cart }: ProductPopupProps) {
 
+  const handleFlavourAddToCart = (flavourId: number, quantity: number) => {
+    // This can be expanded later to handle flavour-specific cart logic
+    console.log(`Added flavour ${flavourId}, quantity ${quantity}`);
+  };
+
   return (
     <div className="bg-[#9A7DAB] rounded-t-[40px] p-8 text-white h-full overflow-hidden relative flex">
       <button 
@@ -32,13 +38,14 @@ export function ProductPopup({ product, onClose, onAddToCart, cart }: ProductPop
       {/* Main container for image gallery and product details */}
       <div className="w-full flex items-start gap-8">
 
-        {/* Image Gallery Section */}
-        <div className="w-1/3">
-          <ImageGallery product={product} />
+        {/* Left column for image gallery and flavours */}
+        <div className="w-2/5 flex flex-col gap-4">
+            <ImageGallery product={product} />
+            <FlavoursSection onAddToCart={handleFlavourAddToCart} cart={{}} />
         </div>
         
         {/* Right Side for future content */}
-        <div className="w-2/3 h-full">
+        <div className="w-3/5 h-full">
           {/* Content will go here */}
         </div>
       </div>
