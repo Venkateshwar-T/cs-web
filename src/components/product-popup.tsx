@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { X, ChevronLeft, ChevronRight, Plus, Minus } from 'lucide-react';
 import type { Product } from '@/app/page';
@@ -23,7 +23,15 @@ const images = [
 
 export function ProductPopup({ product, onClose, onAddToCart, cart }: ProductPopupProps) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [isAnimated, setIsAnimated] = useState(false);
   const quantity = cart[product.name] || 0;
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsAnimated(true);
+    }, 100); 
+    return () => clearTimeout(timer);
+  }, []);
 
   const handlePrevImage = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -56,7 +64,7 @@ export function ProductPopup({ product, onClose, onAddToCart, cart }: ProductPop
 
   return (
     <div 
-      className="bg-[#9A7DAB] rounded-t-[40px] p-8 text-white h-full overflow-y-auto no-scrollbar"
+      className="bg-[#9A7DAB] rounded-t-[40px] p-8 text-white h-full overflow-hidden no-scrollbar"
     >
       <button 
         onClick={onClose} 
@@ -126,7 +134,10 @@ export function ProductPopup({ product, onClose, onAddToCart, cart }: ProductPop
             </div>
             <p className="text-sm text-white/80">250g | Assorted | Hard Box</p>
           </div>
-          <div className="mt-auto self-center max-w-max -mb-8">
+          <div className={cn(
+            "mt-auto self-center max-w-max -mb-8 transition-all duration-500 ease-out",
+            isAnimated ? "opacity-100 translate-y-0" : "opacity-0 translate-y-full"
+            )}>
              <div className="bg-custom-purple-dark rounded-t-[40px] px-6 py-4 flex items-center justify-between gap-4">
                 <div className="flex items-center gap-4">
                     <div className="flex flex-col items-center">
