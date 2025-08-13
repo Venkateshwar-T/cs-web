@@ -15,7 +15,6 @@ export default function Home() {
   const [cart, setCart] = useState<Record<string, number>>({});
   const [cartMessage, setCartMessage] = useState('');
   const [isCartButtonExpanded, setIsCartButtonExpanded] = useState(false);
-  const [selectedProductId, setSelectedProductId] = useState<number | null>(null);
 
   const handleSearchSubmit = (query: string) => {
     setSearchQuery(query);
@@ -42,14 +41,9 @@ export default function Home() {
 
   const totalQuantity = Object.values(cart).reduce((acc, cur) => acc + cur, 0);
 
-  const isProductDetailVisible = selectedProductId !== null;
-
   return (
     <>
-    {isProductDetailVisible && (
-        <div className="fixed inset-0 z-40 bg-black/50 transition-opacity duration-100" />
-    )}
-    <div className={cn("flex flex-col h-screen", isProductDetailVisible && "opacity-50")}>
+    <div className="flex flex-col h-screen">
       <Header onSearchSubmit={handleSearchSubmit} onSearchActiveChange={setIsSearchActive} />
       <main className={cn(
         "flex-grow overflow-hidden flex transition-all duration-500 relative items-start",
@@ -68,8 +62,6 @@ export default function Home() {
                 query={searchQuery} 
                 onAddToCart={handleAddToCart} 
                 cart={cart}
-                onProductClick={setSelectedProductId}
-                selectedProductId={selectedProductId}
               />
             </div>
             <Button

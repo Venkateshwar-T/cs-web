@@ -7,39 +7,36 @@ import { useState } from 'react';
 import { cn } from '@/lib/utils';
 
 interface ProductCardProps {
-  productId: number;
   productName: string;
   onAddToCart: (productName: string, quantity: number) => void;
-  onProductClick: (productId: number) => void;
   quantity: number;
 }
 
-export function ProductCard({ productId, productName, onAddToCart, onProductClick, quantity }: ProductCardProps) {
+export function ProductCard({ productName, onAddToCart, quantity }: ProductCardProps) {
   const [isLiked, setIsLiked] = useState(false);
 
-  const handleCardClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    // Stop propagation if the click is on a button to avoid double events
-    if ((e.target as HTMLElement).closest('button')) {
-      return;
-    }
-    onProductClick(productId);
-  };
-
-  const handleAddToCartClick = () => {
+  const handleAddToCartClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
     onAddToCart(productName, 1);
   };
 
-  const handleIncrement = () => {
+  const handleIncrement = (e: React.MouseEvent) => {
+    e.stopPropagation();
     onAddToCart(productName, quantity + 1);
   };
 
-  const handleDecrement = () => {
+  const handleDecrement = (e: React.MouseEvent) => {
+    e.stopPropagation();
     onAddToCart(productName, quantity - 1);
   };
+  
+  const handleLikeClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsLiked(!isLiked);
+  }
 
   return (
     <div
-      onClick={handleCardClick}
       className="bg-white text-black rounded-3xl overflow-hidden flex flex-col h-full shadow-custom-dark cursor-pointer transition-transform duration-200 hover:-translate-y-1"
     >
       <div className="relative w-full pt-[80%]">
@@ -55,7 +52,7 @@ export function ProductCard({ productId, productName, onAddToCart, onProductClic
         <div className="flex-grow">
           <div className="flex justify-between items-center">
             <h3 className="font-bold text-lg leading-tight">{productName}</h3>
-            <button onClick={() => setIsLiked(!isLiked)} className="pl-1 py-1">
+            <button onClick={handleLikeClick} className="pl-1 py-1">
               <Heart className={cn("h-6 w-6 stroke-current", isLiked ? 'text-red-500 fill-red-500' : 'text-black')} />
             </button>
           </div>

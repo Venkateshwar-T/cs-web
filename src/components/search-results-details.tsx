@@ -3,18 +3,14 @@
 import { ProductCard } from "./product-card";
 import { useState, useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import { X } from "lucide-react";
 
 interface SearchResultsDetailsProps {
   query: string;
   onAddToCart: (productName: string, quantity: number) => void;
   cart: Record<string, number>;
-  onProductClick: (productId: number | null) => void;
-  selectedProductId: number | null;
 }
 
-export function SearchResultsDetails({ query, onAddToCart, cart, onProductClick, selectedProductId }: SearchResultsDetailsProps) {
+export function SearchResultsDetails({ query, onAddToCart, cart }: SearchResultsDetailsProps) {
   const products = Array.from({ length: 8 }).map((_, i) => ({
     id: i,
     name: `Diwali Collection Box ${i + 1}`,
@@ -51,26 +47,10 @@ export function SearchResultsDetails({ query, onAddToCart, cart, onProductClick,
     };
   }, []);
   
-  const isProductDetailVisible = selectedProductId !== null;
 
   return (
     <div className="bg-[#5D2B79] h-full flex-grow rounded-t-[40px] ml-12 mr-8 relative">
         <div className="bg-white/20 h-full w-full rounded-t-[40px] pt-8 pl-8">
-            {isProductDetailVisible && (
-                <div 
-                  className="absolute inset-0 bg-[#9A7DAB] rounded-t-[40px] z-50 flex items-center justify-center p-4"
-                >
-                  <Button 
-                      variant="ghost" 
-                      size="icon" 
-                      className="absolute top-4 right-4 text-white hover:bg-white/10 hover:text-white rounded-full"
-                      onClick={() => onProductClick(null)}
-                  >
-                      <X className="h-6 w-6" />
-                      <span className="sr-only">Close</span>
-                  </Button>
-                </div>
-            )}
             <div 
                 ref={scrollContainerRef}
                 className={cn(
@@ -85,10 +65,8 @@ export function SearchResultsDetails({ query, onAddToCart, cart, onProductClick,
                 {products.map((product) => (
                     <ProductCard
                     key={product.id}
-                    productId={product.id}
                     productName={product.name}
                     onAddToCart={onAddToCart}
-                    onProductClick={onProductClick}
                     quantity={cart[product.name] || 0}
                     />
                 ))}
