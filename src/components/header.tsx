@@ -1,4 +1,3 @@
-
 "use client";
 
 import Link from "next/link";
@@ -132,7 +131,7 @@ export function Header({ onSearchActiveChange, onSearchSubmit }: HeaderProps) {
                   Enquire Now
                 </Button>
               </PopoverTrigger>
-              <PopoverContent align="end" className="w-auto max-w-[260px] bg-white/80 backdrop-blur-md border-white/30 text-black p-4 rounded-3xl flex items-center justify-center">
+              <PopoverContent align="end" className="w-auto max-w-xs bg-white/80 backdrop-blur-md border-white/30 text-black p-4 rounded-3xl flex items-center justify-center">
                 <div className="flex flex-col items-center text-center gap-1">
                   <h3 className="text-xl font-bold text-custom-purple-dark font-plex-sans">Looking for a Perfect Gift?</h3>
                   <p className="text-base text-center font-plex-sans-condensed">Get personalized advice on flavours, packaging, and more.</p>
