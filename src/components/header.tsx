@@ -93,6 +93,9 @@ export function Header({ onSearchActiveChange, onSearchSubmit }: HeaderProps) {
 
   return (
     <>
+      {isEnquireOpen && (
+          <div className="fixed inset-0 z-40 bg-black/50" />
+      )}
       <header className="fixed top-0 z-50 w-full bg-transparent pt-6">
         <div className="container flex h-20 max-w-screen-2xl items-center justify-between px-4 sm:px-6 lg:px-8 xl:px-24">
           <div className={cn("flex flex-1 justify-start transition-opacity", isEnquireOpen && "opacity-50")}>
