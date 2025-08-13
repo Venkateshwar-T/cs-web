@@ -74,9 +74,9 @@ export function ProductPopup({ product, onClose, onAddToCart, cart }: ProductPop
       </button>
       
       <div className="flex flex-col lg:flex-row h-full w-full gap-8">
-        <div className="w-full lg:w-1/3 flex flex-col justify-center">
-            <div className="flex flex-col gap-4">
-                <div className="relative w-full aspect-square">
+        <div className="w-full lg:w-1/3 flex items-center">
+            <div className="flex w-full gap-4 items-center justify-center">
+                <div className="relative w-4/5 aspect-square">
                     <Image
                         key={images[currentImageIndex].id}
                         src={images[currentImageIndex].src}
@@ -90,16 +90,16 @@ export function ProductPopup({ product, onClose, onAddToCart, cart }: ProductPop
                         onClick={handlePrevImage}
                         className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/30 text-white p-1 rounded-full hover:bg-black/50 transition-colors"
                     >
-                        <ChevronLeft size={24} />
+                        <ChevronLeft size={20} />
                     </button>
                     <button 
                         onClick={handleNextImage}
                         className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/30 text-white p-1 rounded-full hover:bg-black/50 transition-colors"
                     >
-                        <ChevronRight size={24} />
+                        <ChevronRight size={20} />
                     </button>
                 </div>
-                <div className="flex gap-4">
+                <div className="w-1/5 flex flex-col gap-2 self-stretch">
                     {images.map((image, index) => (
                         <div 
                             key={image.id} 
