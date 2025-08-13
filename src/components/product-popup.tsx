@@ -33,7 +33,7 @@ export function ProductPopup({ product, onClose, onAddToCart, cart }: ProductPop
       <div className="w-full flex items-start gap-8">
 
         {/* Image Gallery Section */}
-        <div className="w-1/3 grid grid-cols-6 gap-2">
+        <div className="w-1/3 grid grid-cols-6 gap-4">
           {/* Main Image */}
           <div className="col-span-5">
             <div className="relative w-full aspect-square">
