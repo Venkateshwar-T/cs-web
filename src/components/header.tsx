@@ -132,18 +132,18 @@ export function Header({ onSearchActiveChange, onSearchSubmit }: HeaderProps) {
                   Enquire Now
                 </Button>
               </PopoverTrigger>
-              <PopoverContent align="end" className="w-80 h-80 bg-white/80 backdrop-blur-md border-white/30 text-black p-4 rounded-3xl flex items-center justify-center">
+              <PopoverContent align="end" className="w-[281px] h-[266px] bg-white/80 backdrop-blur-md border-white/30 text-black p-4 rounded-3xl flex items-center justify-center">
                 <div className="flex flex-col items-center text-center gap-3">
-                  <h3 className="text-lg font-bold text-custom-purple-dark">Looking for a Perfect Gift?</h3>
-                  <p className="text-xs">Get personalized advice on flavours, packaging, and more.</p>
+                  <h3 className="text-[20px] font-bold text-custom-purple-dark">Looking for a Perfect Gift?</h3>
+                  <p className="text-[15px]">Get personalized advice on flavours, packaging, and more.</p>
                   <Separator className="my-1 bg-custom-purple-dark/50" />
-                  <Button asChild className="w-full bg-custom-purple-dark hover:bg-custom-purple-dark/90 text-white rounded-full text-sm h-9">
+                  <Button asChild className="w-[234px] h-[47px] bg-custom-purple-dark hover:bg-custom-purple-dark/90 text-white rounded-full text-[19px]">
                     <a href="tel:+1234567890">
                       <Phone className="mr-2 h-4 w-4" /> Call Us
                     </a>
                   </Button>
                   <p className="text-xs font-medium">-OR-</p>
-                  <Button asChild className="w-full bg-custom-purple-dark hover:bg-custom-purple-dark/90 text-white rounded-full text-sm h-9">
+                  <Button asChild className="w-[234px] h-[47px] bg-custom-purple-dark hover:bg-custom-purple-dark/90 text-white rounded-full text-[19px]">
                     <a href="https://wa.me/1234567890" target="_blank" rel="noopener noreferrer">
                       <AiOutlineWhatsApp className="mr-2 h-5 w-5" /> Whatsapp Us
                     </a>
