@@ -125,7 +125,7 @@ export function Header({ onSearchActiveChange, onSearchSubmit }: HeaderProps) {
         
         <div className="flex flex-1 justify-end">
           <div className="hidden md:flex items-center gap-1">
-            <Button asChild size="sm" className="bg-white text-custom-gold rounded-full font-normal text-sm lg:text-base hover:bg-transparent border border-white px-3 py-1">
+            <Button asChild size="sm" className="bg-custom-gold text-white rounded-full font-normal text-sm lg:text-base hover:bg-white hover:text-custom-gold border border-custom-gold px-3 py-1">
               <a href="mailto:contact@bizhome.com">Enquire Now</a>
             </Button>
             <Separator orientation="vertical" className="h-6 bg-foreground/50 mx-1 lg:mx-2" />
@@ -165,7 +165,7 @@ export function Header({ onSearchActiveChange, onSearchSubmit }: HeaderProps) {
                 </nav>
                 <Separator className="my-8" />
                 <div className="flex flex-col gap-4">
-                  <Button asChild size="lg" className="bg-white text-custom-gold rounded-full font-normal text-base hover:bg-transparent border border-white">
+                  <Button asChild size="lg" className="bg-custom-gold text-white rounded-full font-normal text-base hover:bg-white hover:text-custom-gold border border-custom-gold">
                     <a href="mailto:contact@bizhome.com">Enquire Now</a>
                   </Button>
                   <div className="flex items-center justify-center gap-4 mt-4">
