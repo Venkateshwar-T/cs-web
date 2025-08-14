@@ -14,16 +14,17 @@ interface FlavoursSectionProps {
 }
 
 const flavours: Flavour[] = [
-    { id: 1, name: 'Dark Chocolate Truffle', src: 'https://placehold.co/200x200.png', hint: 'dark chocolate' },
-    { id: 2, name: 'Milk Chocolate Caramel', src: 'https://placehold.co/200x200.png', hint: 'milk chocolate' },
-    { id: 3, name: 'White Chocolate Berry', src: 'https://placehold.co/200x200.png', hint: 'white chocolate' },
-    { id: 4, name: 'Hazelnut Praline', src: 'https://placehold.co/200x200.png', hint: 'hazelnut' },
-    { id: 5, name: 'Sea Salt & Almond', src: 'https://placehold.co/200x200.png', hint: 'almond' },
-    { id: 6, name: 'Coconut Cream', src: 'https://placehold.co/200x200.png', hint: 'coconut' },
-    { id: 7, name: 'Raspberry Ganache', src: 'https://placehold.co/200x200.png', hint: 'raspberry' },
-    { id: 8, name: 'Pistachio Delight', src: 'https://placehold.co/200x200.png', hint: 'pistachio' },
-    { id: 9, name: 'Orange Zest', src: 'https://placehold.co/200x200.png', hint: 'orange chocolate' },
-    { id: 10, name: 'Mint Chocolate', src: 'https://placehold.co/200x200.png', hint: 'mint chocolate' },
+    { id: 1, name: 'Roasted Almond', src: 'https://placehold.co/200x200.png', hint: 'roasted almond' },
+    { id: 2, name: 'Fruit & Nut', src: 'https://placehold.co/200x200.png', hint: 'fruit nut chocolate' },
+    { id: 3, name: 'Dark Chocolate', src: 'https://placehold.co/200x200.png', hint: 'dark chocolate' },
+    { id: 4, name: 'Hazelnut', src: 'https://placehold.co/200x200.png', hint: 'hazelnut' },
+    { id: 5, name: 'Butter Scotch', src: 'https://placehold.co/200x200.png', hint: 'butterscotch' },
+    { id: 6, name: 'Dates', src: 'https://placehold.co/200x200.png', hint: 'dates chocolate' },
+    { id: 7, name: 'Plain Chocolate', src: 'https://placehold.co/200x200.png', hint: 'plain chocolate' },
+    { id: 8, name: 'Mint', src: 'https://placehold.co/200x200.png', hint: 'mint chocolate' },
+    { id: 9, name: 'Raisins', src: 'https://placehold.co/200x200.png', hint: 'raisins chocolate' },
+    { id: 10, name: 'Sugar Free', src: 'https://placehold.co/200x200.png', hint: 'sugar free chocolate' },
+    { id: 11, name: 'White Chocolate', src: 'https://placehold.co/200x200.png', hint: 'white chocolate' },
 ];
 
 export function FlavoursSection({ onAddToCart, cart }: FlavoursSectionProps) {

@@ -40,7 +40,7 @@ export function FlavourCard({ flavour, onAddToCart, quantity }: FlavourCardProps
         />
       </div>
       <div className="mt-2 text-center">
-        <p className="text-white text-sm font-semibold truncate">{flavour.name}</p>
+        <p className="text-white text-sm font-semibold">{flavour.name}</p>
         <div className="mt-2 flex justify-center px-2">
             {quantity === 0 ? (
                 <Button
