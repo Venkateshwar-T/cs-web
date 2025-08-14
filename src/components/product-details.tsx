@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState } from 'react';
@@ -26,8 +27,8 @@ export function ProductDetails({ product }: ProductDetailsProps) {
             <div className="flex items-center gap-2">
                 <div className="w-6 h-6 flex items-center justify-center">
                   <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-5 h-5">
-                      <rect x="1" y="1" width="22" height="22" rx="3" stroke="#4CAF50" strokeWidth="2"/>
-                      <circle cx="12" cy="12" r="7" fill="#4CAF50"/>
+                      <rect x="1" y="1" width="22" height="22" rx="3" stroke="#137C00" strokeWidth="2"/>
+                      <circle cx="12" cy="12" r="7" fill="#137C00"/>
                   </svg>
                 </div>
                 <p className="text-sm">250g | Assorted | Hard-Box</p>
