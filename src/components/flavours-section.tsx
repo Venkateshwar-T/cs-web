@@ -67,7 +67,7 @@ export function FlavoursSection({ onAddToCart, cart }: FlavoursSectionProps) {
   };
 
   return (
-    <div className="bg-[#5D2B79] rounded-[40px] py-4 px-2 h-full flex flex-col relative">
+    <div className="bg-[#5D2B79] rounded-[40px] py-2 px-4 h-full relative">
       <SectionTitle className="pl-4 mb-2 text-lg">Flavours & Fillings</SectionTitle>
       
       {canScrollLeft && (
@@ -81,7 +81,7 @@ export function FlavoursSection({ onAddToCart, cart }: FlavoursSectionProps) {
         </Button>
       )}
 
-      <div ref={scrollContainerRef} className="flex overflow-x-auto no-scrollbar gap-4 flex-grow items-center px-4">
+      <div ref={scrollContainerRef} className="flex overflow-x-auto no-scrollbar gap-4 h-[calc(100%-2.75rem)] items-center px-4">
         {flavours.map((flavour) => (
           <FlavourCard
             key={flavour.id}
