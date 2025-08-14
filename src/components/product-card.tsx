@@ -6,6 +6,7 @@ import { Heart, Plus, Minus } from 'lucide-react';
 import { useState } from 'react';
 import { cn } from '@/lib/utils';
 import type { Product } from '@/app/page';
+import { SparkleIcon } from './sparkle-icon';
 
 interface ProductCardProps {
   product: Product;
@@ -16,6 +17,7 @@ interface ProductCardProps {
 
 export function ProductCard({ product, onAddToCart, quantity, onProductClick }: ProductCardProps) {
   const [isLiked, setIsLiked] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false);
 
   const handleAddToCartClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -35,6 +37,9 @@ export function ProductCard({ product, onAddToCart, quantity, onProductClick }: 
   const handleLikeClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     setIsLiked(!isLiked);
+    if (!isLiked) {
+        setIsAnimating(true);
+    }
   }
 
   return (
@@ -53,11 +58,33 @@ export function ProductCard({ product, onAddToCart, quantity, onProductClick }: 
       </div>
       <div className="p-3 flex flex-col flex-grow">
         <div className="flex-grow">
-          <div className="flex justify-between items-center">
-            <h3 className="font-bold text-lg leading-tight">{product.name}</h3>
-            <button onClick={handleLikeClick} className="pl-1 py-1">
-              <Heart className={cn("h-6 w-6 stroke-current", isLiked ? 'text-red-500 fill-red-500' : 'text-black')} />
-            </button>
+          <div className="flex justify-between items-start">
+            <h3 className="font-bold text-lg leading-tight flex-1 pr-2">{product.name}</h3>
+            <div className="relative">
+              <button onClick={handleLikeClick} className="pl-1 py-1">
+                <Heart className={cn("h-6 w-6 stroke-current transition-colors duration-300", isLiked ? 'text-red-500 fill-red-500' : 'text-black')} />
+              </button>
+              {isAnimating && (
+                  <div 
+                      className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none"
+                      onAnimationEnd={() => setIsAnimating(false)}
+                  >
+                      {Array.from({ length: 6 }).map((_, i) => (
+                          <div 
+                              key={i}
+                              className="absolute"
+                              style={{
+                                  transform: `rotate(${i * 60}deg) translateY(-25px)`,
+                              }}
+                          >
+                              <div className="animate-sparkle-pulse">
+                                  <SparkleIcon className="text-red-500 animate-sparkle-fade-out" />
+                              </div>
+                          </div>
+                      ))}
+                  </div>
+              )}
+            </div>
           </div>
           <p className="text-xs text-[#9A7DAB] mt-1">250g | Assorted | Hard Box</p>
         </div>

@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Heart } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { Product } from '@/app/page';
+import { SparkleIcon } from './sparkle-icon';
 
 interface ProductDetailsProps {
     product: Product;
@@ -11,15 +12,45 @@ interface ProductDetailsProps {
 
 export function ProductDetails({ product }: ProductDetailsProps) {
     const [isLiked, setIsLiked] = useState(false);
+    const [isAnimating, setIsAnimating] = useState(false);
+
+    const handleLikeClick = () => {
+        setIsLiked(!isLiked);
+        if (!isLiked) {
+            setIsAnimating(true);
+        }
+    };
 
     return (
         <div className="flex flex-col gap-4 text-black h-full animate-slide-in-from-right" style={{ animationDuration: '0.5s' }}>
             {/* Title and Like button */}
             <div className="flex justify-between items-start">
                 <h2 className="text-3xl font-bold font-plex-sans-condensed">{product.name}</h2>
-                <button onClick={() => setIsLiked(!isLiked)} className="p-1">
-                    <Heart className={cn("h-7 w-7 stroke-current", isLiked ? 'text-red-500 fill-red-500' : 'text-black')} />
-                </button>
+                <div className="relative">
+                    <button onClick={handleLikeClick} className="p-1">
+                        <Heart className={cn("h-7 w-7 stroke-current transition-colors duration-300", isLiked ? 'text-red-500 fill-red-500' : 'text-black')} />
+                    </button>
+                    {isAnimating && (
+                        <div 
+                            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none"
+                            onAnimationEnd={() => setIsAnimating(false)}
+                        >
+                            {Array.from({ length: 6 }).map((_, i) => (
+                                <div 
+                                    key={i}
+                                    className="absolute"
+                                    style={{
+                                        transform: `rotate(${i * 60}deg) translateY(-30px)`,
+                                    }}
+                                >
+                                    <div className="animate-sparkle-pulse">
+                                        <SparkleIcon className="text-red-500 animate-sparkle-fade-out" />
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </div>
             </div>
 
             {/* FSSAI Logo and details */}
