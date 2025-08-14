@@ -32,8 +32,9 @@ export function FlavoursSection({ onAddToCart, cart }: FlavoursSectionProps) {
     if (!container) return;
 
     const checkScrollability = () => {
-      setCanScrollLeft(container.scrollLeft > 0);
-      setCanScrollRight(container.scrollLeft < container.scrollWidth - container.clientWidth);
+      // A small tolerance is added to prevent floating point inaccuracies
+      setCanScrollLeft(container.scrollLeft > 1);
+      setCanScrollRight(container.scrollLeft < container.scrollWidth - container.clientWidth - 1);
     };
 
     checkScrollability();
@@ -62,7 +63,7 @@ export function FlavoursSection({ onAddToCart, cart }: FlavoursSectionProps) {
 
   return (
     <div className="bg-white/20 rounded-[40px] p-2 h-full flex flex-col relative">
-      <SectionTitle className="pl-0 mb-2 text-lg">Flavours & Fillings</SectionTitle>
+      <SectionTitle className="pl-2 mb-2 text-lg">Flavours & Fillings</SectionTitle>
       
       {canScrollLeft && (
         <Button 
@@ -75,7 +76,7 @@ export function FlavoursSection({ onAddToCart, cart }: FlavoursSectionProps) {
         </Button>
       )}
 
-      <div ref={scrollContainerRef} className="flex overflow-x-auto no-scrollbar gap-3 flex-grow items-center">
+      <div ref={scrollContainerRef} className="flex overflow-x-auto no-scrollbar gap-3 flex-grow items-center px-2">
         {flavours.map((flavour) => (
           <FlavourCard
             key={flavour.id}
