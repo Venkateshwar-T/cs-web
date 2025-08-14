@@ -76,7 +76,7 @@ export function FlavoursSection({ onAddToCart, cart }: FlavoursSectionProps) {
         </Button>
       )}
 
-      <div ref={scrollContainerRef} className="flex overflow-x-auto no-scrollbar gap-3 flex-grow items-center px-4">
+      <div ref={scrollContainerRef} className="flex overflow-x-auto no-scrollbar gap-4 flex-grow items-center px-4">
         {flavours.map((flavour) => (
           <FlavourCard
             key={flavour.id}
