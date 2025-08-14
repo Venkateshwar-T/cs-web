@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState } from 'react';
@@ -36,36 +35,36 @@ export function ProductDetails({ product }: ProductDetailsProps) {
 
             {/* Best for */}
             <div>
-                <p className="text-sm font-semibold font-plex-sans-condensed">
+                <p className="text-base font-semibold font-plex-sans-condensed">
                     Best for: Weddings, Corporate Gifts, Birthdays & Anniversaries, Festive Seasons
                 </p>
             </div>
 
             {/* Product Description */}
             <div>
-                <p className="text-sm font-plex-sans">
+                <p className="text-base font-plex-sans">
                     This premium hard-box presents a curated assortment of handcrafted chocolates. The collection is fully customizable, allowing you to select from a variety of dark, milk, and white chocolates to create a truly personalized gift.
                 </p>
             </div>
 
             {/* Ingredients */}
             <div>
-                 <p className="text-xs font-normal font-plex-sans-condensed">
+                 <p className="text-sm font-normal font-plex-sans-condensed">
                     <span className="font-semibold">Ingredients:</span> Sugar, Edible Vegetable Fat, Cocoa Solids, Emulsifiers (492, 322). Contains Added Natural (Vanilla) Flavouring Substances.
                 </p>
             </div>
             
             {/* Nutritional Information */}
             <div>
-                <p className="text-xs font-normal font-plex-sans-condensed">
+                <p className="text-sm font-normal font-plex-sans-condensed">
                     <span className="font-semibold">Nutritional Information:</span> Made with Hydrogenated Vegetable Fat. Contains Trans Fats.
                 </p>
             </div>
 
             {/* Allergen Alert */}
             <div>
-                <p className="text-xs font-semibold">Allergen Alert:</p>
-                <ul className="list-disc pl-5 text-xs font-semibold">
+                <p className="text-sm font-semibold">Allergen Alert:</p>
+                <ul className="list-disc pl-5 text-sm font-semibold">
                     <li>Contains soy.</li>
                     <li>May contain traces of milk solids.</li>
                 </ul>
