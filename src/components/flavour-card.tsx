@@ -28,7 +28,7 @@ export function FlavourCard({ flavour, onAddToCart, quantity }: FlavourCardProps
   };
 
   return (
-    <div className="bg-white/20 p-2 rounded-[20px] w-[calc(22%-0.75rem)] flex-shrink-0">
+    <div className="bg-white/30 p-3 rounded-[20px] w-[calc(25%-0.75rem)] h-[100%] flex-shrink-0">
       <div className="relative w-full aspect-square">
         <Image
           src={flavour.src}
@@ -40,7 +40,7 @@ export function FlavourCard({ flavour, onAddToCart, quantity }: FlavourCardProps
         />
       </div>
       <div className="mt-2 text-center">
-        <p className="text-white text-sm font-semibold h-10 flex items-center justify-center">{flavour.name}</p>
+        <p className="text-white text-sm font-normal h-10 flex items-center justify-center">{flavour.name}</p>
         <div className="mt-2 flex justify-center px-2">
             {quantity === 0 ? (
                 <Button
