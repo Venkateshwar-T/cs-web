@@ -13,7 +13,7 @@ export function ProductDetails({ product }: ProductDetailsProps) {
     const [isLiked, setIsLiked] = useState(false);
 
     return (
-        <div className="flex flex-col gap-4 text-black h-full">
+        <div className="flex flex-col gap-4 text-black h-full animate-slide-in-from-right" style={{ animationDuration: '0.5s' }}>
             {/* Title and Like button */}
             <div className="flex justify-between items-start">
                 <h2 className="text-3xl font-bold font-plex-sans-condensed">{product.name}</h2>
