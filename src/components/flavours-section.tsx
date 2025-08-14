@@ -61,7 +61,7 @@ export function FlavoursSection({ onAddToCart, cart }: FlavoursSectionProps) {
   };
 
   return (
-    <div className="bg-white/20 rounded-[40px] p-4 h-full flex flex-col relative">
+    <div className="bg-white/20 rounded-[40px] p-2 h-full flex flex-col relative">
       <SectionTitle className="pl-0 mb-2 text-lg">Flavours & Fillings</SectionTitle>
       
       {canScrollLeft && (
