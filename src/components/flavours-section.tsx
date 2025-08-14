@@ -20,6 +20,10 @@ const flavours: Flavour[] = [
     { id: 4, name: 'Hazelnut Praline', src: 'https://placehold.co/200x200.png', hint: 'hazelnut' },
     { id: 5, name: 'Sea Salt & Almond', src: 'https://placehold.co/200x200.png', hint: 'almond' },
     { id: 6, name: 'Coconut Cream', src: 'https://placehold.co/200x200.png', hint: 'coconut' },
+    { id: 7, name: 'Raspberry Ganache', src: 'https://placehold.co/200x200.png', hint: 'raspberry' },
+    { id: 8, name: 'Pistachio Delight', src: 'https://placehold.co/200x200.png', hint: 'pistachio' },
+    { id: 9, name: 'Orange Zest', src: 'https://placehold.co/200x200.png', hint: 'orange chocolate' },
+    { id: 10, name: 'Mint Chocolate', src: 'https://placehold.co/200x200.png', hint: 'mint chocolate' },
 ];
 
 export function FlavoursSection({ onAddToCart, cart }: FlavoursSectionProps) {
