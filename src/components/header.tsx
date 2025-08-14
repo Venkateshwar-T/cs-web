@@ -245,7 +245,7 @@ export function Header({ onSearchActiveChange, onSearchSubmit }: HeaderProps) {
           <form 
             ref={formRef}
             onSubmit={handleSearchSubmit} 
-            className={`relative mx-auto transition-all duration-500 ease-in-out animate-slide-in-from-top ${!targetWidth ? 'max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl' : ''}`}
+            className={`relative mx-auto transition-all duration-500 ease-in-out animate-slide-down ${!targetWidth ? 'max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl' : ''}`}
             style={{ maxWidth: targetWidth ? `${targetWidth}px` : undefined, animationDuration: '0.5s', animationDelay: '0.4s' }}
           >
             <div className="absolute inset-0 rounded-full bg-gradient-to-br from-white/80 to-white/20 backdrop-blur-sm -z-10"></div>

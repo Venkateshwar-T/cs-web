@@ -1,3 +1,4 @@
+
 import type {Config} from 'tailwindcss';
 
 export default {
@@ -116,7 +117,7 @@ export default {
           '0%': { transform: 'translateX(20px)', opacity: '0' },
           '100%': { transform: 'translateX(0)', opacity: '1' },
         },
-        'slide-in-from-top': {
+        'slide-down': {
           '0%': { transform: 'translateY(-20px)', opacity: '0' },
           '100%': { transform: 'translateY(0)', opacity: '1' },
         },
@@ -142,7 +143,7 @@ export default {
         'fade-in': 'fade-in 0.5s ease-out forwards',
         'slide-in-from-left': 'slide-in-from-left 0.5s ease-out forwards',
         'slide-in-from-right': 'slide-in-from-right 0.5s ease-out forwards',
-        'slide-in-from-top': 'slide-in-from-top 0.5s ease-out forwards',
+        'slide-down': 'slide-down 0.5s ease-out forwards',
         'sparkle-pulse': 'sparkle-pulse 0.6s ease-out forwards',
         'sparkle-fade-out': 'sparkle-fade-out 0.6s ease-out forwards',
         'heart-pop': 'heart-pop 0.3s ease-in-out',
