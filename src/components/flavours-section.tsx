@@ -1,4 +1,3 @@
-// @/components/flavours-section.tsx
 'use client';
 
 import { FlavourCard } from './flavour-card';
@@ -22,7 +21,7 @@ const flavours: Flavour[] = [
 export function FlavoursSection({ onAddToCart, cart }: FlavoursSectionProps) {
   return (
     <div className="bg-white/20 rounded-[40px] p-4 h-full flex flex-col">
-      <SectionTitle className="pl-0 mb-2">Flavours & Fillings</SectionTitle>
+      <SectionTitle className="pl-0 mb-2 text-lg">Flavours & Fillings</SectionTitle>
       <div className="flex overflow-x-auto no-scrollbar gap-3 flex-grow items-center">
         {flavours.map((flavour) => (
           <FlavourCard
