@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils';
 
 export function ProductPopupFooter() {
     return (
-        <div className="absolute bottom-0 left-0 right-0 h-[11%]">
+        <div className="absolute bottom-0 left-0 right-0 h-[11%] animate-slide-up-fade-in" style={{ animationDuration: '0.2s', animationDelay: '0.1s', animationFillMode: 'both' }}>
             <div className="bg-custom-purple-dark h-full w-full rounded-t-3xl flex items-center justify-center">
                 <div className="flex items-center justify-center gap-4 text-white w-full">
                     <div className="flex flex-col items-center">
