@@ -18,6 +18,7 @@ interface ProductCardProps {
 export function ProductCard({ product, onAddToCart, quantity, onProductClick }: ProductCardProps) {
   const [isLiked, setIsLiked] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [likeClickCount, setLikeClickCount] = useState(0);
 
   const handleAddToCartClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -36,6 +37,7 @@ export function ProductCard({ product, onAddToCart, quantity, onProductClick }: 
   
   const handleLikeClick = (e: React.MouseEvent) => {
     e.stopPropagation();
+    setLikeClickCount(prev => prev + 1);
     setIsLiked(!isLiked);
     if (!isLiked) {
         setIsAnimating(true);
@@ -62,7 +64,14 @@ export function ProductCard({ product, onAddToCart, quantity, onProductClick }: 
             <h3 className="font-bold text-lg leading-tight flex-1 pr-2">{product.name}</h3>
             <div className="relative">
               <button onClick={handleLikeClick} className="pl-1 py-1">
-                <Heart className={cn("h-6 w-6 stroke-current transition-colors duration-300", isLiked ? 'text-red-500 fill-red-500' : 'text-black')} />
+                <Heart 
+                  key={likeClickCount}
+                  className={cn(
+                    "h-6 w-6 stroke-current transition-colors duration-300", 
+                    isLiked ? 'text-red-500 fill-red-500' : 'text-black',
+                    'animate-heart-pop'
+                  )} 
+                />
               </button>
               {isAnimating && (
                   <div 

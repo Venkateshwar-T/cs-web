@@ -129,6 +129,11 @@ export default {
           '0%': { opacity: '1' },
           '100%': { opacity: '0' },
         },
+        'heart-pop': {
+          '0%': { transform: 'scale(1)' },
+          '50%': { transform: 'scale(1.25)' },
+          '100%': { transform: 'scale(1)' },
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
@@ -140,6 +145,7 @@ export default {
         'slide-in-from-top': 'slide-in-from-top 0.5s ease-out forwards',
         'sparkle-pulse': 'sparkle-pulse 0.6s ease-out forwards',
         'sparkle-fade-out': 'sparkle-fade-out 0.6s ease-out forwards',
+        'heart-pop': 'heart-pop 0.3s ease-in-out',
       },
     },
   },

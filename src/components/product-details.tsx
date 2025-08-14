@@ -13,8 +13,10 @@ interface ProductDetailsProps {
 export function ProductDetails({ product }: ProductDetailsProps) {
     const [isLiked, setIsLiked] = useState(false);
     const [isAnimating, setIsAnimating] = useState(false);
+    const [likeClickCount, setLikeClickCount] = useState(0);
 
     const handleLikeClick = () => {
+        setLikeClickCount(prev => prev + 1);
         setIsLiked(!isLiked);
         if (!isLiked) {
             setIsAnimating(true);
@@ -28,7 +30,14 @@ export function ProductDetails({ product }: ProductDetailsProps) {
                 <h2 className="text-3xl font-bold font-plex-sans-condensed">{product.name}</h2>
                 <div className="relative">
                     <button onClick={handleLikeClick} className="p-1">
-                        <Heart className={cn("h-7 w-7 stroke-current transition-colors duration-300", isLiked ? 'text-red-500 fill-red-500' : 'text-black')} />
+                        <Heart 
+                            key={likeClickCount}
+                            className={cn(
+                                "h-7 w-7 stroke-current transition-colors duration-300", 
+                                isLiked ? 'text-red-500 fill-red-500' : 'text-black',
+                                'animate-heart-pop'
+                            )} 
+                        />
                     </button>
                     {isAnimating && (
                         <div 
