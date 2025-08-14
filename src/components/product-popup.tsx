@@ -20,9 +20,10 @@ interface ProductPopupProps {
   onClose: () => void;
   onAddToCart: (productName: string, quantity: number) => void;
   cart: Record<string, number>;
+  onImageExpandChange: (isExpanded: boolean) => void;
 }
 
-export function ProductPopup({ product, onClose, onAddToCart, cart }: ProductPopupProps) {
+export function ProductPopup({ product, onClose, onAddToCart, cart, onImageExpandChange }: ProductPopupProps) {
   
   const handleFlavourAddToCart = (flavourId: number, quantity: number) => {
     onAddToCart(flavourId.toString(), quantity);
@@ -41,7 +42,7 @@ export function ProductPopup({ product, onClose, onAddToCart, cart }: ProductPop
         {/* Left Section */}
         <div className="w-[48%] flex flex-col gap-4 h-full items-center">
           <div className="flex h-[45%] rounded-lg w-full justify-center">
-            <ImageGallery product={product} />
+            <ImageGallery product={product} onImageExpandChange={onImageExpandChange} />
           </div>
           <div className="pb-6 rounded-lg w-full h-[55%]">
             <FlavoursSection onAddToCart={handleFlavourAddToCart} cart={cart} />

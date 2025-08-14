@@ -22,9 +22,10 @@ export default function Home() {
   const [cartMessage, setCartMessage] = useState('');
   const [isCartButtonExpanded, setIsCartButtonExpanded] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [isImageExpanded, setIsImageExpanded] = useState(false);
 
   useEffect(() => {
-    if (selectedProduct) {
+    if (selectedProduct || isImageExpanded) {
       document.body.classList.add('overflow-hidden');
     } else {
       document.body.classList.remove('overflow-hidden');
@@ -33,7 +34,7 @@ export default function Home() {
     return () => {
       document.body.classList.remove('overflow-hidden');
     };
-  }, [selectedProduct]);
+  }, [selectedProduct, isImageExpanded]);
 
   const handleSearchSubmit = (query: string) => {
     setSearchQuery(query);
@@ -70,7 +71,7 @@ export default function Home() {
 
   return (
     <>
-      <div className={cn("flex flex-col h-screen", selectedProduct ? 'opacity-50' : '')}>
+      <div className={cn("flex flex-col h-screen", (selectedProduct || isImageExpanded) ? 'opacity-50' : '')}>
         <Header onSearchSubmit={handleSearchSubmit} onSearchActiveChange={setIsSearchActive} />
         <main className={cn(
           "flex-grow overflow-hidden flex transition-all duration-500 relative items-start",
@@ -133,6 +134,7 @@ export default function Home() {
                     onClose={handleClosePopup}
                     onAddToCart={handleAddToCart}
                     cart={cart}
+                    onImageExpandChange={setIsImageExpanded}
                   />
               </div>
           </div>
