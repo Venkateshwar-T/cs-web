@@ -35,7 +35,7 @@ export function FlavourCard({ flavour, onAddToCart, quantity }: FlavourCardProps
           alt={flavour.name}
           layout="fill"
           objectFit="cover"
-          className="rounded-[20%]"
+          className="rounded-full"
           data-ai-hint={flavour.hint}
         />
       </div>
