@@ -28,7 +28,7 @@ export function FlavourCard({ flavour, onAddToCart, quantity }: FlavourCardProps
   };
 
   return (
-    <div className="bg-white/20 p-2 rounded-[20%] w-[calc(22%-0.75rem)] flex-shrink-0">
+    <div className="bg-white/20 p-2 rounded-[20px] w-[calc(22%-0.75rem)] flex-shrink-0">
       <div className="relative w-full aspect-square">
         <Image
           src={flavour.src}

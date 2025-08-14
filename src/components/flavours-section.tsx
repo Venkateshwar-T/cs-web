@@ -14,17 +14,17 @@ interface FlavoursSectionProps {
 }
 
 const flavours: Flavour[] = [
-    { id: 1, name: 'Roasted Almond', src: '/flavours/roasted-almond.png', hint: 'roasted almond' },
-    { id: 2, name: 'Fruit & Nut', src: '/flavours/fruit-nut.png', hint: 'fruit nut chocolate' },
-    { id: 3, name: 'Dark Chocolate', src: '/flavours/dark-chocolate.png', hint: 'dark chocolate' },
+    { id: 1, name: 'Roasted Almond', src: '/flavours/almonds.png', hint: 'roasted almond' },
+    { id: 2, name: 'Fruit & Nut', src: '/flavours/nuts.png', hint: 'fruit nut chocolate' },
+    { id: 3, name: 'Dark Chocolate', src: '/flavours/darkchoco.png', hint: 'dark chocolate' },
     { id: 4, name: 'Hazelnut', src: '/flavours/hazelnut.png', hint: 'hazelnut' },
-    { id: 5, name: 'Butter Scotch', src: '/flavours/butter-scotch.png', hint: 'butterscotch' },
+    { id: 5, name: 'Butter Scotch', src: '/flavours/butterscotch.png', hint: 'butterscotch' },
     { id: 6, name: 'Dates', src: '/flavours/dates.png', hint: 'dates chocolate' },
-    { id: 7, name: 'Plain Chocolate', src: '/flavours/plain-chocolate.png', hint: 'plain chocolate' },
+    { id: 7, name: 'Plain Chocolate', src: '/flavours/plainchoco.png', hint: 'plain chocolate' },
     { id: 8, name: 'Mint', src: '/flavours/mint.png', hint: 'mint chocolate' },
     { id: 9, name: 'Raisins', src: '/flavours/raisins.png', hint: 'raisins chocolate' },
-    { id: 10, name: 'Sugar Free', src: '/flavours/sugar-free.png', hint: 'sugar free chocolate' },
-    { id: 11, name: 'White Chocolate', src: '/flavours/white-chocolate.png', hint: 'white chocolate' },
+    { id: 10, name: 'Sugar Free', src: '/flavours/sugarfree.png', hint: 'sugar free chocolate' },
+    { id: 11, name: 'White Chocolate', src: '/flavours/whitechoco.png', hint: 'white chocolate' },
 ];
 
 export function FlavoursSection({ onAddToCart, cart }: FlavoursSectionProps) {
