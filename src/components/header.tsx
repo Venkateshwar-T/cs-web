@@ -145,7 +145,7 @@ export function Header({ onSearchActiveChange, onSearchSubmit }: HeaderProps) {
                     size="sm" 
                     className={cn(
                       "rounded-full font-normal text-sm lg:text-base border border-custom-gold px-3 py-1 transition-all duration-100 hover:opacity-90",
-                      isEnquireOpen ? 'bg-white text-custom-gold hover:bg-white' : 'bg-custom-gold text-white hover:bg-custom-gold'
+                      isEnquireOpen ? 'bg-white text-custom-purple-dark hover:bg-white' : 'bg-custom-gold text-custom-purple-dark hover:bg-custom-gold'
                     )}
                   >
                     Enquire Now
