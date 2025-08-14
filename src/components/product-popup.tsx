@@ -33,7 +33,7 @@ export function ProductPopup({ product, onClose, onAddToCart, cart }: ProductPop
       {/* The content area of the popup is now a flex container for the three boxes */}
       <div className="flex flex-row flex-grow h-full gap-4">
         {/* Left Column (now 40% width to contain the wider red box) */}
-        <div className="w-2/5 flex flex-col gap-4 h-full">
+        <div className="w-2/5 flex flex-col gap-4 h-full items-center">
           {/* 1. Top Left Box (Blue) - Width is set to be 1/3 of the total container */}
           <div className="bg-blue-500 h-1/2 rounded-lg w-[83.33%]"></div>
           {/* 2. Bottom Left Box (Red) - Fills the 40% width of this column */}
