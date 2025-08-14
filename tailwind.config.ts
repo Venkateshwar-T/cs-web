@@ -146,7 +146,7 @@ export default {
         'sparkle-pulse': 'sparkle-pulse 0.6s ease-out forwards',
         'sparkle-fade-out': 'sparkle-fade-out 0.6s ease-out forwards',
         'heart-pop': 'heart-pop 0.3s ease-in-out',
-        'slide-up-fade-in': 'slide-up-fade-in 0.2s ease-out forwards',
+        'slide-up-fade-in': 'slide-up-fade-in 0.5s ease-out forwards',
       },
     },
   },
