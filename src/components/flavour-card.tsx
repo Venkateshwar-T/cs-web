@@ -46,12 +46,12 @@ export function FlavourCard({ flavour, onAddToCart, quantity }: FlavourCardProps
                 <Button
                     size="sm"
                     onClick={handleAddToCartClick}
-                    className="h-8 w-full rounded-full uppercase bg-transparent border-2 border-b-[3px] border-custom-purple-dark text-custom-purple-dark bg-white hover:bg-custom-purple-dark hover:text-white text-xs"
+                    className="h-7 w-full rounded-full uppercase bg-transparent border-2 border-b-[3px] border-custom-purple-dark text-custom-purple-dark bg-white hover:bg-custom-purple-dark hover:text-white text-xs"
                 >
                     Add
                 </Button>
             ) : (
-                <div className="flex items-center justify-center w-full rounded-full bg-custom-purple-dark text-white h-8">
+                <div className="flex items-center justify-center w-full rounded-full bg-custom-purple-dark text-white h-7">
                     <Button
                         size="icon"
                         variant="ghost"
