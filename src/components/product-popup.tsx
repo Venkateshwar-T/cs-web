@@ -5,6 +5,7 @@ import type { Product } from '@/app/page';
 import { FlavoursSection } from './flavours-section';
 import { ImageGallery } from './image-gallery';
 import { ProductDetails } from './product-details';
+import { Separator } from './ui/separator';
 
 export type Flavour = {
   id: number;
@@ -45,7 +46,9 @@ export function ProductPopup({ product, onClose, onAddToCart, cart }: ProductPop
           </div>
         </div>
         
-        <div className="flex-grow bg-white/20 h-full rounded-[40px] p-6 overflow-y-auto custom-scrollbar">
+        <Separator orientation="vertical" className="bg-white/50 h-auto" />
+
+        <div className="flex-grow h-full rounded-[40px] p-6 overflow-y-auto custom-scrollbar">
             <ProductDetails product={product} />
         </div>
       </div>
