@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { Heart } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { Product } from '@/app/page';
-import Image from 'next/image';
 
 interface ProductDetailsProps {
     product: Product;
@@ -25,7 +24,12 @@ export function ProductDetails({ product }: ProductDetailsProps) {
 
             {/* FSSAI Logo and details */}
             <div className="flex items-center gap-2">
-                <Image src="/fssai_logo.png" alt="FSSAI" width={24} height={24} />
+                <div className="w-6 h-6 flex items-center justify-center">
+                  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-5 h-5">
+                      <rect x="1" y="1" width="22" height="22" rx="3" stroke="#4CAF50" strokeWidth="2"/>
+                      <circle cx="12" cy="12" r="7" fill="#4CAF50"/>
+                  </svg>
+                </div>
                 <p className="text-sm">250g | Assorted | Hard-Box</p>
             </div>
 
