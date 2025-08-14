@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { Heart } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { Product } from '@/app/page';
-import { Button } from './ui/button';
 
 interface ProductDetailsProps {
     product: Product;
@@ -14,7 +13,7 @@ export function ProductDetails({ product }: ProductDetailsProps) {
     const [isLiked, setIsLiked] = useState(false);
 
     return (
-        <div className="flex flex-col gap-4 text-black h-full relative">
+        <div className="flex flex-col gap-4 text-black h-full">
             {/* Title and Like button */}
             <div className="flex justify-between items-start">
                 <h2 className="text-3xl font-bold font-plex-sans-condensed">{product.name}</h2>
@@ -69,35 +68,6 @@ export function ProductDetails({ product }: ProductDetailsProps) {
                     <li>Contains soy.</li>
                     <li>May contain traces of milk solids.</li>
                 </ul>
-            </div>
-            
-            {/* Sticky Footer for Pricing and Actions */}
-            <div className="sticky bottom-0 left-0 right-0 h-24 -mx-6">
-                <div className="bg-custom-purple-dark h-full w-full rounded-t-3xl mt-auto flex items-center justify-center px-6">
-                    <div className="flex items-center justify-center gap-4 text-white w-full">
-                        {/* Prices */}
-                        <div className="flex flex-col items-center">
-                            <p className="text-sm line-through opacity-70">₹1000</p>
-                            <p className="text-xs text-custom-gold font-semibold">25% OFF</p>
-                        </div>
-
-                        <p className="text-3xl font-bold">₹750</p>
-
-                        {/* Buttons */}
-                        <Button 
-                            size="sm" 
-                            className="rounded-full font-semibold text-sm lg:text-base border border-custom-purple-dark bg-white text-custom-purple-dark px-4 py-1.5 h-auto hover:bg-white/90"
-                        >
-                            Add to Cart
-                        </Button>
-                        <Button 
-                            size="sm" 
-                            className="rounded-full font-semibold text-sm lg:text-base border border-custom-gold bg-custom-gold text-white px-4 py-1.5 h-auto hover:bg-custom-gold/90"
-                        >
-                            Buy Now
-                        </Button>
-                    </div>
-                </div>
             </div>
         </div>
     );
