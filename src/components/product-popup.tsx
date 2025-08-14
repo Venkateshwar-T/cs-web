@@ -37,7 +37,8 @@ export function ProductPopup({ product, onClose, onAddToCart, cart }: ProductPop
         <X size={24} />
       </button>
       
-      <div className="flex flex-row flex-grow h-full gap-8 pb-28">
+      <div className="flex flex-row flex-grow h-full gap-8">
+        {/* Left Section */}
         <div className="w-[48%] flex flex-col gap-4 h-full items-center">
           <div className="flex h-[45%] rounded-lg w-full justify-center">
             <ImageGallery product={product} />
@@ -49,11 +50,14 @@ export function ProductPopup({ product, onClose, onAddToCart, cart }: ProductPop
         
         <Separator orientation="vertical" className="bg-white/50 h-auto w-0.5" />
 
-        <div className="flex-grow h-full py-0 pr-6 overflow-y-auto custom-scrollbar">
-            <ProductDetails product={product} />
+        {/* Right Section */}
+        <div className="flex-grow h-full relative">
+            <div className="h-full py-0 pr-6 overflow-y-auto custom-scrollbar pb-28">
+                <ProductDetails product={product} />
+            </div>
+            <ProductPopupFooter />
         </div>
       </div>
-      <ProductPopupFooter />
     </div>
   );
 }
