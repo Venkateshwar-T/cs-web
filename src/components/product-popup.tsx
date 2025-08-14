@@ -46,9 +46,9 @@ export function ProductPopup({ product, onClose, onAddToCart, cart }: ProductPop
           </div>
         </div>
         
-        <Separator orientation="vertical" className="bg-white/50 h-auto" />
+        <Separator orientation="vertical" className="bg-white/50 h-auto w-0.5" />
 
-        <div className="flex-grow h-full rounded-[40px] py-6 pr-6 overflow-y-auto custom-scrollbar">
+        <div className="flex-grow h-full py-0 pr-6 overflow-y-auto custom-scrollbar pb-24">
             <ProductDetails product={product} />
         </div>
       </div>
