@@ -1,4 +1,3 @@
-// @/components/flavour-card.tsx
 'use client';
 
 import Image from 'next/image';
@@ -29,7 +28,7 @@ export function FlavourCard({ flavour, onAddToCart, quantity }: FlavourCardProps
   };
 
   return (
-    <div className="bg-white/20 p-2 rounded-[20%] flex-shrink-0 w-[calc(25%-1rem)]">
+    <div className="bg-white/20 p-2 rounded-[20%] flex-shrink-0 w-[calc(25%-1.5rem)]">
       <div className="relative w-full aspect-square">
         <Image
           src={flavour.src}
