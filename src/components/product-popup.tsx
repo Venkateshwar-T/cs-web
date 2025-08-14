@@ -27,7 +27,7 @@ export function ProductPopup({ product, onClose, onAddToCart, cart }: ProductPop
   };
   
   return (
-    <div className="bg-[#9A7DAB] rounded-t-[40px] p-8 text-white h-full overflow-hidden relative flex flex-col">
+    <div className="bg-[#9A7DAB] rounded-t-[40px] pt-8 px-8 text-white h-full overflow-hidden relative flex flex-col">
       <button 
         onClick={onClose} 
         className="absolute top-4 right-4 text-white hover:text-gray-200 z-10"
@@ -35,7 +35,7 @@ export function ProductPopup({ product, onClose, onAddToCart, cart }: ProductPop
         <X size={24} />
       </button>
       
-      <div className="flex flex-row flex-grow h-full gap-4">
+      <div className="flex flex-row flex-grow h-full gap-4 pb-8">
         <div className="w-[48%] flex flex-col gap-4 h-full items-center">
           <div className="bg-blue-500 h-[40%] rounded-lg w-2/3"></div>
           <div className="rounded-lg w-full h-[60%]">
