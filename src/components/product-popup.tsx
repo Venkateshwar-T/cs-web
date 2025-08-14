@@ -38,7 +38,7 @@ export function ProductPopup({ product, onClose, onAddToCart, cart }: ProductPop
       <div className="flex flex-row flex-grow h-full gap-4">
         <div className="w-2/5 flex flex-col gap-4 h-full items-center">
           <div className="bg-blue-500 h-1/2 rounded-lg w-[83.33%]"></div>
-          <div className="bg-red-500 h-1/2 rounded-lg w-full p-2">
+          <div className="bg-red-500 h-1/2 rounded-lg w-full">
             <FlavoursSection onAddToCart={handleFlavourAddToCart} cart={cart} />
           </div>
         </div>
