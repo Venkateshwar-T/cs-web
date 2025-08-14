@@ -7,7 +7,7 @@ import type { Flavour } from './product-popup';
 
 interface FlavoursSectionProps {
   onAddToCart: (flavourId: number, quantity: number) => void;
-  cart: Record<string, number>; // Using string for now, can be ID later
+  cart: Record<string, number>;
 }
 
 const flavours: Flavour[] = [
@@ -21,11 +21,9 @@ const flavours: Flavour[] = [
 
 export function FlavoursSection({ onAddToCart, cart }: FlavoursSectionProps) {
   return (
-    // MODIFIED: Reduced padding from p-4 to p-3 for a tighter container
-    <div className="bg-white/20 rounded-[40px] p-3">
-      {/* MODIFIED: Reduced the bottom margin from mb-2 to mb-1 */}
-      <SectionTitle className="pl-0 mb-1">Flavours & Fillings</SectionTitle>
-      <div className="flex overflow-x-auto no-scrollbar gap-3">
+    <div className="bg-white/20 rounded-[40px] p-4 h-full flex flex-col">
+      <SectionTitle className="pl-0 mb-2">Flavours & Fillings</SectionTitle>
+      <div className="flex overflow-x-auto no-scrollbar gap-3 flex-grow items-center">
         {flavours.map((flavour) => (
           <FlavourCard
             key={flavour.id}

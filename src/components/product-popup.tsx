@@ -2,8 +2,8 @@
 
 import { X } from 'lucide-react';
 import type { Product } from '@/app/page';
+import { FlavoursSection } from './flavours-section';
 
-// The Flavour type is no longer needed as FlavoursSection is removed.
 export type Flavour = {
   id: number;
   name: string;
@@ -19,8 +19,13 @@ interface ProductPopupProps {
 }
 
 export function ProductPopup({ product, onClose, onAddToCart, cart }: ProductPopupProps) {
-  // All internal components and logic have been removed as requested.
-  // The popup now provides a clean container.
+  
+  // This internal handler will adapt the flavour's numeric ID to the cart's string-based key
+  const handleFlavourAddToCart = (flavourId: number, quantity: number) => {
+    // For now, we'll use the flavourId as the key. This can be changed later.
+    onAddToCart(flavourId.toString(), quantity);
+  };
+  
   return (
     <div className="bg-[#9A7DAB] rounded-t-[40px] p-8 text-white h-full overflow-hidden relative flex flex-col">
       <button 
@@ -30,18 +35,14 @@ export function ProductPopup({ product, onClose, onAddToCart, cart }: ProductPop
         <X size={24} />
       </button>
       
-      {/* The content area of the popup is now a flex container for the three boxes */}
       <div className="flex flex-row flex-grow h-full gap-4">
-        {/* Left Column (now 40% width to contain the wider red box) */}
         <div className="w-2/5 flex flex-col gap-4 h-full items-center">
-          {/* 1. Top Left Box (Blue) - Width is set to be 1/3 of the total container */}
           <div className="bg-blue-500 h-1/2 rounded-lg w-[83.33%]"></div>
-          {/* 2. Bottom Left Box (Red) - Fills the 40% width of this column */}
-          <div className="bg-red-500 h-1/2 rounded-lg w-full"></div>
+          <div className="bg-red-500 h-1/2 rounded-lg w-full p-2">
+            <FlavoursSection onAddToCart={handleFlavourAddToCart} cart={cart} />
+          </div>
         </div>
         
-        {/* Right Column (now 60% width) */}
-        {/* 3. Right Box (Green) */}
         <div className="w-3/5 bg-green-500 h-full rounded-lg"></div>
       </div>
     </div>

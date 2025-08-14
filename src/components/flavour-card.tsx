@@ -29,8 +29,7 @@ export function FlavourCard({ flavour, onAddToCart, quantity }: FlavourCardProps
   };
 
   return (
-    // MODIFIED: Reduced padding from p-2 to a tighter p-1
-    <div className="bg-white/20 p-1.5 rounded-2xl flex-shrink-0 w-[calc(25%-0.75rem)]">
+    <div className="bg-white/20 p-2 rounded-2xl flex-shrink-0 w-[calc(25%-0.75rem)]">
       <div className="relative w-full aspect-square">
         <Image
           src={flavour.src}
@@ -41,29 +40,24 @@ export function FlavourCard({ flavour, onAddToCart, quantity }: FlavourCardProps
           data-ai-hint={flavour.hint}
         />
       </div>
-      {/* MODIFIED: Reduced margin-top from mt-2 to mt-1 */}
-      <div className="mt-1 text-center">
+      <div className="mt-2 text-center">
         <p className="text-white text-sm font-semibold truncate">{flavour.name}</p>
-        {/* MODIFIED: Reduced margin-top from mt-2 to mt-1.5 */}
-        <div className="mt-1.5">
+        <div className="mt-2">
             {quantity === 0 ? (
                 <Button
                     size="sm"
                     onClick={handleAddToCartClick}
-                    // MODIFIED: Reduced button height from h-8 to h-7
-                    className="w-full h-7 rounded-full uppercase bg-transparent border-2 border-b-[3px] border-custom-purple-dark text-custom-purple-dark bg-white hover:bg-custom-purple-dark hover:text-white text-xs"
+                    className="w-full h-8 rounded-full uppercase bg-transparent border-2 border-b-[3px] border-custom-purple-dark text-custom-purple-dark bg-white hover:bg-custom-purple-dark hover:text-white text-xs"
                 >
                     Add
                 </Button>
             ) : (
-                // MODIFIED: Reduced quantity selector height from h-8 to h-7
-                <div className="flex items-center justify-center w-full rounded-full bg-custom-purple-dark text-white h-7">
+                <div className="flex items-center justify-center w-full rounded-full bg-custom-purple-dark text-white h-8">
                     <Button
                         size="icon"
                         variant="ghost"
                         onClick={handleDecrement}
-                        // MODIFIED: Adjusted child button height and width
-                        className="h-full w-7 rounded-r-none rounded-l-full hover:bg-white/10 hover:text-white"
+                        className="h-full w-8 rounded-r-none rounded-l-full hover:bg-white/10 hover:text-white"
                     >
                         <Minus className="h-4 w-4" />
                     </Button>
@@ -72,8 +66,7 @@ export function FlavourCard({ flavour, onAddToCart, quantity }: FlavourCardProps
                         size="icon"
                         variant="ghost"
                         onClick={handleIncrement}
-                        // MODIFIED: Adjusted child button height and width
-                        className="h-full w-7 rounded-l-none rounded-r-full hover:bg-white/10 hover:text-white"
+                        className="h-full w-8 rounded-l-none rounded-r-full hover:bg-white/10 hover:text-white"
                     >
                         <Plus className="h-4 w-4" />
                     </Button>
