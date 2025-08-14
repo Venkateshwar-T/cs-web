@@ -84,7 +84,7 @@ export default function Home() {
           {isSearchActive && (
             <div className="flex w-full h-full">
               <FilterContainer />
-              <div className="h-full flex-grow ml-12 mr-8 relative">
+              <div className="h-full flex-grow ml-8 mr-8 relative">
                   <SearchResultsDetails 
                     query={searchQuery} 
                     onAddToCart={handleAddToCart} 
@@ -127,7 +127,7 @@ export default function Home() {
         <>
           <div className="fixed inset-0 z-40 bg-black/50" />
           <div className="fixed inset-0 z-50 flex items-start justify-center pt-36">
-              <div className="h-full flex-grow ml-[calc(18%+3rem)] mr-8 relative w-[calc(82%-4rem)]">
+              <div className="h-full flex-grow ml-[calc(15%+2rem)] mr-8 relative w-[calc(85%-4rem)]">
                   <ProductPopup 
                     product={selectedProduct} 
                     onClose={handleClosePopup}
