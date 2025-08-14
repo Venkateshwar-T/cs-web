@@ -38,7 +38,7 @@ export function ProductPopup({ product, onClose, onAddToCart, cart }: ProductPop
       
       <div className="flex flex-row flex-grow h-full gap-4 pb-4">
         <div className="w-[48%] flex flex-col gap-4 h-full items-center">
-          <div className="h-full rounded-lg w-2/3">
+          <div className="h-full rounded-lg w-3/4">
             <ImageGallery product={product} />
           </div>
           <div className="rounded-lg w-full h-[53%]">
