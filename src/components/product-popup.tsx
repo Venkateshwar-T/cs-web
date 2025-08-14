@@ -4,6 +4,7 @@ import { X } from 'lucide-react';
 import type { Product } from '@/app/page';
 import { FlavoursSection } from './flavours-section';
 import { ImageGallery } from './image-gallery';
+import { ProductDetails } from './product-details';
 
 export type Flavour = {
   id: number;
@@ -21,9 +22,7 @@ interface ProductPopupProps {
 
 export function ProductPopup({ product, onClose, onAddToCart, cart }: ProductPopupProps) {
   
-  // This internal handler will adapt the flavour's numeric ID to the cart's string-based key
   const handleFlavourAddToCart = (flavourId: number, quantity: number) => {
-    // For now, we'll use the flavourId as the key. This can be changed later.
     onAddToCart(flavourId.toString(), quantity);
   };
   
@@ -36,17 +35,19 @@ export function ProductPopup({ product, onClose, onAddToCart, cart }: ProductPop
         <X size={24} />
       </button>
       
-      <div className="flex flex-row flex-grow h-full gap-4 pb-4">
+      <div className="flex flex-row flex-grow h-full gap-8 pb-4">
         <div className="w-[48%] flex flex-col gap-4 h-full items-center">
-          <div className="h-full rounded-lg w-3/4">
+          <div className="flex h-[45%] rounded-lg w-full justify-center">
             <ImageGallery product={product} />
           </div>
-          <div className="rounded-lg w-full h-[53%]">
+          <div className="rounded-lg w-full h-[55%]">
             <FlavoursSection onAddToCart={handleFlavourAddToCart} cart={cart} />
           </div>
         </div>
         
-        <div className="flex-grow bg-green-500 h-full rounded-lg"></div>
+        <div className="flex-grow bg-white/20 h-full rounded-[40px] p-6 overflow-y-auto custom-scrollbar">
+            <ProductDetails product={product} />
+        </div>
       </div>
     </div>
   );
