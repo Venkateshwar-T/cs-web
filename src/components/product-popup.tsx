@@ -37,7 +37,7 @@ export function ProductPopup({ product, onClose, onAddToCart, cart }: ProductPop
           {/* 1. Top Left Box (Blue) */}
           <div className="bg-blue-500 h-1/2 rounded-lg"></div>
           {/* 2. Bottom Left Box (Red) */}
-          <div className="bg-red-500 h-1/2 rounded-lg"></div>
+          <div className="bg-red-500 h-1/2 rounded-lg w-[120%]"></div>
         </div>
         
         {/* Right Column (2/3 width) */}
