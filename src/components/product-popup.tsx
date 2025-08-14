@@ -29,7 +29,7 @@ export function ProductPopup({ product, onClose, onAddToCart, cart }: ProductPop
   };
   
   return (
-    <div className="bg-[#9A7DAB] rounded-t-[40px] pt-6 px-8 text-white h-full overflow-hidden relative flex flex-col">
+    <div className="bg-[#9A7DAB] rounded-t-[40px] pt-6 px-8 text-white h-full overflow-hidden relative flex flex-col animate-slide-up-fade-in">
       <button 
         onClick={onClose} 
         className="absolute top-4 right-4 text-white hover:text-gray-200 z-20"

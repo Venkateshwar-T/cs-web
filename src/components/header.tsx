@@ -100,7 +100,6 @@ export function Header({ onSearchActiveChange, onSearchSubmit }: HeaderProps) {
         <div className="container flex h-20 max-w-screen-2xl items-center justify-between px-4 sm:px-6 lg:px-8 xl:px-24">
           <div className={cn(
             "flex flex-1 justify-start transition-opacity duration-100 animate-slide-in-from-left", 
-            isEnquireOpen && "opacity-50"
           )} style={{ animationDuration: '0.5s' }}>
             <div className="flex items-center gap-2 md:gap-4 lg:gap-8">
               <Link href="/" className="flex items-center gap-2" onClick={handleLogoClick}>
@@ -109,7 +108,7 @@ export function Header({ onSearchActiveChange, onSearchSubmit }: HeaderProps) {
                   alt="Choco Smiley Logo" 
                   width={180} 
                   height={70}
-                  className="w-28 sm:w-32 md:w-36 lg:w-44"
+                  className={cn("w-28 sm:w-32 md:w-36 lg:w-44",isEnquireOpen && "opacity-50")}
                 />
               </Link>
               <Image 
@@ -117,20 +116,19 @@ export function Header({ onSearchActiveChange, onSearchSubmit }: HeaderProps) {
                 alt="Online Chocolate Store" 
                 width={120} 
                 height={55}
-                className="hidden sm:block w-20 md:w-24 lg:w-32"
+                className={cn("hidden sm:block w-20 md:w-24 lg:w-32",isEnquireOpen && "opacity-50")}
               />
             </div>
           </div>
           
           <nav className={cn(
             "hidden md:flex flex-1 justify-center items-center gap-4 lg:gap-8 text-base lg:text-lg transition-opacity duration-100 animate-fade-in",
-            isEnquireOpen && "opacity-50"
-          )} style={{ animationDuration: '0.5s', animationDelay: '0.2s' }}>
+          )} style={{ animationDuration: '0.5s', animationDelay: '0.05s' }}>
             {!isSearchSubmitted && navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className="transition-colors hover:text-custom-gold text-foreground/80"
+                className={cn("transition-colors hover:text-custom-gold text-foreground/80",isEnquireOpen && "opacity-50")}
               >
                 {link.label}
               </Link>
