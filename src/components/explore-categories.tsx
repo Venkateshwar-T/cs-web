@@ -1,3 +1,4 @@
+
 import Image from "next/image";
 import { SectionTitle } from "./section-title";
 
@@ -18,7 +19,7 @@ export function ExploreCategories() {
   ];
 
   return (
-    <div className="bg-[#5D2B79] h-full rounded-t-[40px] mx-8 md:mx-32">
+    <div className="bg-[#5D2B79] h-full rounded-t-[40px] mx-8 md:mx-32 animate-fade-in" style={{ animationDuration: '0.5s', animationDelay: '0.6s', animationFillMode: 'both' }}>
         <div className="bg-white/20 h-full rounded-t-[40px] p-8 overflow-y-auto no-scrollbar">
             <SectionTitle>
                 Explore Categories

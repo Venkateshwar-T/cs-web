@@ -99,9 +99,9 @@ export function Header({ onSearchActiveChange, onSearchSubmit }: HeaderProps) {
       <header className="fixed top-0 z-50 w-full bg-transparent pt-6">
         <div className="container flex h-20 max-w-screen-2xl items-center justify-between px-4 sm:px-6 lg:px-8 xl:px-24">
           <div className={cn(
-            "flex flex-1 justify-start transition-opacity duration-100", 
+            "flex flex-1 justify-start transition-opacity duration-100 animate-slide-in-from-left", 
             isEnquireOpen && "opacity-50"
-          )}>
+          )} style={{ animationDuration: '0.5s' }}>
             <div className="flex items-center gap-2 md:gap-4 lg:gap-8">
               <Link href="/" className="flex items-center gap-2" onClick={handleLogoClick}>
                 <Image 
@@ -123,9 +123,9 @@ export function Header({ onSearchActiveChange, onSearchSubmit }: HeaderProps) {
           </div>
           
           <nav className={cn(
-            "hidden md:flex flex-1 justify-center items-center gap-4 lg:gap-8 text-base lg:text-lg transition-opacity duration-100",
+            "hidden md:flex flex-1 justify-center items-center gap-4 lg:gap-8 text-base lg:text-lg transition-opacity duration-100 animate-fade-in",
             isEnquireOpen && "opacity-50"
-          )}>
+          )} style={{ animationDuration: '0.5s', animationDelay: '0.2s' }}>
             {!isSearchSubmitted && navLinks.map((link) => (
               <Link
                 key={link.href}
@@ -137,7 +137,7 @@ export function Header({ onSearchActiveChange, onSearchSubmit }: HeaderProps) {
             ))}
           </nav>
           
-          <div className="flex flex-1 justify-end">
+          <div className="flex flex-1 justify-end animate-slide-in-from-right" style={{ animationDuration: '0.5s' }}>
             <div className="hidden md:flex items-center gap-1">
               <Popover open={isEnquireOpen} onOpenChange={setIsEnquireOpen}>
                 <PopoverTrigger asChild>
@@ -245,8 +245,8 @@ export function Header({ onSearchActiveChange, onSearchSubmit }: HeaderProps) {
           <form 
             ref={formRef}
             onSubmit={handleSearchSubmit} 
-            className={`relative mx-auto transition-all duration-500 ease-in-out ${!targetWidth ? 'max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl' : ''}`}
-            style={{ maxWidth: targetWidth ? `${targetWidth}px` : undefined }}
+            className={`relative mx-auto transition-all duration-500 ease-in-out animate-slide-in-from-top ${!targetWidth ? 'max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl' : ''}`}
+            style={{ maxWidth: targetWidth ? `${targetWidth}px` : undefined, animationDuration: '0.5s', animationDelay: '0.4s' }}
           >
             <div className="absolute inset-0 rounded-full bg-gradient-to-br from-white/80 to-white/20 backdrop-blur-sm -z-10"></div>
             <div className="absolute left-4 top-1/2 -translate-y-1/2 z-10">
