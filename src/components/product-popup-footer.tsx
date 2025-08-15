@@ -11,7 +11,7 @@ export function ProductPopupFooter() {
                     <div className="flex flex-col items-center">
                         <p className="text-sm opacity-100">
                           <span className="relative inline-block
-                            after:content-[''] after:absolute after:left-0 after:top-1/2 after:h-[1.5px] after:w-full after:bg-white after:animate-cut-through after:origin-left">
+                            after:content-[''] after:absolute after:left-0 after:top-1/2 after:h-[1.5px] after:bg-white after:animate-cut-through after:origin-left">
                               ₹1000
                           </span>
                         </p>
