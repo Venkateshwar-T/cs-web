@@ -135,6 +135,12 @@ export default {
           '0%': { transform: 'translateY(100%)', opacity: '0' },
           '100%': { transform: 'translateY(0)', opacity: '1' },
         },
+        'slide-up-and-fade-in-out': {
+          '0%': { transform: 'translateY(100%)', opacity: '0' },
+          '20%': { transform: 'translateY(0)', opacity: '1' },
+          '80%': { transform: 'translateY(0)', opacity: '1' },
+          '100%': { transform: 'translateY(-100%)', opacity: '0' },
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
@@ -147,6 +153,7 @@ export default {
         'sparkle-fade-out': 'sparkle-fade-out 0.6s ease-out forwards',
         'heart-pop': 'heart-pop 0.3s ease-in-out',
         'slide-up-fade-in': 'slide-up-fade-in 0.5s ease-out forwards',
+        'slide-up-and-fade-in-out': 'slide-up-and-fade-in-out 1s ease-in-out forwards',
       },
     },
   },

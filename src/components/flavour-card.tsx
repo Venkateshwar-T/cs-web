@@ -1,9 +1,12 @@
+
 'use client';
 
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Plus, Minus } from 'lucide-react';
 import type { Flavour } from './product-popup';
+import { useState } from 'react';
+import { cn } from '@/lib/utils';
 
 interface FlavourCardProps {
   flavour: Flavour;
@@ -12,9 +15,13 @@ interface FlavourCardProps {
 }
 
 export function FlavourCard({ flavour, onAddToCart, quantity }: FlavourCardProps) {
+  const [showAdded, setShowAdded] = useState(false);
+
   const handleAddToCartClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     onAddToCart(flavour.id, 1);
+    setShowAdded(true);
+    setTimeout(() => setShowAdded(false), 1000); // Duration of the animation
   };
 
   const handleIncrement = (e: React.MouseEvent) => {
@@ -41,12 +48,15 @@ export function FlavourCard({ flavour, onAddToCart, quantity }: FlavourCardProps
       </div>
       <div className="mt-2 text-center">
         <p className="text-white text-sm font-normal h-10 flex items-center justify-center">{flavour.name}</p>
-        <div className="mt-2 flex justify-center px-2">
+        <div className="mt-2 flex justify-center px-2 h-7 relative overflow-hidden">
             {quantity === 0 ? (
                 <Button
                     size="sm"
                     onClick={handleAddToCartClick}
-                    className="h-7 w-full rounded-full uppercase bg-transparent border-2 border-b-[3px] border-custom-purple-dark text-custom-purple-dark bg-white hover:bg-custom-purple-dark hover:text-white text-xs"
+                    className={cn(
+                        "h-7 w-full rounded-full uppercase bg-transparent border-2 border-b-[3px] border-custom-purple-dark text-custom-purple-dark bg-white hover:bg-custom-purple-dark hover:text-white text-xs transition-transform duration-300",
+                        showAdded ? '-translate-y-full' : 'translate-y-0'
+                    )}
                 >
                     Add
                 </Button>
@@ -69,6 +79,11 @@ export function FlavourCard({ flavour, onAddToCart, quantity }: FlavourCardProps
                     >
                         <Plus className="h-4 w-4" />
                     </Button>
+                </div>
+            )}
+            {showAdded && (
+                 <div className="absolute inset-0 flex items-center justify-center text-custom-purple-dark font-bold text-xs animate-slide-up-and-fade-in-out">
+                    Added
                 </div>
             )}
         </div>
