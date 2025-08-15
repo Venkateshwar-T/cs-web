@@ -27,7 +27,7 @@ export function FilterContainer() {
               <Slider
                 value={priceRange}
                 onValueChange={(value) => setPriceRange(value as [number, number])}
-                max={5000}
+                max={3000}
                 step={100}
                 className="w-full"
               />
