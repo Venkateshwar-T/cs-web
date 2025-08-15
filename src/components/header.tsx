@@ -247,8 +247,8 @@ export function Header({ onSearchActiveChange, onSearchSubmit }: HeaderProps) {
             style={{ maxWidth: targetWidth ? `${targetWidth}px` : undefined, animationDuration: '0.5s', animationDelay: '0.05s' }}
           >
             <div className="absolute inset-0 rounded-full bg-gradient-to-br from-white/80 to-white/20 backdrop-blur-sm -z-10"></div>
-            <div className="absolute left-2 top-1/2 -translate-y-1/2 z-10">
-              <Image src="/icons/search_icon.png" alt="Search" width={24} height={24} />
+            <div className="absolute left-3 top-1/2 -translate-y-1/2 z-10">
+              <Image src="/icons/search_icon.png" alt="Search" width={28} height={28} />
             </div>
             <Input 
               name="search"
