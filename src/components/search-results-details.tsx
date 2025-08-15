@@ -4,6 +4,13 @@ import { ProductCard } from "./product-card";
 import { useState, useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
 import type { Product } from "@/app/page";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 
 interface SearchResultsDetailsProps {
   query: string;
@@ -21,6 +28,7 @@ export function SearchResultsDetails({ query, onAddToCart, cart, onProductClick 
   const [isScrolling, setIsScrolling] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const [sortOption, setSortOption] = useState("featured");
 
   useEffect(() => {
     const scrollContainer = scrollContainerRef.current;
@@ -60,9 +68,25 @@ export function SearchResultsDetails({ query, onAddToCart, cart, onProductClick 
                 isScrolling && "is-scrolling"
                 )}
             >
-                <h2 className="text-xl text-white mb-6">
-                Showing results for <span className="italic text-custom-gold">{query}</span>
-                </h2>
+                <div className="flex justify-between items-center text-white mb-6">
+                  <h2 className="text-xl">
+                    Showing results for <span className="italic text-custom-gold">{query}</span>
+                  </h2>
+                  <Select value={sortOption} onValueChange={setSortOption}>
+                    <SelectTrigger className="w-[220px] rounded-full bg-white text-custom-purple-dark border-2 border-custom-purple-dark focus:ring-custom-gold h-9">
+                      <SelectValue>
+                        Sort By: {sortOption.charAt(0).toUpperCase() + sortOption.slice(1).replace(/-/g, ' ')}
+                      </SelectValue>
+                    </SelectTrigger>
+                    <SelectContent className="bg-white text-custom-purple-dark">
+                      <SelectItem value="featured">Featured</SelectItem>
+                      <SelectItem value="price-low-to-high">Price: Low to High</SelectItem>
+                      <SelectItem value="price-high-to-low">Price: High to Low</SelectItem>
+                      <SelectItem value="new-arrivals">New Arrivals</SelectItem>
+                      <SelectItem value="best-sellers">Best Sellers</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 {products.map((product) => (
                     <ProductCard
