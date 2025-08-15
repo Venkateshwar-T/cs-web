@@ -60,7 +60,7 @@ export default function Home() {
     setIsSearchActive(true);
   };
   
-  const handleAddToCart = (productName: string, quantity: number) => {
+  const handleAddToCart = (productName: string, quantity: number, animate: boolean = true) => {
     const newCart = { ...cart, [productName]: quantity };
     if (quantity <= 0) {
       delete newCart[productName];
@@ -68,7 +68,7 @@ export default function Home() {
     setCart(newCart);
 
     const prevQuantity = cart[productName] || 0;
-    if (quantity > prevQuantity) {
+    if (animate && quantity > prevQuantity) {
       setCartMessage(`${quantity - prevQuantity} ${productName} added`);
       setIsCartButtonExpanded(true);
   

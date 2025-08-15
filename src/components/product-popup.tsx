@@ -18,7 +18,7 @@ export type Flavour = {
 interface ProductPopupProps {
   product: Product;
   onClose: () => void;
-  onAddToCart: (productName: string, quantity: number) => void;
+  onAddToCart: (productName: string, quantity: number, animate?: boolean) => void;
   cart: Record<string, number>;
   onImageExpandChange: (isExpanded: boolean) => void;
 }
@@ -26,7 +26,8 @@ interface ProductPopupProps {
 export function ProductPopup({ product, onClose, onAddToCart, cart, onImageExpandChange }: ProductPopupProps) {
   
   const handleFlavourAddToCart = (flavourId: number, quantity: number) => {
-    onAddToCart(flavourId.toString(), quantity);
+    // We pass false for the 'animate' parameter to prevent the cart button animation
+    onAddToCart(flavourId.toString(), quantity, false);
   };
   
   return (
