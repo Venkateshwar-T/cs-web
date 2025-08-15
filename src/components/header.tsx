@@ -8,12 +8,12 @@ import { Separator } from "@/components/ui/separator";
 import { Menu, Phone } from "lucide-react";
 import { AiOutlineInstagram, AiOutlineWhatsApp } from "react-icons/ai";
 import { IoLogoFacebook } from "react-icons/io5";
-import { CgProfile } from "react-icons/cg";
 import { Input } from "@/components/ui/input";
 import { useState, useEffect, useRef } from "react";
 import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetHeader } from "@/components/ui/sheet";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
+import { useToast } from "@/hooks/use-toast";
 
 
 interface HeaderProps {
@@ -26,6 +26,7 @@ export function Header({ onSearchActiveChange, onSearchSubmit }: HeaderProps) {
   const [targetWidth, setTargetWidth] = useState<number | undefined>(undefined);
   const [isEnquireOpen, setIsEnquireOpen] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
+  const { toast } = useToast();
 
   const navLinks = [
     { href: "/about", label: "About" },
@@ -71,18 +72,27 @@ export function Header({ onSearchActiveChange, onSearchSubmit }: HeaderProps) {
   
   const handleSearchSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const searchInput = formData.get('search') as string;
+    
+    if (!searchInput.trim()) {
+      toast({
+        title: "Empty Field",
+        description: "Please enter a search query.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     if (formRef.current) {
       const isLargeDesktop = window.innerWidth >= 1280;
       const reductionFactor = isLargeDesktop ? 0.85 : 0.5; // 15% reduction for large desktop, 50% for others
       setTargetWidth(formRef.current.offsetWidth * reductionFactor);
     }
-    const formData = new FormData(e.currentTarget);
-    const searchInput = formData.get('search') as string;
-    if (searchInput.trim()) {
-      setIsSearchSubmitted(true);
-      onSearchActiveChange(true);
-      onSearchSubmit(searchInput.trim());
-    }
+    
+    setIsSearchSubmitted(true);
+    onSearchActiveChange(true);
+    onSearchSubmit(searchInput.trim());
   };
 
   const handleLogoClick = () => {
@@ -262,5 +272,3 @@ export function Header({ onSearchActiveChange, onSearchSubmit }: HeaderProps) {
     </>
   );
 }
-
-    
