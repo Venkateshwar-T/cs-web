@@ -8,16 +8,17 @@ import { SparkleIcon } from './sparkle-icon';
 
 interface ProductDetailsProps {
     product: Product;
+    isLiked: boolean;
+    onLikeToggle: () => void;
 }
 
-export function ProductDetails({ product }: ProductDetailsProps) {
-    const [isLiked, setIsLiked] = useState(false);
+export function ProductDetails({ product, isLiked, onLikeToggle }: ProductDetailsProps) {
     const [isAnimating, setIsAnimating] = useState(false);
     const [likeClickCount, setLikeClickCount] = useState(0);
 
     const handleLikeClick = () => {
         setLikeClickCount(prev => prev + 1);
-        setIsLiked(!isLiked);
+        onLikeToggle();
         if (!isLiked) {
             setIsAnimating(true);
         }

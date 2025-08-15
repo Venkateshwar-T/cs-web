@@ -19,11 +19,12 @@ export type Flavour = {
 interface ProductPopupProps {
   product: Product;
   onClose: () => void;
-  onAddToCart: (productName: string, quantity: number, animate?: boolean) => void;
   onImageExpandChange: (isExpanded: boolean) => void;
+  isLiked: boolean;
+  onLikeToggle: () => void;
 }
 
-export function ProductPopup({ product, onClose, onAddToCart, onImageExpandChange }: ProductPopupProps) {
+export function ProductPopup({ product, onClose, onImageExpandChange, isLiked, onLikeToggle }: ProductPopupProps) {
   const [flavourCart, setFlavourCart] = useState<Record<string, number>>({});
   
   const handleFlavourAddToCart = (flavourId: number, quantity: number) => {
@@ -59,7 +60,7 @@ export function ProductPopup({ product, onClose, onAddToCart, onImageExpandChang
         {/* Right Section */}
         <div className="flex-grow h-full relative">
             <div className="h-full py-0 pr-6 overflow-y-auto custom-scrollbar pb-28">
-                <ProductDetails product={product} />
+                <ProductDetails product={product} isLiked={isLiked} onLikeToggle={onLikeToggle} />
             </div>
             <ProductPopupFooter />
         </div>

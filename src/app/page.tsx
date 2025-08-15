@@ -34,6 +34,7 @@ export default function Home() {
   const [isCartButtonExpanded, setIsCartButtonExpanded] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [isImageExpanded, setIsImageExpanded] = useState(false);
+  const [likedProducts, setLikedProducts] = useState<Record<number, boolean>>({});
 
   const [filters, setFilters] = useState<FilterState>({
     priceRange: [0, 3000],
@@ -103,6 +104,13 @@ export default function Home() {
     });
   };
 
+  const handleLikeToggle = (productId: number) => {
+    setLikedProducts(prev => ({
+      ...prev,
+      [productId]: !prev[productId]
+    }));
+  };
+
   const totalQuantity = Object.values(cart).reduce((acc, cur) => acc + cur, 0);
 
   const getLabelById = (id: string, options: { id: string, label: string }[]) => {
@@ -140,6 +148,8 @@ export default function Home() {
                     onProductClick={handleProductClick}
                     activeFilters={activeFilters}
                     onRemoveFilter={handleRemoveFilter}
+                    likedProducts={likedProducts}
+                    onLikeToggle={handleLikeToggle}
                   />
               </div>
             </div>
@@ -181,8 +191,9 @@ export default function Home() {
                   <ProductPopup 
                     product={selectedProduct} 
                     onClose={handleClosePopup}
-                    onAddToCart={handleAddToCart}
                     onImageExpandChange={setIsImageExpanded}
+                    isLiked={!!likedProducts[selectedProduct.id]}
+                    onLikeToggle={() => handleLikeToggle(selectedProduct.id)}
                   />
               </div>
           </div>

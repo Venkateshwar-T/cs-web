@@ -13,10 +13,11 @@ interface ProductCardProps {
   onAddToCart: (productName: string, quantity: number) => void;
   quantity: number;
   onProductClick: (product: Product) => void;
+  isLiked: boolean;
+  onLikeToggle: () => void;
 }
 
-export function ProductCard({ product, onAddToCart, quantity, onProductClick }: ProductCardProps) {
-  const [isLiked, setIsLiked] = useState(false);
+export function ProductCard({ product, onAddToCart, quantity, onProductClick, isLiked, onLikeToggle }: ProductCardProps) {
   const [isAnimating, setIsAnimating] = useState(false);
   const [likeClickCount, setLikeClickCount] = useState(0);
 
@@ -38,7 +39,7 @@ export function ProductCard({ product, onAddToCart, quantity, onProductClick }: 
   const handleLikeClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     setLikeClickCount(prev => prev + 1);
-    setIsLiked(!isLiked);
+    onLikeToggle();
     if (!isLiked) {
         setIsAnimating(true);
     }
