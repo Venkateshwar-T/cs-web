@@ -184,7 +184,7 @@ export function Header({ onSearchActiveChange, onSearchSubmit }: HeaderProps) {
                     <IoLogoFacebook className="h-7 w-7 lg:h-8 lg:w-8 transition-colors hover:text-custom-gold" />
                   </Link>
                   <Link href="#" aria-label="Profile" className="ml-1 lg:ml-2">
-                    <CgProfile className="h-8 w-8 lg:h-9 lg:w-9 transition-colors hover:text-custom-gold" />
+                     <Image src="/icons/profile_icon.png" alt="Profile" width={36} height={36} className="h-8 w-8 lg:h-9 lg:w-9 transition-colors hover:opacity-80" />
                   </Link>
                 </div>
               </div>
@@ -227,7 +227,7 @@ export function Header({ onSearchActiveChange, onSearchSubmit }: HeaderProps) {
                         <IoLogoFacebook className="h-8 w-8 transition-colors hover:text-custom-gold" />
                       </Link>
                       <Link href="#" aria-label="Profile">
-                        <CgProfile className="h-9 w-9 transition-colors hover:text-custom-gold" />
+                        <Image src="/icons/profile_icon.png" alt="Profile" width={36} height={36} className="h-9 w-9 transition-colors hover:opacity-80" />
                       </Link>
                     </div>
                   </div>
@@ -247,14 +247,14 @@ export function Header({ onSearchActiveChange, onSearchSubmit }: HeaderProps) {
             style={{ maxWidth: targetWidth ? `${targetWidth}px` : undefined, animationDuration: '0.5s', animationDelay: '0.05s' }}
           >
             <div className="absolute inset-0 rounded-full bg-gradient-to-br from-white/80 to-white/20 backdrop-blur-sm -z-10"></div>
-            <div className="absolute left-4 top-1/2 -translate-y-1/2 z-10">
+            <div className="absolute left-2 top-1/2 -translate-y-1/2 z-10">
               <Image src="/icons/search_icon.png" alt="Search" width={24} height={24} />
             </div>
             <Input 
               name="search"
               autoComplete="off"
               placeholder={isSearchSubmitted ? 'Search for gifts...' : placeholder}
-              className={`w-full pl-12 pr-4 py-6 rounded-full bg-transparent border-none focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-gray-600 text-lg md:text-xl ${isSearchSubmitted ? 'text-white' : ''}`}
+              className={`w-full pl-12 pr-4 py-5 rounded-full bg-transparent border-none focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-gray-600 text-lg md:text-xl ${isSearchSubmitted ? 'text-white' : ''}`}
             />
           </form>
         </div>
@@ -262,3 +262,5 @@ export function Header({ onSearchActiveChange, onSearchSubmit }: HeaderProps) {
     </>
   );
 }
+
+    
