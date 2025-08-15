@@ -22,9 +22,11 @@ interface ProductPopupProps {
   onImageExpandChange: (isExpanded: boolean) => void;
   isLiked: boolean;
   onLikeToggle: () => void;
+  onAddToCart: (productName: string, quantity: number, animate?: boolean) => void;
+  cart: Record<string, number>;
 }
 
-export function ProductPopup({ product, onClose, onImageExpandChange, isLiked, onLikeToggle }: ProductPopupProps) {
+export function ProductPopup({ product, onClose, onImageExpandChange, isLiked, onLikeToggle, onAddToCart, cart }: ProductPopupProps) {
   const [flavourCart, setFlavourCart] = useState<Record<string, number>>({});
   
   const handleFlavourAddToCart = (flavourId: number, quantity: number) => {
@@ -34,6 +36,8 @@ export function ProductPopup({ product, onClose, onImageExpandChange, isLiked, o
     }
     setFlavourCart(newFlavourCart);
   };
+
+  const productQuantity = cart[product.name] || 0;
   
   return (
     <div className="bg-[#9A7DAB] rounded-t-[40px] pt-6 px-8 text-white h-full overflow-hidden relative flex flex-col">
@@ -62,7 +66,7 @@ export function ProductPopup({ product, onClose, onImageExpandChange, isLiked, o
             <div className="h-full py-0 pr-6 overflow-y-auto custom-scrollbar pb-28">
                 <ProductDetails product={product} isLiked={isLiked} onLikeToggle={onLikeToggle} />
             </div>
-            <ProductPopupFooter />
+            <ProductPopupFooter product={product} onAddToCart={onAddToCart} quantity={productQuantity} />
         </div>
       </div>
     </div>

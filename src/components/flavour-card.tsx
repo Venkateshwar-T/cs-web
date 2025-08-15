@@ -53,11 +53,11 @@ export function FlavourCard({ flavour, onAddToCart, quantity }: FlavourCardProps
             className={cn(
               "h-7 w-full rounded-full uppercase border-2 border-b-[3px] text-xs transition-colors duration-300",
               isInCart 
-                ? 'bg-custom-purple-dark border-custom-purple-dark text-white hover:bg-transparent hover:text-custom-purple-dark'
+                ? 'bg-custom-purple-dark border-custom-purple-dark text-white hover:bg-transparent hover:text-white'
                 : 'bg-white border-custom-purple-dark text-custom-purple-dark hover:bg-custom-purple-dark hover:text-white'
             )}
           >
-            {isInCart ? 'Remove' : 'Add'}
+            {isInCart ? 'Added' : 'Add'}
           </Button>
         </div>
       </div>

@@ -194,6 +194,8 @@ export default function Home() {
                     onImageExpandChange={setIsImageExpanded}
                     isLiked={!!likedProducts[selectedProduct.id]}
                     onLikeToggle={() => handleLikeToggle(selectedProduct.id)}
+                    cart={cart}
+                    onAddToCart={handleAddToCart}
                   />
               </div>
           </div>

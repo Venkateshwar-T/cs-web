@@ -176,7 +176,7 @@ export default {
         'slide-up-and-fade-in-out': 'slide-up-and-fade-in-out 1s ease-in-out forwards',
         'slide-up-and-out': 'slide-up-and-out 1s ease-in-out forwards',
         'cut-through': 'cut-through 1.0s ease-in-out forwards',
-        'shake': 'shake 4s ease-in-out infinite',
+        'shake': 'shake 6s ease-in-out infinite',
       },
     },
   },
