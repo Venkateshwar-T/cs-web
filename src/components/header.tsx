@@ -262,3 +262,5 @@ export function Header({ onSearchActiveChange, onSearchSubmit }: HeaderProps) {
     </>
   );
 }
+
+    
