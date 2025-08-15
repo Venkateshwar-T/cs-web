@@ -5,12 +5,12 @@ import { cn } from "@/lib/utils";
 import { SlidersHorizontal } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { Slider } from '@/components/ui/slider';
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 
 export function FilterContainer() {
-  const [priceRange, setPriceRange] =useState<[number, number]>([0, 3000]);
-  const [selectedPriceOption, setSelectedPriceOption] = useState<string | undefined>();
+  const [priceRange, setPriceRange] = useState<[number, number]>([0, 3000]);
+  const [selectedPriceOptions, setSelectedPriceOptions] = useState<string[]>([]);
 
   const priceOptions = [
     { id: 'under500', label: 'Under ₹500', range: [0, 500] as [number, number] },
@@ -20,34 +20,18 @@ export function FilterContainer() {
     { id: 'over2000', label: 'Above ₹2000', range: [2000, 3000] as [number, number] },
   ];
 
-  const handlePriceOptionChange = (value: string) => {
-    setSelectedPriceOption(value);
-    const selectedOption = priceOptions.find(option => option.id === value);
-    if (selectedOption) {
-      setPriceRange(selectedOption.range);
-    }
+  const handlePriceOptionChange = (optionId: string) => {
+    setSelectedPriceOptions(prev => 
+      prev.includes(optionId) 
+        ? prev.filter(id => id !== optionId)
+        : [...prev, optionId]
+    );
   };
-
+  
   const handleSliderChange = (value: [number, number]) => {
     setPriceRange(value);
-    // If slider is moved, deselect the radio button
-    const matchingOption = priceOptions.find(option => option.range[0] === value[0] && option.range[1] === value[1]);
-    if (!matchingOption) {
-      setSelectedPriceOption(undefined);
-    }
+    setSelectedPriceOptions([]);
   };
-
-  useEffect(() => {
-    // A side effect to deselect radio if slider is manually moved to a range
-    // not matching any predefined option.
-    const isMatchingOption = priceOptions.some(
-      (option) =>
-        option.range[0] === priceRange[0] && option.range[1] === priceRange[1]
-    );
-    if (!isMatchingOption) {
-      setSelectedPriceOption(undefined);
-    }
-  }, [priceRange, priceOptions]);
 
   return (
     <div className={cn("bg-[#5D2B79] h-full w-[17%] rounded-tr-[40px] animate-slide-in-from-left")} style={{ animationDuration: '0.5s' }}>
@@ -72,16 +56,20 @@ export function FilterContainer() {
                 />
               </div>
 
-              <RadioGroup value={selectedPriceOption} onValueChange={handlePriceOptionChange} className="space-y-2">
+              <div className="space-y-2">
                 {priceOptions.map((option) => (
                   <div key={option.id} className="flex items-center space-x-2">
-                    <RadioGroupItem value={option.id} id={option.id} />
+                    <Checkbox 
+                      id={option.id}
+                      checked={selectedPriceOptions.includes(option.id)}
+                      onCheckedChange={() => handlePriceOptionChange(option.id)}
+                    />
                     <Label htmlFor={option.id} className="text-white font-plex-sans text-sm">
                       {option.label}
                     </Label>
                   </div>
                 ))}
-              </RadioGroup>
+              </div>
 
             </div>
         </div>
