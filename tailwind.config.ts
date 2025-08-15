@@ -154,11 +154,11 @@ export default {
           'to': { width: '100%' },
         },
         'shake': {
-          '0%, 12.5%, 100%': { transform: 'rotate(0deg)' },
-          '2.5%': { transform: 'rotate(5deg)' },
-          '5%': { transform: 'rotate(-5deg)' },
-          '7.5%': { transform: 'rotate(5deg)' },
-          '10%': { transform: 'rotate(-5deg)' },
+          '0%, 12.5%, 100%': { transform: 'rotate(0deg) scale(1)' },
+          '2.5%': { transform: 'rotate(5deg) scale(1.1)' },
+          '5%': { transform: 'rotate(-5deg) scale(1.1)' },
+          '7.5%': { transform: 'rotate(5deg) scale(1.1)' },
+          '10%': { transform: 'rotate(-5deg) scale(1.1)' },
         },
       },
       animation: {
