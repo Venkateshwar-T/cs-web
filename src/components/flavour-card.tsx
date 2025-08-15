@@ -3,7 +3,6 @@
 
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
-import { Plus, Minus } from 'lucide-react';
 import type { Flavour } from './product-popup';
 import { useState } from 'react';
 import { cn } from '@/lib/utils';
@@ -19,20 +18,19 @@ export function FlavourCard({ flavour, onAddToCart, quantity }: FlavourCardProps
 
   const handleAddToCartClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    onAddToCart(flavour.id, 1);
-    setShowAdded(true);
-    setTimeout(() => setShowAdded(false), 1000); // Duration of the animation
+    if (quantity === 0) {
+      onAddToCart(flavour.id, 1);
+      setShowAdded(true);
+      setTimeout(() => setShowAdded(false), 1000);
+    }
   };
 
-  const handleIncrement = (e: React.MouseEvent) => {
+  const handleRemoveFromCartClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    onAddToCart(flavour.id, quantity + 1);
+    onAddToCart(flavour.id, 0);
   };
 
-  const handleDecrement = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    onAddToCart(flavour.id, quantity - 1);
-  };
+  const isInCart = quantity > 0;
 
   return (
     <div className="flex flex-col justify-center bg-white/30 p-3 rounded-[20px] w-[calc(25%-0.75rem)] h-[100%] flex-shrink-0">
@@ -48,44 +46,24 @@ export function FlavourCard({ flavour, onAddToCart, quantity }: FlavourCardProps
       </div>
       <div className="mt-2 text-center">
         <p className="text-white text-sm font-normal h-10 flex items-center justify-center">{flavour.name}</p>
-        <div className="mt-2 flex justify-center px-2 h-7 relative overflow-hidden">
-            {quantity === 0 ? (
-                <Button
-                    size="sm"
-                    onClick={handleAddToCartClick}
-                    className={cn(
-                        "h-7 w-full rounded-full uppercase bg-transparent border-2 border-b-[3px] border-custom-purple-dark text-custom-purple-dark bg-white hover:bg-custom-purple-dark hover:text-white text-xs transition-transform duration-300",
-                        showAdded ? '-translate-y-full' : 'translate-y-0'
-                    )}
-                >
-                    Add
-                </Button>
-            ) : (
-                <div className="flex items-center justify-center w-full rounded-full bg-custom-purple-dark text-white h-7">
-                    <Button
-                        size="icon"
-                        variant="ghost"
-                        onClick={handleDecrement}
-                        className="h-full w-8 rounded-r-none rounded-l-full hover:bg-white/10 hover:text-white"
-                    >
-                        <Minus className="h-4 w-4" />
-                    </Button>
-                    <span className="font-bold px-1 text-sm">{quantity}</span>
-                    <Button
-                        size="icon"
-                        variant="ghost"
-                        onClick={handleIncrement}
-                        className="h-full w-8 rounded-l-none rounded-r-full hover:bg-white/10 hover:text-white"
-                    >
-                        <Plus className="h-4 w-4" />
-                    </Button>
-                </div>
+        <div className="mt-2 flex justify-center px-2 h-7 relative">
+          <Button
+            size="sm"
+            onClick={isInCart ? handleRemoveFromCartClick : handleAddToCartClick}
+            className={cn(
+              "h-7 w-full rounded-full uppercase border-2 border-b-[3px] text-xs transition-colors duration-300",
+              isInCart 
+                ? 'bg-custom-purple-dark border-custom-purple-dark text-white hover:bg-transparent hover:text-custom-purple-dark'
+                : 'bg-white border-custom-purple-dark text-custom-purple-dark hover:bg-custom-purple-dark hover:text-white'
             )}
-            {showAdded && (
-                 <div className="absolute inset-0 flex items-center justify-center text-custom-purple-dark font-bold text-xs animate-slide-up-and-fade-in-out">
-                    Added
-                </div>
-            )}
+          >
+            {isInCart ? 'Remove' : 'Add'}
+          </Button>
+          {showAdded && (
+            <div className="absolute inset-x-0 bottom-0 flex items-center justify-center text-custom-purple-dark font-bold text-xs animate-slide-up-and-out">
+              Added
+            </div>
+          )}
         </div>
       </div>
     </div>
