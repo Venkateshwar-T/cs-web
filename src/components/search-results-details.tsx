@@ -1,3 +1,4 @@
+
 'use client';
 
 import { ProductCard } from "./product-card";
@@ -71,7 +72,10 @@ export function SearchResultsDetails({ query, onAddToCart, cart, onProductClick,
                 isScrolling ? "custom-scrollbar" : "no-scrollbar"
                 )}
             >
-                <div className="flex justify-between items-center text-white mb-2">
+                <div className={cn(
+                    "flex justify-between items-center text-white mb-2",
+                    activeFilters.length === 0 && 'mb-4'
+                )}>
                   <h2 className="text-xl">
                     Showing results for <span className="italic text-custom-gold">{query}</span>
                   </h2>
