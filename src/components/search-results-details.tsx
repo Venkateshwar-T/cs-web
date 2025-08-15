@@ -64,8 +64,8 @@ export function SearchResultsDetails({ query, onAddToCart, cart, onProductClick 
             <div 
                 ref={scrollContainerRef}
                 className={cn(
-                "h-full overflow-y-auto custom-scrollbar pr-8 pb-8",
-                isScrolling && "is-scrolling"
+                "h-full overflow-y-auto pr-8 pb-8",
+                isScrolling ? "custom-scrollbar" : "no-scrollbar"
                 )}
             >
                 <div className="flex justify-between items-center text-white mb-6">
@@ -73,7 +73,7 @@ export function SearchResultsDetails({ query, onAddToCart, cart, onProductClick 
                     Showing results for <span className="italic text-custom-gold">{query}</span>
                   </h2>
                   <Select value={sortOption} onValueChange={setSortOption}>
-                    <SelectTrigger className="w-[220px] rounded-full bg-white text-custom-purple-dark border-2 border-custom-purple-dark focus:ring-custom-gold h-9">
+                    <SelectTrigger className="w-[220px] rounded-full bg-white text-custom-purple-dark border-2 border-custom-purple-dark h-9">
                       <SelectValue>
                         Sort By: {sortOption.charAt(0).toUpperCase() + sortOption.slice(1).replace(/-/g, ' ')}
                       </SelectValue>
