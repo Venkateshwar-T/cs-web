@@ -182,7 +182,6 @@ export default function Home() {
                     product={selectedProduct} 
                     onClose={handleClosePopup}
                     onAddToCart={handleAddToCart}
-                    cart={cart}
                     onImageExpandChange={setIsImageExpanded}
                   />
               </div>

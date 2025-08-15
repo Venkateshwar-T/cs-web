@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { X } from 'lucide-react';
 import type { Product } from '@/app/page';
 import { FlavoursSection } from './flavours-section';
@@ -19,15 +20,18 @@ interface ProductPopupProps {
   product: Product;
   onClose: () => void;
   onAddToCart: (productName: string, quantity: number, animate?: boolean) => void;
-  cart: Record<string, number>;
   onImageExpandChange: (isExpanded: boolean) => void;
 }
 
-export function ProductPopup({ product, onClose, onAddToCart, cart, onImageExpandChange }: ProductPopupProps) {
+export function ProductPopup({ product, onClose, onAddToCart, onImageExpandChange }: ProductPopupProps) {
+  const [flavourCart, setFlavourCart] = useState<Record<string, number>>({});
   
   const handleFlavourAddToCart = (flavourId: number, quantity: number) => {
-    // We pass false for the 'animate' parameter to prevent the cart button animation
-    onAddToCart(flavourId.toString(), quantity, false);
+    const newFlavourCart = { ...flavourCart, [flavourId.toString()]: quantity };
+    if (quantity <= 0) {
+      delete newFlavourCart[flavourId.toString()];
+    }
+    setFlavourCart(newFlavourCart);
   };
   
   return (
@@ -46,7 +50,7 @@ export function ProductPopup({ product, onClose, onAddToCart, cart, onImageExpan
             <ImageGallery product={product} onImageExpandChange={onImageExpandChange} />
           </div>
           <div className="pb-6 rounded-lg w-full h-[55%]">
-            <FlavoursSection onAddToCart={handleFlavourAddToCart} cart={cart} />
+            <FlavoursSection onAddToCart={handleFlavourAddToCart} cart={flavourCart} />
           </div>
         </div>
         
