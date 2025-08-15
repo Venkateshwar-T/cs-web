@@ -47,7 +47,7 @@ export function FilterContainer() {
                 {priceOptions.map((option) => (
                   <div key={option.id} className="flex items-center space-x-2">
                     <RadioGroupItem value={option.id} id={option.id} />
-                    <Label htmlFor={option.id} className="text-white font-poppins text-sm">
+                    <Label htmlFor={option.id} className="text-white font-plex-sans text-sm">
                       {option.label}
                     </Label>
                   </div>
