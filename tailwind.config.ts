@@ -131,6 +131,11 @@ export default {
           '50%': { transform: 'scale(1.25)' },
           '100%': { transform: 'scale(1)' },
         },
+        'pop': {
+          '0%': { transform: 'scale(1)' },
+          '50%': { transform: 'scale(1.05)' },
+          '100%': { transform: 'scale(1)' },
+        },
         'slide-up-fade-in': {
           '0%': { transform: 'translateY(100%)', opacity: '0' },
           '100%': { transform: 'translateY(0)', opacity: '1' },
@@ -156,6 +161,7 @@ export default {
         'sparkle-pulse': 'sparkle-pulse 0.6s ease-out forwards',
         'sparkle-fade-out': 'sparkle-fade-out 0.6s ease-out forwards',
         'heart-pop': 'heart-pop 0.3s ease-in-out',
+        'pop': 'pop 0.3s ease-in-out',
         'slide-up-fade-in': 'slide-up-fade-in 0.5s ease-out forwards',
         'slide-up-and-fade-in-out': 'slide-up-and-fade-in-out 1s ease-in-out forwards',
         'slide-up-and-out': 'slide-up-and-out 1s ease-in-out forwards',

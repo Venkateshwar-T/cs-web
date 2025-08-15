@@ -1,4 +1,3 @@
-
 'use client';
 
 import Image from 'next/image';
@@ -14,26 +13,27 @@ interface FlavourCardProps {
 }
 
 export function FlavourCard({ flavour, onAddToCart, quantity }: FlavourCardProps) {
-  const [showAdded, setShowAdded] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false);
 
-  const handleAddToCartClick = (e: React.MouseEvent) => {
+  const handleToggleCart = (e: React.MouseEvent) => {
     e.stopPropagation();
-    if (quantity === 0) {
-      onAddToCart(flavour.id, 1);
-      setShowAdded(true);
-      setTimeout(() => setShowAdded(false), 1000);
+    const isInCart = quantity > 0;
+    onAddToCart(flavour.id, isInCart ? 0 : 1);
+    if (!isInCart) {
+      setIsAnimating(true);
     }
-  };
-
-  const handleRemoveFromCartClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    onAddToCart(flavour.id, 0);
   };
 
   const isInCart = quantity > 0;
 
   return (
-    <div className="flex flex-col justify-center bg-white/30 p-3 rounded-[20px] w-[calc(25%-0.75rem)] h-[100%] flex-shrink-0">
+    <div 
+      className={cn(
+        "flex flex-col justify-center bg-white/30 p-3 rounded-[20px] w-[calc(25%-0.75rem)] h-[100%] flex-shrink-0 transition-transform duration-200",
+        isAnimating && 'animate-pop'
+      )}
+      onAnimationEnd={() => setIsAnimating(false)}
+    >
       <div className="relative w-full aspect-square">
         <Image
           src={flavour.src}
@@ -49,7 +49,7 @@ export function FlavourCard({ flavour, onAddToCart, quantity }: FlavourCardProps
         <div className="mt-2 flex justify-center px-2 h-7 relative">
           <Button
             size="sm"
-            onClick={isInCart ? handleRemoveFromCartClick : handleAddToCartClick}
+            onClick={handleToggleCart}
             className={cn(
               "h-7 w-full rounded-full uppercase border-2 border-b-[3px] text-xs transition-colors duration-300",
               isInCart 
@@ -59,11 +59,6 @@ export function FlavourCard({ flavour, onAddToCart, quantity }: FlavourCardProps
           >
             {isInCart ? 'Remove' : 'Add'}
           </Button>
-          {showAdded && (
-            <div className="absolute inset-x-0 bottom-full mb-1 flex items-center justify-center text-custom-gold font-bold text-xs animate-slide-up-and-out">
-              Added
-            </div>
-          )}
         </div>
       </div>
     </div>
