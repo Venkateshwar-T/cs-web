@@ -169,6 +169,11 @@ export default {
             transform: 'translateX(0%)',
           },
         },
+        pulse: {
+          '50%': {
+            opacity: '.5',
+          },
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
@@ -184,9 +189,10 @@ export default {
         'slide-up-fade-in': 'slide-up-fade-in 0.5s ease-out forwards',
         'slide-up-and-fade-in-out': 'slide-up-and-fade-in-out 1s ease-in-out forwards',
         'slide-up-and-out': 'slide-up-and-out 1s ease-in-out forwards',
-        'cut-through': 'cut-through 1.2s ease-in-out',
-        'shake': 'shake 8s ease-in-out infinite',
+        'cut-through': 'cut-through 1.2s ease-in-out infinite',
+        'shake': 'shake 4s ease-in-out infinite',
         'loader-bar': 'loader-bar 1.5s ease-out forwards',
+        pulse: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
       },
     },
   },

@@ -12,6 +12,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { ProductCardSkeleton } from "./product-card-skeleton";
 
 interface SearchResultsDetailsProps {
   query: string;
@@ -22,9 +23,20 @@ interface SearchResultsDetailsProps {
   onRemoveFilter: (filterType: keyof FilterState, value: string) => void;
   likedProducts: Record<number, boolean>;
   onLikeToggle: (productId: number) => void;
+  isSearching: boolean;
 }
 
-export function SearchResultsDetails({ query, onAddToCart, cart, onProductClick, activeFilters, onRemoveFilter, likedProducts, onLikeToggle }: SearchResultsDetailsProps) {
+export function SearchResultsDetails({ 
+  query, 
+  onAddToCart, 
+  cart, 
+  onProductClick, 
+  activeFilters, 
+  onRemoveFilter, 
+  likedProducts, 
+  onLikeToggle,
+  isSearching
+}: SearchResultsDetailsProps) {
   const products: Product[] = Array.from({ length: 8 }).map((_, i) => ({
     id: i,
     name: `Diwali Collection Box ${i + 1}`,
@@ -111,17 +123,20 @@ export function SearchResultsDetails({ query, onAddToCart, cart, onProductClick,
                   </div>
                 )}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                {products.map((product) => (
-                    <ProductCard
-                      key={product.id}
-                      product={product}
-                      onAddToCart={onAddToCart}
-                      quantity={cart[product.name] || 0}
-                      onProductClick={onProductClick}
-                      isLiked={!!likedProducts[product.id]}
-                      onLikeToggle={() => onLikeToggle(product.id)}
-                    />
-                ))}
+                {isSearching 
+                  ? Array.from({ length: 8 }).map((_, index) => <ProductCardSkeleton key={index} />)
+                  : products.map((product) => (
+                      <ProductCard
+                        key={product.id}
+                        product={product}
+                        onAddToCart={onAddToCart}
+                        quantity={cart[product.name] || 0}
+                        onProductClick={onProductClick}
+                        isLiked={!!likedProducts[product.id]}
+                        onLikeToggle={() => onLikeToggle(product.id)}
+                      />
+                  ))
+                }
                 </div>
             </div>
         </div>

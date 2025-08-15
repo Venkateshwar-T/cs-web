@@ -154,6 +154,7 @@ export default function Home() {
                     onRemoveFilter={handleRemoveFilter}
                     likedProducts={likedProducts}
                     onLikeToggle={handleLikeToggle}
+                    isSearching={isSearching}
                   />
               </div>
             </div>
