@@ -8,7 +8,7 @@ export function FilterContainer() {
         <div className="bg-white/20 h-full w-full rounded-tr-[40px] p-8">
             <div className="flex items-center text-white text-xl font-bold mb-6">
                 <SlidersHorizontal className="h-6 w-6 mr-3" />
-                <h2 className="font-poppins">Filters & Sorting</h2>
+                <h2 className="font-poppins whitespace-nowrap">Filters & Sorting</h2>
             </div>
             {/* Content for the filter will go here */}
         </div>
