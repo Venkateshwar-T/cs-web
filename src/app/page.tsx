@@ -147,7 +147,7 @@ export default function Home() {
               <div className="h-full flex-grow ml-8 mr-8 relative">
                   <SearchResultsDetails 
                     query={searchQuery} 
-                    onAddToCart={onAddToCart} 
+                    onAddToCart={handleAddToCart} 
                     cart={cart}
                     onProductClick={handleProductClick}
                     activeFilters={activeFilters}
