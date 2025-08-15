@@ -100,23 +100,23 @@
   }
   .custom-scrollbar::-webkit-scrollbar-track {
     background: transparent;
-    border-radius: 10px;
   }
   .custom-scrollbar::-webkit-scrollbar-thumb {
     background: transparent;
     border-radius: 10px;
-    transition: background-color 0.3s ease-in-out;
+    border: 2px solid transparent;
+    background-clip: content-box;
   }
   
-  .custom-scrollbar.is-scrolling::-webkit-scrollbar-track {
-    background: #E5E7EB; /* A light grey from Tailwind's palette */
+  .custom-scrollbar:hover::-webkit-scrollbar-track {
+    background: #E5E7EB1a; /* A light grey from Tailwind's palette */
   }
 
-  .custom-scrollbar.is-scrolling::-webkit-scrollbar-thumb {
-    background: #FFD139;
+  .custom-scrollbar:hover::-webkit-scrollbar-thumb {
+    background: hsl(var(--primary));
   }
 
-  .custom-scrollbar.is-scrolling::-webkit-scrollbar-thumb:hover {
-    background: #e6b834;
+  .custom-scrollbar:hover::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--primary) / 0.8);
   }
 }
