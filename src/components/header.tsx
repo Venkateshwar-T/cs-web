@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { Search, Menu, Phone } from "lucide-react";
+import { Menu, Phone } from "lucide-react";
 import { AiOutlineInstagram, AiOutlineWhatsApp } from "react-icons/ai";
 import { IoLogoFacebook } from "react-icons/io5";
 import { CgProfile } from "react-icons/cg";
@@ -248,7 +248,7 @@ export function Header({ onSearchActiveChange, onSearchSubmit }: HeaderProps) {
           >
             <div className="absolute inset-0 rounded-full bg-gradient-to-br from-white/80 to-white/20 backdrop-blur-sm -z-10"></div>
             <div className="absolute left-4 top-1/2 -translate-y-1/2 z-10">
-              <Search className={`h-5 w-5 transition-colors ${isSearchSubmitted ? 'text-white' : 'text-white'}`} />
+              <Image src="/icons/search_icon.png" alt="Search" width={20} height={20} />
             </div>
             <Input 
               name="search"
@@ -262,5 +262,3 @@ export function Header({ onSearchActiveChange, onSearchSubmit }: HeaderProps) {
     </>
   );
 }
-
-    
