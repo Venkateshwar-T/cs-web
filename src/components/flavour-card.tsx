@@ -60,7 +60,7 @@ export function FlavourCard({ flavour, onAddToCart, quantity }: FlavourCardProps
             {isInCart ? 'Remove' : 'Add'}
           </Button>
           {showAdded && (
-            <div className="absolute inset-x-0 bottom-0 flex items-center justify-center text-custom-purple-dark font-bold text-xs animate-slide-up-and-out">
+            <div className="absolute inset-x-0 bottom-full mb-1 flex items-center justify-center text-custom-gold font-bold text-xs animate-slide-up-and-out">
               Added
             </div>
           )}
