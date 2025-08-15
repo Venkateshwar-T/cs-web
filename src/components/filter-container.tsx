@@ -121,90 +121,92 @@ export function FilterContainer() {
 
   return (
     <div className={cn("bg-[#5D2B79] h-full w-[17%] rounded-tr-[40px] animate-slide-in-from-left")} style={{ animationDuration: '0.5s' }}>
-        <div className="bg-white/20 h-full w-full rounded-tr-[40px] p-8 overflow-y-auto custom-scrollbar">
-            <div className="flex items-center text-white font-bold mb-6 text-lg">
-                <SlidersHorizontal className="h-6 w-6 mr-3 flex-shrink-0" />
-                <h2 className="h-full w-full font-poppins">Filters & Sorting</h2>
-            </div>
-            
-            <div className="space-y-6">
-              <div className="space-y-2">
-                <p className="text-sm text-white/80 font-poppins">Price</p>
-                <p className="text-base text-white font-semibold font-plex-sans">
-                  ₹{priceRange[0]} - ₹{priceRange[1]}
-                </p>
-                <Slider
-                  value={priceRange}
-                  onValueChange={handleSliderChange}
-                  max={3000}
-                  step={100}
-                  className="w-full"
-                />
-              </div>
-
-              <div className="space-y-2">
-                {priceOptions.map((option) => (
-                   <CheckboxItem
-                      key={option.id}
-                      id={option.id}
-                      label={option.label}
-                      checked={selectedPriceOptions.includes(option.id)}
-                      onCheckedChange={(checked) => handlePriceOptionChange(option.id, checked)}
+        <div className="bg-white/20 h-full w-full rounded-tr-[40px] pt-8 pl-8">
+            <div className="h-full overflow-y-auto custom-scrollbar pr-8 pb-8">
+                <div className="flex items-center text-white font-bold mb-6 text-lg">
+                    <SlidersHorizontal className="h-6 w-6 mr-3 flex-shrink-0" />
+                    <h2 className="h-full w-full font-poppins">Filters & Sorting</h2>
+                </div>
+                
+                <div className="space-y-6">
+                  <div className="space-y-2">
+                    <p className="text-sm text-white/80 font-poppins">Price</p>
+                    <p className="text-base text-white font-semibold font-plex-sans">
+                      ₹{priceRange[0]} - ₹{priceRange[1]}
+                    </p>
+                    <Slider
+                      value={priceRange}
+                      onValueChange={handleSliderChange}
+                      max={3000}
+                      step={100}
+                      className="w-full"
                     />
-                ))}
-              </div>
-              
-              <FilterSection title="Flavours & Fillings">
-                {flavourOptions.map((option) => (
-                  <CheckboxItem
-                    key={option.id}
-                    id={option.id}
-                    label={option.label}
-                    checked={selectedFlavours.includes(option.id)}
-                    onCheckedChange={(checked) => handleFlavourChange(option.id, checked)}
-                  />
-                ))}
-              </FilterSection>
+                  </div>
 
-              <FilterSection title="Best for Occasion">
-                {occasionOptions.map((option) => (
-                  <CheckboxItem
-                    key={option.id}
-                    id={option.id}
-                    label={option.label}
-                    count={option.count}
-                    checked={selectedOccasions.includes(option.id)}
-                    onCheckedChange={(checked) => handleOccasionChange(option.id, checked)}
-                  />
-                ))}
-              </FilterSection>
+                  <div className="space-y-2">
+                    {priceOptions.map((option) => (
+                       <CheckboxItem
+                          key={option.id}
+                          id={option.id}
+                          label={option.label}
+                          checked={selectedPriceOptions.includes(option.id)}
+                          onCheckedChange={(checked) => handlePriceOptionChange(option.id, checked)}
+                        />
+                    ))}
+                  </div>
+                  
+                  <FilterSection title="Flavours & Fillings">
+                    {flavourOptions.map((option) => (
+                      <CheckboxItem
+                        key={option.id}
+                        id={option.id}
+                        label={option.label}
+                        checked={selectedFlavours.includes(option.id)}
+                        onCheckedChange={(checked) => handleFlavourChange(option.id, checked)}
+                      />
+                    ))}
+                  </FilterSection>
 
-              <FilterSection title="Product Type">
-                {productTypeOptions.map((option) => (
-                  <CheckboxItem
-                    key={option.id}
-                    id={option.id}
-                    label={option.label}
-                    count={option.count}
-                    checked={selectedProductTypes.includes(option.id)}
-                    onCheckedChange={(checked) => handleProductTypeChange(option.id, checked)}
-                  />
-                ))}
-              </FilterSection>
+                  <FilterSection title="Best for Occasion">
+                    {occasionOptions.map((option) => (
+                      <CheckboxItem
+                        key={option.id}
+                        id={option.id}
+                        label={option.label}
+                        count={option.count}
+                        checked={selectedOccasions.includes(option.id)}
+                        onCheckedChange={(checked) => handleOccasionChange(option.id, checked)}
+                      />
+                    ))}
+                  </FilterSection>
 
-              <FilterSection title="Weight">
-                {weightOptions.map((option) => (
-                  <CheckboxItem
-                    key={option.id}
-                    id={option.id}
-                    label={option.label}
-                    count={option.count}
-                    checked={selectedWeights.includes(option.id)}
-                    onCheckedChange={(checked) => handleWeightChange(option.id, checked)}
-                  />
-                ))}
-              </FilterSection>
+                  <FilterSection title="Product Type">
+                    {productTypeOptions.map((option) => (
+                      <CheckboxItem
+                        key={option.id}
+                        id={option.id}
+                        label={option.label}
+                        count={option.count}
+                        checked={selectedProductTypes.includes(option.id)}
+                        onCheckedChange={(checked) => handleProductTypeChange(option.id, checked)}
+                      />
+                    ))}
+                  </FilterSection>
 
+                  <FilterSection title="Weight">
+                    {weightOptions.map((option) => (
+                      <CheckboxItem
+                        key={option.id}
+                        id={option.id}
+                        label={option.label}
+                        count={option.count}
+                        checked={selectedWeights.includes(option.id)}
+                        onCheckedChange={(checked) => handleWeightChange(option.id, checked)}
+                      />
+                    ))}
+                  </FilterSection>
+
+                </div>
             </div>
         </div>
     </div>
