@@ -3,7 +3,8 @@
 import { ProductCard } from "./product-card";
 import { useState, useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
-import type { Product } from "@/app/page";
+import type { Product, FilterState } from "@/app/page";
+import { X } from 'lucide-react';
 import {
   Select,
   SelectContent,
@@ -17,9 +18,11 @@ interface SearchResultsDetailsProps {
   onAddToCart: (productName: string, quantity: number) => void;
   cart: Record<string, number>;
   onProductClick: (product: Product) => void;
+  activeFilters: { type: keyof FilterState, value: string, label: string }[];
+  onRemoveFilter: (filterType: keyof FilterState, value: string) => void;
 }
 
-export function SearchResultsDetails({ query, onAddToCart, cart, onProductClick }: SearchResultsDetailsProps) {
+export function SearchResultsDetails({ query, onAddToCart, cart, onProductClick, activeFilters, onRemoveFilter }: SearchResultsDetailsProps) {
   const products: Product[] = Array.from({ length: 8 }).map((_, i) => ({
     id: i,
     name: `Diwali Collection Box ${i + 1}`,
@@ -68,7 +71,7 @@ export function SearchResultsDetails({ query, onAddToCart, cart, onProductClick 
                 isScrolling ? "custom-scrollbar" : "no-scrollbar"
                 )}
             >
-                <div className="flex justify-between items-center text-white mb-6">
+                <div className="flex justify-between items-center text-white mb-2">
                   <h2 className="text-xl">
                     Showing results for <span className="italic text-custom-gold">{query}</span>
                   </h2>
@@ -87,6 +90,21 @@ export function SearchResultsDetails({ query, onAddToCart, cart, onProductClick 
                     </SelectContent>
                   </Select>
                 </div>
+                {activeFilters.length > 0 && (
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    {activeFilters.map(filter => (
+                      <div key={`${filter.type}-${filter.value}`} className="flex items-center bg-custom-gold text-custom-purple-dark rounded-full px-3 py-1 text-sm font-medium">
+                        <span>{filter.label}</span>
+                        <button
+                          onClick={() => onRemoveFilter(filter.type, filter.value)}
+                          className="ml-2 -mr-1 p-0.5 rounded-full hover:bg-black/10"
+                        >
+                          <X className="h-3 w-3" />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 {products.map((product) => (
                     <ProductCard

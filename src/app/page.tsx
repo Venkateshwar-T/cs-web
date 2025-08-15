@@ -9,11 +9,22 @@ import { FilterContainer } from '@/components/filter-container';
 import { SearchResultsDetails } from '@/components/search-results-details';
 import { Button } from '@/components/ui/button';
 import { ProductPopup } from '@/components/product-popup';
+import { flavourOptions, occasionOptions, productTypeOptions, weightOptions } from '@/lib/filter-options';
 
 export type Product = {
   id: number;
   name: string;
 };
+
+export type FilterState = {
+  priceRange: [number, number];
+  selectedPriceOptions: string[];
+  selectedFlavours: string[];
+  selectedOccasions: string[];
+  selectedProductTypes: string[];
+  selectedWeights: string[];
+};
+
 
 export default function Home() {
   const [isSearchActive, setIsSearchActive] = useState(false);
@@ -24,13 +35,21 @@ export default function Home() {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [isImageExpanded, setIsImageExpanded] = useState(false);
 
+  const [filters, setFilters] = useState<FilterState>({
+    priceRange: [0, 3000],
+    selectedPriceOptions: [],
+    selectedFlavours: [],
+    selectedOccasions: [],
+    selectedProductTypes: [],
+    selectedWeights: [],
+  });
+
   useEffect(() => {
     if (selectedProduct || isImageExpanded) {
       document.body.classList.add('overflow-hidden');
     } else {
       document.body.classList.remove('overflow-hidden');
     }
-    // Cleanup function to remove the class if the component unmounts
     return () => {
       document.body.classList.remove('overflow-hidden');
     };
@@ -67,7 +86,35 @@ export default function Home() {
     setSelectedProduct(null);
   };
 
+  const handleFilterChange = (newFilters: Partial<FilterState>) => {
+    setFilters(prev => ({ ...prev, ...newFilters }));
+  };
+
+  const handleRemoveFilter = (filterType: keyof FilterState, value: string) => {
+    setFilters(prev => {
+      const currentValues = prev[filterType];
+      if (Array.isArray(currentValues)) {
+        return {
+          ...prev,
+          [filterType]: currentValues.filter(v => v !== value)
+        };
+      }
+      return prev;
+    });
+  };
+
   const totalQuantity = Object.values(cart).reduce((acc, cur) => acc + cur, 0);
+
+  const getLabelById = (id: string, options: { id: string, label: string }[]) => {
+    return options.find(option => option.id === id)?.label || id;
+  };
+  
+  const activeFilters = [
+    ...filters.selectedFlavours.map(id => ({ type: 'selectedFlavours', value: id, label: getLabelById(id, flavourOptions) })),
+    ...filters.selectedOccasions.map(id => ({ type: 'selectedOccasions', value: id, label: getLabelById(id, occasionOptions) })),
+    ...filters.selectedProductTypes.map(id => ({ type: 'selectedProductTypes', value: id, label: getLabelById(id, productTypeOptions) })),
+    ...filters.selectedWeights.map(id => ({ type: 'selectedWeights', value: id, label: getLabelById(id, weightOptions) })),
+  ] as { type: keyof FilterState; value: string; label: string }[];
 
   return (
     <>
@@ -84,13 +131,15 @@ export default function Home() {
           )}
           {isSearchActive && (
             <div className="flex w-full h-full">
-              <FilterContainer />
+              <FilterContainer filters={filters} onFilterChange={handleFilterChange} />
               <div className="h-full flex-grow ml-8 mr-8 relative">
                   <SearchResultsDetails 
                     query={searchQuery} 
                     onAddToCart={handleAddToCart} 
                     cart={cart}
                     onProductClick={handleProductClick}
+                    activeFilters={activeFilters}
+                    onRemoveFilter={handleRemoveFilter}
                   />
               </div>
             </div>
