@@ -9,7 +9,12 @@ export function ProductPopupFooter() {
             <div className="bg-custom-purple-dark h-full w-full rounded-t-3xl flex items-center justify-center">
                 <div className="flex items-center justify-center gap-4 text-white w-full">
                     <div className="flex flex-col items-center">
-                        <p className="text-sm line-through opacity-100">₹1000</p>
+                        <p className="text-sm opacity-100">
+                          <span className="relative inline-block
+                            after:content-[''] after:absolute after:left-0 after:top-1/2 after:h-[1.5px] after:w-full after:bg-white after:animate-cut-through after:origin-left">
+                              ₹1000
+                          </span>
+                        </p>
                         <p className="text-sm text-custom-gold font-semibold">25% OFF</p>
                     </div>
 
