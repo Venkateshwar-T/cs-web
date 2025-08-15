@@ -73,7 +73,7 @@ export function SearchResultsDetails({ query, onAddToCart, cart, onProductClick 
                     Showing results for <span className="italic text-custom-gold">{query}</span>
                   </h2>
                   <Select value={sortOption} onValueChange={setSortOption}>
-                    <SelectTrigger className="w-[220px] rounded-full bg-white text-custom-purple-dark border-2 border-custom-purple-dark h-9">
+                    <SelectTrigger className="w-[220px] rounded-full bg-white text-custom-purple-dark border-2 border-custom-purple-dark h-9 focus:ring-0 focus:ring-offset-0">
                       <SelectValue>
                         Sort By: {sortOption.charAt(0).toUpperCase() + sortOption.slice(1).replace(/-/g, ' ')}
                       </SelectValue>
