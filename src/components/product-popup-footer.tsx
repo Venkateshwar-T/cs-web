@@ -15,7 +15,7 @@ export function ProductPopupFooter() {
                               ₹1000
                           </span>
                         </p>
-                        <p className="text-sm text-custom-gold font-semibold">25% OFF</p>
+                        <p className="text-sm text-custom-gold font-semibold animate-shake">25% OFF</p>
                     </div>
 
                     <p className="text-3xl font-bold">₹750</p>

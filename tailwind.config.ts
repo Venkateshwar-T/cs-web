@@ -153,6 +153,13 @@ export default {
         'cut-through': {
           'to': { width: '100%' },
         },
+        'shake': {
+          '0%, 12.5%, 100%': { transform: 'rotate(0deg)' },
+          '2.5%': { transform: 'rotate(5deg)' },
+          '5%': { transform: 'rotate(-5deg)' },
+          '7.5%': { transform: 'rotate(5deg)' },
+          '10%': { transform: 'rotate(-5deg)' },
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
@@ -169,6 +176,7 @@ export default {
         'slide-up-and-fade-in-out': 'slide-up-and-fade-in-out 1s ease-in-out forwards',
         'slide-up-and-out': 'slide-up-and-out 1s ease-in-out forwards',
         'cut-through': 'cut-through 1.0s ease-in-out forwards',
+        'shake': 'shake 8s ease-in-out infinite',
       },
     },
   },
