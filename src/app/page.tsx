@@ -10,6 +10,7 @@ import { SearchResultsDetails } from '@/components/search-results-details';
 import { Button } from '@/components/ui/button';
 import { ProductPopup } from '@/components/product-popup';
 import { flavourOptions, occasionOptions, productTypeOptions, weightOptions } from '@/lib/filter-options';
+import { LoaderBar } from '@/components/loader-bar';
 
 export type Product = {
   id: number;
@@ -28,6 +29,7 @@ export type FilterState = {
 
 export default function Home() {
   const [isSearchActive, setIsSearchActive] = useState(false);
+  const [isSearching, setIsSearching] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [cart, setCart] = useState<Record<string, number>>({});
   const [cartMessage, setCartMessage] = useState('');
@@ -59,6 +61,7 @@ export default function Home() {
   const handleSearchSubmit = (query: string) => {
     setSearchQuery(query);
     setIsSearchActive(true);
+    setIsSearching(true);
   };
   
   const handleAddToCart = (productName: string, quantity: number, animate: boolean = true) => {
@@ -126,6 +129,7 @@ export default function Home() {
 
   return (
     <>
+      <LoaderBar isLoading={isSearching} onAnimationComplete={() => setIsSearching(false)} />
       <div className={cn("flex flex-col h-screen", (selectedProduct || isImageExpanded) ? 'opacity-50' : '')}>
         <Header onSearchSubmit={handleSearchSubmit} onSearchActiveChange={setIsSearchActive} />
         <main className={cn(
@@ -143,7 +147,7 @@ export default function Home() {
               <div className="h-full flex-grow ml-8 mr-8 relative">
                   <SearchResultsDetails 
                     query={searchQuery} 
-                    onAddToCart={handleAddToCart} 
+                    onAddToCart={onAddToCart} 
                     cart={cart}
                     onProductClick={handleProductClick}
                     activeFilters={activeFilters}
