@@ -4,6 +4,7 @@
 import { X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { SectionTitle } from './section-title';
+import { CartItemCard } from './cart-item-card';
 
 interface CartPopupProps {
   onClose: () => void;
@@ -32,16 +33,11 @@ export function CartPopup({ onClose, cart }: CartPopupProps) {
         ) : (
           <div className="space-y-4">
             {cartItems.map(([productName, quantity]) => (
-              <div key={productName} className="flex justify-between items-center bg-white/10 p-4 rounded-lg">
-                <div>
-                  <h3 className="font-bold text-lg">{productName}</h3>
-                  <p className="text-sm text-white/80">Price: ₹750</p>
-                </div>
-                <div className="flex items-center gap-4">
-                    <p className="font-semibold">Quantity: {quantity}</p>
-                    <p className="font-bold text-lg">₹{750 * quantity}</p>
-                </div>
-              </div>
+              <CartItemCard 
+                key={productName}
+                productName={productName}
+                quantity={quantity}
+              />
             ))}
           </div>
         )}
