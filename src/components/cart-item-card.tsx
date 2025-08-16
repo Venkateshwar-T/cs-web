@@ -50,9 +50,9 @@ export function CartItemCard({ productName, quantity }: CartItemCardProps) {
                         <p className="text-sm text-black/60 font-semibold">Flavours & Fillings</p>
                         <ul className="list-disc list-inside text-sm mt-1 space-y-0.5 font-bold">
                             {selectedFlavours.map((flavour, index) => (
-                                <li key={index}>
-                                    <div className="flex">
-                                        <span className="w-36">{flavour.name}</span>
+                                <li key={index} className="flex items-baseline gap-2">
+                                    <div>
+                                        <span className="w-36 inline-block">{flavour.name}</span>
                                         <span>+₹{flavour.price}</span>
                                     </div>
                                 </li>
