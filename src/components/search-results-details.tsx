@@ -1,3 +1,4 @@
+
 'use client';
 
 import { ProductCard } from "./product-card";
@@ -77,6 +78,11 @@ export function SearchResultsDetails({
     };
   }, []);
   
+  useEffect(() => {
+    if (isSearching && scrollContainerRef.current) {
+      scrollContainerRef.current.scrollTop = 0;
+    }
+  }, [isSearching]);
 
   return (
     <div className="bg-[#5D2B79] h-full flex-grow rounded-t-[40px] relative">

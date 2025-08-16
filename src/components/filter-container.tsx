@@ -8,6 +8,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import type { FilterState } from '@/app/page';
 import { priceOptions, flavourOptions, occasionOptions, productTypeOptions, weightOptions } from '@/lib/filter-options';
+import { useRef, useEffect } from "react";
 
 
 const FilterSection = ({ title, children }: { title: string, children: React.ReactNode }) => (
@@ -37,6 +38,24 @@ interface FilterContainerProps {
 }
 
 export function FilterContainer({ filters, onFilterChange }: FilterContainerProps) {
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (scrollContainerRef.current) {
+      // Check if filters are reset to initial state to detect a new search
+      const isReset = filters.selectedFlavours.length === 0 &&
+                      filters.selectedOccasions.length === 0 &&
+                      filters.selectedProductTypes.length === 0 &&
+                      filters.selectedWeights.length === 0 &&
+                      filters.selectedPriceOptions.length === 0 &&
+                      filters.priceRange[0] === 0 &&
+                      filters.priceRange[1] === 3000;
+      
+      if (isReset && scrollContainerRef.current.scrollTop > 0) {
+        scrollContainerRef.current.scrollTop = 0;
+      }
+    }
+  }, [filters]);
 
   const handlePriceOptionChange = (optionId: string, checked: boolean) => {
     const newSelected = checked
@@ -67,7 +86,7 @@ export function FilterContainer({ filters, onFilterChange }: FilterContainerProp
   return (
     <div className={cn("bg-[#5D2B79] h-full w-[17%] rounded-tr-[40px] animate-slide-in-from-left")} style={{ animationDuration: '0.5s' }}>
         <div className="bg-white/20 h-full w-full rounded-tr-[40px] pt-8 pl-8">
-            <div className="h-full overflow-y-auto custom-scrollbar pr-8 pb-8">
+            <div ref={scrollContainerRef} className="h-full overflow-y-auto custom-scrollbar pr-8 pb-8">
                 <div className="flex items-center text-white font-bold mb-6 text-lg">
                     <SlidersHorizontal className="h-6 w-6 mr-3 flex-shrink-0" />
                     <h2 className="h-full w-full font-poppins">Filters & Sorting</h2>
