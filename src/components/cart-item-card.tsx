@@ -1,3 +1,4 @@
+
 // @/components/cart-item-card.tsx
 'use client';
 
@@ -49,9 +50,11 @@ export function CartItemCard({ productName, quantity }: CartItemCardProps) {
                         <p className="text-sm text-black/60 font-semibold">Flavours & Fillings</p>
                         <ul className="list-disc list-inside text-sm mt-1 space-y-0.5 font-bold">
                             {selectedFlavours.map((flavour, index) => (
-                                <li key={index} className="flex">
-                                    <span className="w-36">{flavour.name}</span>
-                                    <span>+₹{flavour.price}</span>
+                                <li key={index}>
+                                    <div className="flex">
+                                        <span className="w-36">{flavour.name}</span>
+                                        <span>+₹{flavour.price}</span>
+                                    </div>
                                 </li>
                             ))}
                         </ul>
