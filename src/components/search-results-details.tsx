@@ -24,6 +24,8 @@ interface SearchResultsDetailsProps {
   likedProducts: Record<number, boolean>;
   onLikeToggle: (productId: number) => void;
   isSearching: boolean;
+  sortOption: string;
+  onSortChange: (value: string) => void;
 }
 
 export function SearchResultsDetails({ 
@@ -35,7 +37,9 @@ export function SearchResultsDetails({
   onRemoveFilter, 
   likedProducts, 
   onLikeToggle,
-  isSearching
+  isSearching,
+  sortOption,
+  onSortChange
 }: SearchResultsDetailsProps) {
   const products: Product[] = Array.from({ length: 8 }).map((_, i) => ({
     id: i,
@@ -45,7 +49,6 @@ export function SearchResultsDetails({
   const [isScrolling, setIsScrolling] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const [sortOption, setSortOption] = useState("featured");
 
   useEffect(() => {
     const scrollContainer = scrollContainerRef.current;
@@ -92,7 +95,7 @@ export function SearchResultsDetails({
                   <h2 className="text-xl">
                     Showing results for <span className="italic text-custom-gold">{query}</span>
                   </h2>
-                  <Select value={sortOption} onValueChange={setSortOption}>
+                  <Select value={sortOption} onValueChange={onSortChange}>
                     <SelectTrigger className="w-[220px] rounded-full bg-white text-custom-purple-dark border-2 border-custom-purple-dark h-9 focus:ring-0 focus:ring-offset-0">
                       <SelectValue>
                         Sort By: {sortOption.charAt(0).toUpperCase() + sortOption.slice(1).replace(/-/g, ' ')}

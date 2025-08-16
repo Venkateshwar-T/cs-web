@@ -26,6 +26,15 @@ export type FilterState = {
   selectedWeights: string[];
 };
 
+const initialFilterState: FilterState = {
+  priceRange: [0, 3000],
+  selectedPriceOptions: [],
+  selectedFlavours: [],
+  selectedOccasions: [],
+  selectedProductTypes: [],
+  selectedWeights: [],
+};
+
 
 export default function Home() {
   const [isSearchActive, setIsSearchActive] = useState(false);
@@ -37,15 +46,9 @@ export default function Home() {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [isImageExpanded, setIsImageExpanded] = useState(false);
   const [likedProducts, setLikedProducts] = useState<Record<number, boolean>>({});
+  const [sortOption, setSortOption] = useState("featured");
 
-  const [filters, setFilters] = useState<FilterState>({
-    priceRange: [0, 3000],
-    selectedPriceOptions: [],
-    selectedFlavours: [],
-    selectedOccasions: [],
-    selectedProductTypes: [],
-    selectedWeights: [],
-  });
+  const [filters, setFilters] = useState<FilterState>(initialFilterState);
 
   useEffect(() => {
     if (selectedProduct || isImageExpanded) {
@@ -62,6 +65,9 @@ export default function Home() {
     setSearchQuery(query);
     setIsSearchActive(true);
     setIsSearching(true);
+    setSelectedProduct(null);
+    setFilters(initialFilterState);
+    setSortOption("featured");
   };
   
   const handleAddToCart = (productName: string, quantity: number, animate: boolean = true) => {
@@ -155,6 +161,8 @@ export default function Home() {
                     likedProducts={likedProducts}
                     onLikeToggle={handleLikeToggle}
                     isSearching={isSearching}
+                    sortOption={sortOption}
+                    onSortChange={setSortOption}
                   />
               </div>
             </div>
