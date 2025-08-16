@@ -119,6 +119,7 @@ export function Header({ onSearchActiveChange, onSearchSubmit }: HeaderProps) {
                   width={180} 
                   height={70}
                   className={cn("w-28 sm:w-32 md:w-36 lg:w-44",isEnquireOpen && "opacity-50")}
+                  onDragStart={(e) => e.preventDefault()}
                 />
               </Link>
               <Image 
@@ -127,6 +128,7 @@ export function Header({ onSearchActiveChange, onSearchSubmit }: HeaderProps) {
                 width={120} 
                 height={55}
                 className={cn("hidden sm:block w-20 md:w-24 lg:w-32",isEnquireOpen && "opacity-50")}
+                onDragStart={(e) => e.preventDefault()}
               />
             </div>
           </div>
@@ -194,7 +196,7 @@ export function Header({ onSearchActiveChange, onSearchSubmit }: HeaderProps) {
                     <IoLogoFacebook className="h-7 w-7 lg:h-8 lg:w-8 transition-colors hover:text-custom-gold" />
                   </Link>
                   <Link href="#" aria-label="Profile" className="ml-1 lg:ml-2">
-                     <Image src="/icons/profile_icon.png" alt="Profile" width={36} height={36} className="h-8 w-8 lg:h-9 lg:w-9 transition-colors hover:opacity-80" />
+                     <Image src="/icons/profile_icon.png" alt="Profile" width={36} height={36} className="h-8 w-8 lg:h-9 lg:w-9 transition-colors hover:opacity-80" onDragStart={(e) => e.preventDefault()} />
                   </Link>
                 </div>
               </div>
@@ -237,7 +239,7 @@ export function Header({ onSearchActiveChange, onSearchSubmit }: HeaderProps) {
                         <IoLogoFacebook className="h-8 w-8 transition-colors hover:text-custom-gold" />
                       </Link>
                       <Link href="#" aria-label="Profile">
-                        <Image src="/icons/profile_icon.png" alt="Profile" width={36} height={36} className="h-9 w-9 transition-colors hover:opacity-80" />
+                        <Image src="/icons/profile_icon.png" alt="Profile" width={36} height={36} className="h-9 w-9 transition-colors hover:opacity-80" onDragStart={(e) => e.preventDefault()} />
                       </Link>
                     </div>
                   </div>
@@ -258,7 +260,7 @@ export function Header({ onSearchActiveChange, onSearchSubmit }: HeaderProps) {
           >
             <div className="absolute inset-0 rounded-full bg-white -z-10"></div>
             <div className="absolute left-3 top-1/2 -translate-y-1/2 z-10">
-              <Image src="/icons/search_icon.png" alt="Search" width={28} height={28} />
+              <Image src="/icons/search_icon.png" alt="Search" width={28} height={28} onDragStart={(e) => e.preventDefault()} />
             </div>
             <Input 
               name="search"
