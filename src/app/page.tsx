@@ -11,6 +11,8 @@ import { Button } from '@/components/ui/button';
 import { ProductPopup } from '@/components/product-popup';
 import { flavourOptions, occasionOptions, productTypeOptions, weightOptions } from '@/lib/filter-options';
 import { LoaderBar } from '@/components/loader-bar';
+import { SparkleBackground } from '@/components/sparkle-background';
+
 
 export type Product = {
   id: number;
@@ -135,6 +137,7 @@ export default function Home() {
 
   return (
     <>
+      <SparkleBackground />
       <LoaderBar isLoading={isSearching} onAnimationComplete={() => setIsSearching(false)} />
       <div className={cn("flex flex-col h-screen", (selectedProduct || isImageExpanded) ? 'opacity-50' : '')}>
         <Header onSearchSubmit={handleSearchSubmit} onSearchActiveChange={setIsSearchActive} />

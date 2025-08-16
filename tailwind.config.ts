@@ -27,6 +27,7 @@ export default {
         'custom-gold': '#FFD139',
         'custom-purple-light': '#E1BEE7',
         'custom-purple-dark': '#5D2B79',
+        sparkle: 'hsl(var(--sparkle))',
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
         card: {
@@ -155,11 +156,10 @@ export default {
           '100%': { width: '100%' },
         },
         'shake': {
-          '0%, 12.5%, 100%': { transform: 'rotate(0deg) scale(1)' },
-          '2.5%': { transform: 'rotate(5deg) scale(1.1)' },
-          '5%': { transform: 'rotate(-5deg) scale(1.1)' },
-          '7.5%': { transform: 'rotate(5deg) scale(1.1)' },
-          '10%': { transform: 'rotate(-5deg) scale(1.1)' },
+          '0%, 25%, 100%': { transform: 'rotate(0deg) scale(1)' },
+          '6.25%': { transform: 'rotate(5deg) scale(1.1)' },
+          '12.5%': { transform: 'rotate(-5deg) scale(1.1)' },
+          '18.75%': { transform: 'rotate(5deg) scale(1.1)' },
         },
         'loader-bar': {
           '0%': {
@@ -173,6 +173,10 @@ export default {
           '50%': {
             opacity: '.5',
           },
+        },
+        'sparkle-glow': {
+          '0%, 100%': { opacity: '0.5' },
+          '50%': { opacity: '1' },
         },
       },
       animation: {
@@ -193,6 +197,7 @@ export default {
         'shake': 'shake 4s ease-in-out infinite',
         'loader-bar': 'loader-bar 1.5s ease-out forwards',
         pulse: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        'sparkle-glow': 'sparkle-glow 3s ease-in-out infinite',
       },
     },
   },
