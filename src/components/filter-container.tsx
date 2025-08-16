@@ -35,27 +35,17 @@ const CheckboxItem = ({ id, label, checked, onCheckedChange, count }: { id: stri
 interface FilterContainerProps {
     filters: FilterState;
     onFilterChange: (newFilters: Partial<FilterState>) => void;
+    isSearching: boolean;
 }
 
-export function FilterContainer({ filters, onFilterChange }: FilterContainerProps) {
+export function FilterContainer({ filters, onFilterChange, isSearching }: FilterContainerProps) {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (scrollContainerRef.current) {
-      // Check if filters are reset to initial state to detect a new search
-      const isReset = filters.selectedFlavours.length === 0 &&
-                      filters.selectedOccasions.length === 0 &&
-                      filters.selectedProductTypes.length === 0 &&
-                      filters.selectedWeights.length === 0 &&
-                      filters.selectedPriceOptions.length === 0 &&
-                      filters.priceRange[0] === 0 &&
-                      filters.priceRange[1] === 3000;
-      
-      if (isReset && scrollContainerRef.current.scrollTop > 0) {
-        scrollContainerRef.current.scrollTop = 0;
-      }
+    if (isSearching && scrollContainerRef.current) {
+      scrollContainerRef.current.scrollTop = 0;
     }
-  }, [filters]);
+  }, [isSearching]);
 
   const handlePriceOptionChange = (optionId: string, checked: boolean) => {
     const newSelected = checked

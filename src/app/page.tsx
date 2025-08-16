@@ -149,7 +149,11 @@ export default function Home() {
           )}
           {isSearchActive && (
             <div className="flex w-full h-full">
-              <FilterContainer filters={filters} onFilterChange={handleFilterChange} />
+              <FilterContainer 
+                filters={filters} 
+                onFilterChange={handleFilterChange} 
+                isSearching={isSearching}
+              />
               <div className="h-full flex-grow ml-8 mr-8 relative">
                   <SearchResultsDetails 
                     query={searchQuery} 
