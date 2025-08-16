@@ -33,6 +33,25 @@ export function CartItemCard({ productName, quantity }: CartItemCardProps) {
             <button className="absolute top-4 right-4 text-custom-purple-dark hover:text-custom-purple-dark/80">
                 <Trash2 size={20} />
             </button>
+            <div className="absolute top-12 right-4 flex items-center justify-center rounded-full bg-custom-purple-dark text-white h-9 w-32">
+                <Button
+                    size="icon"
+                    variant="ghost"
+                    onClick={handleDecrement}
+                    className="h-full w-10 rounded-r-none rounded-l-full text-white hover:bg-white/10 hover:text-white"
+                >
+                    <Minus className="h-4 w-4" />
+                </Button>
+                <span className="font-bold px-2">{quantity}</span>
+                <Button
+                    size="icon"
+                    variant="ghost"
+                    onClick={handleIncrement}
+                    className="h-full w-10 rounded-l-none rounded-r-full text-white hover:bg-white/10 hover:text-white"
+                >
+                    <Plus className="h-4 w-4" />
+                </Button>
+            </div>
             <div className="flex gap-4">
                 <div className="w-1/3 flex-shrink-0">
                     <Image
@@ -61,32 +80,13 @@ export function CartItemCard({ productName, quantity }: CartItemCardProps) {
                     </div>
 
                     <div className="mt-auto pt-2">
-                        <div className="flex justify-between items-end">
-                            <div className="flex items-center justify-center rounded-full bg-custom-purple-dark text-white h-9 w-32">
-                                <Button
-                                    size="icon"
-                                    variant="ghost"
-                                    onClick={handleDecrement}
-                                    className="h-full w-10 rounded-r-none rounded-l-full text-white hover:bg-white/10 hover:text-white"
-                                >
-                                    <Minus className="h-4 w-4" />
-                                </Button>
-                                <span className="font-bold px-2">{quantity}</span>
-                                <Button
-                                    size="icon"
-                                    variant="ghost"
-                                    onClick={handleIncrement}
-                                    className="h-full w-10 rounded-l-none rounded-r-full text-white hover:bg-white/10 hover:text-white"
-                                >
-                                    <Plus className="h-4 w-4" />
-                                </Button>
-                            </div>
+                        <div className="flex justify-end items-end">
                             <div className="text-right">
                                 <p className="text-sm text-gray-500 line-through font-bold">₹1000</p>
                                 <p className="font-bold text-2xl">₹750</p>
                             </div>
                         </div>
-                        <p className="text-xs italic text-gray-600 mt-1">*Additional charges may apply for special flavors*</p>
+                        <p className="text-xs italic text-gray-600 mt-1 text-right">*Additional charges may apply for special flavors*</p>
                     </div>
                 </div>
             </div>
