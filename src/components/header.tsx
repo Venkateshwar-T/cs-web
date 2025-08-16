@@ -84,7 +84,7 @@ export function Header({ onSearchActiveChange, onSearchSubmit }: HeaderProps) {
       return;
     }
 
-    if (formRef.current) {
+    if (formRef.current && !isSearchSubmitted) {
       const isLargeDesktop = window.innerWidth >= 1280;
       const reductionFactor = isLargeDesktop ? 0.85 : 0.5; // 15% reduction for large desktop, 50% for others
       setTargetWidth(formRef.current.offsetWidth * reductionFactor);
