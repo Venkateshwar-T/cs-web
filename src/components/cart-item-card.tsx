@@ -61,7 +61,7 @@ export function CartItemCard({ productName, quantity }: CartItemCardProps) {
                     </div>
 
                     <div className="mt-auto pt-2">
-                        <div className="flex items-center justify-between">
+                        <div className="flex justify-between items-end">
                             <div className="flex items-center justify-center rounded-full bg-custom-purple-dark text-white h-9 w-32">
                                 <Button
                                     size="icon"
