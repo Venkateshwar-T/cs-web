@@ -12,6 +12,8 @@ import { ProductPopup } from '@/components/product-popup';
 import { flavourOptions, occasionOptions, productTypeOptions, weightOptions } from '@/lib/filter-options';
 import { LoaderBar } from '@/components/loader-bar';
 import { SparkleBackground } from '@/components/sparkle-background';
+import { CartPopup } from '@/components/cart-popup';
+import { X } from 'lucide-react';
 
 
 export type Product = {
@@ -49,11 +51,12 @@ export default function Home() {
   const [isImageExpanded, setIsImageExpanded] = useState(false);
   const [likedProducts, setLikedProducts] = useState<Record<number, boolean>>({});
   const [sortOption, setSortOption] = useState("featured");
+  const [isCartOpen, setIsCartOpen] = useState(false);
 
   const [filters, setFilters] = useState<FilterState>(initialFilterState);
 
   useEffect(() => {
-    if (selectedProduct || isImageExpanded) {
+    if (selectedProduct || isImageExpanded || isCartOpen) {
       document.body.classList.add('overflow-hidden');
     } else {
       document.body.classList.remove('overflow-hidden');
@@ -61,7 +64,7 @@ export default function Home() {
     return () => {
       document.body.classList.remove('overflow-hidden');
     };
-  }, [selectedProduct, isImageExpanded]);
+  }, [selectedProduct, isImageExpanded, isCartOpen]);
 
   const handleSearchSubmit = (query: string) => {
     setSearchQuery(query);
@@ -122,6 +125,10 @@ export default function Home() {
     }));
   };
 
+  const handleToggleCartPopup = () => {
+    setIsCartOpen(prev => !prev);
+  }
+
   const totalQuantity = Object.values(cart).reduce((acc, cur) => acc + cur, 0);
 
   const getLabelById = (id: string, options: { id: string, label: string }[]) => {
@@ -139,7 +146,7 @@ export default function Home() {
     <>
       <SparkleBackground />
       <LoaderBar isLoading={isSearching} onAnimationComplete={() => setIsSearching(false)} />
-      <div className={cn("flex flex-col h-screen", (selectedProduct || isImageExpanded) ? 'opacity-50' : '')}>
+      <div className={cn("flex flex-col h-screen", (selectedProduct || isImageExpanded || isCartOpen) ? 'opacity-50' : '')}>
         <Header onSearchSubmit={handleSearchSubmit} onSearchActiveChange={setIsSearchActive} />
         <main className={cn(
           "flex-grow overflow-hidden flex transition-all duration-500 relative items-start",
@@ -180,30 +187,38 @@ export default function Home() {
        <div className={cn("fixed bottom-8 right-8 z-[60] transition-all duration-300")}>
           {isSearchActive && (
             <Button
+              onClick={handleToggleCartPopup}
               className={cn(
-                "shadow-lg bg-custom-gold hover:bg-custom-gold/90 transition-all duration-100 ease-in-out flex items-center justify-center overflow-visible",
-                isCartButtonExpanded ? 'w-64 h-14 rounded-full' : 'w-14 h-14 rounded-full'
+                "shadow-lg bg-custom-gold hover:bg-custom-gold/90 transition-all duration-300 ease-in-out flex items-center justify-center overflow-hidden",
+                isCartButtonExpanded && !isCartOpen ? 'w-56 h-12 rounded-full' : 'w-12 h-12 rounded-full'
               )}
               size="icon"
             >
-              {isCartButtonExpanded ? (
-                <span className="text-custom-purple-dark font-semibold whitespace-nowrap">{cartMessage}</span>
-              ) : (
-                <>
-                  <Image src="/icons/cart.png" alt="Cart" width={24} height={24} />
-                  {totalQuantity > 0 && (
-                    <div className="absolute -top-1 -right-1 bg-custom-purple-dark text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
-                      {totalQuantity}
-                    </div>
-                  )}
-                </>
-              )}
+              <div className={cn(
+                  "transition-transform duration-500 ease-in-out transform-gpu",
+                  isCartOpen && "rotate-180"
+              )}>
+                {isCartButtonExpanded && !isCartOpen ? (
+                  <span className="text-custom-purple-dark font-semibold whitespace-nowrap">{cartMessage}</span>
+                ) : isCartOpen ? (
+                  <X className="h-6 w-6 text-custom-purple-dark" />
+                ) : (
+                  <>
+                    <Image src="/icons/cart.png" alt="Cart" width={20} height={20} />
+                    {totalQuantity > 0 && (
+                      <div className="absolute -top-1 -right-1 bg-custom-purple-dark text-white text-xs font-bold rounded-full h-4 w-4 flex items-center justify-center">
+                        {totalQuantity}
+                      </div>
+                    )}
+                  </>
+                )}
+              </div>
             </Button>
           )}
        </div>
 
 
-      {selectedProduct && (
+      {selectedProduct && !isCartOpen && (
         <>
           <div className="fixed inset-0 z-40 bg-black/50" />
           <div className="fixed inset-0 z-50 flex items-start justify-center pt-36">
@@ -216,6 +231,20 @@ export default function Home() {
                     onLikeToggle={() => handleLikeToggle(selectedProduct.id)}
                     cart={cart}
                     onAddToCart={handleAddToCart}
+                  />
+              </div>
+          </div>
+        </>
+      )}
+
+      {isCartOpen && (
+         <>
+          <div className="fixed inset-0 z-40 bg-black/50" />
+          <div className="fixed inset-0 z-50 flex items-start justify-center pt-36">
+              <div className="h-full flex-grow ml-[calc(17%+2rem)] mr-8 relative w-[calc(83%-4rem)]">
+                  <CartPopup
+                    onClose={handleToggleCartPopup}
+                    cart={cart}
                   />
               </div>
           </div>
