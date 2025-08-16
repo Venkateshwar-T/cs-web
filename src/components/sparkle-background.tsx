@@ -11,7 +11,7 @@ const generateSparkle = (containerWidth: number, containerHeight: number) => {
     id: String(random(1, 10000)),
     createdAt: Date.now(),
     color: 'hsl(0 0% 100% / 50%)',
-    size: random(1, 3),
+    size: random(2, 5),
     style: {
       top: `${random(0, containerHeight)}px`,
       left: `${random(0, containerWidth)}px`,
