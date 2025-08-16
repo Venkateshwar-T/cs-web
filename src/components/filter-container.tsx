@@ -75,10 +75,10 @@ export function FilterContainer({ filters, onFilterChange, isSearching }: Filter
 
   return (
     <div className={cn("bg-[#5D2B79] h-full w-[17%] rounded-tr-[40px] animate-slide-in-from-left")} style={{ animationDuration: '0.5s' }}>
-        <div className="bg-white/20 h-full w-full rounded-tr-[40px] pt-8 pl-8">
+        <div className="bg-white/20 h-full w-full rounded-tr-[40px] md:pt-2 md:pl-2 lg:pt-4 lg:pl-4 xl:pt-8 xl:pl-8">
             <div ref={scrollContainerRef} className="h-full overflow-y-auto custom-scrollbar pr-8 pb-8">
                 <div className="flex items-center text-white font-bold mb-6 text-lg">
-                    <SlidersHorizontal className="h-6 w-6 mr-3 flex-shrink-0" />
+                    <SlidersHorizontal className="lg:h-5 lg:w-5 xl:h-6 xl:w-6 mr-3 flex-shrink-0" />
                     <h2 className="h-full w-full font-poppins">Filters & Sorting</h2>
                 </div>
                 

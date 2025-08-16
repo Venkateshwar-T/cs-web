@@ -67,8 +67,8 @@ export function FlavoursSection({ onAddToCart, cart }: FlavoursSectionProps) {
   };
 
   return (
-    <div className="bg-[#5D2B79] rounded-[40px] py-5 px-4 h-full relative flex flex-col animate-fade-in" style={{ animationDuration: '0.5s', animationDelay: '0.2s', animationFillMode: 'both' }}>
-      <SectionTitle className="pl-4 mb-2 text-slg pt-0 font-poppins">Flavours & Fillings</SectionTitle>
+    <div className="bg-[#5D2B79] md:rounded-[15px] lg:rounded-[40px] py-5 px-4 md:h-[85%] lg:h-full relative flex flex-col animate-fade-in" style={{ animationDuration: '0.5s', animationDelay: '0.2s', animationFillMode: 'both' }}>
+      <SectionTitle className="text-sm md:text-m lg:text-xl md:pl-0 lg:pl-4 mb-2 pt-0 font-poppins">Flavours & Fillings</SectionTitle>
       
       {canScrollLeft && (
         <Button 
@@ -81,7 +81,7 @@ export function FlavoursSection({ onAddToCart, cart }: FlavoursSectionProps) {
         </Button>
       )}
 
-      <div ref={scrollContainerRef} className="flex overflow-x-auto no-scrollbar gap-4 flex-grow items-center px-4">
+      <div ref={scrollContainerRef} className="flex overflow-x-auto no-scrollbar gap-4 flex-grow items-center md:px-0 lg:px-4">
         {flavours.map((flavour) => (
           <FlavourCard
             key={flavour.id}

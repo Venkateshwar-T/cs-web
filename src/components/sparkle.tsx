@@ -1,5 +1,7 @@
 'use client';
 import { useState, useEffect, useRef } from 'react';
+import { SparkleIcon } from './sparkle-icon';
+import { cn } from '@/lib/utils';
 
 interface SparkleProps {
   size: number;
@@ -12,7 +14,7 @@ const INTERACTION_DISTANCE = 80; // pixels
 
 export const Sparkle = ({ size, color, style, mousePosition }: SparkleProps) => {
   const [scale, setScale] = useState(1);
-  const sparkleRef = useRef<HTMLSpanElement>(null);
+  const sparkleRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!mousePosition.x || !mousePosition.y || !sparkleRef.current) {
@@ -39,17 +41,23 @@ export const Sparkle = ({ size, color, style, mousePosition }: SparkleProps) => 
   }, [mousePosition]);
 
   return (
-    <span
+    <div
       ref={sparkleRef}
-      className="absolute rounded-full animate-sparkle-glow"
+      className="absolute animate-sparkle-glow"
       style={{
-        width: `${size}px`,
-        height: `${size}px`,
-        backgroundColor: color,
         transform: `scale(${scale})`,
         transition: 'transform 0.1s ease-out',
         ...style,
       }}
-    />
+    >
+       <SparkleIcon 
+         className={cn("text-sparkle")}
+         style={{
+            width: `${size}px`,
+            height: `${size}px`,
+            color: color
+         }}
+       />
+    </div>
   );
 };

@@ -40,7 +40,7 @@ export function ProductPopup({ product, onClose, onImageExpandChange, isLiked, o
   const productQuantity = cart[product.name] || 0;
   
   return (
-    <div className="bg-[#9A7DAB] rounded-t-[40px] pt-6 px-8 text-white h-full overflow-hidden relative flex flex-col">
+    <div className="bg-[#9A7DAB] rounded-t-[40px] pt-6 md:px-4 lg:px-5 xl:px-8 text-white h-full overflow-hidden relative flex flex-col">
       <button 
         onClick={onClose} 
         className="absolute top-4 right-4 text-white hover:text-gray-200 z-20"
@@ -48,10 +48,10 @@ export function ProductPopup({ product, onClose, onImageExpandChange, isLiked, o
         <X size={24} />
       </button>
       
-      <div className="flex flex-row flex-grow h-full gap-8">
+      <div className="flex flex-row flex-grow h-full md:gap-4 lg:gap-4 xl:gap-8">
         {/* Left Section */}
         <div className="w-[48%] flex flex-col gap-4 h-full items-center">
-          <div className="flex h-[45%] rounded-lg w-full justify-center">
+          <div className="flex md:h-full xl:h-[45%] rounded-lg w-full justify-center">
             <ImageGallery product={product} onImageExpandChange={onImageExpandChange} />
           </div>
           <div className="pb-6 rounded-lg w-full h-[55%]">
@@ -59,10 +59,10 @@ export function ProductPopup({ product, onClose, onImageExpandChange, isLiked, o
           </div>
         </div>
         
-        <Separator orientation="vertical" className="bg-white/50 h-auto w-0.5" />
+        <Separator orientation="vertical" className="bg-white/50 h-[95%] w-0.5" />
 
         {/* Right Section */}
-        <div className="flex-grow h-full relative">
+        <div className="flex-grow h-full xl:relative lg:relative">
             <div className="h-full py-0 pr-6 overflow-y-auto custom-scrollbar pb-28">
                 <ProductDetails product={product} isLiked={isLiked} onLikeToggle={onLikeToggle} />
             </div>
