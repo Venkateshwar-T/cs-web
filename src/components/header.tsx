@@ -78,7 +78,7 @@ export function Header({ onSearchActiveChange, onSearchSubmit }: HeaderProps) {
     if (!searchInput.trim()) {
       toast({
         title: "Empty Field",
-        description: "Please enter a search query.",
+        description: "Search field cannot be empty.",
         variant: "destructive",
       });
       return;
@@ -256,7 +256,7 @@ export function Header({ onSearchActiveChange, onSearchSubmit }: HeaderProps) {
             className={`relative mx-auto transition-all duration-500 ease-in-out animate-slide-down ${!targetWidth ? 'max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl' : ''}`}
             style={{ maxWidth: targetWidth ? `${targetWidth}px` : undefined, animationDuration: '0.5s', animationDelay: '0.05s' }}
           >
-            <div className="absolute inset-0 rounded-full bg-gradient-to-br from-white/80 to-white/20 backdrop-blur-sm -z-10"></div>
+            <div className="absolute inset-0 rounded-full bg-white -z-10"></div>
             <div className="absolute left-3 top-1/2 -translate-y-1/2 z-10">
               <Image src="/icons/search_icon.png" alt="Search" width={28} height={28} />
             </div>
@@ -264,7 +264,7 @@ export function Header({ onSearchActiveChange, onSearchSubmit }: HeaderProps) {
               name="search"
               autoComplete="off"
               placeholder={isSearchSubmitted ? 'Search for gifts...' : placeholder}
-              className={`w-full pl-12 pr-4 py-5 rounded-full bg-transparent border-none focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-gray-600 text-lg md:text-xl ${isSearchSubmitted ? 'text-white' : ''}`}
+              className={`w-full pl-12 pr-4 py-5 rounded-full bg-transparent border-none focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-gray-500 text-lg md:text-xl text-black`}
             />
           </form>
         </div>
