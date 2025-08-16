@@ -56,7 +56,7 @@ export default function Home() {
   const [filters, setFilters] = useState<FilterState>(initialFilterState);
 
   useEffect(() => {
-    if (selectedProduct || isImageExpanded || isCartOpen) {
+    if (selectedProduct || isImageExpanded || isCartVisible) {
       document.body.classList.add('overflow-hidden');
     } else {
       document.body.classList.remove('overflow-hidden');
@@ -64,7 +64,7 @@ export default function Home() {
     return () => {
       document.body.classList.remove('overflow-hidden');
     };
-  }, [selectedProduct, isImageExpanded, isCartOpen]);
+  }, [selectedProduct, isImageExpanded, isCartVisible]);
 
   useEffect(() => {
     if (isCartOpen) {
@@ -155,8 +155,8 @@ export default function Home() {
     <>
       <SparkleBackground />
       <LoaderBar isLoading={isSearching} onAnimationComplete={() => setIsSearching(false)} />
-      <div className={cn("flex flex-col h-screen", (selectedProduct || isImageExpanded || isCartOpen) ? 'opacity-50' : '')}>
-        <Header onSearchSubmit={handleSearchSubmit} onSearchActiveChange={setIsSearchActive} isCartOpen={isCartOpen} />
+      <div className={cn("flex flex-col h-screen", (selectedProduct || isImageExpanded || isCartVisible) ? 'opacity-50' : '')}>
+        <Header onSearchSubmit={handleSearchSubmit} onSearchActiveChange={setIsSearchActive} isCartVisible={isCartVisible} />
         <main className={cn(
           "flex-grow overflow-hidden flex transition-all duration-500 relative items-start",
           isSearchActive ? 'pt-36' : 'pt-72'
