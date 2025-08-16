@@ -42,7 +42,7 @@ export function SearchResultsDetails({
   sortOption,
   onSortChange
 }: SearchResultsDetailsProps) {
-  const products: Product[] = Array.from({ length: 8 }).map((_, i) => ({
+  const products: Product[] = Array.from({ length: 12 }).map((_, i) => ({
     id: i,
     name: `Diwali Collection Box ${i + 1}`,
   }));
@@ -86,23 +86,23 @@ export function SearchResultsDetails({
 
   return (
     <div className="bg-[#5D2B79] h-full flex-grow rounded-t-[40px] relative">
-        <div className="bg-white/20 h-full w-full rounded-t-[40px] pt-8 pl-8">
+        <div className="bg-white/20 h-full w-full rounded-t-[40px] pt-4 md:pt-8 pl-4 md:pl-8">
             <div 
                 ref={scrollContainerRef}
                 className={cn(
-                "h-full overflow-y-auto pr-8 pb-8",
+                "h-full overflow-y-auto pr-4 md:pr-8 pb-8",
                 isScrolling ? "custom-scrollbar" : "no-scrollbar"
                 )}
             >
                 <div className={cn(
-                    "flex justify-between items-center text-white mb-2",
+                    "flex flex-col md:flex-row justify-between md:items-center text-white mb-2",
                     activeFilters.length === 0 && 'mb-4'
                 )}>
-                  <h2 className="text-xl">
+                  <h2 className="text-lg md:text-xl mb-2 md:mb-0">
                     Showing results for <span className="italic text-custom-gold">{query}</span>
                   </h2>
                   <Select value={sortOption} onValueChange={onSortChange}>
-                    <SelectTrigger className="w-[220px] rounded-full bg-white text-custom-purple-dark border-2 border-custom-purple-dark h-9 focus:ring-0 focus:ring-offset-0">
+                    <SelectTrigger className="w-full md:w-[220px] rounded-full bg-white text-custom-purple-dark border-2 border-custom-purple-dark h-8 md:h-9 focus:ring-0 focus:ring-offset-0 text-xs md:text-sm">
                       <SelectValue>
                         Sort By: {sortOption.charAt(0).toUpperCase() + sortOption.slice(1).replace(/-/g, ' ')}
                       </SelectValue>
@@ -131,9 +131,9 @@ export function SearchResultsDetails({
                     ))}
                   </div>
                 )}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
                 {isSearching 
-                  ? Array.from({ length: 8 }).map((_, index) => <ProductCardSkeleton key={index} />)
+                  ? Array.from({ length: 12 }).map((_, index) => <ProductCardSkeleton key={index} />)
                   : products.map((product) => (
                       <ProductCard
                         key={product.id}
