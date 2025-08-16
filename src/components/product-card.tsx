@@ -62,13 +62,13 @@ export function ProductCard({ product, onAddToCart, quantity, onProductClick, is
       <div className="p-2 md:p-3 flex flex-col flex-grow">
         <div className="flex-grow">
           <div className="flex justify-between items-start">
-            <h3 className="font-bold text-base md:text-lg leading-tight flex-1 pr-2">{product.name}</h3>
+            <h3 className="font-bold text-sm md:text-lg leading-tight flex-1 pr-2">{product.name}</h3>
             <div className="relative">
               <button onClick={handleLikeClick} className="pl-1 py-1">
                 <Heart 
                   key={likeClickCount}
                   className={cn(
-                    "h-5 w-5 md:h-6 md:w-6 stroke-current transition-colors duration-300", 
+                    "h-5 md:h-6 w-5 md:w-6 stroke-current transition-colors duration-300", 
                     isLiked ? 'text-red-500 fill-red-500' : 'text-black',
                     'animate-heart-pop'
                   )} 
@@ -99,7 +99,7 @@ export function ProductCard({ product, onAddToCart, quantity, onProductClick, is
           <p className="text-xs text-[#9A7DAB] mt-1">250g | Assorted | Hard Box</p>
         </div>
         <div className="mt-2 md:mt-4">
-          <p className="text-xs md:text-sm text-gray-500 line-through font-bold">₹1000</p>
+          <p className="text-xs text-gray-500 line-through font-bold">₹1000</p>
           <div className="flex items-center">
             <p className="font-bold text-sm md:text-base">₹750</p>
             <p className="text-custom-gold text-xs font-semibold ml-2">25% OFF</p>
@@ -108,7 +108,7 @@ export function ProductCard({ product, onAddToCart, quantity, onProductClick, is
                 <Button
                   size="sm"
                   onClick={handleAddToCartClick}
-                  className="w-full rounded-full uppercase bg-transparent border-2 border-b-[3px] border-custom-purple-dark text-custom-purple-dark hover:bg-custom-purple-dark hover:text-white h-8 md:h-9 text-xs md:text-sm"
+                  className="w-full rounded-full uppercase bg-transparent border-2 border-b-[3px] border-custom-purple-dark text-custom-purple-dark hover:bg-custom-purple-dark hover:text-white h-8 md:h-9 text-xs"
                 >
                   Add
                 </Button>
@@ -122,7 +122,7 @@ export function ProductCard({ product, onAddToCart, quantity, onProductClick, is
                   >
                     <Minus className="h-4 w-4" />
                   </Button>
-                  <span className="font-bold px-1 md:px-2 text-sm">{quantity}</span>
+                  <span className="font-bold px-1 text-sm">{quantity}</span>
                   <Button
                     size="icon"
                     variant="ghost"
