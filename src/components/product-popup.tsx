@@ -8,6 +8,7 @@ import { ImageGallery } from './image-gallery';
 import { ProductDetails } from './product-details';
 import { Separator } from './ui/separator';
 import { ProductPopupFooter } from './product-popup-footer';
+import { cn } from '@/lib/utils';
 
 export type Flavour = {
   id: number;
@@ -40,7 +41,7 @@ export function ProductPopup({ product, onClose, onImageExpandChange, isLiked, o
   const productQuantity = cart[product.name] || 0;
   
   return (
-    <div className="bg-[#9A7DAB] rounded-t-[40px] pt-6 md:px-4 lg:px-5 xl:px-8 text-white h-full overflow-hidden relative flex flex-col">
+    <div className={cn("bg-[#9A7DAB] rounded-t-[40px] pt-6 md:px-4 lg:px-5 xl:px-8 text-white h-full overflow-hidden relative flex flex-col ring-4 ring-custom-purple-dark")}>
       <button 
         onClick={onClose} 
         className="absolute top-4 right-4 text-white hover:text-gray-200 z-20"
