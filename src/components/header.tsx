@@ -19,9 +19,10 @@ import { useToast } from "@/hooks/use-toast";
 interface HeaderProps {
   onSearchActiveChange: (isActive: boolean) => void;
   onSearchSubmit: (query: string) => void;
+  isCartOpen: boolean;
 }
 
-export function Header({ onSearchActiveChange, onSearchSubmit }: HeaderProps) {
+export function Header({ onSearchActiveChange, onSearchSubmit, isCartOpen }: HeaderProps) {
   const [isSearchSubmitted, setIsSearchSubmitted] = useState(false);
   const [targetWidth, setTargetWidth] = useState<number | undefined>(undefined);
   const [isEnquireOpen, setIsEnquireOpen] = useState(false);
@@ -106,7 +107,7 @@ export function Header({ onSearchActiveChange, onSearchSubmit }: HeaderProps) {
       {isEnquireOpen && (
           <div className="fixed inset-0 z-40 bg-black/50 transition-opacity duration-100" />
       )}
-      <header className="fixed top-0 z-50 w-full bg-transparent pt-6">
+      <header className={cn("fixed top-0 z-50 w-full bg-transparent pt-6", isCartOpen && 'opacity-50')}>
         <div className="container flex h-20 max-w-screen-2xl items-center justify-between px-4 sm:px-6 lg:px-8 xl:px-24">
           <div className={cn(
             "flex flex-1 justify-start transition-opacity duration-100 animate-slide-in-from-left", 

@@ -156,7 +156,7 @@ export default function Home() {
       <SparkleBackground />
       <LoaderBar isLoading={isSearching} onAnimationComplete={() => setIsSearching(false)} />
       <div className={cn("flex flex-col h-screen", (selectedProduct || isImageExpanded || isCartOpen) ? 'opacity-50' : '')}>
-        <Header onSearchSubmit={handleSearchSubmit} onSearchActiveChange={setIsSearchActive} />
+        <Header onSearchSubmit={handleSearchSubmit} onSearchActiveChange={setIsSearchActive} isCartOpen={isCartOpen} />
         <main className={cn(
           "flex-grow overflow-hidden flex transition-all duration-500 relative items-start",
           isSearchActive ? 'pt-36' : 'pt-72'
