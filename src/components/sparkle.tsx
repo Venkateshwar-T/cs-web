@@ -14,11 +14,13 @@ const INTERACTION_DISTANCE = 80; // pixels
 
 export const Sparkle = ({ size, color, style, mousePosition }: SparkleProps) => {
   const [scale, setScale] = useState(1);
+  const [isNear, setIsNear] = useState(false);
   const sparkleRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!mousePosition.x || !mousePosition.y || !sparkleRef.current) {
       setScale(1);
+      setIsNear(false);
       return;
     }
 
@@ -34,8 +36,10 @@ export const Sparkle = ({ size, color, style, mousePosition }: SparkleProps) => 
     if (distance < INTERACTION_DISTANCE) {
         const newScale = 1 + (1 - distance / INTERACTION_DISTANCE) * 2;
         setScale(newScale);
+        setIsNear(true);
     } else {
         setScale(1);
+        setIsNear(false);
     }
 
   }, [mousePosition]);
@@ -51,11 +55,14 @@ export const Sparkle = ({ size, color, style, mousePosition }: SparkleProps) => 
       }}
     >
        <SparkleIcon 
-         className={cn("text-sparkle")}
+         className={cn(
+          "transition-colors duration-300",
+          isNear ? "text-custom-gold" : "text-sparkle"
+         )}
          style={{
             width: `${size}px`,
             height: `${size}px`,
-            color: color
+            color: isNear ? undefined : color, // Use class for gold, style for default
          }}
        />
     </div>
