@@ -3,7 +3,6 @@
 
 import { X } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { SectionTitle } from './section-title';
 import { CartItemCard } from './cart-item-card';
 
 interface CartPopupProps {
@@ -15,7 +14,7 @@ export function CartPopup({ onClose, cart }: CartPopupProps) {
   const cartItems = Object.entries(cart);
 
   return (
-    <div className={cn("bg-[#9A7DAB] rounded-t-[40px] p-8 text-white h-full overflow-hidden relative flex flex-col ring-4 ring-custom-gold")}>
+    <div className={cn("bg-[#9A7DAB] rounded-t-[40px] p-8 text-white h-full overflow-hidden relative flex flex-col ring-4 ring-custom-gold animate-slide-up-fade-in")}>
       <button 
         onClick={onClose} 
         className="absolute top-4 right-4 text-white hover:text-gray-200 z-20"
@@ -23,7 +22,7 @@ export function CartPopup({ onClose, cart }: CartPopupProps) {
         <X size={24} />
       </button>
       
-      <SectionTitle className="mb-6 text-center text-3xl">Your Cart</SectionTitle>
+      <h2 className="text-3xl font-bold text-custom-purple-dark mb-6">Cart items</h2>
 
       <div className="flex-grow overflow-y-auto custom-scrollbar pr-4">
         {cartItems.length === 0 ? (
