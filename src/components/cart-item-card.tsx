@@ -33,7 +33,7 @@ export function CartItemCard({ productName, quantity }: CartItemCardProps) {
             <button className="absolute top-4 right-4 text-custom-purple-dark hover:text-custom-purple-dark/80">
                 <Trash2 size={20} />
             </button>
-            <div className="absolute top-12 right-4 flex items-center justify-center rounded-full bg-custom-purple-dark text-white h-9 w-32">
+            <div className="absolute top-16 right-4 flex items-center justify-center rounded-full bg-custom-purple-dark text-white h-9 w-32">
                 <Button
                     size="icon"
                     variant="ghost"
