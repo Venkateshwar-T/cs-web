@@ -52,7 +52,7 @@ export function CartItemCard({ productName, quantity }: CartItemCardProps) {
                         <p className="text-sm text-black/60 font-semibold">Flavours & Fillings</p>
                         <ol className="list-decimal list-inside text-sm mt-1 space-y-0.5">
                             {selectedFlavours.map((flavour, index) => (
-                                <li key={index} className="flex justify-between">
+                                <li key={index} className="flex gap-4">
                                     <span>{flavour.name}</span>
                                     <span>+₹{flavour.price}</span>
                                 </li>
