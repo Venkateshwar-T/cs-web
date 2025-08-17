@@ -67,21 +67,23 @@ export function CartItemCard({ productName, quantity }: CartItemCardProps) {
                      <button className="text-custom-purple-dark hover:text-custom-purple-dark/80">
                         <Trash2 size={20} />
                     </button>
-                    <div className="flex items-center justify-between rounded-full bg-custom-purple-dark text-white h-9 w-32">
+                    <div className="flex items-center justify-between rounded-full text-white h-9 w-32 border-2 border-custom-purple-dark overflow-hidden">
                         <Button
                             size="icon"
                             variant="ghost"
                             onClick={handleDecrement}
-                            className="h-full w-10 rounded-r-none rounded-l-full text-white hover:bg-white/10 hover:text-white"
+                            className="h-full rounded-none bg-custom-purple-dark hover:bg-custom-purple-dark/90 text-white hover:text-white flex-shrink-0 px-3"
                         >
                             <Minus className="h-4 w-4" />
                         </Button>
-                        <span className="font-bold px-2">{quantity}</span>
+                        <div className="flex-1 text-center bg-white text-custom-purple-dark h-full flex items-center justify-center">
+                            <span className="font-bold px-1 text-sm">{quantity}</span>
+                        </div>
                         <Button
                             size="icon"
                             variant="ghost"
                             onClick={handleIncrement}
-                            className="h-full w-10 rounded-l-none rounded-r-full text-white hover:bg-white/10 hover:text-white"
+                            className="h-full rounded-none bg-custom-purple-dark hover:bg-custom-purple-dark/90 text-white hover:text-white flex-shrink-0 px-3"
                         >
                             <Plus className="h-4 w-4" />
                         </Button>
