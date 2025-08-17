@@ -113,21 +113,23 @@ export function ProductCard({ product, onAddToCart, quantity, onProductClick, is
                   Add
                 </Button>
               ) : (
-                <div className="flex items-center justify-between w-full rounded-full bg-custom-purple-dark text-white h-8 md:h-9">
+                <div className="flex items-center justify-between w-full rounded-full text-white h-8 md:h-9 border-2 border-custom-purple-dark overflow-hidden">
                   <Button
                     size="icon"
                     variant="ghost"
                     onClick={handleDecrement}
-                    className="h-full w-8 md:w-10 rounded-r-none rounded-l-full hover:bg-white/10 hover:text-white"
+                    className="h-full rounded-none bg-custom-purple-dark hover:bg-custom-purple-dark/90 text-white hover:text-white flex-shrink-0 px-2"
                   >
                     <Minus className="h-4 w-4" />
                   </Button>
-                  <span className="font-bold px-1 text-sm">{quantity}</span>
+                  <div className="flex-1 text-center bg-white text-custom-purple-dark">
+                    <span className="font-bold px-1 text-sm">{quantity}</span>
+                  </div>
                   <Button
                     size="icon"
                     variant="ghost"
                     onClick={handleIncrement}
-                    className="h-full w-8 md:w-10 rounded-l-none rounded-r-full hover:bg-white/10 hover:text-white"
+                    className="h-full rounded-none bg-custom-purple-dark hover:bg-custom-purple-dark/90 text-white hover:text-white flex-shrink-0 px-2"
                   >
                     <Plus className="h-4 w-4" />
                   </Button>
