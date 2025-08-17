@@ -113,7 +113,7 @@ export function ProductCard({ product, onAddToCart, quantity, onProductClick, is
                   Add
                 </Button>
               ) : (
-                <div className="flex items-center justify-center w-full rounded-full bg-custom-purple-dark text-white h-8 md:h-9">
+                <div className="flex items-center justify-between w-full rounded-full bg-custom-purple-dark text-white h-8 md:h-9">
                   <Button
                     size="icon"
                     variant="ghost"
