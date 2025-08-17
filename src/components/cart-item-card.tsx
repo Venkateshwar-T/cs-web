@@ -30,7 +30,7 @@ export function CartItemCard({ productName, quantity }: CartItemCardProps) {
     };
 
     return (
-        <div className="w-[60%] bg-white/80 rounded-2xl p-4 text-black relative">
+        <div className="w-full bg-white/80 rounded-2xl p-4 text-black relative">
             <div className="flex gap-4">
                 <div className="w-1/3 flex-shrink-0">
                     <Image
