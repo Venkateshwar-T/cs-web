@@ -1,3 +1,4 @@
+
 'use client';
 
 import { Button } from './ui/button';
@@ -59,23 +60,23 @@ export function ProductPopupFooter({ product, onAddToCart, quantity }: ProductPo
                                 </Button>
                             </>
                         ) : (
-                            <div className="flex items-center justify-between w-32 rounded-full text-white h-9 border-2 border-custom-purple-dark overflow-hidden">
+                            <div className="flex items-center justify-center w-32 rounded-full h-9 border-2 border-white overflow-hidden">
                                 <Button
                                     size="icon"
                                     variant="ghost"
                                     onClick={handleDecrement}
-                                    className="h-full rounded-none bg-custom-purple-dark hover:bg-custom-purple-dark/90 text-white hover:text-white flex-shrink-0 px-3"
+                                    className="h-full rounded-none bg-white hover:bg-white/90 text-custom-purple-dark hover:text-custom-purple-dark flex-1"
                                 >
                                     <Minus className="h-4 w-4" />
                                 </Button>
-                                <div className="flex-1 text-center bg-white text-custom-purple-dark h-full flex items-center justify-center">
+                                <div className="flex-1 text-center bg-custom-purple-dark text-white h-full flex items-center justify-center">
                                     <span className="font-bold px-1 text-sm">{quantity}</span>
                                 </div>
                                 <Button
                                     size="icon"
                                     variant="ghost"
                                     onClick={handleIncrement}
-                                    className="h-full rounded-none bg-custom-purple-dark hover:bg-custom-purple-dark/90 text-white hover:text-white flex-shrink-0 px-3"
+                                    className="h-full rounded-none bg-white hover:bg-white/90 text-custom-purple-dark hover:text-custom-purple-dark flex-1"
                                 >
                                     <Plus className="h-4 w-4" />
                                 </Button>
