@@ -44,21 +44,13 @@ export function ProductPopupFooter({ product, onAddToCart, quantity }: ProductPo
                     
                     <div className="flex items-center md:gap-6 lg:gap-2 xl:gap-2">
                         {quantity === 0 ? (
-                             <>
-                                <Button
-                                    size="sm"
-                                    className="rounded-full font-semibold text-sm md:text-sm lg:text-sm xl:text-base border border-custom-purple-dark bg-custom-gold text-custom-purple-dark md:px-2 xl:px-4 lg:px-4 py-1.5 h-auto hover:bg-custom-gold/90"
-                                    onClick={handleAddToCartClick}
-                                >
-                                    Add to Cart
-                                </Button>
-                                <Button
-                                    size="sm"
-                                    className="rounded-full font-semibold text-sm md:text-sm lg:text-sm xl:text-base border border-white bg-white text-custom-purple-dark md:px-2 xl:px-4 lg:px-4 py-1.5 h-auto hover:bg-custom-purple-dark hover:text-white"
-                                >
-                                    Buy Now
-                                </Button>
-                            </>
+                            <Button
+                                size="sm"
+                                className="rounded-full font-semibold text-sm md:text-sm lg:text-sm xl:text-base border border-custom-purple-dark bg-custom-gold text-custom-purple-dark md:px-2 xl:px-4 lg:px-4 py-1.5 h-auto hover:bg-custom-gold/90"
+                                onClick={handleAddToCartClick}
+                            >
+                                Add to Cart
+                            </Button>
                         ) : (
                             <div className="flex items-center justify-center w-32 rounded-full h-9 border-2 border-white overflow-hidden">
                                 <Button
@@ -82,6 +74,12 @@ export function ProductPopupFooter({ product, onAddToCart, quantity }: ProductPo
                                 </Button>
                             </div>
                         )}
+                        <Button
+                            size="sm"
+                            className="rounded-full font-semibold text-sm md:text-sm lg:text-sm xl:text-base border border-white bg-white text-custom-purple-dark md:px-2 xl:px-4 lg:px-4 py-1.5 h-auto hover:bg-custom-purple-dark hover:text-white"
+                        >
+                            Buy Now
+                        </Button>
                     </div>
                 </div>
             </div>
