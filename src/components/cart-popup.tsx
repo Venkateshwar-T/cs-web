@@ -92,9 +92,9 @@ export function CartPopup({ onClose, cart }: CartPopupProps) {
         </div>
 
         {/* Right Section (40%) */}
-        <div className="w-[40%] bg-white/10 rounded-l-2xl">
+        <div className="w-[40%] bg-white/10 rounded-l-2xl pr-0">
           <div className="flex justify-end">
-            <div className="bg-custom-gold rounded-l-full flex items-center px-4 py-2 mt-4">
+            <div className="bg-custom-gold rounded-l-full flex items-center px-4 py-2">
                 <Image src="/icons/cart.png" alt="Cart" width={24} height={24} />
                 <span className="text-custom-purple-dark font-bold ml-2">My Cart</span>
             </div>
