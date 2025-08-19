@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { X } from 'lucide-react';
+import Image from 'next/image';
 import type { Product } from '@/app/page';
 import { FlavoursSection } from './flavours-section';
 import { ImageGallery } from './image-gallery';
@@ -46,7 +46,7 @@ export function ProductPopup({ product, onClose, onImageExpandChange, isLiked, o
         onClick={onClose} 
         className="absolute top-4 right-4 text-white hover:text-gray-200 z-20"
       >
-        <X size={24} />
+        <Image src="/icons/cross_button.png" alt="Close" width={24} height={24} />
       </button>
       
       <div className="flex flex-row flex-grow h-full md:gap-4 lg:gap-4 xl:gap-8">

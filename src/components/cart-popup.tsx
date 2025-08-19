@@ -8,6 +8,7 @@ import { Button } from './ui/button';
 import { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import { OrderSummary } from './order-summary';
+import { CartPopupFooter } from './cart-popup-footer';
 
 interface CartPopupProps {
   onClose: () => void;
@@ -96,6 +97,7 @@ export function CartPopup({ onClose, cart }: CartPopupProps) {
             <div className="p-4 flex-grow min-h-0 pr-6">
                 <OrderSummary cart={cart} />
             </div>
+            <CartPopupFooter cart={cart} />
         </div>
       </div>
     </div>
