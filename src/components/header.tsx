@@ -203,21 +203,21 @@ export function Header({ onSearchActiveChange, onSearchSubmit, isCartVisible }: 
                          <Image src="/icons/profile_icon.png" alt="Profile" width={36} height={36} className="h-8 w-8 lg:h-9 lg:w-9 transition-colors hover:opacity-80" onDragStart={(e) => e.preventDefault()} />
                       </button>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent className="w-48 bg-white rounded-xl mr-4" sideOffset={10}>
+                    <DropdownMenuContent align="end" className="bg-white rounded-xl" sideOffset={10}>
                       <DropdownMenuItem className="group focus:bg-custom-purple-dark focus:text-white text-custom-purple-dark">
                         <Image src="/icons/profile_drpdwn_btn.png" alt="Profile" width={20} height={20} className="mr-2" />
                         <span>Profile</span>
                       </DropdownMenuItem>
                       <DropdownMenuItem className="group focus:bg-custom-purple-dark focus:text-white text-custom-purple-dark">
-                        <Heart className="mr-2 h-5 w-5 text-custom-purple-dark group-hover:text-white" />
+                        <Heart className="mr-2 h-5 w-5 text-custom-purple-dark group-focus:text-white" />
                         <span>My Wishlist</span>
                       </DropdownMenuItem>
                       <DropdownMenuItem className="group focus:bg-custom-purple-dark focus:text-white text-custom-purple-dark">
-                        <ListOrdered className="mr-2 h-5 w-5 text-custom-purple-dark group-hover:text-white" />
+                        <ListOrdered className="mr-2 h-5 w-5 text-custom-purple-dark group-focus:text-white" />
                         <span>My Orders</span>
                       </DropdownMenuItem>
                       <DropdownMenuItem className="group focus:bg-custom-purple-dark focus:text-white text-custom-purple-dark">
-                        <LogOut className="mr-2 h-5 w-5 text-custom-purple-dark group-hover:text-white" />
+                        <LogOut className="mr-2 h-5 w-5 text-custom-purple-dark group-focus:text-white" />
                         <span>Logout</span>
                       </DropdownMenuItem>
                     </DropdownMenuContent>
