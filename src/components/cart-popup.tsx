@@ -43,7 +43,7 @@ export function CartPopup({ onClose, cart }: CartPopupProps) {
 
 
   return (
-    <div className={cn("bg-[#9A7DAB] rounded-t-[40px] p-8 text-white h-full overflow-hidden relative flex flex-col ring-4 ring-custom-gold animate-slide-up-fade-in")}>
+    <div className={cn("bg-[#9A7DAB] rounded-t-[40px] pt-8 pl-8 pb-8 text-white h-full overflow-hidden relative flex flex-col ring-4 ring-custom-gold animate-slide-up-fade-in")}>
       <button 
         onClick={onClose} 
         className="absolute top-4 right-4 text-white hover:text-gray-200 z-20"
@@ -91,7 +91,7 @@ export function CartPopup({ onClose, cart }: CartPopupProps) {
         </div>
 
         {/* Right Section (40%) */}
-        <div className="w-[40%] bg-white/10 rounded-2xl">
+        <div className="w-[40%] bg-white/10 rounded-l-2xl">
           {/* Content for the right side will go here */}
         </div>
       </div>
