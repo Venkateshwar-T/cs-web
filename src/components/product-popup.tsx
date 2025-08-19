@@ -47,7 +47,7 @@ export function ProductPopup({ product, onClose, onImageExpandChange, isLiked, o
         onClick={onClose} 
         className="absolute -top-4 -right-4 text-white hover:text-gray-200 z-20"
       >
-        <Image src="/icons/cross_button.png" alt="Close" width={32} height={32} />
+        <Image src="/icons/cross_button.png" alt="Close" width={20} height={20} />
       </button>
       <div className={cn("bg-[#9A7DAB] rounded-t-[40px] pt-6 md:px-4 lg:px-5 xl:px-8 text-white h-full overflow-hidden relative flex flex-col ring-4 ring-custom-purple-dark")}>
         
