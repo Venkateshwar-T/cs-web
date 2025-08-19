@@ -6,6 +6,7 @@ import { cn } from '@/lib/utils';
 import { CartItemCard } from './cart-item-card';
 import { Button } from './ui/button';
 import { useState, useRef, useEffect } from 'react';
+import Image from 'next/image';
 
 interface CartPopupProps {
   onClose: () => void;
@@ -92,7 +93,12 @@ export function CartPopup({ onClose, cart }: CartPopupProps) {
 
         {/* Right Section (40%) */}
         <div className="w-[40%] bg-white/10 rounded-l-2xl">
-          {/* Content for the right side will go here */}
+          <div className="flex justify-end">
+            <div className="bg-custom-gold rounded-l-full flex items-center px-4 py-2 mt-4">
+                <Image src="/icons/cart.png" alt="Cart" width={24} height={24} />
+                <span className="text-custom-purple-dark font-bold ml-2">My Cart</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
