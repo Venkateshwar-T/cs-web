@@ -100,7 +100,7 @@ export function CartPopup({ onClose, cart }: CartPopupProps) {
                     <span className="text-custom-purple-dark font-bold ml-2">My Cart</span>
                 </div>
             </div>
-            <div className="p-4 flex-grow">
+            <div className="p-4">
                 <OrderSummary cart={cart} />
             </div>
         </div>
