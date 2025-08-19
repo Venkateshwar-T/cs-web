@@ -9,13 +9,25 @@ import { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import { OrderSummary } from './order-summary';
 import { CartPopupFooter } from './cart-popup-footer';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 
 interface CartPopupProps {
   onClose: () => void;
   cart: Record<string, number>;
+  onClearCart: () => void;
 }
 
-export function CartPopup({ onClose, cart }: CartPopupProps) {
+export function CartPopup({ onClose, cart, onClearCart }: CartPopupProps) {
   const cartItems = Object.entries(cart);
   const [isScrolling, setIsScrolling] = useState(false);
   const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -47,24 +59,41 @@ export function CartPopup({ onClose, cart }: CartPopupProps) {
 
   return (
     <div className={cn("bg-[#9A7DAB] rounded-t-[40px] pt-4 pl-6 text-white h-full overflow-hidden relative flex flex-col ring-4 ring-custom-gold animate-slide-up-fade-in")}>
-      <div className="flex h-full gap-4">
+      <div className="flex h-full gap-4 flex-grow min-h-0">
         {/* Left Section (60%) */}
         <div className="w-[60%] flex flex-col">
-          <div className="flex justify-between items-center mb-5">
+           <div className="flex justify-between items-center mb-5 pr-4">
             <h2 className="text-3xl font-bold text-custom-purple-dark">Cart items</h2>
-            <Button
-              variant="destructive"
-              className="bg-custom-purple-dark text-white rounded-full hover:bg-custom-purple-dark/90 text-sm h-9 px-4"
-            >
-              <X className="h-4 w-0" />
-              Clear Cart
-            </Button>
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button
+                  variant="destructive"
+                  className="bg-custom-purple-dark text-white rounded-full hover:bg-custom-purple-dark/90 text-sm h-9 px-4 disabled:opacity-50"
+                  disabled={cartItems.length === 0}
+                >
+                  <X className="h-4 w-0" />
+                  Clear Cart
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    This action cannot be undone. This will permanently remove all items from your cart.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <AlertDialogAction onClick={onClearCart}>Confirm</AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
           </div>
 
           <div 
             ref={scrollContainerRef}
             className={cn(
-              "flex-grow overflow-y-auto pr-4 -mr-4",
+              "flex-grow overflow-y-auto pr-4 min-h-0",
               isScrolling ? "custom-scrollbar" : "no-scrollbar"
             )}
           >

@@ -102,6 +102,10 @@ export default function Home() {
     }
   };
 
+  const handleClearCart = () => {
+    setCart({});
+  };
+
   const handleProductClick = (product: Product) => {
     setSelectedProduct(product);
   };
@@ -231,7 +235,7 @@ export default function Home() {
         <>
           <div className="fixed inset-0 z-40 bg-black/50" />
           <div className="fixed inset-0 z-50 flex items-start justify-center pt-36">
-              <div className="h-full flex-grow ml-[calc(17%+2rem)] mr-8 relative w-[calc(83%-4rem)]">
+              <div className="relative h-full w-full max-w-[calc(100%-2rem)] md:max-w-[calc(83%-4rem)]">
                   <ProductPopup 
                     product={selectedProduct} 
                     onClose={handleClosePopup}
@@ -254,6 +258,7 @@ export default function Home() {
                   <CartPopup
                     onClose={handleToggleCartPopup}
                     cart={cart}
+                    onClearCart={handleClearCart}
                   />
               </div>
           </div>
