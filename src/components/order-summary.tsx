@@ -36,7 +36,7 @@ export function OrderSummary({ cart }: OrderSummaryProps) {
 
   if (cartItems.length === 0) {
       return (
-          <div className="bg-white/90 text-black rounded-2xl p-6 h-full flex items-center justify-center">
+          <div className="bg-white/90 text-black rounded-2xl p-6 h-full flex items-center justify-center border border-custom-purple-dark">
               <p className="text-center text-gray-500">Your order summary will appear here once you add items to your cart.</p>
           </div>
       );
@@ -54,7 +54,7 @@ export function OrderSummary({ cart }: OrderSummaryProps) {
   const total = subtotalAfterDiscount + gstAmount;
 
   return (
-    <div className="bg-white/90 text-black rounded-2xl p-4 flex flex-col border border-white/30 max-h-full">
+    <div className="bg-white/90 text-black rounded-2xl p-4 flex flex-col border border-custom-purple-dark max-h-full">
         <h3 className="font-bold text-xl text-center mb-4 flex-shrink-0">Order Summary</h3>
         
         <div className="flex-grow space-y-2 overflow-y-auto no-scrollbar">
