@@ -58,7 +58,7 @@ export function UserActions({ isEnquireOpen, isSearchSubmitted, onEnquireOpenCha
                             <p className="text-xs font-medium self-center">-OR-</p>
                             <Button asChild className="w-full h-auto py-2 bg-custom-purple-dark hover:bg-custom-purple-dark/90 text-white rounded-full text-lg font-plex-sans">
                                 <a href="https://wa.me/1234567890" target="_blank" rel="noopener noreferrer">
-                                    <AiOutlineWhatsApp className="mr-2 h-5 w-5" /> Whatsapp Us
+                                    <AiOutlineWhatsApp className="mr-2 h-6 w-6" /> Whatsapp Us
                                 </a>
                             </Button>
                         </div>
@@ -72,7 +72,7 @@ export function UserActions({ isEnquireOpen, isSearchSubmitted, onEnquireOpenCha
                     <Separator orientation="vertical" className="h-6 bg-foreground/50 mx-1 lg:mx-2" />
                     <div className="flex items-center gap-1 lg:gap-2">
                         <Link href="#" aria-label="Instagram">
-                            <AiOutlineInstagram className="h-7 w-7 lg:h-8 lg:w-8 transition-colors hover:text-custom-gold" />
+                            <AiOutlineInstagram className="h-7 w-7 lg:h-8 lg-w-8 transition-colors hover:text-custom-gold" />
                         </Link>
                         <Link href="#" aria-label="Facebook">
                             <IoLogoFacebook className="h-7 w-7 lg:h-8 lg:w-8 transition-colors hover:text-custom-gold" />
