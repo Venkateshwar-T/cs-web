@@ -54,8 +54,8 @@ export function OrderSummary({ cart }: OrderSummaryProps) {
   const total = subtotalAfterDiscount + gstAmount;
 
   return (
-    <div className="bg-white/90 text-black rounded-2xl p-4 h-full flex flex-col border border-white/30">
-        <h3 className="font-bold text-xl text-center mb-4">Order Summary</h3>
+    <div className="bg-white/90 text-black rounded-2xl p-4 flex flex-col border border-white/30 max-h-full">
+        <h3 className="font-bold text-xl text-center mb-4 flex-shrink-0">Order Summary</h3>
         
         <div className="flex-grow space-y-2 overflow-y-auto no-scrollbar">
             {cartItems.map(([name, quantity]) => (
@@ -67,7 +67,7 @@ export function OrderSummary({ cart }: OrderSummaryProps) {
             ))}
         </div>
 
-        <div className="mt-4 pt-4 border-t border-dashed border-gray-300 space-y-2.5">
+        <div className="mt-4 pt-4 border-t border-dashed border-gray-300 space-y-2.5 flex-shrink-0">
             <SummaryRow 
                 label="Discount Applied"
                 value={`-₹${discount.toFixed(2)}`}
