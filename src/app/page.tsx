@@ -15,6 +15,7 @@ import { SparkleBackground } from '@/components/sparkle-background';
 import { CartPopup } from '@/components/cart-popup';
 import { X } from 'lucide-react';
 import { LoginPopup } from '@/components/login-popup';
+import { SignUpPopup } from '@/components/signup-popup';
 
 
 export type Product = {
@@ -56,9 +57,10 @@ export default function Home() {
   const [isCartVisible, setIsCartVisible] = useState(false);
   const [filters, setFilters] = useState<FilterState>(initialFilterState);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const [isSignUpOpen, setIsSignUpOpen] = useState(false);
 
   useEffect(() => {
-    if (selectedProduct || isImageExpanded || isCartVisible || isLoginOpen) {
+    if (selectedProduct || isImageExpanded || isCartVisible || isLoginOpen || isSignUpOpen) {
       document.body.classList.add('overflow-hidden');
     } else {
       document.body.classList.remove('overflow-hidden');
@@ -66,7 +68,7 @@ export default function Home() {
     return () => {
       document.body.classList.remove('overflow-hidden');
     };
-  }, [selectedProduct, isImageExpanded, isCartVisible, isLoginOpen]);
+  }, [selectedProduct, isImageExpanded, isCartVisible, isLoginOpen, isSignUpOpen]);
 
   useEffect(() => {
     if (isCartOpen) {
@@ -144,6 +146,16 @@ export default function Home() {
     setIsCartOpen(prev => !prev);
   }
 
+  const handleOpenSignUp = () => {
+    setIsLoginOpen(false);
+    setIsSignUpOpen(true);
+  };
+
+  const handleOpenLogin = () => {
+    setIsSignUpOpen(false);
+    setIsLoginOpen(true);
+  };
+
   const totalQuantity = Object.values(cart).reduce((acc, cur) => acc + cur, 0);
 
   const getLabelById = (id: string, options: { id: string, label: string }[]) => {
@@ -161,7 +173,7 @@ export default function Home() {
     <>
       <SparkleBackground />
       <LoaderBar isLoading={isSearching} onAnimationComplete={() => setIsSearching(false)} />
-      <div className={cn("flex flex-col h-screen", (selectedProduct || isImageExpanded || isCartVisible) ? 'opacity-50' : '')}>
+      <div className={cn("flex flex-col h-screen", (selectedProduct || isImageExpanded || isCartVisible || isLoginOpen || isSignUpOpen) ? 'opacity-50' : '')}>
         <Header 
           onSearchSubmit={handleSearchSubmit} 
           onSearchActiveChange={setIsSearchActive} 
@@ -239,22 +251,19 @@ export default function Home() {
 
 
       {selectedProduct && !isCartOpen && (
-        <>
-          <div className="fixed inset-0 z-40 bg-black/50" />
-          <div className="fixed inset-0 z-50 flex items-start justify-center pt-36">
-              <div className="h-full flex-grow ml-[calc(17%+2rem)] mr-8 relative w-[calc(83%-4rem)]">
-                  <ProductPopup 
-                    product={selectedProduct} 
-                    onClose={handleClosePopup}
-                    onImageExpandChange={setIsImageExpanded}
-                    isLiked={!!likedProducts[selectedProduct.id]}
-                    onLikeToggle={() => handleLikeToggle(selectedProduct.id)}
-                    cart={cart}
-                    onAddToCart={handleAddToCart}
-                  />
-              </div>
-          </div>
-        </>
+         <div className="fixed inset-0 z-50 flex items-start justify-center pt-36">
+            <div className="h-full flex-grow ml-[calc(17%+2rem)] mr-8 relative w-[calc(83%-4rem)]">
+                <ProductPopup 
+                  product={selectedProduct} 
+                  onClose={handleClosePopup}
+                  onImageExpandChange={setIsImageExpanded}
+                  isLiked={!!likedProducts[selectedProduct.id]}
+                  onLikeToggle={() => handleLikeToggle(selectedProduct.id)}
+                  cart={cart}
+                  onAddToCart={handleAddToCart}
+                />
+            </div>
+        </div>
       )}
 
       {isCartVisible && (
@@ -272,7 +281,16 @@ export default function Home() {
         </>
       )}
 
-      <LoginPopup open={isLoginOpen} onOpenChange={setIsLoginOpen} />
+      <LoginPopup 
+        open={isLoginOpen} 
+        onOpenChange={setIsLoginOpen}
+        onSignUpClick={handleOpenSignUp}
+      />
+      <SignUpPopup 
+        open={isSignUpOpen}
+        onOpenChange={setIsSignUpOpen}
+        onLoginClick={handleOpenLogin}
+      />
     </>
   );
 }

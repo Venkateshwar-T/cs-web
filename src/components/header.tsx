@@ -13,9 +13,10 @@ interface HeaderProps {
   onSearchActiveChange: (isActive: boolean) => void;
   onSearchSubmit: (query: string) => void;
   isCartVisible: boolean;
+  onLoginOpenChange: (isOpen: boolean) => void;
 }
 
-export function Header({ onSearchActiveChange, onSearchSubmit, isCartVisible }: HeaderProps) {
+export function Header({ onSearchActiveChange, onSearchSubmit, isCartVisible, onLoginOpenChange }: HeaderProps) {
   const [isSearchSubmitted, setIsSearchSubmitted] = useState(false);
   const [isEnquireOpen, setIsEnquireOpen] = useState(false);
   const [targetWidth, setTargetWidth] = useState<number | undefined>(undefined);
@@ -67,6 +68,7 @@ export function Header({ onSearchActiveChange, onSearchSubmit, isCartVisible }: 
             isEnquireOpen={isEnquireOpen}
             isSearchSubmitted={isSearchSubmitted}
             onEnquireOpenChange={setIsEnquireOpen}
+            onLoginOpenChange={onLoginOpenChange}
           />
         </div>
 

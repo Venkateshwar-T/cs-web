@@ -18,6 +18,7 @@ interface UserActionsProps {
     isEnquireOpen: boolean;
     isSearchSubmitted: boolean;
     onEnquireOpenChange: (isOpen: boolean) => void;
+    onLoginOpenChange: (isOpen: boolean) => void;
 }
 
 const navLinks = [
@@ -25,8 +26,8 @@ const navLinks = [
     { href: "/faq", label: "FAQ" },
 ];
 
-export function UserActions({ isEnquireOpen, isSearchSubmitted, onEnquireOpenChange }: UserActionsProps) {
-    const [isLoginOpen, setIsLoginOpen] = useState(false);
+export function UserActions({ isEnquireOpen, isSearchSubmitted, onEnquireOpenChange, onLoginOpenChange }: UserActionsProps) {
+    
     return (
         <>
             <div className="flex flex-1 justify-end animate-slide-in-from-right" style={{ animationDuration: '0.5s' }}>
@@ -75,14 +76,14 @@ export function UserActions({ isEnquireOpen, isSearchSubmitted, onEnquireOpenCha
                         <Separator orientation="vertical" className="h-6 bg-foreground/50 mx-1 lg:mx-2" />
                         <div className="flex items-center gap-1 lg:gap-2">
                             <Link href="#" aria-label="Instagram">
-                                <AiOutlineInstagram className="h-7 w-7 lg:h-8 lg-w-8 transition-colors hover:text-custom-gold" />
+                                <AiOutlineInstagram className="h-7 w-7 lg:h-8 lg:w-8 transition-colors hover:text-custom-gold" />
                             </Link>
                             <Link href="#" aria-label="Facebook">
                                 <IoLogoFacebook className="h-7 w-7 lg:h-8 lg:w-8 transition-colors hover:text-custom-gold" />
                             </Link>
                             {/* <DropdownMenu>
                                 <DropdownMenuTrigger asChild> */}
-                                    <button onClick={() => setIsLoginOpen(true)} aria-label="Profile" className="ml-1 lg:ml-2">
+                                    <button onClick={() => onLoginOpenChange(true)} aria-label="Profile" className="ml-1 lg:ml-2">
                                         <Image src="/icons/profile_icon.png" alt="Profile" width={36} height={36} className="h-8 w-8 lg:h-9 lg:w-9 transition-colors hover:opacity-80" onDragStart={(e) => e.preventDefault()} />
                                     </button>
                                 {/* </DropdownMenuTrigger>
@@ -156,7 +157,6 @@ export function UserActions({ isEnquireOpen, isSearchSubmitted, onEnquireOpenCha
                     </Sheet>
                 </div>
             </div>
-            <LoginPopup open={isLoginOpen} onOpenChange={setIsLoginOpen} />
         </>
     );
 }
