@@ -45,7 +45,7 @@ export function LoginPopup({ open, onOpenChange }: LoginPopupProps) {
                     />
                 </div>
 
-                <a href="#" className="text-sm text-white font-montserrat self-end hover:underline">Forgot Password?</a>
+                <a href="#" className="text-sm text-white font-montserrat self-center hover:underline">Forgot Password?</a>
 
                 <Button className="w-full bg-custom-gold text-custom-purple-dark font-montserrat font-bold text-lg rounded-full hover:bg-custom-gold/90 mt-2">
                     Login
