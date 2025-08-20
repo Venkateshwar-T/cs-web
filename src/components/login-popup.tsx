@@ -20,13 +20,13 @@ interface LoginPopupProps {
 export function LoginPopup({ open, onOpenChange }: LoginPopupProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="bg-transparent border-none p-0 w-auto max-w-lg">
+      <DialogContent className="bg-transparent border-none p-0 w-[25%]">
         <DialogHeader>
           <DialogTitle className="sr-only">Login</DialogTitle>
         </DialogHeader>
         <AuthLayout>
             <div className="flex flex-col gap-4 px-8 pb-8">
-                <h2 className="text-3xl font-bold text-white font-plex-sans self-start">Log In</h2>
+                <h2 className="text-3xl font-medium text-white font-plex-sans self-start">Log In</h2>
                 
                 <div className="space-y-1 text-left">
                     <label className="text-sm text-white font-plex-sans">Email or Phone</label>
@@ -47,7 +47,7 @@ export function LoginPopup({ open, onOpenChange }: LoginPopupProps) {
 
                 <a href="#" className="text-sm text-white font-montserrat self-center hover:underline">Forgot Password?</a>
 
-                <Button className="w-full bg-custom-gold text-custom-purple-dark font-montserrat font-bold text-lg rounded-full hover:bg-custom-gold/90 mt-2">
+                <Button className="w-full h-12 bg-custom-gold text-custom-purple-dark font-montserrat font-bold text-lg rounded-full hover:bg-custom-gold/90 mt-2">
                     Login
                 </Button>
 
@@ -57,8 +57,8 @@ export function LoginPopup({ open, onOpenChange }: LoginPopupProps) {
                     <div className="h-px flex-grow bg-white/50"></div>
                 </div>
 
-                <Button variant="outline" className="w-full bg-white text-black rounded-full hover:bg-white/90">
-                    <Image src="/icons/google.png" alt="Google" width={20} height={20} className="mr-2" />
+                <Button variant="outline" className="w-[60%] h-12 bg-white font-semibold text-black self-center rounded-full hover:bg-white/90 hover:text-black/90">
+                    <Image src="/icons/google.png" alt="Google" width={25} height={25} />
                     Sign in with Google
                 </Button>
                 
