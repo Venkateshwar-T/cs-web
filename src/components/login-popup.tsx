@@ -20,7 +20,7 @@ interface LoginPopupProps {
 export function LoginPopup({ open, onOpenChange }: LoginPopupProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="bg-transparent border-none p-0 w-auto max-w-md">
+      <DialogContent className="bg-transparent border-none p-0 w-auto max-w-lg">
         <DialogHeader>
           <DialogTitle className="sr-only">Login</DialogTitle>
         </DialogHeader>
