@@ -22,6 +22,7 @@ export default {
         'plex-sans': ['"IBM Plex Sans"', 'sans-serif'],
         'plex-sans-condensed': ['"IBM Plex Sans Condensed"', 'sans-serif'],
         poppins: ['Poppins', 'sans-serif'],
+        montserrat: ['Montserrat', 'sans-serif'],
       },
       colors: {
         'custom-gold': '#FFD139',
