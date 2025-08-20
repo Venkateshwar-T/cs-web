@@ -4,6 +4,8 @@
 import {
   Dialog,
   DialogContent,
+  DialogHeader,
+  DialogTitle,
 } from "@/components/ui/dialog"
 import { AuthLayout } from "./ui/auth-layout";
 import { Input } from "./ui/input";
@@ -19,6 +21,9 @@ export function LoginPopup({ open, onOpenChange }: LoginPopupProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="bg-transparent border-none p-0 w-auto max-w-md">
+        <DialogHeader>
+          <DialogTitle className="sr-only">Login</DialogTitle>
+        </DialogHeader>
         <AuthLayout>
             <div className="flex flex-col gap-4 px-8 pb-8">
                 <h2 className="text-3xl font-bold text-white font-plex-sans self-start">Log In</h2>
