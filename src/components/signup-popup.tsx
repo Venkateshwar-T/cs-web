@@ -19,10 +19,6 @@ interface SignUpPopupProps {
 }
 
 export function SignUpPopup({ open, onOpenChange, onLoginClick }: SignUpPopupProps) {
-  const handleLoginClick = () => {
-    onOpenChange(false);
-    onLoginClick();
-  }
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -71,7 +67,7 @@ export function SignUpPopup({ open, onOpenChange, onLoginClick }: SignUpPopupPro
                 </Button>
                 
                 <p className="text-center text-sm text-white font-plex-sans mt-4">
-                    Already Have an Account? <button onClick={handleLoginClick} className="font-bold text-custom-gold hover:underline">Log In</button>
+                    Already Have an Account? <button onClick={onLoginClick} className="font-bold text-custom-gold hover:underline">Log In</button>
                 </p>
             </div>
         </AuthLayout>
