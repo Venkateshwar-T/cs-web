@@ -34,7 +34,7 @@ export function SignUpPopup({ open, onOpenChange, onLoginClick }: SignUpPopupPro
                     <label className="text-sm text-white font-plex-sans">Email or Phone</label>
                     <Input 
                         placeholder="Enter your email or phone"
-                        className="bg-white rounded-lg text-black placeholder:text-gray-400 placeholder:font-montserrat font-montserrat h-12"
+                        className="bg-white rounded-full text-black placeholder:text-gray-400 placeholder:font-montserrat font-montserrat h-12"
                     />
                 </div>
                 
@@ -43,7 +43,7 @@ export function SignUpPopup({ open, onOpenChange, onLoginClick }: SignUpPopupPro
                     <Input 
                         type="password"
                         placeholder="Enter your password"
-                        className="bg-white rounded-lg text-black placeholder:text-gray-400 placeholder:font-montserrat font-montserrat h-12"
+                        className="bg-white rounded-full text-black placeholder:text-gray-400 placeholder:font-montserrat font-montserrat h-12"
                     />
                 </div>
 
