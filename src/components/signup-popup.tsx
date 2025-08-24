@@ -19,9 +19,14 @@ interface SignUpPopupProps {
 }
 
 export function SignUpPopup({ open, onOpenChange, onLoginClick }: SignUpPopupProps) {
+  const handleLoginClick = () => {
+    onOpenChange(false);
+    onLoginClick();
+  }
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="bg-transparent border-none p-0 w-auto">
+      <DialogContent className="p-0 w-auto">
         <DialogHeader>
           <DialogTitle className="sr-only">Sign Up</DialogTitle>
         </DialogHeader>
@@ -33,7 +38,7 @@ export function SignUpPopup({ open, onOpenChange, onLoginClick }: SignUpPopupPro
                     <label className="text-sm text-white font-plex-sans">Email or Phone</label>
                     <Input 
                         placeholder="Enter your email or phone"
-                        className="bg-white rounded-md text-black placeholder:text-gray-400 placeholder:font-montserrat font-montserrat h-12"
+                        className="bg-white rounded-lg text-black placeholder:text-gray-400 placeholder:font-montserrat font-montserrat h-12"
                     />
                 </div>
                 
@@ -42,7 +47,7 @@ export function SignUpPopup({ open, onOpenChange, onLoginClick }: SignUpPopupPro
                     <Input 
                         type="password"
                         placeholder="Enter your password"
-                        className="bg-white rounded-md text-black placeholder:text-gray-400 placeholder:font-montserrat font-montserrat h-12"
+                        className="bg-white rounded-lg text-black placeholder:text-gray-400 placeholder:font-montserrat font-montserrat h-12"
                     />
                 </div>
 
@@ -66,7 +71,7 @@ export function SignUpPopup({ open, onOpenChange, onLoginClick }: SignUpPopupPro
                 </Button>
                 
                 <p className="text-center text-sm text-white font-plex-sans mt-4">
-                    Already Have an Account? <button onClick={onLoginClick} className="font-bold text-custom-gold hover:underline">Log In</button>
+                    Already Have an Account? <button onClick={handleLoginClick} className="font-bold text-custom-gold hover:underline">Log In</button>
                 </p>
             </div>
         </AuthLayout>
