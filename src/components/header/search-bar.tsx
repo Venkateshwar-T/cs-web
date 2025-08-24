@@ -79,7 +79,7 @@ export function SearchBar({ formRef, isSearchSubmitted, isEnquireOpen, targetWid
                     value={searchInput}
                     onChange={(e) => setSearchInput(e.target.value)}
                     placeholder={isSearchSubmitted ? 'Search for gifts...' : placeholder}
-                    className={`w-full pl-12 pr-4 py-5 rounded-full bg-transparent border-none focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-gray-500 text-lg md:text-xl text-black`}
+                    className={`w-full pl-12 pr-4 h-11 rounded-full bg-transparent border-none focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-gray-500 text-lg md:text-xl text-black`}
                 />
             </form>
         </div>
