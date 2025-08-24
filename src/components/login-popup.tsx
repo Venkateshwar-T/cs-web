@@ -21,19 +21,19 @@ interface LoginPopupProps {
 export function LoginPopup({ open, onOpenChange, onSignUpClick }: LoginPopupProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="bg-transparent p-0 w-[25%]">
+      <DialogContent className="p-0 w-auto">
         <DialogHeader>
           <DialogTitle className="sr-only">Login</DialogTitle>
         </DialogHeader>
         <AuthLayout>
-            <div className="flex flex-col gap-4 px-8 pb-8">
+            <div className="flex flex-col gap-4 px-8 pb-8 w-96">
                 <h2 className="text-3xl font-medium text-white font-plex-sans self-start">Log In</h2>
                 
                 <div className="space-y-1 text-left">
                     <label className="text-sm text-white font-plex-sans">Email or Phone</label>
                     <Input 
                         placeholder="Enter your email or phone"
-                        className="bg-white rounded-3xl text-black placeholder:text-gray-400 placeholder:font-montserrat font-montserrat"
+                        className="bg-white rounded-full text-black placeholder:text-gray-400 placeholder:font-montserrat font-montserrat h-12"
                     />
                 </div>
                 
@@ -42,7 +42,7 @@ export function LoginPopup({ open, onOpenChange, onSignUpClick }: LoginPopupProp
                     <Input 
                         type="password"
                         placeholder="Enter your password"
-                        className="bg-white rounded-3xl text-black placeholder:text-gray-400 placeholder:font-montserrat font-montserrat"
+                        className="bg-white rounded-full text-black placeholder:text-gray-400 placeholder:font-montserrat font-montserrat h-12"
                     />
                 </div>
 
