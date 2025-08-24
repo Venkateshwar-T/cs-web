@@ -21,7 +21,7 @@ interface LoginPopupProps {
 export function LoginPopup({ open, onOpenChange, onSignUpClick }: LoginPopupProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="bg-transparent border-none p-0 w-[25%]">
+      <DialogContent className="bg-transparent p-0 w-[25%]">
         <DialogHeader>
           <DialogTitle className="sr-only">Login</DialogTitle>
         </DialogHeader>
@@ -33,7 +33,7 @@ export function LoginPopup({ open, onOpenChange, onSignUpClick }: LoginPopupProp
                     <label className="text-sm text-white font-plex-sans">Email or Phone</label>
                     <Input 
                         placeholder="Enter your email or phone"
-                        className="bg-white text-black placeholder:text-gray-400 placeholder:font-montserrat font-montserrat"
+                        className="bg-white rounded-3xl text-black placeholder:text-gray-400 placeholder:font-montserrat font-montserrat"
                     />
                 </div>
                 
@@ -42,7 +42,7 @@ export function LoginPopup({ open, onOpenChange, onSignUpClick }: LoginPopupProp
                     <Input 
                         type="password"
                         placeholder="Enter your password"
-                        className="bg-white text-black placeholder:text-gray-400 placeholder:font-montserrat font-montserrat"
+                        className="bg-white rounded-3xl text-black placeholder:text-gray-400 placeholder:font-montserrat font-montserrat"
                     />
                 </div>
 

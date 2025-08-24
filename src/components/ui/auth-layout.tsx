@@ -3,7 +3,7 @@ import Image from "next/image"
 
 export function AuthLayout({ children }: { children: React.ReactNode }) {
     return (
-        <div className="bg-custom-purple-dark text-white rounded-3xl text-center relative">
+        <div className="bg-custom-purple-dark text-white text-center relative">
             <div className="pt-8 pb-4">
                 <Image 
                     src="/Choco Smiley Logo.png" 
