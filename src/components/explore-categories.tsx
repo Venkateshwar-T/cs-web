@@ -20,11 +20,11 @@ export function ExploreCategories() {
 
   return (
     <div className="bg-[#5D2B79] h-full rounded-t-[40px] mx-8 md:mx-32 animate-fade-in" style={{ animationDuration: '0.5s', animationDelay: '0.6s', animationFillMode: 'both' }}>
-        <div className="bg-white/20 h-full rounded-t-[40px] p-6 overflow-y-auto no-scrollbar">
-            <SectionTitle className="pl-12">
+        <div className="bg-white/20 h-full rounded-t-[40px] py-6 px-12 overflow-y-auto no-scrollbar">
+            <SectionTitle className="pl-8">
                 Explore Categories
             </SectionTitle>
-            <div className="flex flex-1 justify-around items-center pt-2 pb-8">
+            <div className="flex flex-1 justify-around items-center gap-8 pt-2 pb-8">
                 {categoryImages.map((image) => (
                 <div key={image.id} className="flex-1 max-w-64 aspect-[5/6]">
                     <Image
@@ -39,10 +39,10 @@ export function ExploreCategories() {
                 ))}
             </div>
 
-            <SectionTitle className="pl-12">
+            <SectionTitle className="pl-8">
                 Explore Flavours
             </SectionTitle>
-            <div className="flex flex-1 justify-around items-center pt-2 pb-8">
+            <div className="flex flex-1 justify-around items-center gap-8 pt-2 pb-8">
                 {flavourImages.map((image) => (
                 <div key={image.id} className="flex-1 max-w-44 aspect-[5/6]">
                     <Image
