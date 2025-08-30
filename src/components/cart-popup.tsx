@@ -25,9 +25,10 @@ interface CartPopupProps {
   onClose: () => void;
   cart: Record<string, number>;
   onClearCart: () => void;
+  onFinalizeOrder: () => void;
 }
 
-export function CartPopup({ onClose, cart, onClearCart }: CartPopupProps) {
+export function CartPopup({ onClose, cart, onClearCart, onFinalizeOrder }: CartPopupProps) {
   const cartItems = Object.entries(cart);
   const [isScrolling, setIsScrolling] = useState(false);
   const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -122,7 +123,7 @@ export function CartPopup({ onClose, cart, onClearCart }: CartPopupProps) {
             <div className="flex-grow min-h-0">
                 <OrderSummary cart={cart} />
             </div>
-            <CartPopupFooter cart={cart} />
+            <CartPopupFooter cart={cart} onFinalizeOrder={onFinalizeOrder} />
         </div>
       </div>
     </div>

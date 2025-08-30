@@ -16,6 +16,7 @@ import { CartPopup } from '@/components/cart-popup';
 import { X } from 'lucide-react';
 import { LoginPopup } from '@/components/login-popup';
 import { SignUpPopup } from '@/components/signup-popup';
+import { CompleteDetailsPopup } from '@/components/complete-details-popup';
 
 
 export type Product = {
@@ -58,9 +59,10 @@ export default function Home() {
   const [filters, setFilters] = useState<FilterState>(initialFilterState);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isSignUpOpen, setIsSignUpOpen] = useState(false);
+  const [isCompleteDetailsOpen, setIsCompleteDetailsOpen] = useState(false);
 
   useEffect(() => {
-    if (selectedProduct || isImageExpanded || isCartVisible || isLoginOpen || isSignUpOpen) {
+    if (selectedProduct || isImageExpanded || isCartVisible || isLoginOpen || isSignUpOpen || isCompleteDetailsOpen) {
       document.body.classList.add('overflow-hidden');
     } else {
       document.body.classList.remove('overflow-hidden');
@@ -68,7 +70,7 @@ export default function Home() {
     return () => {
       document.body.classList.remove('overflow-hidden');
     };
-  }, [selectedProduct, isImageExpanded, isCartVisible, isLoginOpen, isSignUpOpen]);
+  }, [selectedProduct, isImageExpanded, isCartVisible, isLoginOpen, isSignUpOpen, isCompleteDetailsOpen]);
 
   useEffect(() => {
     if (isCartOpen) {
@@ -156,6 +158,11 @@ export default function Home() {
     setIsLoginOpen(true);
   };
 
+  const handleOpenCompleteDetails = () => {
+    setIsCartOpen(false);
+    setIsCompleteDetailsOpen(true);
+  }
+
   const totalQuantity = Object.values(cart).reduce((acc, cur) => acc + cur, 0);
 
   const getLabelById = (id: string, options: { id: string, label: string }[]) => {
@@ -173,7 +180,7 @@ export default function Home() {
     <>
       <SparkleBackground />
       <LoaderBar isLoading={isSearching} onAnimationComplete={() => setIsSearching(false)} />
-      <div className={cn("flex flex-col h-screen", (selectedProduct || isImageExpanded || isCartVisible || isLoginOpen || isSignUpOpen) ? 'opacity-50' : '')}>
+      <div className={cn("flex flex-col h-screen", (selectedProduct || isImageExpanded || isCartVisible || isLoginOpen || isSignUpOpen || isCompleteDetailsOpen) ? 'opacity-50' : '')}>
         <Header 
           onSearchSubmit={handleSearchSubmit} 
           onSearchActiveChange={setIsSearchActive} 
@@ -275,6 +282,7 @@ export default function Home() {
                     onClose={handleToggleCartPopup}
                     cart={cart}
                     onClearCart={handleClearCart}
+                    onFinalizeOrder={handleOpenCompleteDetails}
                   />
               </div>
           </div>
@@ -290,6 +298,10 @@ export default function Home() {
         open={isSignUpOpen}
         onOpenChange={setIsSignUpOpen}
         onLoginClick={handleOpenLogin}
+      />
+      <CompleteDetailsPopup
+        open={isCompleteDetailsOpen}
+        onOpenChange={setIsCompleteDetailsOpen}
       />
     </>
   );
