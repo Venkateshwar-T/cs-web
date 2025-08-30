@@ -149,17 +149,14 @@ export default function Home() {
   }
 
   const handleOpenSignUp = () => {
-    setIsLoginOpen(false);
     setIsSignUpOpen(true);
   };
 
   const handleOpenLogin = () => {
-    setIsSignUpOpen(false);
     setIsLoginOpen(true);
   };
 
   const handleOpenCompleteDetails = () => {
-    setIsCartOpen(false);
     setIsCompleteDetailsOpen(true);
   }
 
