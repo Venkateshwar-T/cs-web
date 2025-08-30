@@ -23,10 +23,10 @@ export function ProfilePopup({ onClose }: ProfilePopupProps) {
             <span className="sr-only">Close</span>
         </button>
         <div className="flex h-full w-full">
-            <div className="w-[30%] h-full bg-white">
+            <div className="w-[25%] h-full bg-white">
                 <ProfileSidebar activeTab={activeTab} setActiveTab={setActiveTab} />
             </div>
-            <div className="w-[70%] h-full bg-custom-purple-dark">
+            <div className="w-[75%] h-full bg-custom-purple-dark">
                 {activeTab === 'My Profile' && <ProfileDetailsView />}
                 {/* Add other views here based on activeTab */}
             </div>

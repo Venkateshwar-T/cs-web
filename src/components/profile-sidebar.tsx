@@ -20,7 +20,7 @@ const sidebarItems = [
 export function ProfileSidebar({ activeTab, setActiveTab }: ProfileSidebarProps) {
   return (
     <div className="flex flex-col p-6 h-full">
-      <nav className="flex flex-col gap-4">
+      <nav className="flex flex-col">
         {sidebarItems.map((item) => {
           const isActive = activeTab === item.id;
           return (
