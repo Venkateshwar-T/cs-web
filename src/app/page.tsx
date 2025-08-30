@@ -215,8 +215,8 @@ export default function Home() {
           isSearchActive ? 'pt-36' : 'pt-72'
         )}>
           {isOrderConfirmed ? (
-            <div className="bg-[#5D2B79] h-full w-full rounded-t-[40px] mx-8 md:mx-32 animate-fade-in flex-grow">
-              <div className="bg-white/20 h-full rounded-t-[40px] py-6 px-12">
+            <div className="bg-[#5D2B79] min-h-full w-full rounded-t-[40px] mx-8 md:mx-32 animate-fade-in">
+              <div className="bg-white/20 rounded-t-[40px] py-6 px-12">
                 {/* Content will be added later */}
               </div>
             </div>
