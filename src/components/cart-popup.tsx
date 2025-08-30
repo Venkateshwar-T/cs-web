@@ -118,8 +118,8 @@ export function CartPopup({ onClose, cart, onClearCart }: CartPopupProps) {
         </div>
 
         {/* Right Section (40%) */}
-        <div className="w-[40%] rounded-l-2xl flex flex-col">
-            <div className="p-4 flex-grow min-h-0 pr-6">
+        <div className="w-[40%] rounded-l-2xl flex flex-col pr-6">
+            <div className="flex-grow min-h-0">
                 <OrderSummary cart={cart} />
             </div>
             <CartPopupFooter cart={cart} />
