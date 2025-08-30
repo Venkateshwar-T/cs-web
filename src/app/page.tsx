@@ -14,9 +14,10 @@ import { LoaderBar } from '@/components/loader-bar';
 import { SparkleBackground } from '@/components/sparkle-background';
 import { CartPopup } from '@/components/cart-popup';
 import { X } from 'lucide-react';
-import { LoginPopup } from '@/components/login-popup';
+// import { LoginPopup } from '@/components/login-popup';
 import { SignUpPopup } from '@/components/signup-popup';
 import { CompleteDetailsPopup } from '@/components/complete-details-popup';
+import { ProfilePopup } from '@/components/profile-popup';
 
 
 export type Product = {
@@ -57,12 +58,13 @@ export default function Home() {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isCartVisible, setIsCartVisible] = useState(false);
   const [filters, setFilters] = useState<FilterState>(initialFilterState);
-  const [isLoginOpen, setIsLoginOpen] = useState(false);
+  // const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isSignUpOpen, setIsSignUpOpen] = useState(false);
   const [isCompleteDetailsOpen, setIsCompleteDetailsOpen] = useState(false);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
 
   useEffect(() => {
-    if (selectedProduct || isImageExpanded || isCartVisible || isLoginOpen || isSignUpOpen || isCompleteDetailsOpen) {
+    if (selectedProduct || isImageExpanded || isCartVisible /*|| isLoginOpen*/ || isSignUpOpen || isCompleteDetailsOpen || isProfileOpen) {
       document.body.classList.add('overflow-hidden');
     } else {
       document.body.classList.remove('overflow-hidden');
@@ -70,7 +72,7 @@ export default function Home() {
     return () => {
       document.body.classList.remove('overflow-hidden');
     };
-  }, [selectedProduct, isImageExpanded, isCartVisible, isLoginOpen, isSignUpOpen, isCompleteDetailsOpen]);
+  }, [selectedProduct, isImageExpanded, isCartVisible, /*isLoginOpen,*/ isSignUpOpen, isCompleteDetailsOpen, isProfileOpen]);
 
   useEffect(() => {
     if (isCartOpen) {
@@ -149,14 +151,14 @@ export default function Home() {
   }
 
   const handleOpenSignUp = () => {
-    setIsLoginOpen(false);
+    // setIsLoginOpen(false);
     setIsSignUpOpen(true);
   };
 
-  const handleOpenLogin = () => {
-    setIsSignUpOpen(false);
-    setIsLoginOpen(true);
-  };
+  // const handleOpenLogin = () => {
+  //   setIsSignUpOpen(false);
+  //   setIsLoginOpen(true);
+  // };
 
   const handleOpenCompleteDetails = () => {
     setIsCompleteDetailsOpen(true);
@@ -175,7 +177,7 @@ export default function Home() {
     ...filters.selectedWeights.map(id => ({ type: 'selectedWeights', value: id, label: getLabelById(id, weightOptions) })),
   ] as { type: keyof FilterState; value: string; label: string }[];
 
-  const isPopupOpen = selectedProduct || isImageExpanded || isCartVisible || isLoginOpen || isSignUpOpen || isCompleteDetailsOpen;
+  const isPopupOpen = selectedProduct || isImageExpanded || isCartVisible /*|| isLoginOpen*/ || isSignUpOpen || isCompleteDetailsOpen || isProfileOpen;
 
   return (
     <>
@@ -186,7 +188,7 @@ export default function Home() {
           onSearchSubmit={handleSearchSubmit} 
           onSearchActiveChange={setIsSearchActive} 
           isCartVisible={isCartVisible}
-          onLoginOpenChange={setIsLoginOpen}
+          onProfileOpenChange={setIsProfileOpen}
         />
         <main className={cn(
           "flex-grow overflow-hidden flex transition-all duration-500 relative items-start",
@@ -292,15 +294,24 @@ export default function Home() {
         </>
       )}
 
-      <LoginPopup 
+      {isProfileOpen && (
+        <>
+          <div className="fixed inset-0 z-40 bg-black/50" />
+          <div className="fixed inset-0 z-50 flex items-center justify-center">
+            <ProfilePopup onClose={() => setIsProfileOpen(false)} />
+          </div>
+        </>
+      )}
+
+      {/* <LoginPopup 
         open={isLoginOpen} 
         onOpenChange={setIsLoginOpen}
         onSignUpClick={handleOpenSignUp}
-      />
+      /> */}
       <SignUpPopup 
         open={isSignUpOpen}
         onOpenChange={setIsSignUpOpen}
-        onLoginClick={handleOpenLogin}
+        onLoginClick={() => {}} // handleOpenLogin
       />
       <CompleteDetailsPopup
         open={isCompleteDetailsOpen}

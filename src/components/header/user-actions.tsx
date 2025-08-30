@@ -5,20 +5,18 @@ import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { Menu, Phone, Heart, ListOrdered, LogOut } from "lucide-react";
+import { Menu, Phone } from "lucide-react";
 import { AiOutlineInstagram, AiOutlineWhatsApp } from "react-icons/ai";
 import { IoLogoFacebook } from "react-icons/io5";
 import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetHeader } from "@/components/ui/sheet";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
-import { useState } from "react";
-import { LoginPopup } from "../login-popup";
 
 interface UserActionsProps {
     isEnquireOpen: boolean;
     isSearchSubmitted: boolean;
     onEnquireOpenChange: (isOpen: boolean) => void;
-    onLoginOpenChange: (isOpen: boolean) => void;
+    onProfileOpenChange: (isOpen: boolean) => void;
 }
 
 const navLinks = [
@@ -26,7 +24,7 @@ const navLinks = [
     { href: "/faq", label: "FAQ" },
 ];
 
-export function UserActions({ isEnquireOpen, isSearchSubmitted, onEnquireOpenChange, onLoginOpenChange }: UserActionsProps) {
+export function UserActions({ isEnquireOpen, isSearchSubmitted, onEnquireOpenChange, onProfileOpenChange }: UserActionsProps) {
     
     return (
         <>
@@ -81,31 +79,10 @@ export function UserActions({ isEnquireOpen, isSearchSubmitted, onEnquireOpenCha
                             <Link href="#" aria-label="Facebook">
                                 <IoLogoFacebook className="h-7 w-7 lg:h-8 lg:w-8 transition-colors hover:text-custom-gold" />
                             </Link>
-                            {/* <DropdownMenu>
-                                <DropdownMenuTrigger asChild> */}
-                                    <button onClick={() => onLoginOpenChange(true)} aria-label="Profile" className="ml-1 lg:ml-2">
-                                        <Image src="/icons/profile_icon.png" alt="Profile" width={36} height={36} className="h-8 w-8 lg:h-9 lg:w-9 transition-colors hover:opacity-80" onDragStart={(e) => e.preventDefault()} />
-                                    </button>
-                                {/* </DropdownMenuTrigger>
-                                <DropdownMenuContent align="end" className="bg-white rounded-xl w-auto" sideOffset={10}>
-                                    <DropdownMenuItem className="group focus:bg-custom-purple-dark focus:text-white text-custom-purple-dark">
-                                        <Image src="/icons/profile_drpdwn_btn.png" alt="Profile" width={20} height={20} className="mr-2" />
-                                        <span>Profile</span>
-                                    </DropdownMenuItem>
-                                    <DropdownMenuItem className="group focus:bg-custom-purple-dark focus:text-white text-custom-purple-dark">
-                                        <Heart className="mr-2 h-5 w-5 text-custom-purple-dark group-focus:text-white" />
-                                        <span>My Wishlist</span>
-                                    </DropdownMenuItem>
-                                    <DropdownMenuItem className="group focus:bg-custom-purple-dark focus:text-white text-custom-purple-dark">
-                                        <ListOrdered className="mr-2 h-5 w-5 text-custom-purple-dark group-focus:text-white" />
-                                        <span>My Orders</span>
-                                    </DropdownMenuItem>
-                                    <DropdownMenuItem className="group focus:bg-custom-purple-dark focus:text-white text-custom-purple-dark">
-                                        <LogOut className="mr-2 h-5 w-5 text-custom-purple-dark group-focus:text-white" />
-                                        <span>Logout</span>
-                                    </DropdownMenuItem>
-                                </DropdownMenuContent>
-                            </DropdownMenu> */}
+                            
+                            <button onClick={() => onProfileOpenChange(true)} aria-label="Profile" className="ml-1 lg:ml-2">
+                                <Image src="/icons/profile_icon.png" alt="Profile" width={36} height={36} className="h-8 w-8 lg:h-9 lg:w-9 transition-colors hover:opacity-80" onDragStart={(e) => e.preventDefault()} />
+                            </button>
                         </div>
                     </div>
                 </div>
