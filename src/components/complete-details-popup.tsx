@@ -60,18 +60,18 @@ export function CompleteDetailsPopup({ open, onOpenChange }: CompleteDetailsPopu
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     placeholder="Enter your full name"
-                    className="bg-white rounded-full text-black placeholder:text-gray-400 placeholder:font-montserrat font-montserrat h-12"
+                    className="bg-white rounded-2xl text-black placeholder:text-gray-400 placeholder:font-montserrat font-montserrat h-12"
                 />
             </div>
             
             <div className="space-y-1 px-5 text-left">
-                <label className="pl-2 text-sm font-mediumfont-plex-sans">Phone Number</label>
+                <label className="pl-2 text-sm font-medium font-plex-sans">Phone Number</label>
                 <Input 
                     type="tel"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
                     placeholder="Enter your phone number"
-                    className="bg-white rounded-full text-black placeholder:text-gray-400 placeholder:font-montserrat font-montserrat h-12"
+                    className="bg-white rounded-2xl text-black placeholder:text-gray-400 placeholder:font-montserrat font-montserrat h-12"
                 />
             </div>
 
