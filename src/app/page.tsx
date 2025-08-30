@@ -211,12 +211,12 @@ export default function Home() {
           onProfileOpenChange={setIsProfileOpen}
         />
         <main className={cn(
-          "flex-grow overflow-y-auto flex transition-all duration-500 relative",
+          "flex-grow overflow-y-auto flex flex-col transition-all duration-500 relative",
           isSearchActive ? 'pt-36' : 'pt-72'
         )}>
           {isOrderConfirmed ? (
-            <div className="bg-[#5D2B79] min-h-full w-full rounded-t-[40px] mx-8 md:mx-32 animate-fade-in">
-              <div className="bg-white/20 rounded-t-[40px] py-6 px-12">
+            <div className="bg-[#5D2B79] min-h-full rounded-t-[40px] mx-8 md:mx-32 animate-fade-in">
+              <div className="bg-white/20 rounded-t-[40px] py-6 px-12 min-h-full">
                 {/* Content will be added later */}
               </div>
             </div>
