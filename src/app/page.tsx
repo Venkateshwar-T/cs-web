@@ -34,6 +34,12 @@ export type FilterState = {
   selectedWeights: string[];
 };
 
+export type ProfileInfo = {
+  name: string;
+  phone: string;
+  email: string;
+}
+
 const initialFilterState: FilterState = {
   priceRange: [0, 3000],
   selectedPriceOptions: [],
@@ -62,6 +68,12 @@ export default function Home() {
   const [isSignUpOpen, setIsSignUpOpen] = useState(false);
   const [isCompleteDetailsOpen, setIsCompleteDetailsOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [isOrderConfirmed, setIsOrderConfirmed] = useState(false);
+  const [profileInfo, setProfileInfo] = useState<ProfileInfo>({
+    name: 'John Doe',
+    phone: '+1 234 567 890',
+    email: 'john.doe@example.com',
+  });
 
   useEffect(() => {
     if (selectedProduct || isImageExpanded || isCartVisible /*|| isLoginOpen*/ || isSignUpOpen || isCompleteDetailsOpen || isProfileOpen) {
@@ -90,6 +102,7 @@ export default function Home() {
     setSelectedProduct(null);
     setFilters(initialFilterState);
     setSortOption("featured");
+    setIsOrderConfirmed(false);
   };
   
   const handleAddToCart = (productName: string, quantity: number, animate: boolean = true) => {
@@ -164,6 +177,13 @@ export default function Home() {
     setIsCompleteDetailsOpen(true);
   }
 
+  const handleConfirmOrder = (name: string, phone: string) => {
+    setProfileInfo(prev => ({...prev, name, phone }));
+    setIsOrderConfirmed(true);
+    setIsCartOpen(false);
+    setIsSearchActive(true);
+  };
+
   const totalQuantity = Object.values(cart).reduce((acc, cur) => acc + cur, 0);
 
   const getLabelById = (id: string, options: { id: string, label: string }[]) => {
@@ -191,16 +211,21 @@ export default function Home() {
           onProfileOpenChange={setIsProfileOpen}
         />
         <main className={cn(
-          "flex-grow overflow-hidden flex transition-all duration-500 relative items-start",
+          "flex-grow overflow-y-auto flex transition-all duration-500 relative",
           isSearchActive ? 'pt-36' : 'pt-72'
         )}>
-          {!isSearchActive && (
+          {isOrderConfirmed ? (
+            <div className="bg-[#5D2B79] h-full w-full rounded-t-[40px] mx-8 md:mx-32 animate-fade-in flex-grow">
+              <div className="bg-white/20 h-full rounded-t-[40px] py-6 px-12">
+                {/* Content will be added later */}
+              </div>
+            </div>
+          ) : !isSearchActive ? (
             <div className={cn("transition-opacity duration-500 w-full", isSearchActive ? 'opacity-0' : 'opacity-100 h-full')}>
               <ExploreCategories />
             </div>
-          )}
-          {isSearchActive && (
-            <div className="flex w-full h-full">
+          ) : (
+            <div className="flex w-full h-full items-start">
               <FilterContainer 
                 filters={filters} 
                 onFilterChange={handleFilterChange} 
@@ -227,7 +252,7 @@ export default function Home() {
       </div>
 
        <div className={cn("fixed bottom-8 right-4 z-[60] transition-all duration-300")}>
-          {isSearchActive && (
+          {isSearchActive && !isOrderConfirmed && (
             <Button
               onClick={handleToggleCartPopup}
               className={cn(
@@ -298,7 +323,7 @@ export default function Home() {
         <>
           <div className="fixed inset-0 z-40 bg-black/50" />
           <div className="fixed inset-0 z-50 flex items-center justify-center">
-            <ProfilePopup onClose={() => setIsProfileOpen(false)} />
+            <ProfilePopup onClose={() => setIsProfileOpen(false)} profile={profileInfo} />
           </div>
         </>
       )}
@@ -316,6 +341,7 @@ export default function Home() {
       <CompleteDetailsPopup
         open={isCompleteDetailsOpen}
         onOpenChange={setIsCompleteDetailsOpen}
+        onConfirm={handleConfirmOrder}
       />
     </>
   );

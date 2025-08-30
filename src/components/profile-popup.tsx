@@ -5,12 +5,14 @@ import { useState } from 'react';
 import { X } from 'lucide-react';
 import { ProfileSidebar } from './profile-sidebar';
 import { ProfileDetailsView } from './profile-details-view';
+import type { ProfileInfo } from '@/app/page';
 
 interface ProfilePopupProps {
   onClose: () => void;
+  profile: ProfileInfo;
 }
 
-export function ProfilePopup({ onClose }: ProfilePopupProps) {
+export function ProfilePopup({ onClose, profile }: ProfilePopupProps) {
   const [activeTab, setActiveTab] = useState('My Profile');
 
   return (
@@ -27,7 +29,7 @@ export function ProfilePopup({ onClose }: ProfilePopupProps) {
                 <ProfileSidebar activeTab={activeTab} setActiveTab={setActiveTab} />
             </div>
             <div className="w-[75%] h-full bg-custom-purple-dark">
-                {activeTab === 'My Profile' && <ProfileDetailsView />}
+                {activeTab === 'My Profile' && <ProfileDetailsView profile={profile} />}
                 {/* Add other views here based on activeTab */}
             </div>
         </div>

@@ -17,9 +17,10 @@ import { useToast } from '@/hooks/use-toast';
 interface CompleteDetailsPopupProps {
     open: boolean;
     onOpenChange: (open: boolean) => void;
+    onConfirm: (name: string, phone: string) => void;
 }
 
-export function CompleteDetailsPopup({ open, onOpenChange }: CompleteDetailsPopupProps) {
+export function CompleteDetailsPopup({ open, onOpenChange, onConfirm }: CompleteDetailsPopupProps) {
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const { toast } = useToast();
@@ -34,7 +35,7 @@ export function CompleteDetailsPopup({ open, onOpenChange }: CompleteDetailsPopu
       return;
     }
     // Handle successful confirmation (e.g., submit data)
-    console.log({ name, phone });
+    onConfirm(name, phone);
     onOpenChange(false); // Close popup on success
   };
   
