@@ -173,11 +173,13 @@ export default function Home() {
     ...filters.selectedWeights.map(id => ({ type: 'selectedWeights', value: id, label: getLabelById(id, weightOptions) })),
   ] as { type: keyof FilterState; value: string; label: string }[];
 
+  const isPopupOpen = selectedProduct || isImageExpanded || isCartVisible || isLoginOpen || isSignUpOpen || isCompleteDetailsOpen;
+
   return (
     <>
       <SparkleBackground />
       <LoaderBar isLoading={isSearching} onAnimationComplete={() => setIsSearching(false)} />
-      <div className={cn("flex flex-col h-screen", (selectedProduct || isImageExpanded || isCartVisible || isLoginOpen || isSignUpOpen || isCompleteDetailsOpen) ? 'opacity-50' : '')}>
+      <div className={cn("flex flex-col h-screen", isPopupOpen ? 'opacity-50' : '')}>
         <Header 
           onSearchSubmit={handleSearchSubmit} 
           onSearchActiveChange={setIsSearchActive} 
@@ -253,21 +255,23 @@ export default function Home() {
           )}
        </div>
 
-
       {selectedProduct && !isCartOpen && (
-         <div className="fixed inset-0 z-50 flex items-start justify-center pt-36">
-            <div className="h-full flex-grow ml-[calc(17%+2rem)] mr-8 relative w-[calc(83%-4rem)]">
-                <ProductPopup 
-                  product={selectedProduct} 
-                  onClose={handleClosePopup}
-                  onImageExpandChange={setIsImageExpanded}
-                  isLiked={!!likedProducts[selectedProduct.id]}
-                  onLikeToggle={() => handleLikeToggle(selectedProduct.id)}
-                  cart={cart}
-                  onAddToCart={handleAddToCart}
-                />
-            </div>
-        </div>
+         <>
+          <div className="fixed inset-0 z-40 bg-black/50" />
+          <div className="fixed inset-0 z-50 flex items-start justify-center pt-36">
+              <div className="h-full flex-grow ml-[calc(17%+2rem)] mr-8 relative w-[calc(83%-4rem)]">
+                  <ProductPopup 
+                    product={selectedProduct} 
+                    onClose={handleClosePopup}
+                    onImageExpandChange={setIsImageExpanded}
+                    isLiked={!!likedProducts[selectedProduct.id]}
+                    onLikeToggle={() => handleLikeToggle(selectedProduct.id)}
+                    cart={cart}
+                    onAddToCart={handleAddToCart}
+                  />
+              </div>
+          </div>
+        </>
       )}
 
       {isCartVisible && (
