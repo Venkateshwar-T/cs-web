@@ -19,7 +19,7 @@ const sidebarItems = [
 
 export function ProfileSidebar({ activeTab, setActiveTab }: ProfileSidebarProps) {
   return (
-    <div className="flex flex-col p-6 h-full">
+    <div className="flex flex-col h-full">
       <nav className="flex flex-col">
         {sidebarItems.map((item) => {
           const isActive = activeTab === item.id;
@@ -28,7 +28,7 @@ export function ProfileSidebar({ activeTab, setActiveTab }: ProfileSidebarProps)
               key={item.id}
               onClick={() => setActiveTab(item.id)}
               className={cn(
-                "flex items-center gap-3 p-3 rounded-lg text-lg font-medium transition-colors",
+                "flex items-center gap-3 w-full py-3 px-6 text-lg font-medium transition-colors",
                 isActive
                   ? 'bg-custom-purple-dark text-white'
                   : 'text-custom-purple-dark hover:bg-custom-purple-dark/10'
