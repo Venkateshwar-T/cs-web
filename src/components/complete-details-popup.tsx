@@ -1,6 +1,7 @@
 // @/components/complete-details-popup.tsx
 'use client';
 
+import { useState } from 'react';
 import {
   Dialog,
   DialogContent,
@@ -11,6 +12,7 @@ import {
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { X } from "lucide-react";
+import { useToast } from '@/hooks/use-toast';
 
 interface CompleteDetailsPopupProps {
     open: boolean;
@@ -18,10 +20,27 @@ interface CompleteDetailsPopupProps {
 }
 
 export function CompleteDetailsPopup({ open, onOpenChange }: CompleteDetailsPopupProps) {
+  const [name, setName] = useState('');
+  const [phone, setPhone] = useState('');
+  const { toast } = useToast();
+
+  const handleConfirm = () => {
+    if (!name.trim() || !phone.trim()) {
+      toast({
+        title: "Missing Details",
+        description: "Please fill in both your name and phone number.",
+        variant: "destructive",
+      });
+      return;
+    }
+    // Handle successful confirmation (e.g., submit data)
+    console.log({ name, phone });
+    onOpenChange(false); // Close popup on success
+  };
   
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="p-0 w-auto max-w-sm bg-custom-purple-dark rounded-[30px] border-2 border-custom-gold">
+      <DialogContent className="p-0 max-w-sm bg-custom-purple-dark rounded-[30px] border-2 border-custom-gold">
         <DialogHeader>
           <DialogTitle className="sr-only">Complete Your Details</DialogTitle>
           <DialogClose className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground text-white">
@@ -38,8 +57,10 @@ export function CompleteDetailsPopup({ open, onOpenChange }: CompleteDetailsPopu
             <div className="space-y-1 px-5 text-left">
                 <label className="pl-2 text-sm font-medium font-plex-sans">Name</label>
                 <Input 
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
                     placeholder="Enter your full name"
-                    className="bg-white rounded-[15px] text-black placeholder:text-gray-400 placeholder:font-montserrat font-montserrat h-12"
+                    className="bg-white rounded-full text-black placeholder:text-gray-400 placeholder:font-montserrat font-montserrat h-12"
                 />
             </div>
             
@@ -47,8 +68,10 @@ export function CompleteDetailsPopup({ open, onOpenChange }: CompleteDetailsPopu
                 <label className="pl-2 text-sm font-mediumfont-plex-sans">Phone Number</label>
                 <Input 
                     type="tel"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
                     placeholder="Enter your phone number"
-                    className="bg-white rounded-[15px] text-black placeholder:text-gray-400 placeholder:font-montserrat font-montserrat h-12"
+                    className="bg-white rounded-full text-black placeholder:text-gray-400 placeholder:font-montserrat font-montserrat h-12"
                 />
             </div>
 
@@ -61,7 +84,7 @@ export function CompleteDetailsPopup({ open, onOpenChange }: CompleteDetailsPopu
                         Cancel
                     </Button>
                 </DialogClose>
-                <Button className="bg-custom-gold text-base text-custom-purple-dark rounded-full px-10 hover:bg-custom-gold/90">
+                <Button onClick={handleConfirm} className="bg-custom-gold text-base text-custom-purple-dark rounded-full px-10 hover:bg-custom-gold/90">
                     Confirm
                 </Button>
             </div>
