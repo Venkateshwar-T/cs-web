@@ -59,9 +59,9 @@ export function CartPopup({ onClose, cart, onClearCart }: CartPopupProps) {
   return (
     <div className={cn("bg-[#9A7DAB] rounded-t-[40px] pt-4 text-white h-full overflow-hidden relative flex flex-col ring-4 ring-custom-gold animate-slide-up-fade-in")}>
       <div className="flex justify-between items-center mb-5 px-6">
-        <div className="flex items-center bg-custom-gold text-custom-purple-dark rounded-full px-4 py-2">
-            <Image src="/icons/cart.png" alt="Cart" width={24} height={24} />
-            <h2 className="text-3xl font-bold ml-2">My Cart</h2>
+        <div className="flex items-center bg-custom-gold text-custom-purple-dark rounded-full px-4 h-9">
+            <Image src="/icons/cart.png" alt="Cart" width={16} height={16} />
+            <h2 className="text-sm font-bold ml-2">My Cart</h2>
         </div>
         <AlertDialog>
           <AlertDialogTrigger asChild>
