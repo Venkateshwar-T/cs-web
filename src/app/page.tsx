@@ -230,7 +230,7 @@ export default function Home() {
           isSearchActive ? 'pt-36' : 'pt-72'
         )}>
           {isOrderConfirmed ? (
-            <div className="pb-8">
+            <div className="pb-8 mx-8 md:mx-32">
               <OrderConfirmedView cart={cart} />
             </div>
           ) : !isSearchActive ? (

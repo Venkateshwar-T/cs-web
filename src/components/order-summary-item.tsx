@@ -12,7 +12,7 @@ interface OrderSummaryItemProps {
 export function OrderSummaryItem({ productName, quantity, price }: OrderSummaryItemProps) {
   return (
     <div className="bg-white w-full flex items-center gap-4 text-black">
-        <div className="w-24 h-24 flex-shrink-0 relative">
+        <div className="w-16 h-16 flex-shrink-0 relative">
             <Image
                 src="/choco img.png"
                 alt={productName}
@@ -22,11 +22,11 @@ export function OrderSummaryItem({ productName, quantity, price }: OrderSummaryI
             />
         </div>
         <div className="flex-grow flex flex-col justify-center">
-            <h4 className="font-bold text-lg">{productName}</h4>
-            <p className="text-gray-600 font-medium">x{quantity}</p>
+            <h4 className="font-bold text-base">{productName}</h4>
+            <p className="text-gray-600 text-sm font-medium">x{quantity}</p>
         </div>
         <div className="flex-shrink-0">
-            <p className="font-bold text-xl">₹{(price * quantity).toFixed(2)}</p>
+            <p className="font-bold text-lg">₹{(price * quantity).toFixed(2)}</p>
         </div>
     </div>
   );

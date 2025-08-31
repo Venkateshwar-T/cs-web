@@ -58,51 +58,46 @@ export function OrderConfirmedView({ cart }: OrderConfirmedViewProps) {
     const total = subtotalAfterDiscount + gstAmount;
 
   return (
-    <div className="bg-white/20 rounded-[40px] py-10 px-12 text-white h-[150vh]">
-      <div className="flex flex-col items-center gap-6 text-center">
+    <div className="bg-white/20 rounded-[40px] py-8 px-10 text-white min-h-[100vh]">
+      <div className="flex flex-col items-center gap-5 text-center">
           
-          {/* 1. Order Received Box */}
           <div className="flex items-center">
-            <div className="relative z-10 flex h-20 w-20 items-center justify-center rounded-full bg-custom-purple-dark border-4 border-custom-gold">
-              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <div className="relative z-10 flex h-16 w-16 items-center justify-center rounded-full bg-custom-purple-dark border-4 border-custom-gold">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M20 6L9 17L4 12" stroke="hsl(var(--primary))" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="animate-tick"/>
               </svg>
             </div>
-            <div className="h-14 -ml-4 rounded-r-full bg-custom-gold pl-10 pr-6 flex items-center">
-                <span className="text-custom-purple-dark font-bold text-2xl">Order Request Received!</span>
+            <div className="h-12 -ml-4 rounded-r-full bg-custom-gold pl-10 pr-6 flex items-center">
+                <span className="text-custom-purple-dark font-bold text-xl">Order Request Received!</span>
             </div>
           </div>
 
-          {/* 2. Order ID */}
-          <p className="font-plex-sans font-semibold text-base text-black">Order ID: {orderId}</p>
+          <p className="font-plex-sans font-semibold text-sm text-black">Order ID: {orderId}</p>
 
-          {/* 3. Instructional Text */}
-          <p className="font-plex-sans text-2xl max-w-2xl text-black">
+          <p className="font-plex-sans text-xl max-w-xl text-black">
               To finalize your order and process the 50% advance payment, please connect with us directly.
           </p>
 
-          {/* 4. Action Buttons */}
           <div className="flex items-center gap-4">
-               <Button asChild className="h-auto py-2.5 px-8 bg-custom-purple-dark hover:bg-custom-purple-dark/90 text-white rounded-full text-lg font-plex-sans border-2 border-white">
+               <Button asChild className="h-auto py-2 px-6 bg-custom-purple-dark hover:bg-custom-purple-dark/90 text-white rounded-full text-base font-plex-sans shadow-lg">
                   <a href="tel:+1234567890">
-                      <Phone className="mr-2 h-5 w-5" /> Call Us
+                      <Phone className="mr-2 h-4 w-4" /> Call Us
                   </a>
               </Button>
-              <Button asChild className="h-auto py-2.5 px-8 bg-custom-purple-dark hover:bg-custom-purple-dark/90 text-white rounded-full text-lg font-plex-sans border-2 border-white">
+              <Button asChild className="h-auto py-2 px-6 bg-custom-purple-dark hover:bg-custom-purple-dark/90 text-white rounded-full text-base font-plex-sans shadow-lg">
                   <a href="https://wa.me/1234567890" target="_blank" rel="noopener noreferrer">
-                      <AiOutlineWhatsApp className="mr-2 h-6 w-6" /> Whatsapp Us
+                      <AiOutlineWhatsApp className="mr-2 h-5 w-5" /> Whatsapp Us
                   </a>
               </Button>
           </div>
 
-          {/* 5. Order Summary */}
           <div className="bg-white w-full rounded-2xl mt-4 text-black p-6 flex flex-col">
               <div className="flex justify-between items-center mb-4 flex-shrink-0">
                   <h3 className="font-bold text-xl">Order Summary</h3>
                   <p className="font-bold text-xl">Total: ₹{total > 0 ? total.toFixed(2) : '0.00'}</p>
               </div>
               <Separator className="bg-gray-300 flex-shrink-0" />
-              <div className="flex-grow overflow-y-auto min-h-0 py-4 space-y-4 pr-2 always-visible-scrollbar max-h-[40vh]">
+              <div className="flex-grow overflow-y-auto min-h-0 py-4 space-y-3 pr-2 always-visible-scrollbar max-h-[40vh]">
                    {cartItems.map(([name, quantity]) => (
                       <OrderSummaryItem
                           key={name}
