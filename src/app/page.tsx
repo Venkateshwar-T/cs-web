@@ -91,18 +91,6 @@ export default function Home() {
     };
   }, [selectedProduct, isImageExpanded, isCartVisible, /*isLoginOpen,*/ isSignUpOpen, isCompleteDetailsOpen, isProfileOpen]);
 
-  useEffect(() => {
-    if (isOrderConfirmed) {
-      document.body.classList.add('no-scrollbar');
-    } else {
-      document.body.classList.remove('no-scrollbar');
-    }
-
-    return () => {
-      document.body.classList.remove('no-scrollbar');
-    };
-  }, [isOrderConfirmed]);
-
 
   useEffect(() => {
     if (isCartOpen) {
@@ -240,7 +228,8 @@ export default function Home() {
         />
         <main onScroll={handleScroll} className={cn(
           "flex-grow overflow-y-auto flex flex-col transition-all duration-500 relative",
-          isSearchActive ? 'pt-36' : 'pt-72'
+          isSearchActive ? 'pt-36' : 'pt-72',
+          isOrderConfirmed && 'no-scrollbar'
         )}>
           {isOrderConfirmed ? (
             <div className="pb-8 mx-8 md:mx-32">
