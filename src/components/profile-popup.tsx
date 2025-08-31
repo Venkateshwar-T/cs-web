@@ -16,7 +16,7 @@ export function ProfilePopup({ onClose, profile }: ProfilePopupProps) {
   const [activeTab, setActiveTab] = useState('My Profile');
 
   return (
-    <div className="bg-transparent w-[70vw] h-[85vh] relative rounded-3xl overflow-hidden animate-fade-in">
+    <div className="bg-transparent w-[60vw] h-[85vh] relative rounded-3xl overflow-hidden animate-fade-in">
         <button 
             onClick={onClose} 
             className="absolute top-4 right-4 text-white hover:text-gray-200 z-20 bg-black/30 rounded-full p-1"
