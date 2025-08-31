@@ -11,10 +11,10 @@ interface ProfileSidebarProps {
 }
 
 const sidebarItems = [
-  { id: 'My Profile', label: 'My Profile', icon: <Image src="/icons/profile_drpdwn_btn.png" alt="Profile" width={20} height={20} /> },
-  { id: 'My Wishlist', label: 'My Wishlist', icon: <Heart className="h-5 w-5" /> },
-  { id: 'My Orders', label: 'My Orders', icon: <ListOrdered className="h-5 w-5" /> },
-  { id: 'Log Out', label: 'Log Out', icon: <LogOut className="h-5 w-5" /> },
+  { id: 'My Profile', label: 'My Profile', icon: <Image src="/icons/profile_drpdwn_btn.png" alt="Profile" width={24} height={24} /> },
+  { id: 'My Wishlist', label: 'My Wishlist', icon: <Heart className="h-6 w-6" /> },
+  { id: 'My Orders', label: 'My Orders', icon: <ListOrdered className="h-6 w-6" /> },
+  { id: 'Log Out', label: 'Log Out', icon: <LogOut className="h-6 w-6" /> },
 ];
 
 export function ProfileSidebar({ activeTab, setActiveTab }: ProfileSidebarProps) {
@@ -28,13 +28,13 @@ export function ProfileSidebar({ activeTab, setActiveTab }: ProfileSidebarProps)
               key={item.id}
               onClick={() => setActiveTab(item.id)}
               className={cn(
-                "flex items-center gap-3 w-full py-3 px-6 text-lg font-medium transition-colors",
+                "flex items-center gap-3 w-full py-3 px-6 font-medium transition-all duration-200",
                 isActive
-                  ? 'bg-custom-purple-dark text-white'
-                  : 'text-custom-purple-dark hover:bg-custom-purple-dark/10'
+                  ? 'text-custom-purple-dark text-xl'
+                  : 'text-custom-purple-dark/70 text-lg hover:bg-custom-purple-dark/10'
               )}
             >
-              <div className={cn(isActive ? 'text-white' : 'text-custom-purple-dark')}>
+              <div className="flex-shrink-0">
                 {item.icon}
               </div>
               <span>{item.label}</span>
