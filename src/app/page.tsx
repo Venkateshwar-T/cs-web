@@ -55,7 +55,10 @@ export default function Home() {
   const [isSearchActive, setIsSearchActive] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [cart, setCart] = useState<Record<string, number>>({});
+  const [cart, setCart] = useState<Record<string, number>>({
+    'Diwali Collection Box 1': 1,
+    'Diwali Collection Box 2': 2,
+  });
   const [cartMessage, setCartMessage] = useState('');
   const [isCartButtonExpanded, setIsCartButtonExpanded] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
@@ -228,7 +231,7 @@ export default function Home() {
         )}>
           {isOrderConfirmed ? (
             <div className="pb-8">
-              <OrderConfirmedView />
+              <OrderConfirmedView cart={cart} />
             </div>
           ) : !isSearchActive ? (
             <div className={cn("transition-opacity duration-500 w-full", isSearchActive ? 'opacity-0' : 'opacity-100 h-full')}>

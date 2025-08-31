@@ -123,3 +123,35 @@
     opacity: 0.8;
   }
 }
+
+@layer utilities {
+  .always-visible-scrollbar::-webkit-scrollbar {
+    width: 8px;
+  }
+  .always-visible-scrollbar::-webkit-scrollbar-track {
+    background: #E5E7EB1a; /* A light grey from Tailwind's palette */
+  }
+  .always-visible-scrollbar::-webkit-scrollbar-thumb {
+    background: #FFD139;
+    border-radius: 10px;
+  }
+  .always-visible-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #FFD139;
+    opacity: 0.8;
+  }
+}
+
+@keyframes tick {
+  0%, 15%, 100% {
+    stroke-dashoffset: 24;
+  }
+  30%, 85% {
+    stroke-dashoffset: 0;
+  }
+}
+
+.animate-tick {
+  animation: tick 3s ease-in-out infinite;
+  stroke-dasharray: 24;
+  stroke-dashoffset: 24;
+}
