@@ -92,6 +92,19 @@ export default function Home() {
   }, [selectedProduct, isImageExpanded, isCartVisible, /*isLoginOpen,*/ isSignUpOpen, isCompleteDetailsOpen, isProfileOpen]);
 
   useEffect(() => {
+    if (isOrderConfirmed) {
+      document.body.classList.add('no-scrollbar');
+    } else {
+      document.body.classList.remove('no-scrollbar');
+    }
+
+    return () => {
+      document.body.classList.remove('no-scrollbar');
+    };
+  }, [isOrderConfirmed]);
+
+
+  useEffect(() => {
     if (isCartOpen) {
       setIsCartVisible(true);
     } else {
