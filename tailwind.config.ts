@@ -28,6 +28,7 @@ export default {
         'custom-gold': '#FFD139',
         'custom-purple-light': '#E1BEE7',
         'custom-purple-dark': '#5D2B79',
+        'custom-gray-dark': '#353535',
         sparkle: 'hsl(var(--sparkle))',
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',

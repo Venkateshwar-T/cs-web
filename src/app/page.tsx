@@ -19,6 +19,7 @@ import { SignUpPopup } from '@/components/signup-popup';
 import { CompleteDetailsPopup } from '@/components/complete-details-popup';
 import { ProfilePopup } from '@/components/profile-popup';
 import { OrderConfirmedView } from '@/components/order-confirmed-view';
+import { Footer } from '@/components/footer';
 
 
 export type Product = {
@@ -263,6 +264,7 @@ export default function Home() {
               </div>
             </div>
           )}
+           {isOrderConfirmed && <Footer />}
         </main>
       </div>
 
