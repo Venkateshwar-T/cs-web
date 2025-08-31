@@ -58,8 +58,8 @@ export function OrderConfirmedView({ cart }: OrderConfirmedViewProps) {
     const total = subtotalAfterDiscount + gstAmount;
 
   return (
-    <div className="bg-[#9A7DAB] rounded-[40px] py-8 px-12 text-white">
-      <div className="flex flex-col items-center gap-5 text-center">
+    <div className="bg-[#9A7DAB] rounded-[40px] py-8 px-72 text-white h-[85vh]">
+      <div className="flex flex-col items-center gap-6 text-center">
           
           <div className="flex items-center">
             <div className="relative z-10 flex h-14 w-14 items-center justify-center rounded-full bg-custom-purple-dark border-4 border-custom-gold">
@@ -96,8 +96,8 @@ export function OrderConfirmedView({ cart }: OrderConfirmedViewProps) {
                   <h3 className="font-bold text-xl">Order Summary</h3>
                   <p className="font-bold text-xl">Total: ₹{total > 0 ? total.toFixed(2) : '0.00'}</p>
               </div>
-              <Separator className="bg-gray-300 flex-shrink-0 my-4" />
-              <div className="flex-grow overflow-y-auto min-h-0 space-y-3 pr-2 always-visible-scrollbar max-h-[30vh]">
+              <Separator className="bg-gray-300 flex-shrink-0 my-2" />
+              <div className="flex-grow overflow-y-auto min-h-0 space-y-0 pr-2 always-visible-scrollbar max-h-[20vh]">
                    {cartItems.map(([name, quantity]) => (
                       <OrderSummaryItem
                           key={name}

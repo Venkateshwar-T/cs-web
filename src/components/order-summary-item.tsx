@@ -22,8 +22,8 @@ export function OrderSummaryItem({ productName, quantity, price }: OrderSummaryI
                     className="rounded-md"
                 />
             </div>
-            <div className="flex flex-col">
-                <h4 className="font-bold text-sm">{productName}</h4>
+            <div className="flex flex-col items-start gap-3">
+                <h4 className="font-medium text-sm">{productName}</h4>
                 <p className="text-gray-600 text-xs font-medium">x{quantity}</p>
             </div>
         </div>
