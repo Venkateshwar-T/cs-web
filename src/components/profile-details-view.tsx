@@ -1,15 +1,23 @@
 // @/components/profile-details-view.tsx
 'use client';
 
+import { useState } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import type { ProfileInfo } from "@/app/page";
+import { Eye, EyeOff } from 'lucide-react';
 
 interface ProfileDetailsViewProps {
   profile: ProfileInfo;
 }
 
 export function ProfileDetailsView({ profile }: ProfileDetailsViewProps) {
+  const [showPassword, setShowPassword] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
   return (
     <div className="p-8 text-white h-full flex flex-col items-center">
       <h2 className="text-3xl font-bold self-start mb-8">My Profile</h2>
@@ -46,6 +54,25 @@ export function ProfileDetailsView({ profile }: ProfileDetailsViewProps) {
             readOnly 
             className="bg-white/10 border-white/20 rounded-2xl h-12 text-base" 
           />
+        </div>
+        <div className="space-y-2">
+            <label htmlFor="password" className="text-sm font-medium">Password</label>
+            <div className="relative">
+                <Input 
+                    id="password" 
+                    type={showPassword ? "text" : "password"} 
+                    value="yourpassword" // Replace with actual password state if needed
+                    readOnly 
+                    className="bg-white/10 border-white/20 rounded-2xl h-12 text-base pr-10" 
+                />
+                <button
+                    type="button"
+                    onClick={togglePasswordVisibility}
+                    className="absolute inset-y-0 right-0 flex items-center pr-3 text-white/70 hover:text-white"
+                >
+                    {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                </button>
+            </div>
         </div>
       </div>
     </div>
