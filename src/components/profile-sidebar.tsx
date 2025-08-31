@@ -1,6 +1,7 @@
 // @/components/profile-sidebar.tsx
 'use client';
 
+import * as React from 'react';
 import Image from 'next/image';
 import { Heart, ListOrdered, LogOut } from 'lucide-react';
 import { cn } from '@/lib/utils';
