@@ -6,6 +6,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import type { ProfileInfo } from "@/app/page";
 import { Eye, EyeOff } from 'lucide-react';
+import { Button } from './ui/button';
 
 interface ProfileDetailsViewProps {
   profile: ProfileInfo;
@@ -22,12 +23,12 @@ export function ProfileDetailsView({ profile }: ProfileDetailsViewProps) {
     <div className="p-8 text-white h-full flex flex-col items-center">
       <h2 className="text-3xl font-bold self-start mb-8">My Profile</h2>
       
-      <Avatar className="w-24 h-24 mb-8">
+      <Avatar className="w-24 h-24 mb-6">
         <AvatarImage src="https://picsum.photos/200" alt="User avatar" data-ai-hint="person portrait" />
         <AvatarFallback>{profile.name.charAt(0).toUpperCase()}</AvatarFallback>
       </Avatar>
 
-      <div className="w-full max-w-md space-y-6">
+      <div className="w-full max-w-md space-y-4">
         <div className="space-y-2">
           <label htmlFor="name" className="text-sm font-medium">Name</label>
           <Input 
@@ -73,6 +74,18 @@ export function ProfileDetailsView({ profile }: ProfileDetailsViewProps) {
                     {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                 </button>
             </div>
+        </div>
+
+        <div className="flex items-center justify-end gap-4 pt-4">
+            <Button 
+                variant="outline"
+                className="bg-transparent text-base text-white border-custom-gold border-2 rounded-full px-8 hover:bg-custom-gold hover:text-custom-purple-dark"
+            >
+                Cancel
+            </Button>
+            <Button className="bg-custom-gold text-base text-custom-purple-dark rounded-full px-8 hover:bg-custom-gold/90">
+                Save
+            </Button>
         </div>
       </div>
     </div>
