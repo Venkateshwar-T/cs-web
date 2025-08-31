@@ -21,9 +21,9 @@ export function ProfileDetailsView({ profile }: ProfileDetailsViewProps) {
 
   return (
     <div className="p-8 text-white h-full flex flex-col items-center">
-      <h2 className="text-3xl font-bold self-start mb-8">My Profile</h2>
+      <h2 className="text-3xl font-bold self-start mb-6">My Profile</h2>
       
-      <Avatar className="w-24 h-24 mb-6">
+      <Avatar className="w-24 h-24 mb-4">
         <AvatarImage src="https://picsum.photos/200" alt="User avatar" data-ai-hint="person portrait" />
         <AvatarFallback>{profile.name.charAt(0).toUpperCase()}</AvatarFallback>
       </Avatar>
@@ -76,7 +76,7 @@ export function ProfileDetailsView({ profile }: ProfileDetailsViewProps) {
             </div>
         </div>
 
-        <div className="flex items-center justify-end gap-4 pt-4">
+        <div className="flex items-center justify-between gap-4 pt-4">
             <Button 
                 variant="outline"
                 className="bg-transparent text-base text-white border-custom-gold border-2 rounded-full px-8 hover:bg-custom-gold hover:text-custom-purple-dark"
