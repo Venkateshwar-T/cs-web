@@ -18,6 +18,7 @@ import { X } from 'lucide-react';
 import { SignUpPopup } from '@/components/signup-popup';
 import { CompleteDetailsPopup } from '@/components/complete-details-popup';
 import { ProfilePopup } from '@/components/profile-popup';
+import { OrderConfirmedView } from '@/components/order-confirmed-view';
 
 
 export type Product = {
@@ -215,10 +216,8 @@ export default function Home() {
           isSearchActive ? 'pt-36' : 'pt-72'
         )}>
           {isOrderConfirmed ? (
-            <div className="bg-[#5D2B79] rounded-[40px] mx-8 md:mx-32 animate-fade-in">
-              <div className="bg-white/20 rounded-[40px] py-6 px-12 h-[150vh]">
-                {/* Content will be added later */}
-              </div>
+            <div className="pb-8">
+              <OrderConfirmedView />
             </div>
           ) : !isSearchActive ? (
             <div className={cn("transition-opacity duration-500 w-full", isSearchActive ? 'opacity-0' : 'opacity-100 h-full')}>
