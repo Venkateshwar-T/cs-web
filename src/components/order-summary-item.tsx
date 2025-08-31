@@ -21,7 +21,7 @@ export function OrderSummaryItem({ productName, quantity, price }: OrderSummaryI
                 className="rounded-lg"
             />
         </div>
-        <div className="flex-grow flex flex-col justify-center">
+        <div className="flex-grow flex flex-col">
             <h4 className="font-bold text-base">{productName}</h4>
             <p className="text-gray-600 text-sm font-medium">x{quantity}</p>
         </div>
