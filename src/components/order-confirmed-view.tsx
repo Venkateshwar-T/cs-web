@@ -58,7 +58,7 @@ export function OrderConfirmedView({ cart }: OrderConfirmedViewProps) {
     const total = subtotalAfterDiscount + gstAmount;
 
   return (
-    <div className="bg-[#9A7DAB] rounded-[40px] py-8 px-72 text-white min-h-[85vh]">
+    <div className="bg-[#9A7DAB] rounded-[40px] py-8 px-12 text-white">
       <div className="flex flex-col items-center gap-5 text-center">
           
           <div className="flex items-center">
@@ -79,7 +79,7 @@ export function OrderConfirmedView({ cart }: OrderConfirmedViewProps) {
           </p>
 
           <div className="flex items-center gap-4">
-               <Button asChild className="h-auto py-2 px-12 bg-custom-purple-dark hover:bg-custom-purple-dark/90 text-white rounded-full text-base font-plex-sans shadow-xl">
+               <Button asChild className="h-auto py-2 px-12 bg-custom-purple-dark hover:bg-custom-purple-dark/90 text-white rounded-full text-base font-plex-sans shadow-lg">
                   <a href="tel:+1234567890">
                       <Phone className="mr-2 h-4 w-4" /> Call Us
                   </a>
@@ -97,7 +97,7 @@ export function OrderConfirmedView({ cart }: OrderConfirmedViewProps) {
                   <p className="font-bold text-xl">Total: ₹{total > 0 ? total.toFixed(2) : '0.00'}</p>
               </div>
               <Separator className="bg-gray-300 flex-shrink-0 my-4" />
-              <div className="flex-grow overflow-y-auto min-h-0 space-y-3 pr-2 always-visible-scrollbar max-h-[40vh]">
+              <div className="flex-grow overflow-y-auto min-h-0 space-y-3 pr-2 always-visible-scrollbar max-h-[30vh]">
                    {cartItems.map(([name, quantity]) => (
                       <OrderSummaryItem
                           key={name}
