@@ -58,8 +58,8 @@ export function OrderConfirmedView({ cart }: OrderConfirmedViewProps) {
     const total = subtotalAfterDiscount + gstAmount;
 
   return (
-    <div className="bg-[#9A7DAB] rounded-[40px] py-8 px-12 text-white">
-      <div className="flex flex-col items-center gap-4 text-center">
+    <div className="bg-[#9A7DAB] rounded-[40px] py-8 px-72 text-white h-[85vh]">
+      <div className="flex flex-col items-center gap-5 text-center">
           
           <div className="flex items-center">
             <div className="relative z-10 flex h-14 w-14 items-center justify-center rounded-full bg-custom-purple-dark border-4 border-custom-gold">
@@ -74,7 +74,7 @@ export function OrderConfirmedView({ cart }: OrderConfirmedViewProps) {
 
           <p className="font-plex-sans font-semibold text-sm text-black">Order ID: {orderId}</p>
 
-          <p className="font-semibold font-plex-sans text-lg max-w-lg text-black">
+          <p className="font-semibold font-plex-sans text-lg max-w-2xl text-black">
               To finalize your order and process the 50% advance payment, please connect with us directly.
           </p>
 
@@ -92,12 +92,11 @@ export function OrderConfirmedView({ cart }: OrderConfirmedViewProps) {
           </div>
 
           <div className="bg-white w-full rounded-3xl mt-2 text-black p-6 flex flex-col">
-              <div className="flex justify-between items-center flex-shrink-0">
+              <div className="flex justify-between items-center mb-2 flex-shrink-0">
                   <h3 className="font-bold text-xl">Order Summary</h3>
                   <p className="font-bold text-xl">Total: ₹{total > 0 ? total.toFixed(2) : '0.00'}</p>
               </div>
-              <Separator className="bg-gray-300 flex-shrink-0 my-2" />
-              <div className="flex-grow overflow-y-auto min-h-0 pr-2 always-visible-scrollbar max-h-[30vh]">
+              <div className="flex-grow overflow-y-auto min-h-0 pr-2 always-visible-scrollbar max-h-[25vh]">
                    {cartItems.map(([name, quantity], index) => (
                       <Fragment key={name}>
                         <OrderSummaryItem
