@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, type UIEvent } from 'react';
 import Image from 'next/image';
 import { Header } from "@/components/header";
 import { ExploreCategories } from '@/components/explore-categories';
@@ -75,6 +75,7 @@ export default function Home() {
     phone: '+1 234 567 890',
     email: 'john.doe@example.com',
   });
+  const [isContentScrolled, setIsContentScrolled] = useState(false);
 
   useEffect(() => {
     if (selectedProduct || isImageExpanded || isCartVisible /*|| isLoginOpen*/ || isSignUpOpen || isCompleteDetailsOpen || isProfileOpen) {
@@ -185,6 +186,15 @@ export default function Home() {
     setIsSearchActive(true);
   };
 
+  const handleScroll = (event: UIEvent<HTMLElement>) => {
+    const scrollTop = event.currentTarget.scrollTop;
+    if (isOrderConfirmed) {
+      setIsContentScrolled(scrollTop > 10);
+    } else {
+      setIsContentScrolled(false);
+    }
+  };
+
   const totalQuantity = Object.values(cart).reduce((acc, cur) => acc + cur, 0);
 
   const getLabelById = (id: string, options: { id: string, label: string }[]) => {
@@ -210,8 +220,9 @@ export default function Home() {
           onSearchActiveChange={setIsSearchActive} 
           isCartVisible={isCartVisible}
           onProfileOpenChange={setIsProfileOpen}
+          isContentScrolled={isContentScrolled}
         />
-        <main className={cn(
+        <main onScroll={handleScroll} className={cn(
           "flex-grow overflow-y-auto flex flex-col transition-all duration-500 relative",
           isSearchActive ? 'pt-36' : 'pt-72'
         )}>

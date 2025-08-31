@@ -14,9 +14,10 @@ interface HeaderProps {
   onSearchSubmit: (query: string) => void;
   isCartVisible: boolean;
   onProfileOpenChange: (isOpen: boolean) => void;
+  isContentScrolled: boolean;
 }
 
-export function Header({ onSearchActiveChange, onSearchSubmit, isCartVisible, onProfileOpenChange }: HeaderProps) {
+export function Header({ onSearchActiveChange, onSearchSubmit, isCartVisible, onProfileOpenChange, isContentScrolled }: HeaderProps) {
   const [isSearchSubmitted, setIsSearchSubmitted] = useState(false);
   const [isEnquireOpen, setIsEnquireOpen] = useState(false);
   const [targetWidth, setTargetWidth] = useState<number | undefined>(undefined);
@@ -57,7 +58,11 @@ export function Header({ onSearchActiveChange, onSearchSubmit, isCartVisible, on
       {isEnquireOpen && (
           <div className="fixed inset-0 z-40 bg-black/50 transition-opacity duration-100" />
       )}
-      <header className={cn("fixed top-0 z-50 w-full bg-transparent pt-6", isCartVisible && 'opacity-50')}>
+      <header className={cn(
+        "fixed top-0 z-50 w-full bg-transparent pt-6 transition-colors duration-300", 
+        (isCartVisible || isEnquireOpen) && 'opacity-50',
+        isContentScrolled && 'bg-white text-black'
+      )}>
         <div className="container flex h-20 max-w-screen-2xl items-center justify-between px-4 sm:px-6 lg:px-8 xl:px-24">
           
           <Logo onLogoClick={handleLogoClick} isEnquireOpen={isEnquireOpen} />
