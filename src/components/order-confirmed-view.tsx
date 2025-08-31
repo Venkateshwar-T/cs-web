@@ -96,8 +96,8 @@ export function OrderConfirmedView({ cart }: OrderConfirmedViewProps) {
                   <h3 className="font-bold text-xl">Order Summary</h3>
                   <p className="font-bold text-xl">Total: ₹{total > 0 ? total.toFixed(2) : '0.00'}</p>
               </div>
-              {/* <Separator className="bg-gray-300 flex-shrink-0" /> */}
-              <div className="flex-grow overflow-y-auto min-h-0 py-4 space-y-3 pr-2 always-visible-scrollbar max-h-[40vh]">
+              <Separator className="bg-gray-300 flex-shrink-0 my-4" />
+              <div className="flex-grow overflow-y-auto min-h-0 space-y-3 pr-2 always-visible-scrollbar max-h-[40vh]">
                    {cartItems.map(([name, quantity]) => (
                       <OrderSummaryItem
                           key={name}
