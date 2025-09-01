@@ -282,7 +282,7 @@ export default function Home() {
               <ExploreCategories />
             </div>
           ) : activeView === 'about' ? (
-            <div className={cn("transition-opacity duration-500 w-full h-full")}>
+            <div className={cn("transition-opacity duration-500 w-full")}>
               {isSearchingOnAbout ? (
                  <div className="flex w-full h-full items-start">
                     <FilterContainer 
