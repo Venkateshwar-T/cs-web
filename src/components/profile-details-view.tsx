@@ -72,7 +72,7 @@ export function ProfileDetailsView({ profile, onHasChangesChange, onProfileUpdat
         <AvatarFallback>{profile.name.charAt(0).toUpperCase()}</AvatarFallback>
       </Avatar>
 
-      <div className="w-full max-w-sm space-y-4">
+      <div className="w-full max-w-xs space-y-4">
         <div className="space-y-2">
           <label htmlFor="name" className="text-sm font-medium">Name</label>
           <Input 
