@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import type { ProfileInfo } from "@/app/page";
 import { Eye, EyeOff } from 'lucide-react';
 import { Button } from './ui/button';
+import { useToast } from '@/hooks/use-toast';
 
 interface ProfileDetailsViewProps {
   profile: ProfileInfo;
@@ -20,6 +21,7 @@ export function ProfileDetailsView({ profile, onHasChangesChange, onProfileUpdat
   const [email, setEmail] = useState(profile.email);
   const [password, setPassword] = useState('yourpassword'); // Example password
   const [showPassword, setShowPassword] = useState(false);
+  const { toast } = useToast();
 
   useEffect(() => {
     const hasChanges = 
@@ -54,6 +56,10 @@ export function ProfileDetailsView({ profile, onHasChangesChange, onProfileUpdat
     const updatedProfile = { name, phone, email };
     onProfileUpdate(updatedProfile);
     onHasChangesChange(false);
+    toast({
+      title: "Success",
+      description: "Profile information updated successfully.",
+    });
   };
 
   return (
@@ -65,7 +71,7 @@ export function ProfileDetailsView({ profile, onHasChangesChange, onProfileUpdat
         <AvatarFallback>{profile.name.charAt(0).toUpperCase()}</AvatarFallback>
       </Avatar>
 
-      <div className="w-full max-w-md space-y-4">
+      <div className="w-full max-w-sm space-y-4">
         <div className="space-y-2">
           <label htmlFor="name" className="text-sm font-medium">Name</label>
           <Input 
@@ -114,15 +120,15 @@ export function ProfileDetailsView({ profile, onHasChangesChange, onProfileUpdat
             </div>
         </div>
 
-        <div className="flex items-center justify-between gap-4 pt-4 pb-8">
+        <div className="flex items-center justify-end gap-4 pt-4 pb-8">
             <Button 
                 onClick={handleCancel}
                 variant="outline"
-                className="bg-transparent text-base text-white border-custom-gold border-2 rounded-full px-12 hover:bg-custom-gold hover:text-custom-purple-dark"
+                className="bg-transparent text-base text-white border-custom-gold border-2 rounded-full px-10 hover:bg-custom-gold hover:text-custom-purple-dark"
             >
                 Cancel
             </Button>
-            <Button onClick={handleSave} className="bg-custom-gold text-base text-custom-purple-dark rounded-full px-14 hover:bg-custom-gold/90">
+            <Button onClick={handleSave} className="bg-custom-gold text-base text-custom-purple-dark rounded-full px-12 hover:bg-custom-gold/90">
                 Save
             </Button>
         </div>
