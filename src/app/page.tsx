@@ -270,7 +270,7 @@ export default function Home() {
         />
         <main onScroll={handleScroll} className={cn(
           "flex-grow overflow-y-auto flex flex-col transition-all duration-500 relative",
-          isSearchActive ? 'pt-36' : 'pt-72',
+          activeView === 'home' ? 'pt-72' : 'pt-36',
           activeView === 'order-confirmed' && 'no-scrollbar'
         )}>
           {activeView === 'order-confirmed' ? (
@@ -419,8 +419,8 @@ export default function Home() {
               onProfileUpdate={handleProfileUpdate}
               products={allProducts}
               likedProducts={likedProducts}
-              onLikeToggle={handleLikeToggle}
-              onAddToCart={onAddToCart}
+              onLikeToggle={onLikeToggle}
+              onAddToCart={handleAddToCart}
               cart={cart}
               onClearWishlist={handleClearWishlist}
             />
