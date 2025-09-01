@@ -20,12 +20,14 @@ const navLinks = [
 export function Navigation({ isEnquireOpen, onNavigate, activeView, isNavVisible }: NavigationProps) {
     const shouldHideNav = activeView === 'search';
 
+    if (shouldHideNav || !isNavVisible) {
+        return <nav className="hidden md:flex flex-1 justify-center items-center gap-4 lg:gap-8 text-base lg:text-lg" />;
+    }
+
     return (
         <nav className={cn(
-            "hidden md:flex flex-1 justify-center items-center gap-4 lg:gap-8 text-base lg:text-lg transition-opacity duration-300",
-            (shouldHideNav || !isNavVisible) ? "opacity-0" : "opacity-100",
-        )}
-        >
+            "hidden md:flex flex-1 justify-center items-center gap-4 lg:gap-8 text-base lg:text-lg animate-slide-down"
+        )} style={{ animationDuration: '0.3s' }}>
             {navLinks.map((link) => {
                 const isActive = activeView === link.id;
                 return (
@@ -37,8 +39,6 @@ export function Navigation({ isEnquireOpen, onNavigate, activeView, isNavVisible
                             isEnquireOpen && "opacity-50",
                             isActive ? "text-custom-gold font-semibold" : "text-foreground/80"
                         )}
-                        // Disable interaction while hidden to prevent accidental clicks
-                        disabled={shouldHideNav || !isNavVisible}
                     >
                         {link.label}
                     </button>
