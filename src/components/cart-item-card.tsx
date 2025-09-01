@@ -43,7 +43,7 @@ export function CartItemCard({ productName, quantity, onQuantityChange, onRemove
         <div 
             onAnimationEnd={onAnimationEnd}
             className={cn(
-                "w-full bg-white/80 rounded-2xl p-4 text-black relative transition-all duration-300",
+                "w-full bg-white/80 rounded-2xl p-4 text-black relative transition-all duration-300 overflow-hidden",
                 isRemoving && 'animate-fade-out-slide-up'
             )}
         >

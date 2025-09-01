@@ -1,3 +1,4 @@
+
 // @/components/wishlist-item-card.tsx
 'use client';
 
@@ -27,7 +28,7 @@ export function WishlistItemCard({ product, onAddToCart, onUnlike, isInCart, isU
     <div 
       onAnimationEnd={onAnimationEnd}
       className={cn(
-        "bg-white/90 text-black rounded-2xl p-4 flex gap-4 w-full relative border border-white/30 transition-all duration-300",
+        "bg-white/90 text-black rounded-2xl p-4 flex gap-4 w-full relative border border-white/30 transition-all duration-300 overflow-hidden",
         isUnliking && 'animate-fade-out-slide-up'
       )}
     >
@@ -60,10 +61,10 @@ export function WishlistItemCard({ product, onAddToCart, onUnlike, isInCart, isU
           size="sm"
           onClick={handleAddToCartClick}
           className={cn(
-            "w-full rounded-full uppercase border-2 border-b-[3px] h-9 px-6 text-xs transition-colors duration-300",
+            "w-full rounded-full uppercase border-2 border-b-[3px] h-9 px-6 text-xs transition-colors duration-300 border-custom-purple-dark",
             isInCart
-              ? 'bg-custom-gold border-custom-purple-dark text-custom-purple-dark hover:bg-custom-gold/90'
-              : 'bg-transparent border-custom-purple-dark text-custom-purple-dark hover:bg-custom-purple-dark hover:text-white'
+              ? 'bg-custom-gold text-custom-purple-dark hover:bg-custom-gold/90'
+              : 'bg-transparent text-custom-purple-dark hover:bg-custom-purple-dark hover:text-white'
           )}
         >
           {isInCart ? 'ADDED' : 'ADD'}
