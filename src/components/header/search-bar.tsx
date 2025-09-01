@@ -1,4 +1,3 @@
-
 // @/components/header/search-bar.tsx
 'use client';
 
@@ -16,11 +15,12 @@ interface SearchBarProps {
     onSubmit: (e: React.FormEvent<HTMLFormElement>, searchInput: string) => void;
     searchInput: string;
     onSearchInputChange: (value: string) => void;
+    isSearchExpanded?: boolean;
 }
 
 const textsToType = ["Corporate gifts", "Family presents", "Festive gifts", "Birthday surprises", "Anniversary specials"];
 
-export function SearchBar({ formRef, activeView, isEnquireOpen, targetWidth, onSubmit, searchInput, onSearchInputChange }: SearchBarProps) {
+export function SearchBar({ formRef, activeView, isEnquireOpen, targetWidth, onSubmit, searchInput, onSearchInputChange, isSearchExpanded }: SearchBarProps) {
     const [placeholder, setPlaceholder] = useState("");
     const isSearchActive = activeView === 'search';
     const isAboutActive = activeView === 'about';
@@ -62,31 +62,27 @@ export function SearchBar({ formRef, activeView, isEnquireOpen, targetWidth, onS
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         onSubmit(e, searchInput);
     };
-
-    if (isAboutActive) {
-        return (
-             <div className={cn(
-                "container max-w-screen-2xl px-8 md:px-12 transition-all duration-500 ease-in-out -mt-[3.75rem] opacity-0 pointer-events-none",
-             )}>
-                 {/* Render an invisible placeholder to prevent layout shifts */}
-                <form className="relative mx-auto max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl">
-                    <Input className="invisible" />
-                </form>
-             </div>
-        );
-    }
+    
+    const showExpandedSearch = isAboutActive && isSearchExpanded;
 
     return (
         <div className={cn(
             "container max-w-screen-2xl px-8 md:px-12 transition-all duration-500 ease-in-out",
-            isSearchActive ? '-mt-[3.75rem]' : 'mt-8 sm:mt-12 md:mt-16',
-            isEnquireOpen && "opacity-50 transition-opacity duration-100"
+            (isSearchActive || showExpandedSearch) ? '-mt-[3.75rem]' : 'mt-8 sm:mt-12 md:mt-16',
+            isEnquireOpen && "opacity-50 transition-opacity duration-100",
+            (isAboutActive && !isSearchExpanded) && "opacity-0 pointer-events-none -mt-[3.75rem]"
         )}>
             <form 
                 ref={formRef}
                 onSubmit={handleSubmit} 
-                className={`relative mx-auto transition-all duration-500 ease-in-out animate-slide-down ${!targetWidth && !isSearchActive ? 'max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl' : ''}`}
-                style={{ maxWidth: targetWidth ? `${targetWidth}px` : undefined, animationDuration: '0.5s', animationDelay: '0.05s' }}
+                className={cn(`relative mx-auto transition-all duration-500 ease-in-out`,
+                  !targetWidth && !isSearchActive && !showExpandedSearch ? 'max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl' : '',
+                  showExpandedSearch ? 'animate-slide-down' : 'animate-slide-down'
+                )}
+                style={{ 
+                    maxWidth: targetWidth ? `${targetWidth}px` : undefined, 
+                    animationDuration: '0.5s', animationDelay: '0.05s'
+                }}
             >
                 <div className="absolute inset-0 rounded-full bg-white -z-10"></div>
                 <div className="absolute left-3 top-1/2 -translate-y-1/2 z-10">

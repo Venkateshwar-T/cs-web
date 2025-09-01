@@ -1,4 +1,3 @@
-
 // @/components/header/user-actions.tsx
 'use client';
 
@@ -6,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { Menu, Phone } from "lucide-react";
+import { Menu, Phone, Search } from "lucide-react";
 import { AiOutlineInstagram, AiOutlineWhatsApp } from "react-icons/ai";
 import { IoLogoFacebook } from "react-icons/io5";
 import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetHeader } from "@/components/ui/sheet";
@@ -21,6 +20,8 @@ interface UserActionsProps {
     onNavigate: (view: 'about' | 'faq') => void;
     activeView: string;
     showSearchIcon: boolean;
+    onToggleSearch?: () => void;
+    isSearchExpanded?: boolean;
 }
 
 const navLinks = [
@@ -28,7 +29,7 @@ const navLinks = [
     { id: "faq", label: "FAQ" },
 ] as const;
 
-export function UserActions({ isEnquireOpen, isCompactHeader, onEnquireOpenChange, onProfileOpenChange, onNavigate, activeView, showSearchIcon }: UserActionsProps) {
+export function UserActions({ isEnquireOpen, isCompactHeader, onEnquireOpenChange, onProfileOpenChange, onNavigate, activeView, showSearchIcon, onToggleSearch, isSearchExpanded }: UserActionsProps) {
     
     return (
         <>
@@ -36,13 +37,20 @@ export function UserActions({ isEnquireOpen, isCompactHeader, onEnquireOpenChang
                 {/* Desktop Actions */}
                 <div className="hidden md:flex items-center gap-1">
                     {showSearchIcon && (
-                         <div className="flex items-center gap-1 opacity-0 animate-slide-in-from-right-and-fade" style={{animationDuration: '0.5s', animationDelay: '0.1s', animationFillMode: 'forwards'}}>
-                            <button className="h-11 w-11 rounded-full flex items-center justify-center hover:opacity-90 transition-opacity">
+                         <div className={cn(
+                           "flex items-center gap-1 transition-opacity duration-300",
+                           isSearchExpanded && 'opacity-0 pointer-events-none'
+                         )}>
+                            <button 
+                              onClick={onToggleSearch}
+                              className="h-11 w-11 rounded-full flex items-center justify-center hover:opacity-90 transition-opacity opacity-0 animate-slide-in-from-right-and-fade" 
+                              style={{animationDuration: '0.5s', animationDelay: '0.1s', animationFillMode: 'forwards'}}
+                            >
                                 <div className="bg-white h-10 w-10 rounded-full flex items-center justify-center">
                                     <Image src="/icons/search_icon.png" alt="Search" width={24} height={24} />
                                 </div>
                             </button>
-                             <Separator orientation="vertical" className="h-6 bg-foreground/50 mx-1 lg:mx-2" />
+                             <Separator orientation="vertical" className="h-6 bg-foreground/50 mx-1 lg:mx-2 opacity-0 animate-slide-in-from-right-and-fade" style={{animationDuration: '0.5s', animationDelay: '0.1s', animationFillMode: 'forwards'}} />
                          </div>
                     )}
                     <Popover open={isEnquireOpen} onOpenChange={onEnquireOpenChange}>
@@ -116,7 +124,7 @@ export function UserActions({ isEnquireOpen, isCompactHeader, onEnquireOpenChang
                         <SheetContent side="right" className="w-[300px] sm:w-[400px]">
                             <SheetHeader />
                             <nav className="flex flex-col gap-8 text-lg mt-12">
-                                {!isCompactHeader && navLinks.map((link) => {
+                                {navLinks.map((link) => {
                                     const isActive = activeView === link.id;
                                     return (
                                         <SheetClose asChild key={link.id}>
