@@ -17,7 +17,7 @@ const FilterSection = ({ title, icon, children }: { title: string, icon: React.R
         {icon}
         <h3 className="text-base text-white font-bold font-plex-sans-condensed">{title}</h3>
     </div>
-    <div className="space-y-2 pl-7">{children}</div>
+    <div className="space-y-2">{children}</div>
   </div>
 );
 
