@@ -1,10 +1,14 @@
 // @/components/about-view.tsx
 
 import { SectionTitle } from "./section-title";
+import { Heart, Leaf, Gift, Sparkles } from "lucide-react";
 
-const AboutSection = ({ title, children }: { title: string, children: React.ReactNode }) => (
+const AboutSection = ({ title, children, icon }: { title: string, children: React.ReactNode, icon?: React.ReactNode }) => (
     <div className="mb-8 last:mb-0">
-        <h3 className="text-2xl font-bold font-plex-sans-condensed text-custom-gold mb-3">{title}</h3>
+        <h3 className="text-2xl font-bold font-plex-sans-condensed text-custom-gold mb-3 flex items-center gap-3">
+            {icon && <span className="text-custom-gold">{icon}</span>}
+            <span>{title}</span>
+        </h3>
         <p className="text-lg text-white/90 font-plex-sans leading-relaxed">
             {children}
         </p>
@@ -21,19 +25,19 @@ export function AboutView() {
             </SectionTitle>
             
             <div className="max-w-4xl mx-auto">
-                <AboutSection title="Handcrafted with Passion">
+                <AboutSection title="Handcrafted with Passion" icon={<Heart size={28} />}>
                     Every single chocolate is a labor of love. We meticulously craft each piece by hand, ensuring that every detail is perfect, from the rich flavors to the elegant presentation. Our chocolates are made with a hands-on approach and a deep commitment to quality that you can taste in every bite.
                 </AboutSection>
                 
-                <AboutSection title="Pure & Wholesome Ingredients">
+                <AboutSection title="Pure & Wholesome Ingredients" icon={<Leaf size={28} />}>
                     Your trust is our top priority. That’s why we are proud to say that all ChocoSmiley products are 100% vegetarian and eggless. We use only the finest ingredients to create our decadent treats, ensuring a delightful and guilt-free indulgence for everyone.
                 </AboutSection>
                 
-                <AboutSection title="The Art of Gifting">
+                <AboutSection title="The Art of Gifting" icon={<Gift size={28} />}>
                     We understand that the perfect gift is personal. That's why we put you in control of the creation process. Our customizable boxes allow you to hand-pick every flavor, ensuring your gift is as unique as the person receiving it.
                 </AboutSection>
                 
-                <AboutSection title="Join Our Story">
+                <AboutSection title="Join Our Story" icon={<Sparkles size={28} />}>
                     Thank you for being a part of our journey. We are excited to help you craft your perfect gift and spread a little more happiness in the world.
                 </AboutSection>
             </div>
