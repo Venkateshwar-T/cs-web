@@ -21,6 +21,7 @@ import { CompleteDetailsPopup } from '@/components/complete-details-popup';
 import { ProfilePopup } from '@/components/profile-popup';
 import { OrderConfirmedView } from '@/components/order-confirmed-view';
 import { Footer } from '@/components/footer';
+import { AboutView } from '@/components/about-view';
 
 
 export type Product = {
@@ -43,6 +44,8 @@ export type ProfileInfo = {
   email: string;
 }
 
+type ActiveView = 'home' | 'search' | 'about' | 'order-confirmed';
+
 const initialFilterState: FilterState = {
   priceRange: [0, 3000],
   selectedPriceOptions: [],
@@ -58,7 +61,7 @@ const allProducts: Product[] = Array.from({ length: 12 }).map((_, i) => ({
 }));
 
 export default function Home() {
-  const [isSearchActive, setIsSearchActive] = useState(false);
+  const [activeView, setActiveView] = useState<ActiveView>('home');
   const [isSearching, setIsSearching] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [cart, setCart] = useState<Record<string, number>>({
@@ -78,7 +81,6 @@ export default function Home() {
   const [isSignUpOpen, setIsSignUpOpen] = useState(false);
   const [isCompleteDetailsOpen, setIsCompleteDetailsOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
-  const [isOrderConfirmed, setIsOrderConfirmed] = useState(false);
   const [profileInfo, setProfileInfo] = useState<ProfileInfo>({
     name: 'John Doe',
     phone: '+1 234 567 890',
@@ -109,17 +111,15 @@ export default function Home() {
 
   const handleSearchSubmit = (query: string) => {
     setSearchQuery(query);
-    setIsSearchActive(true);
+    setActiveView('search');
     setIsSearching(true);
     setSelectedProduct(null);
     setFilters(initialFilterState);
     setSortOption("featured");
-    setIsOrderConfirmed(false);
   };
   
   const handleResetToHome = () => {
-    setIsSearchActive(false);
-    setIsOrderConfirmed(false);
+    setActiveView('home');
     setSearchQuery('');
   };
 
@@ -208,9 +208,8 @@ export default function Home() {
 
   const handleConfirmOrder = (name: string, phone: string) => {
     setProfileInfo(prev => ({...prev, name, phone }));
-    setIsOrderConfirmed(true);
+    setActiveView('order-confirmed');
     setIsCartOpen(false);
-    setIsSearchActive(true);
   };
 
   const handleProfileUpdate = (updatedProfile: Partial<ProfileInfo>) => {
@@ -219,7 +218,7 @@ export default function Home() {
 
   const handleScroll = (event: UIEvent<HTMLElement>) => {
     const scrollTop = event.currentTarget.scrollTop;
-    if (isOrderConfirmed) {
+    if (activeView === 'order-confirmed') {
       setIsContentScrolled(scrollTop > 10);
     } else {
       setIsContentScrolled(false);
@@ -240,6 +239,7 @@ export default function Home() {
   ] as { type: keyof FilterState; value: string; label: string }[];
 
   const isPopupOpen = selectedProduct || isImageExpanded || isCartVisible /*|| isLoginOpen*/ || isSignUpOpen || isCompleteDetailsOpen || isProfileOpen;
+  const isSearchActive = activeView === 'search' || activeView === 'order-confirmed';
 
   return (
     <>
@@ -252,21 +252,27 @@ export default function Home() {
           onProfileOpenChange={setIsProfileOpen}
           isContentScrolled={isContentScrolled}
           onReset={handleResetToHome}
+          onNavigate={(view: 'about' | 'faq') => setActiveView(view)}
+          activeView={activeView}
         />
         <main onScroll={handleScroll} className={cn(
           "flex-grow overflow-y-auto flex flex-col transition-all duration-500 relative",
-          isSearchActive ? 'pt-36' : 'pt-72',
-          isOrderConfirmed && 'no-scrollbar'
+          isSearchActive || activeView === 'about' ? 'pt-36' : 'pt-72',
+          activeView === 'order-confirmed' && 'no-scrollbar'
         )}>
-          {isOrderConfirmed ? (
+          {activeView === 'order-confirmed' ? (
             <div className="pb-8 mx-8 md:mx-32">
               <OrderConfirmedView cart={cart} />
             </div>
-          ) : !isSearchActive ? (
-            <div className={cn("transition-opacity duration-500 w-full", isSearchActive ? 'opacity-0' : 'opacity-100 h-full')}>
+          ) : activeView === 'home' ? (
+            <div className={cn("transition-opacity duration-500 w-full h-full")}>
               <ExploreCategories />
             </div>
-          ) : (
+          ) : activeView === 'about' ? (
+            <div className={cn("transition-opacity duration-500 w-full h-full")}>
+              <AboutView />
+            </div>
+          ) : ( // search view
             <div className="flex w-full h-full items-start">
               <FilterContainer 
                 filters={filters} 
@@ -291,12 +297,12 @@ export default function Home() {
               </div>
             </div>
           )}
-           {isOrderConfirmed && <Footer />}
+           {activeView === 'order-confirmed' && <Footer />}
         </main>
       </div>
 
        <div className={cn("fixed bottom-8 right-4 z-[60] transition-all duration-300")}>
-          {isSearchActive && !isOrderConfirmed && (
+          {activeView === 'search' && (
             <Button
               onClick={handleToggleCartPopup}
               className={cn(

@@ -15,15 +15,21 @@ interface HeaderProps {
   onProfileOpenChange: (isOpen: boolean) => void;
   isContentScrolled: boolean;
   onReset: () => void;
+  onNavigate: (view: 'about' | 'faq') => void;
+  activeView: string;
 }
 
-export function Header({ onSearchSubmit, isCartVisible, onProfileOpenChange, isContentScrolled, onReset }: HeaderProps) {
-  const [isSearchSubmitted, setIsSearchSubmitted] = useState(false);
+export function Header({ onSearchSubmit, isCartVisible, onProfileOpenChange, isContentScrolled, onReset, onNavigate, activeView }: HeaderProps) {
+  const [isSearchSubmitted, setIsSearchSubmitted] = useState(activeView === 'search');
   const [searchInput, setSearchInput] = useState("");
   const [isEnquireOpen, setIsEnquireOpen] = useState(false);
   const [targetWidth, setTargetWidth] = useState<number | undefined>(undefined);
   const formRef = useRef<HTMLFormElement>(null);
   const { toast } = useToast();
+  
+  useState(() => {
+    setIsSearchSubmitted(activeView === 'search');
+  });
 
   const handleSearchSubmit = (e: React.FormEvent<HTMLFormElement>, currentSearchInput: string) => {
     e.preventDefault();
@@ -68,13 +74,20 @@ export function Header({ onSearchSubmit, isCartVisible, onProfileOpenChange, isC
           
           <Logo onLogoClick={handleLogoClick} isEnquireOpen={isEnquireOpen} />
           
-          <Navigation isSearchSubmitted={isSearchSubmitted} isEnquireOpen={isEnquireOpen} />
+          <Navigation 
+            isSearchSubmitted={isSearchSubmitted} 
+            isEnquireOpen={isEnquireOpen}
+            onNavigate={onNavigate}
+            activeView={activeView}
+          />
           
           <UserActions 
             isEnquireOpen={isEnquireOpen}
             isSearchSubmitted={isSearchSubmitted}
             onEnquireOpenChange={setIsEnquireOpen}
             onProfileOpenChange={onProfileOpenChange}
+            onNavigate={onNavigate}
+            activeView={activeView}
           />
         </div>
 

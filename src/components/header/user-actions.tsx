@@ -17,14 +17,16 @@ interface UserActionsProps {
     isSearchSubmitted: boolean;
     onEnquireOpenChange: (isOpen: boolean) => void;
     onProfileOpenChange: (isOpen: boolean) => void;
+    onNavigate: (view: 'about' | 'faq') => void;
+    activeView: string;
 }
 
 const navLinks = [
-    { href: "/about", label: "About" },
-    { href: "/faq", label: "FAQ" },
-];
+    { id: "about", label: "About" },
+    { id: "faq", label: "FAQ" },
+] as const;
 
-export function UserActions({ isEnquireOpen, isSearchSubmitted, onEnquireOpenChange, onProfileOpenChange }: UserActionsProps) {
+export function UserActions({ isEnquireOpen, isSearchSubmitted, onEnquireOpenChange, onProfileOpenChange, onNavigate, activeView }: UserActionsProps) {
     
     return (
         <>
@@ -102,16 +104,22 @@ export function UserActions({ isEnquireOpen, isSearchSubmitted, onEnquireOpenCha
                         <SheetContent side="right" className="w-[300px] sm:w-[400px]">
                             <SheetHeader />
                             <nav className="flex flex-col gap-8 text-lg mt-12">
-                                {!isSearchSubmitted && navLinks.map((link) => (
-                                    <SheetClose asChild key={link.href}>
-                                        <Link
-                                            href={link.href}
-                                            className="transition-colors hover:text-custom-gold text-foreground/80"
-                                        >
-                                            {link.label}
-                                        </Link>
-                                    </SheetClose>
-                                ))}
+                                {!isSearchSubmitted && navLinks.map((link) => {
+                                    const isActive = activeView === link.id;
+                                    return (
+                                        <SheetClose asChild key={link.id}>
+                                            <button
+                                                onClick={() => onNavigate(link.id)}
+                                                className={cn(
+                                                    "transition-colors hover:text-custom-gold",
+                                                    isActive ? "text-custom-gold font-semibold" : "text-foreground/80"
+                                                )}
+                                            >
+                                                {link.label}
+                                            </button>
+                                        </SheetClose>
+                                    )
+                                })}
                             </nav>
                             <Separator className="my-8" />
                             <div className="flex flex-col gap-4">
