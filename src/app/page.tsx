@@ -230,7 +230,7 @@ export default function Home() {
 
   const handleScroll = (event: UIEvent<HTMLElement>) => {
     const scrollTop = event.currentTarget.scrollTop;
-    if (activeView === 'order-confirmed' || activeView === 'about') {
+    if (activeView === 'order-confirmed') {
       setIsContentScrolled(scrollTop > 10);
     } else {
       setIsContentScrolled(false);
@@ -308,10 +308,12 @@ export default function Home() {
                     </div>
                   </div>
               ) : (
-                <>
-                  <AboutView />
+                <div className="flex flex-col flex-grow">
+                  <div className="flex-grow">
+                    <AboutView />
+                  </div>
                   <Footer />
-                </>
+                </div>
               )}
             </div>
           ) : ( // search view
@@ -423,7 +425,7 @@ export default function Home() {
               products={allProducts}
               likedProducts={likedProducts}
               onLikeToggle={onLikeToggle}
-              onAddToCart={handleAddToCart}
+              onAddToCart={onAddToCart}
               cart={cart}
               onClearWishlist={handleClearWishlist}
             />
