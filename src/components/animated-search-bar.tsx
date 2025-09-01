@@ -13,13 +13,15 @@ interface AnimatedSearchBarProps {
   isExpanded: boolean;
   onExpandedChange: (expanded: boolean) => void;
   className?: string;
+  width?: number;
 }
 
 export function AnimatedSearchBar({ 
   onSearchSubmit,
   isExpanded,
   onExpandedChange,
-  className
+  className,
+  width,
 }: AnimatedSearchBarProps) {
   const [inputValue, setInputValue] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
@@ -37,7 +39,7 @@ export function AnimatedSearchBar({
       transition: { duration: 0.3, ease: "easeInOut" },
     },
     expanded: {
-      width: "300px",
+      width: width ? `${width}px` : "300px",
       transition: { duration: 0.3, ease: "easeInOut" },
     },
   };

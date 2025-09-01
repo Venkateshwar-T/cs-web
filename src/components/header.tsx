@@ -32,9 +32,15 @@ export function Header({ onSearchSubmit, onProfileOpenChange, isContentScrolled,
   useEffect(() => {
     if (activeView !== 'about') {
       setIsAnimatedSearchExpanded(false);
-      setIsNavVisible(true);
     }
-  }, [activeView]);
+    if (!isAnimatedSearchExpanded) {
+        // Delay making nav visible to allow for animation
+        const timer = setTimeout(() => {
+            setIsNavVisible(true);
+        }, 300); // Should match animation duration
+        return () => clearTimeout(timer);
+    }
+  }, [activeView, isAnimatedSearchExpanded]);
 
   const handleSearchSubmit = (e: React.FormEvent<HTMLFormElement>, currentSearchInput: string) => {
     e.preventDefault();
@@ -59,25 +65,23 @@ export function Header({ onSearchSubmit, onProfileOpenChange, isContentScrolled,
   
   const handleAnimatedSearchSubmit = (query: string) => {
     setIsAnimatedSearchExpanded(false);
-    setIsNavVisible(true);
     onSearchSubmit(query);
   };
   
   const handleAnimatedSearchToggle = () => {
     if (!isAnimatedSearchExpanded) {
-        setIsAnimatedSearchExpanded(true);
-        setIsNavVisible(false);
+      if (formRef.current) {
+        const isLargeDesktop = window.innerWidth >= 1280;
+        const reductionFactor = isLargeDesktop ? 0.85 : 0.5;
+        // Use the initial width of the main search bar to calculate the target width
+        const initialFormWidth = formRef.current.offsetWidth;
+        setTargetWidth(initialFormWidth * reductionFactor);
+      }
+      setIsAnimatedSearchExpanded(true);
+      setIsNavVisible(false);
     }
   };
   
-  const handleAnimatedSearchClose = () => {
-    setIsAnimatedSearchExpanded(false);
-    // Delay setting nav to visible to allow for animation
-    setTimeout(() => {
-        setIsNavVisible(true);
-    }, 300); // Should match animation duration
-  };
-
   const handleLogoClick = () => {
     setTargetWidth(undefined);
     setSearchInput("");
@@ -105,12 +109,13 @@ export function Header({ onSearchSubmit, onProfileOpenChange, isContentScrolled,
             isNavVisible={isNavVisible}
           />
           
-          {activeView === 'about' && (
+          {isAnimatedSearchExpanded && (
              <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
                 <AnimatedSearchBar 
                     onSearchSubmit={handleAnimatedSearchSubmit}
                     isExpanded={isAnimatedSearchExpanded}
-                    onExpandedChange={handleAnimatedSearchClose}
+                    onExpandedChange={setIsAnimatedSearchExpanded}
+                    width={targetWidth}
                 />
              </div>
           )}
