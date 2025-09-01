@@ -44,7 +44,7 @@ export type ProfileInfo = {
   email: string;
 }
 
-type ActiveView = 'home' | 'search' | 'about' | 'order-confirmed';
+export type ActiveView = 'home' | 'search' | 'about' | 'order-confirmed';
 
 const initialFilterState: FilterState = {
   priceRange: [0, 3000],
@@ -239,7 +239,7 @@ export default function Home() {
   ] as { type: keyof FilterState; value: string; label: string }[];
 
   const isPopupOpen = selectedProduct || isImageExpanded || isCartVisible /*|| isLoginOpen*/ || isSignUpOpen || isCompleteDetailsOpen || isProfileOpen;
-  const isSearchActive = activeView === 'search' || activeView === 'order-confirmed';
+  const isSearchActive = activeView === 'search' || activeView === 'order-confirmed' || activeView === 'about';
 
   return (
     <>
@@ -252,12 +252,12 @@ export default function Home() {
           onProfileOpenChange={setIsProfileOpen}
           isContentScrolled={isContentScrolled}
           onReset={handleResetToHome}
-          onNavigate={(view: 'about' | 'faq') => setActiveView(view)}
+          onNavigate={(view) => setActiveView(view as ActiveView)}
           activeView={activeView}
         />
         <main onScroll={handleScroll} className={cn(
           "flex-grow overflow-y-auto flex flex-col transition-all duration-500 relative",
-          isSearchActive || activeView === 'about' ? 'pt-36' : 'pt-72',
+          isSearchActive ? 'pt-36' : 'pt-72',
           activeView === 'order-confirmed' && 'no-scrollbar'
         )}>
           {activeView === 'order-confirmed' ? (

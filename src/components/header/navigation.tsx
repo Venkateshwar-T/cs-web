@@ -1,3 +1,4 @@
+
 // @/components/header/navigation.tsx
 'use client';
 
@@ -5,7 +6,7 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 
 interface NavigationProps {
-    isSearchSubmitted: boolean;
+    isCompactHeader: boolean;
     isEnquireOpen: boolean;
     onNavigate: (view: 'about' | 'faq') => void;
     activeView: string;
@@ -17,10 +18,18 @@ const navLinks = [
 ] as const;
 
 
-export function Navigation({ isSearchSubmitted, isEnquireOpen, onNavigate, activeView }: NavigationProps) {
+export function Navigation({ isCompactHeader, isEnquireOpen, onNavigate, activeView }: NavigationProps) {
+    if (isCompactHeader) {
+        return (
+            <div className="hidden md:flex flex-1 justify-center items-center gap-4 lg:gap-8 text-base lg:text-lg">
+                {/* Placeholder for spacing */}
+            </div>
+        );
+    }
+    
     return (
         <nav className="hidden md:flex flex-1 justify-center items-center gap-4 lg:gap-8 text-base lg:text-lg transition-opacity duration-100 animate-fade-in" style={{ animationDuration: '0.5s', animationDelay: '0.05s' }}>
-            {!isSearchSubmitted && navLinks.map((link) => {
+            {navLinks.map((link) => {
                 const isActive = activeView === link.id;
                 return (
                     <button

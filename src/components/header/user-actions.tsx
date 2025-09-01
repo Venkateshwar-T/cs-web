@@ -1,3 +1,4 @@
+
 // @/components/header/user-actions.tsx
 'use client';
 
@@ -5,7 +6,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { Menu, Phone } from "lucide-react";
+import { Menu, Phone, Search } from "lucide-react";
 import { AiOutlineInstagram, AiOutlineWhatsApp } from "react-icons/ai";
 import { IoLogoFacebook } from "react-icons/io5";
 import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetHeader } from "@/components/ui/sheet";
@@ -14,11 +15,12 @@ import { cn } from "@/lib/utils";
 
 interface UserActionsProps {
     isEnquireOpen: boolean;
-    isSearchSubmitted: boolean;
+    isCompactHeader: boolean;
     onEnquireOpenChange: (isOpen: boolean) => void;
     onProfileOpenChange: (isOpen: boolean) => void;
     onNavigate: (view: 'about' | 'faq') => void;
     activeView: string;
+    showSearchIcon: boolean;
 }
 
 const navLinks = [
@@ -26,13 +28,21 @@ const navLinks = [
     { id: "faq", label: "FAQ" },
 ] as const;
 
-export function UserActions({ isEnquireOpen, isSearchSubmitted, onEnquireOpenChange, onProfileOpenChange, onNavigate, activeView }: UserActionsProps) {
+export function UserActions({ isEnquireOpen, isCompactHeader, onEnquireOpenChange, onProfileOpenChange, onNavigate, activeView, showSearchIcon }: UserActionsProps) {
     
     return (
         <>
             <div className="flex flex-1 justify-end animate-slide-in-from-right" style={{ animationDuration: '0.5s' }}>
                 {/* Desktop Actions */}
                 <div className="hidden md:flex items-center gap-1">
+                    {showSearchIcon && (
+                         <div className="flex items-center gap-1 animate-fade-in" style={{animationDelay: '0.3s'}}>
+                            <Button variant="ghost" size="icon" className="h-9 w-9 text-white hover:bg-white/20 hover:text-white">
+                                <Search className="h-5 w-5"/>
+                            </Button>
+                             <Separator orientation="vertical" className="h-6 bg-foreground/50 mx-1 lg:mx-2" />
+                         </div>
+                    )}
                     <Popover open={isEnquireOpen} onOpenChange={onEnquireOpenChange}>
                         <PopoverTrigger asChild>
                             <Button 
@@ -104,7 +114,7 @@ export function UserActions({ isEnquireOpen, isSearchSubmitted, onEnquireOpenCha
                         <SheetContent side="right" className="w-[300px] sm:w-[400px]">
                             <SheetHeader />
                             <nav className="flex flex-col gap-8 text-lg mt-12">
-                                {!isSearchSubmitted && navLinks.map((link) => {
+                                {!isCompactHeader && navLinks.map((link) => {
                                     const isActive = activeView === link.id;
                                     return (
                                         <SheetClose asChild key={link.id}>

@@ -1,3 +1,4 @@
+
 // @/components/header/search-bar.tsx
 'use client';
 
@@ -5,10 +6,11 @@ import { useState, useEffect, RefObject } from 'react';
 import Image from 'next/image';
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
+import type { ActiveView } from '@/app/page';
 
 interface SearchBarProps {
     formRef: RefObject<HTMLFormElement>;
-    isSearchSubmitted: boolean;
+    activeView: ActiveView;
     isEnquireOpen: boolean;
     targetWidth: number | undefined;
     onSubmit: (e: React.FormEvent<HTMLFormElement>, searchInput: string) => void;
@@ -18,11 +20,13 @@ interface SearchBarProps {
 
 const textsToType = ["Corporate gifts", "Family presents", "Festive gifts", "Birthday surprises", "Anniversary specials"];
 
-export function SearchBar({ formRef, isSearchSubmitted, isEnquireOpen, targetWidth, onSubmit, searchInput, onSearchInputChange }: SearchBarProps) {
+export function SearchBar({ formRef, activeView, isEnquireOpen, targetWidth, onSubmit, searchInput, onSearchInputChange }: SearchBarProps) {
     const [placeholder, setPlaceholder] = useState("");
+    const isSearchSubmitted = activeView === 'search';
+    const isAboutView = activeView === 'about';
 
     useEffect(() => {
-        if (isSearchSubmitted) return;
+        if (activeView !== 'home') return;
         let textIndex = 0;
         let charIndex = 0;
         let isDeleting = false;
@@ -53,15 +57,29 @@ export function SearchBar({ formRef, isSearchSubmitted, isEnquireOpen, targetWid
         timeoutId = setTimeout(type, 200);
 
         return () => clearTimeout(timeoutId);
-    }, [isSearchSubmitted]);
+    }, [activeView]);
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         onSubmit(e, searchInput);
     };
 
+    if (isAboutView) {
+        return (
+             <div className={cn(
+                "container max-w-screen-2xl px-8 md:px-12 transition-all duration-500 ease-in-out -mt-[3.75rem] opacity-0",
+             )}>
+                 {/* Render an invisible placeholder to prevent layout shifts */}
+                <form className="relative mx-auto max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl">
+                    <Input className="invisible" />
+                </form>
+             </div>
+        );
+    }
+
     return (
         <div className={cn(
-            `container max-w-screen-2xl px-8 md:px-12 transition-all duration-500 ease-in-out ${isSearchSubmitted ? '-mt-[3.75rem]' : 'mt-8 sm:mt-12 md:mt-16'}`,
+            "container max-w-screen-2xl px-8 md:px-12 transition-all duration-500 ease-in-out",
+            isSearchSubmitted ? '-mt-[3.75rem]' : 'mt-8 sm:mt-12 md:mt-16',
             isEnquireOpen && "opacity-50 transition-opacity duration-100"
         )}>
             <form 
@@ -79,7 +97,7 @@ export function SearchBar({ formRef, isSearchSubmitted, isEnquireOpen, targetWid
                     autoComplete="off"
                     value={searchInput}
                     onChange={(e) => onSearchInputChange(e.target.value)}
-                    placeholder={isSearchSubmitted ? 'Search for gifts...' : placeholder}
+                    placeholder={activeView !== 'home' ? 'Search for gifts...' : placeholder}
                     className={`w-full pl-12 pr-4 h-11 rounded-full bg-transparent border-none focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-gray-500 text-lg md:text-xl text-black`}
                 />
             </form>

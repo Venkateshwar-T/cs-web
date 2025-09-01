@@ -1,13 +1,15 @@
+
 // @/components/header.tsx
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
 import { Logo } from "./header/logo";
 import { Navigation } from "./header/navigation";
 import { UserActions } from "./header/user-actions";
 import { SearchBar } from "./header/search-bar";
+import type { ActiveView } from "@/app/page";
 
 interface HeaderProps {
   onSearchSubmit: (query: string) => void;
@@ -16,20 +18,17 @@ interface HeaderProps {
   isContentScrolled: boolean;
   onReset: () => void;
   onNavigate: (view: 'about' | 'faq') => void;
-  activeView: string;
+  activeView: ActiveView;
 }
 
 export function Header({ onSearchSubmit, isCartVisible, onProfileOpenChange, isContentScrolled, onReset, onNavigate, activeView }: HeaderProps) {
-  const [isSearchSubmitted, setIsSearchSubmitted] = useState(activeView === 'search');
   const [searchInput, setSearchInput] = useState("");
   const [isEnquireOpen, setIsEnquireOpen] = useState(false);
   const [targetWidth, setTargetWidth] = useState<number | undefined>(undefined);
   const formRef = useRef<HTMLFormElement>(null);
   const { toast } = useToast();
   
-  useState(() => {
-    setIsSearchSubmitted(activeView === 'search');
-  });
+  const isCompactHeader = activeView !== 'home';
 
   const handleSearchSubmit = (e: React.FormEvent<HTMLFormElement>, currentSearchInput: string) => {
     e.preventDefault();
@@ -43,18 +42,16 @@ export function Header({ onSearchSubmit, isCartVisible, onProfileOpenChange, isC
       return;
     }
 
-    if (formRef.current && !isSearchSubmitted) {
+    if (formRef.current && activeView === 'home') {
       const isLargeDesktop = window.innerWidth >= 1280;
       const reductionFactor = isLargeDesktop ? 0.85 : 0.5;
       setTargetWidth(formRef.current.offsetWidth * reductionFactor);
     }
     
-    setIsSearchSubmitted(true);
     onSearchSubmit(currentSearchInput.trim());
   };
 
   const handleLogoClick = () => {
-    setIsSearchSubmitted(false);
     setTargetWidth(undefined);
     setSearchInput("");
     onReset();
@@ -75,7 +72,7 @@ export function Header({ onSearchSubmit, isCartVisible, onProfileOpenChange, isC
           <Logo onLogoClick={handleLogoClick} isEnquireOpen={isEnquireOpen} />
           
           <Navigation 
-            isSearchSubmitted={isSearchSubmitted} 
+            isCompactHeader={isCompactHeader} 
             isEnquireOpen={isEnquireOpen}
             onNavigate={onNavigate}
             activeView={activeView}
@@ -83,17 +80,18 @@ export function Header({ onSearchSubmit, isCartVisible, onProfileOpenChange, isC
           
           <UserActions 
             isEnquireOpen={isEnquireOpen}
-            isSearchSubmitted={isSearchSubmitted}
+            isCompactHeader={isCompactHeader}
             onEnquireOpenChange={setIsEnquireOpen}
             onProfileOpenChange={onProfileOpenChange}
             onNavigate={onNavigate}
             activeView={activeView}
+            showSearchIcon={activeView === 'about'}
           />
         </div>
 
         <SearchBar
           formRef={formRef}
-          isSearchSubmitted={isSearchSubmitted}
+          activeView={activeView}
           isEnquireOpen={isEnquireOpen}
           targetWidth={targetWidth}
           onSubmit={handleSearchSubmit}
