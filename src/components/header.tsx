@@ -77,6 +77,11 @@ export function Header({ onSearchSubmit, onProfileOpenChange, isContentScrolled,
   };
   
   const handleAnimatedSearchToggle = () => {
+    if (formRef.current) {
+        const isLargeDesktop = window.innerWidth >= 1280;
+        const reductionFactor = isLargeDesktop ? 0.85 : 0.5;
+        setTargetWidth(formRef.current.offsetWidth * reductionFactor);
+    }
     setIsAnimatedSearchExpanded(prev => !prev);
   };
   
