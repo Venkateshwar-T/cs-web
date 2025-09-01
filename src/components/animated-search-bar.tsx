@@ -33,17 +33,6 @@ export function AnimatedSearchBar({
     }
   }, [isExpanded]);
 
-  const containerVariants = {
-    collapsed: {
-      width: "0px",
-      transition: { duration: 0.3, ease: "easeInOut" },
-    },
-    expanded: {
-      width: width ? `${width}px` : "300px",
-      transition: { duration: 0.3, ease: "easeInOut" },
-    },
-  };
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!inputValue.trim()) {
@@ -55,7 +44,6 @@ export function AnimatedSearchBar({
         return;
     }
     onSearchSubmit(inputValue);
-    onExpandedChange(false);
     setInputValue("");
   };
 
@@ -65,9 +53,9 @@ export function AnimatedSearchBar({
     <form onSubmit={handleSubmit} className={cn("flex items-center", className)}>
       <motion.div
         className="flex items-center h-11 rounded-full bg-white text-black shadow-lg overflow-hidden"
-        variants={containerVariants}
-        initial="collapsed"
-        animate={isExpanded ? "expanded" : "collapsed"}
+        initial={{ width: 0 }}
+        animate={{ width: width ? `${width}px` : "300px" }}
+        transition={{ duration: 0.3, ease: "easeInOut" }}
         style={{ cursor: isExpanded ? "auto" : "pointer" }}
       >
         <div className="flex items-center w-full h-full">
