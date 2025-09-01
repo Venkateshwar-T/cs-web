@@ -44,12 +44,6 @@ export function AnimatedSearchBar({
     },
   };
 
-  const handleCloseClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    onExpandedChange(false);
-    setInputValue("");
-  };
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!inputValue.trim()) {
@@ -88,12 +82,16 @@ export function AnimatedSearchBar({
                     placeholder="Search for gifts..."
                     value={inputValue}
                     onChange={(e) => setInputValue(e.target.value)}
-                    className="w-full bg-transparent outline-none text-black placeholder:text-gray-500"
+                    className="w-full bg-transparent outline-none text-black placeholder:text-gray-500 text-lg md:text-xl"
                     onClick={(e) => e.stopPropagation()}
                 />
                 <button
                     type="button"
-                    onClick={handleCloseClick}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onExpandedChange(false);
+                      setInputValue("");
+                    }}
                     className="p-2 hover:bg-gray-200 rounded-full"
                     aria-label="Close search"
                 >
