@@ -66,7 +66,7 @@ export function SearchBar({ formRef, activeView, isEnquireOpen, targetWidth, onS
     if (isAboutActive) {
         return (
              <div className={cn(
-                "container max-w-screen-2xl px-8 md:px-12 transition-all duration-500 ease-in-out -mt-[3.75rem] opacity-0",
+                "container max-w-screen-2xl px-8 md:px-12 transition-all duration-500 ease-in-out -mt-[3.75rem] opacity-0 pointer-events-none",
              )}>
                  {/* Render an invisible placeholder to prevent layout shifts */}
                 <form className="relative mx-auto max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl">
