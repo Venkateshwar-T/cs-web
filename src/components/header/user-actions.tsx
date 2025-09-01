@@ -6,7 +6,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { Menu, Phone, Search } from "lucide-react";
+import { Menu, Phone } from "lucide-react";
 import { AiOutlineInstagram, AiOutlineWhatsApp } from "react-icons/ai";
 import { IoLogoFacebook } from "react-icons/io5";
 import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetHeader } from "@/components/ui/sheet";
@@ -37,9 +37,11 @@ export function UserActions({ isEnquireOpen, isCompactHeader, onEnquireOpenChang
                 <div className="hidden md:flex items-center gap-1">
                     {showSearchIcon && (
                          <div className="flex items-center gap-1 animate-fade-in" style={{animationDelay: '0.3s'}}>
-                            <Button variant="ghost" size="icon" className="h-9 w-9 text-white hover:bg-white/20 hover:text-white">
-                                <Search className="h-5 w-5"/>
-                            </Button>
+                            <button className="h-9 w-9 rounded-full flex items-center justify-center hover:opacity-90 transition-opacity">
+                                <div className="bg-white h-8 w-8 rounded-full flex items-center justify-center">
+                                    <Image src="/icons/search_icon.png" alt="Search" width={20} height={20} />
+                                </div>
+                            </button>
                              <Separator orientation="vertical" className="h-6 bg-foreground/50 mx-1 lg:mx-2" />
                          </div>
                     )}
