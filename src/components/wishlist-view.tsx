@@ -1,11 +1,10 @@
-
 // @/components/wishlist-view.tsx
 'use client';
 
 import type { Product } from "@/app/page";
 import { WishlistItemCard } from "./wishlist-item-card";
 import { Button } from "./ui/button";
-import { Trash2 } from "lucide-react";
+import { FaTrash } from "react-icons/fa";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -56,7 +55,7 @@ export function WishlistView({ products, likedProducts, onLikeToggle, onAddToCar
                   className="bg-red-600 hover:bg-red-700 h-14 w-14 rounded-full shadow-lg"
                   disabled={wishlistedProducts.length === 0}
                 >
-                  <Trash2 className="h-7 w-7" />
+                  <FaTrash className="h-6 w-6" />
                 </Button>
               </AlertDialogTrigger>
               <AlertDialogContent>
