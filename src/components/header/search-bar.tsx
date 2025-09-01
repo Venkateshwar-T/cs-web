@@ -22,7 +22,7 @@ const textsToType = ["Corporate gifts", "Family presents", "Festive gifts", "Bir
 
 export function SearchBar({ formRef, activeView, isEnquireOpen, targetWidth, onSubmit, searchInput, onSearchInputChange }: SearchBarProps) {
     const [placeholder, setPlaceholder] = useState("");
-    const isSearchActive = activeView === 'search';
+    const isSearchActive = activeView === 'search' || activeView === 'order-confirmed';
 
     useEffect(() => {
         if (activeView !== 'home') return;
@@ -67,7 +67,7 @@ export function SearchBar({ formRef, activeView, isEnquireOpen, targetWidth, onS
             "container max-w-screen-2xl px-8 md:px-12 transition-all duration-500 ease-in-out",
             isSearchActive ? '-mt-[3.75rem]' : 'mt-8 sm:mt-12 md:mt-16',
             isEnquireOpen && "opacity-50 transition-opacity duration-100",
-            (activeView === 'about' || activeView === 'order-confirmed') && "opacity-0 pointer-events-none -mt-[3.75rem]"
+            activeView === 'about' && "opacity-0 pointer-events-none -mt-[3.75rem]"
         )}>
             <form 
                 ref={formRef}

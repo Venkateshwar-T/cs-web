@@ -246,7 +246,7 @@ export default function Home() {
   ] as { type: keyof FilterState; value: string; label: string }[];
 
   const isPopupOpen = selectedProduct || isImageExpanded || isCartVisible /*|| isLoginOpen*/ || isSignUpOpen || isCompleteDetailsOpen || isProfileOpen;
-  const isSearchActive = activeView === 'search' || activeView === 'order-confirmed' || activeView === 'about';
+  const isSearchActive = activeView === 'search' || activeView === 'order-confirmed' || isSearchingOnAbout;
 
   return (
     <>
