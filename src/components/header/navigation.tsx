@@ -19,10 +19,10 @@ const navLinks = [
 
 
 export function Navigation({ isCompactHeader, isEnquireOpen, onNavigate, activeView }: NavigationProps) {
-    if (isCompactHeader) {
+    if (activeView === 'search') {
         return (
             <div className="hidden md:flex flex-1 justify-center items-center gap-4 lg:gap-8 text-base lg:text-lg">
-                {/* Placeholder for spacing */}
+                {/* Placeholder for spacing when search bar is active */}
             </div>
         );
     }

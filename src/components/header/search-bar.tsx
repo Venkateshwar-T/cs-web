@@ -22,8 +22,8 @@ const textsToType = ["Corporate gifts", "Family presents", "Festive gifts", "Bir
 
 export function SearchBar({ formRef, activeView, isEnquireOpen, targetWidth, onSubmit, searchInput, onSearchInputChange }: SearchBarProps) {
     const [placeholder, setPlaceholder] = useState("");
-    const isSearchSubmitted = activeView === 'search';
-    const isAboutView = activeView === 'about';
+    const isSearchActive = activeView === 'search';
+    const isAboutActive = activeView === 'about';
 
     useEffect(() => {
         if (activeView !== 'home') return;
@@ -63,7 +63,7 @@ export function SearchBar({ formRef, activeView, isEnquireOpen, targetWidth, onS
         onSubmit(e, searchInput);
     };
 
-    if (isAboutView) {
+    if (isAboutActive) {
         return (
              <div className={cn(
                 "container max-w-screen-2xl px-8 md:px-12 transition-all duration-500 ease-in-out -mt-[3.75rem] opacity-0",
@@ -79,13 +79,13 @@ export function SearchBar({ formRef, activeView, isEnquireOpen, targetWidth, onS
     return (
         <div className={cn(
             "container max-w-screen-2xl px-8 md:px-12 transition-all duration-500 ease-in-out",
-            isSearchSubmitted ? '-mt-[3.75rem]' : 'mt-8 sm:mt-12 md:mt-16',
+            isSearchActive ? '-mt-[3.75rem]' : 'mt-8 sm:mt-12 md:mt-16',
             isEnquireOpen && "opacity-50 transition-opacity duration-100"
         )}>
             <form 
                 ref={formRef}
                 onSubmit={handleSubmit} 
-                className={`relative mx-auto transition-all duration-500 ease-in-out animate-slide-down ${!targetWidth ? 'max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl' : ''}`}
+                className={`relative mx-auto transition-all duration-500 ease-in-out animate-slide-down ${!targetWidth && !isSearchActive ? 'max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl' : ''}`}
                 style={{ maxWidth: targetWidth ? `${targetWidth}px` : undefined, animationDuration: '0.5s', animationDelay: '0.05s' }}
             >
                 <div className="absolute inset-0 rounded-full bg-white -z-10"></div>
