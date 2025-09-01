@@ -44,7 +44,6 @@ export function AnimatedSearchBar({
         return;
     }
     onSearchSubmit(inputValue);
-    setInputValue("");
   };
 
   if (!isExpanded) return null;
@@ -56,7 +55,6 @@ export function AnimatedSearchBar({
         initial={{ width: 0 }}
         animate={{ width: width ? `${width}px` : "300px" }}
         transition={{ duration: 0.3, ease: "easeInOut" }}
-        style={{ cursor: isExpanded ? "auto" : "pointer" }}
       >
         <div className="flex items-center w-full h-full">
             <div className="w-11 h-11 flex-shrink-0 flex items-center justify-center">
