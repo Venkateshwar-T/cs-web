@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import type { ActiveView } from '@/app/page';
+import { X } from 'lucide-react';
 
 interface SearchBarProps {
     formRef: RefObject<HTMLFormElement>;
@@ -83,14 +84,26 @@ export function SearchBar({ formRef, activeView, isEnquireOpen, targetWidth, onS
                 <div className="absolute left-3 top-1/2 -translate-y-1/2 z-10">
                     <Image src="/icons/search_icon.png" alt="Search" width={28} height={28} onDragStart={(e) => e.preventDefault()} />
                 </div>
-                <Input 
-                    name="search"
-                    autoComplete="off"
-                    value={searchInput}
-                    onChange={(e) => onSearchInputChange(e.target.value)}
-                    placeholder={activeView !== 'home' ? 'Search for gifts...' : placeholder}
-                    className={`w-full pl-12 pr-4 h-11 rounded-full bg-transparent border-none focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-gray-500 text-lg md:text-xl text-black`}
-                />
+                <div className="relative flex items-center">
+                    <Input 
+                        name="search"
+                        autoComplete="off"
+                        value={searchInput}
+                        onChange={(e) => onSearchInputChange(e.target.value)}
+                        placeholder={activeView !== 'home' ? 'Search for gifts...' : placeholder}
+                        className={`w-full pl-12 pr-10 h-11 rounded-full bg-transparent border-none focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-gray-500 text-lg md:text-xl text-black`}
+                    />
+                    {searchInput && (
+                        <button
+                            type="button"
+                            onClick={() => onSearchInputChange('')}
+                            className="absolute right-3 p-2 hover:bg-gray-200 rounded-full"
+                            aria-label="Clear search"
+                        >
+                            <X size={20} className="text-gray-600"/>
+                        </button>
+                    )}
+                </div>
             </form>
         </div>
     );
