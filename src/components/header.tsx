@@ -32,20 +32,13 @@ export function Header({ onSearchSubmit, onProfileOpenChange, isContentScrolled,
   const { toast } = useToast();
   
   useEffect(() => {
-    // When search is no longer active on about page, collapse the search bar
-    if (activeView === 'about' && !isSearchingOnAbout) {
-      setIsAnimatedSearchExpanded(false);
-    }
-  }, [activeView, isSearchingOnAbout]);
-  
-  useEffect(() => {
     // When the animated search bar is closed, reset the target width
     // to ensure it's recalculated on the next open.
     if (!isAnimatedSearchExpanded) {
       setTargetWidth(undefined);
     }
   }, [isAnimatedSearchExpanded]);
-
+  
   useEffect(() => {
     if (isAnimatedSearchExpanded) {
         setIsNavVisible(false);
@@ -57,6 +50,12 @@ export function Header({ onSearchSubmit, onProfileOpenChange, isContentScrolled,
         return () => clearTimeout(timer);
     }
   }, [isAnimatedSearchExpanded]);
+
+  useEffect(() => {
+    if (activeView !== 'about') {
+      setIsAnimatedSearchExpanded(false);
+    }
+  }, [activeView]);
 
 
   const handleSearchSubmit = (e: React.FormEvent<HTMLFormElement>, currentSearchInput: string) => {
