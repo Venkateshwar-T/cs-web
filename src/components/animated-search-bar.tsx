@@ -6,22 +6,30 @@ import { motion } from "framer-motion";
 import { X } from "lucide-react";
 import Image from "next/image";
 import { useToast } from "@/hooks/use-toast";
+import { cn } from "@/lib/utils";
 
 interface AnimatedSearchBarProps {
   onSearchSubmit: (query: string) => void;
+  isExpanded: boolean;
+  onExpandedChange: (expanded: boolean) => void;
+  className?: string;
 }
 
-export function AnimatedSearchBar({ onSearchSubmit }: AnimatedSearchBarProps) {
-  const [expanded, setExpanded] = useState(false);
+export function AnimatedSearchBar({ 
+  onSearchSubmit,
+  isExpanded,
+  onExpandedChange,
+  className
+}: AnimatedSearchBarProps) {
   const [inputValue, setInputValue] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
 
   useEffect(() => {
-    if (expanded && inputRef.current) {
+    if (isExpanded && inputRef.current) {
       inputRef.current.focus();
     }
-  }, [expanded]);
+  }, [isExpanded]);
 
   const containerVariants = {
     collapsed: {
@@ -35,14 +43,14 @@ export function AnimatedSearchBar({ onSearchSubmit }: AnimatedSearchBarProps) {
   };
 
   const handleIconClick = () => {
-    if (!expanded) {
-      setExpanded(true);
+    if (!isExpanded) {
+        onExpandedChange(true);
     }
   };
 
   const handleCloseClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setExpanded(false);
+    onExpandedChange(false);
     setInputValue("");
   };
 
@@ -57,26 +65,26 @@ export function AnimatedSearchBar({ onSearchSubmit }: AnimatedSearchBarProps) {
         return;
     }
     onSearchSubmit(inputValue);
-    setExpanded(false);
+    onExpandedChange(false);
     setInputValue("");
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex items-center">
+    <form onSubmit={handleSubmit} className={cn("flex items-center", className)}>
       <motion.div
         className="flex items-center h-11 rounded-full bg-white text-black shadow-lg overflow-hidden"
         variants={containerVariants}
         initial="collapsed"
-        animate={expanded ? "expanded" : "collapsed"}
+        animate={isExpanded ? "expanded" : "collapsed"}
         onClick={handleIconClick}
-        style={{ cursor: expanded ? "auto" : "pointer" }}
+        style={{ cursor: isExpanded ? "auto" : "pointer" }}
       >
         <div className="flex items-center w-full h-full">
             <div className="w-11 h-11 flex-shrink-0 flex items-center justify-center">
                 <Image src="/icons/search_icon.png" alt="Search" width={24} height={24} />
             </div>
 
-            {expanded && (
+            {isExpanded && (
                 <div className="flex-1 flex items-center pr-2">
                     <input
                         ref={inputRef}

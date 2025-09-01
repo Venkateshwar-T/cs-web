@@ -1,4 +1,5 @@
 
+
 'use client';
 
 import { useState, useEffect, type UIEvent } from 'react';
@@ -248,7 +249,6 @@ export default function Home() {
       <div className={cn("flex flex-col h-screen", isPopupOpen ? 'opacity-50' : '')}>
         <Header 
           onSearchSubmit={handleSearchSubmit} 
-          isCartVisible={isCartVisible}
           onProfileOpenChange={setIsProfileOpen}
           isContentScrolled={isContentScrolled}
           onReset={handleResetToHome}
@@ -381,7 +381,7 @@ export default function Home() {
               products={allProducts}
               likedProducts={likedProducts}
               onLikeToggle={handleLikeToggle}
-              onAddToCart={handleAddToCart}
+              onAddToCart={onAddToCart}
               cart={cart}
               onClearWishlist={handleClearWishlist}
             />

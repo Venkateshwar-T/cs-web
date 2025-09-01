@@ -9,10 +9,10 @@ import { Navigation } from "./header/navigation";
 import { UserActions } from "./header/user-actions";
 import { SearchBar } from "./header/search-bar";
 import type { ActiveView } from "@/app/page";
+import { AnimatedSearchBar } from "./animated-search-bar";
 
 interface HeaderProps {
   onSearchSubmit: (query: string) => void;
-  isCartVisible: boolean;
   onProfileOpenChange: (isOpen: boolean) => void;
   isContentScrolled: boolean;
   onReset: () => void;
@@ -20,14 +20,20 @@ interface HeaderProps {
   activeView: ActiveView;
 }
 
-export function Header({ onSearchSubmit, isCartVisible, onProfileOpenChange, isContentScrolled, onReset, onNavigate, activeView }: HeaderProps) {
+export function Header({ onSearchSubmit, onProfileOpenChange, isContentScrolled, onReset, onNavigate, activeView }: HeaderProps) {
   const [searchInput, setSearchInput] = useState("");
   const [isEnquireOpen, setIsEnquireOpen] = useState(false);
   const [targetWidth, setTargetWidth] = useState<number | undefined>(undefined);
+  const [isAnimatedSearchExpanded, setIsAnimatedSearchExpanded] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
   const { toast } = useToast();
   
-  const isCompactHeader = activeView !== 'home';
+  useEffect(() => {
+    // Reset animated search when navigating away from 'about'
+    if (activeView !== 'about') {
+      setIsAnimatedSearchExpanded(false);
+    }
+  }, [activeView]);
 
   const handleSearchSubmit = (e: React.FormEvent<HTMLFormElement>, currentSearchInput: string) => {
     e.preventDefault();
@@ -49,13 +55,18 @@ export function Header({ onSearchSubmit, isCartVisible, onProfileOpenChange, isC
     
     onSearchSubmit(currentSearchInput.trim());
   };
+  
+  const handleAnimatedSearchSubmit = (query: string) => {
+    setIsAnimatedSearchExpanded(false);
+    onSearchSubmit(query);
+  };
 
   const handleLogoClick = () => {
     setTargetWidth(undefined);
     setSearchInput("");
     onReset();
   };
-
+  
   return (
     <>
       {isEnquireOpen && (
@@ -66,25 +77,35 @@ export function Header({ onSearchSubmit, isCartVisible, onProfileOpenChange, isC
         isContentScrolled && 'bg-background border-b-2',
         (isEnquireOpen && isContentScrolled) && 'bg-[#2e1440] border-b-2 border-custom-purple-dark',
       )}>
-        <div className="container flex h-20 max-w-screen-2xl items-center justify-between px-4 sm:px-6 lg:px-8 xl:px-24">
+        <div className="container relative flex h-20 max-w-screen-2xl items-center justify-between px-4 sm:px-6 lg:px-8 xl:px-24">
           
           <Logo onLogoClick={handleLogoClick} isEnquireOpen={isEnquireOpen} />
           
           <Navigation 
-            isCompactHeader={isCompactHeader} 
             isEnquireOpen={isEnquireOpen}
             onNavigate={onNavigate}
             activeView={activeView}
+            isAnimatedSearchExpanded={isAnimatedSearchExpanded}
           />
+
+          {activeView === 'about' && (
+            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+                <AnimatedSearchBar 
+                    onSearchSubmit={handleAnimatedSearchSubmit}
+                    isExpanded={isAnimatedSearchExpanded}
+                    onExpandedChange={setIsAnimatedSearchExpanded}
+                />
+            </div>
+          )}
           
           <UserActions 
             isEnquireOpen={isEnquireOpen}
-            isCompactHeader={isCompactHeader}
             onEnquireOpenChange={setIsEnquireOpen}
             onProfileOpenChange={onProfileOpenChange}
             onNavigate={onNavigate}
             activeView={activeView}
-            onSearchSubmit={(query) => onSearchSubmit(query)}
+            onAnimatedSearchToggle={() => setIsAnimatedSearchExpanded(prev => !prev)}
+            isAnimatedSearchExpanded={isAnimatedSearchExpanded}
           />
         </div>
 

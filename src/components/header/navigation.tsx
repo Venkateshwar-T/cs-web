@@ -5,10 +5,10 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 
 interface NavigationProps {
-    isCompactHeader: boolean;
-    isEnquireOpen: boolean;
-    onNavigate: (view: 'about' | 'faq') => void;
-    activeView: string;
+  isEnquireOpen: boolean;
+  onNavigate: (view: 'about' | 'faq') => void;
+  activeView: string;
+  isAnimatedSearchExpanded: boolean;
 }
 
 const navLinks = [
@@ -17,8 +17,8 @@ const navLinks = [
 ] as const;
 
 
-export function Navigation({ isCompactHeader, isEnquireOpen, onNavigate, activeView }: NavigationProps) {
-    if (activeView === 'search') {
+export function Navigation({ isEnquireOpen, onNavigate, activeView, isAnimatedSearchExpanded }: NavigationProps) {
+    if (activeView === 'search' || isAnimatedSearchExpanded) {
         return (
             <div className="hidden md:flex flex-1 justify-center items-center gap-4 lg:gap-8 text-base lg:text-lg">
                 {/* Placeholder for spacing when search bar is active */}
