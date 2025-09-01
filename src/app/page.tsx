@@ -51,6 +51,10 @@ const initialFilterState: FilterState = {
   selectedWeights: [],
 };
 
+const allProducts: Product[] = Array.from({ length: 12 }).map((_, i) => ({
+  id: i,
+  name: `Diwali Collection Box ${i + 1}`,
+}));
 
 export default function Home() {
   const [isSearchActive, setIsSearchActive] = useState(false);
@@ -64,7 +68,7 @@ export default function Home() {
   const [isCartButtonExpanded, setIsCartButtonExpanded] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [isImageExpanded, setIsImageExpanded] = useState(false);
-  const [likedProducts, setLikedProducts] = useState<Record<number, boolean>>({});
+  const [likedProducts, setLikedProducts] = useState<Record<number, boolean>>({ 0: true, 2: true, 5: true });
   const [sortOption, setSortOption] = useState("featured");
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isCartVisible, setIsCartVisible] = useState(false);
@@ -259,6 +263,7 @@ export default function Home() {
               />
               <div className="h-full flex-grow ml-8 mr-8 relative">
                   <SearchResultsDetails 
+                    products={allProducts}
                     query={searchQuery} 
                     onAddToCart={handleAddToCart} 
                     cart={cart}
@@ -354,6 +359,10 @@ export default function Home() {
               onClose={() => setIsProfileOpen(false)} 
               profile={profileInfo} 
               onProfileUpdate={handleProfileUpdate}
+              products={allProducts}
+              likedProducts={likedProducts}
+              onLikeToggle={handleLikeToggle}
+              onAddToCart={handleAddToCart}
             />
           </div>
         </>

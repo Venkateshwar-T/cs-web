@@ -5,7 +5,8 @@ import { useState } from 'react';
 import { X } from 'lucide-react';
 import { ProfileSidebar } from './profile-sidebar';
 import { ProfileDetailsView } from './profile-details-view';
-import type { ProfileInfo } from '@/app/page';
+import type { ProfileInfo, Product } from '@/app/page';
+import { WishlistView } from './wishlist-view';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -21,9 +22,21 @@ interface ProfilePopupProps {
   onClose: () => void;
   profile: ProfileInfo;
   onProfileUpdate: (updatedProfile: Partial<ProfileInfo>) => void;
+  products: Product[];
+  likedProducts: Record<number, boolean>;
+  onLikeToggle: (productId: number) => void;
+  onAddToCart: (productName: string, quantity: number) => void;
 }
 
-export function ProfilePopup({ onClose, profile, onProfileUpdate }: ProfilePopupProps) {
+export function ProfilePopup({ 
+  onClose, 
+  profile, 
+  onProfileUpdate, 
+  products, 
+  likedProducts, 
+  onLikeToggle,
+  onAddToCart
+}: ProfilePopupProps) {
   const [activeTab, setActiveTab] = useState('My Profile');
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   const [isDialogVisible, setIsDialogVisible] = useState(false);
@@ -79,6 +92,14 @@ export function ProfilePopup({ onClose, profile, onProfileUpdate }: ProfilePopup
                       profile={profile} 
                       onHasChangesChange={setHasUnsavedChanges}
                       onProfileUpdate={onProfileUpdate}
+                    />
+                  )}
+                  {activeTab === 'My Wishlist' && (
+                    <WishlistView
+                      products={products}
+                      likedProducts={likedProducts}
+                      onLikeToggle={onLikeToggle}
+                      onAddToCart={onAddToCart}
                     />
                   )}
                   {/* Add other views here based on activeTab */}

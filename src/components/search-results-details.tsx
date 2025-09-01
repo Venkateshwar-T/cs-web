@@ -16,6 +16,7 @@ import {
 import { ProductCardSkeleton } from "./product-card-skeleton";
 
 interface SearchResultsDetailsProps {
+  products: Product[];
   query: string;
   onAddToCart: (productName: string, quantity: number) => void;
   cart: Record<string, number>;
@@ -30,6 +31,7 @@ interface SearchResultsDetailsProps {
 }
 
 export function SearchResultsDetails({ 
+  products,
   query, 
   onAddToCart, 
   cart, 
@@ -42,10 +44,6 @@ export function SearchResultsDetails({
   sortOption,
   onSortChange
 }: SearchResultsDetailsProps) {
-  const products: Product[] = Array.from({ length: 12 }).map((_, i) => ({
-    id: i,
-    name: `Diwali Collection Box ${i + 1}`,
-  }));
 
   const [isScrolling, setIsScrolling] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
