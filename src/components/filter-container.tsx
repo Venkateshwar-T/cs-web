@@ -2,7 +2,7 @@
 'use client';
 
 import { cn } from "@/lib/utils";
-import { SlidersHorizontal } from 'lucide-react';
+import { SlidersHorizontal, ChefHat, Cake, Package, Weight } from 'lucide-react';
 import { Slider } from '@/components/ui/slider';
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
@@ -11,10 +11,13 @@ import { priceOptions, flavourOptions, occasionOptions, productTypeOptions, weig
 import { useRef, useEffect } from "react";
 
 
-const FilterSection = ({ title, children }: { title: string, children: React.ReactNode }) => (
+const FilterSection = ({ title, icon, children }: { title: string, icon: React.ReactNode, children: React.ReactNode }) => (
   <div className="space-y-2">
-    <h3 className="text-base text-white font-bold font-plex-sans-condensed">{title}</h3>
-    <div className="space-y-2">{children}</div>
+    <div className="flex items-center gap-2">
+        {icon}
+        <h3 className="text-base text-white font-bold font-plex-sans-condensed">{title}</h3>
+    </div>
+    <div className="space-y-2 pl-7">{children}</div>
   </div>
 );
 
@@ -74,7 +77,7 @@ export function FilterContainer({ filters, onFilterChange, isSearching }: Filter
   const handleWeightChange = createHandler('selectedWeights');
 
   return (
-    <div className={cn("bg-[#5D2B79] h-full w-[17%] rounded-tr-[40px] animate-slide-in-from-left")} style={{ animationDuration: '0.5s' }}>
+    <div className={cn("bg-custom-gray-dark h-full w-[17%] rounded-tr-[40px] animate-slide-in-from-left")} style={{ animationDuration: '0.5s' }}>
         <div className="bg-white/20 h-full w-full rounded-tr-[40px] md:pt-2 md:pl-2 lg:pt-4 lg:pl-4 xl:pt-8 xl:pl-8">
             <div ref={scrollContainerRef} className="h-full overflow-y-auto custom-scrollbar pr-8 pb-8">
                 <div className="flex items-center text-white font-bold mb-6 text-lg">
@@ -97,7 +100,7 @@ export function FilterContainer({ filters, onFilterChange, isSearching }: Filter
                     />
                   </div>
 
-                  <div className="space-y-2">
+                  <div className="space-y-2 pl-7">
                     {priceOptions.map((option) => (
                        <CheckboxItem
                           key={option.id}
@@ -109,7 +112,7 @@ export function FilterContainer({ filters, onFilterChange, isSearching }: Filter
                     ))}
                   </div>
                   
-                  <FilterSection title="Flavours & Fillings">
+                  <FilterSection title="Flavours & Fillings" icon={<ChefHat className="h-5 w-5 text-white" />}>
                     {flavourOptions.map((option) => (
                       <CheckboxItem
                         key={option.id}
@@ -121,7 +124,7 @@ export function FilterContainer({ filters, onFilterChange, isSearching }: Filter
                     ))}
                   </FilterSection>
 
-                  <FilterSection title="Best for Occasion">
+                  <FilterSection title="Best for Occasion" icon={<Cake className="h-5 w-5 text-white" />}>
                     {occasionOptions.map((option) => (
                       <CheckboxItem
                         key={option.id}
@@ -134,7 +137,7 @@ export function FilterContainer({ filters, onFilterChange, isSearching }: Filter
                     ))}
                   </FilterSection>
 
-                  <FilterSection title="Product Type">
+                  <FilterSection title="Product Type" icon={<Package className="h-5 w-5 text-white" />}>
                     {productTypeOptions.map((option) => (
                       <CheckboxItem
                         key={option.id}
@@ -147,7 +150,7 @@ export function FilterContainer({ filters, onFilterChange, isSearching }: Filter
                     ))}
                   </FilterSection>
 
-                  <FilterSection title="Weight">
+                  <FilterSection title="Weight" icon={<Weight className="h-5 w-5 text-white" />}>
                     {weightOptions.map((option) => (
                       <CheckboxItem
                         key={option.id}
