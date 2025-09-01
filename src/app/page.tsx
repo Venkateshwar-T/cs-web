@@ -230,7 +230,7 @@ export default function Home() {
 
   const handleScroll = (event: UIEvent<HTMLElement>) => {
     const scrollTop = event.currentTarget.scrollTop;
-    if (activeView === 'order-confirmed') {
+    if (activeView === 'order-confirmed' || activeView === 'about') {
       setIsContentScrolled(scrollTop > 10);
     } else {
       setIsContentScrolled(false);
@@ -271,7 +271,7 @@ export default function Home() {
         <main onScroll={handleScroll} className={cn(
           "flex-grow overflow-y-auto flex flex-col transition-all duration-500 relative",
           activeView === 'home' ? 'pt-72' : 'pt-36',
-          activeView === 'order-confirmed' && 'no-scrollbar'
+          (activeView === 'order-confirmed' || activeView === 'about') && 'no-scrollbar'
         )}>
           {activeView === 'order-confirmed' ? (
             <div className="pb-8 mx-8 md:mx-32">
@@ -282,9 +282,9 @@ export default function Home() {
               <ExploreCategories />
             </div>
           ) : activeView === 'about' ? (
-            <div className={cn("transition-opacity duration-500 w-full")}>
+             <div className="flex flex-col w-full">
               {isSearchingOnAbout ? (
-                 <div className="flex w-full h-full items-start">
+                 <div className="flex w-full h-full items-start flex-grow">
                     <FilterContainer 
                       filters={filters} 
                       onFilterChange={handleFilterChange} 
@@ -308,7 +308,10 @@ export default function Home() {
                     </div>
                   </div>
               ) : (
-                <AboutView />
+                <>
+                  <AboutView />
+                  <Footer />
+                </>
               )}
             </div>
           ) : ( // search view
