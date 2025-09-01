@@ -51,12 +51,6 @@ export function Header({ onSearchSubmit, onProfileOpenChange, isContentScrolled,
     }
   }, [isAnimatedSearchExpanded]);
 
-  useEffect(() => {
-    if (activeView !== 'about') {
-      setIsAnimatedSearchExpanded(false);
-    }
-  }, [activeView]);
-
 
   const handleSearchSubmit = (e: React.FormEvent<HTMLFormElement>, currentSearchInput: string) => {
     e.preventDefault();

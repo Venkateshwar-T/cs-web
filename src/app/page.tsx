@@ -414,7 +414,7 @@ export default function Home() {
               products={allProducts}
               likedProducts={likedProducts}
               onLikeToggle={handleLikeToggle}
-              onAddToCart={handleAddToCart}
+              onAddToCart={onAddToCart}
               cart={cart}
               onClearWishlist={handleClearWishlist}
             />
