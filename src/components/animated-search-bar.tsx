@@ -14,6 +14,7 @@ interface AnimatedSearchBarProps {
   onExpandedChange: (expanded: boolean) => void;
   className?: string;
   width?: number;
+  isSearchingOnAbout: boolean;
 }
 
 export function AnimatedSearchBar({ 
@@ -22,6 +23,7 @@ export function AnimatedSearchBar({
   onExpandedChange,
   className,
   width,
+  isSearchingOnAbout,
 }: AnimatedSearchBarProps) {
   const [inputValue, setInputValue] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
@@ -44,6 +46,16 @@ export function AnimatedSearchBar({
         return;
     }
     onSearchSubmit(inputValue);
+  };
+  
+  const handleCloseClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (isSearchingOnAbout) {
+      setInputValue("");
+    } else {
+      onExpandedChange(false);
+      setInputValue("");
+    }
   };
 
   if (!isExpanded) return null;
@@ -73,11 +85,7 @@ export function AnimatedSearchBar({
                 />
                 <button
                     type="button"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onExpandedChange(false);
-                      setInputValue("");
-                    }}
+                    onClick={handleCloseClick}
                     className="p-2 hover:bg-gray-200 rounded-full"
                     aria-label="Close search"
                 >
