@@ -6,12 +6,15 @@ import Image from 'next/image';
 import { Plus, Minus } from 'lucide-react';
 import { Button } from './ui/button';
 import { FaTrash } from 'react-icons/fa';
+import { cn } from '@/lib/utils';
 
 interface CartItemCardProps {
     productName: string;
     quantity: number;
     onQuantityChange: (productName: string, newQuantity: number) => void;
     onRemove: (productName: string) => void;
+    isRemoving: boolean;
+    onAnimationEnd: () => void;
 }
 
 const selectedFlavours = [
@@ -20,7 +23,7 @@ const selectedFlavours = [
     { name: 'Dark Chocolate', price: 75 },
 ];
 
-export function CartItemCard({ productName, quantity, onQuantityChange, onRemove }: CartItemCardProps) {
+export function CartItemCard({ productName, quantity, onQuantityChange, onRemove, isRemoving, onAnimationEnd }: CartItemCardProps) {
 
     const handleIncrement = (e: React.MouseEvent) => {
         e.stopPropagation();
@@ -37,7 +40,13 @@ export function CartItemCard({ productName, quantity, onQuantityChange, onRemove
     }
 
     return (
-        <div className="w-full bg-white/80 rounded-2xl p-4 text-black relative">
+        <div 
+            onAnimationEnd={onAnimationEnd}
+            className={cn(
+                "w-full bg-white/80 rounded-2xl p-4 text-black relative transition-all duration-300",
+                isRemoving && 'animate-fade-out-slide-up'
+            )}
+        >
             <div className="flex gap-4">
                 <div className="w-1/3 flex-shrink-0">
                     <Image

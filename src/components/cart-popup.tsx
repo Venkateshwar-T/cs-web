@@ -2,6 +2,7 @@
 // @/components/cart-popup.tsx
 'use client';
 
+import { useState } from 'react';
 import { X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { CartItemCard } from './cart-item-card';
@@ -30,7 +31,18 @@ interface CartPopupProps {
 }
 
 export function CartPopup({ onClose, cart, onClearCart, onFinalizeOrder, onQuantityChange }: CartPopupProps) {
+  const [removingItems, setRemovingItems] = useState<string[]>([]);
   const cartItems = Object.entries(cart);
+
+  const handleRemove = (productName: string) => {
+    setRemovingItems(prev => [...prev, productName]);
+  };
+
+  const handleAnimationEnd = (productName: string) => {
+    onQuantityChange(productName, 0);
+    setRemovingItems(prev => prev.filter(item => item !== productName));
+  };
+
 
   return (
     <div className={cn("bg-[#9A7DAB] rounded-t-[40px] pt-4 text-white h-full overflow-hidden relative flex flex-col ring-4 ring-custom-gold animate-slide-up-fade-in")}>
@@ -83,7 +95,9 @@ export function CartPopup({ onClose, cart, onClearCart, onFinalizeOrder, onQuant
                     productName={productName}
                     quantity={quantity}
                     onQuantityChange={onQuantityChange}
-                    onRemove={() => onQuantityChange(productName, 0)}
+                    onRemove={() => handleRemove(productName)}
+                    isRemoving={removingItems.includes(productName)}
+                    onAnimationEnd={() => handleAnimationEnd(productName)}
                   />
                 ))}
               </div>
