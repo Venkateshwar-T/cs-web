@@ -60,6 +60,11 @@ export default {
           DEFAULT: 'hsl(var(--destructive))',
           foreground: 'hsl(var(--destructive-foreground))',
         },
+        success: {
+          DEFAULT: '#22c55e', // green-500
+          foreground: '#fafaf9', // stone-50
+          border: '#16a34a', // green-600
+        },
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',

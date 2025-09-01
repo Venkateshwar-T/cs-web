@@ -59,6 +59,7 @@ export function ProfileDetailsView({ profile, onHasChangesChange, onProfileUpdat
     toast({
       title: "Success",
       description: "Profile information updated successfully.",
+      variant: "success",
     });
   };
 
@@ -120,7 +121,7 @@ export function ProfileDetailsView({ profile, onHasChangesChange, onProfileUpdat
             </div>
         </div>
 
-        <div className="flex items-center justify-end gap-4 pt-4 pb-8">
+        <div className="flex items-center justify-between gap-4 pt-4 pb-8">
             <Button 
                 onClick={handleCancel}
                 variant="outline"
