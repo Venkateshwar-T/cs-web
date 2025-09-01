@@ -5,7 +5,6 @@ import { X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { CartItemCard } from './cart-item-card';
 import { Button } from './ui/button';
-import { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import { OrderSummary } from './order-summary';
 import { CartPopupFooter } from './cart-popup-footer';
@@ -30,32 +29,6 @@ interface CartPopupProps {
 
 export function CartPopup({ onClose, cart, onClearCart, onFinalizeOrder }: CartPopupProps) {
   const cartItems = Object.entries(cart);
-  const [isScrolling, setIsScrolling] = useState(false);
-  const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const scrollContainer = scrollContainerRef.current;
-
-    const handleScroll = () => {
-      setIsScrolling(true);
-      if (scrollTimeoutRef.current) {
-        clearTimeout(scrollTimeoutRef.current);
-      }
-      scrollTimeoutRef.current = setTimeout(() => {
-        setIsScrolling(false);
-      }, 1500); // Hide scrollbar after 1.5s of no scrolling
-    };
-
-    scrollContainer?.addEventListener('scroll', handleScroll);
-
-    return () => {
-      scrollContainer?.removeEventListener('scroll', handleScroll);
-      if (scrollTimeoutRef.current) {
-        clearTimeout(scrollTimeoutRef.current);
-      }
-    };
-  }, []);
 
   return (
     <div className={cn("bg-[#9A7DAB] rounded-t-[40px] pt-4 text-white h-full overflow-hidden relative flex flex-col ring-4 ring-custom-gold animate-slide-up-fade-in")}>
@@ -94,11 +67,7 @@ export function CartPopup({ onClose, cart, onClearCart, onFinalizeOrder }: CartP
         {/* Left Section (60%) */}
         <div className="w-[60%] flex flex-col">
           <div 
-            ref={scrollContainerRef}
-            className={cn(
-              "flex-grow overflow-y-auto pr-4 min-h-0",
-              isScrolling ? "custom-scrollbar" : "no-scrollbar"
-            )}
+            className="flex-grow overflow-y-auto pr-4 min-h-0 custom-scrollbar"
           >
             {cartItems.length === 0 ? (
               <div className="flex items-center justify-center h-full">
