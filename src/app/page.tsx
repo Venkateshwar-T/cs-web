@@ -230,7 +230,7 @@ export default function Home() {
 
   const handleScroll = (event: UIEvent<HTMLElement>) => {
     const scrollTop = event.currentTarget.scrollTop;
-    if (activeView === 'order-confirmed') {
+    if (activeView === 'order-confirmed' || activeView === 'about') {
       setIsContentScrolled(scrollTop > 10);
     } else {
       setIsContentScrolled(false);
@@ -271,7 +271,7 @@ export default function Home() {
         <main onScroll={handleScroll} className={cn(
           "flex-grow overflow-y-auto flex flex-col transition-all duration-500 relative",
           activeView === 'home' ? 'pt-72' : 'pt-36',
-          (activeView === 'order-confirmed' || activeView === 'about') && 'no-scrollbar'
+          (activeView === 'order-confirmed' || activeView === 'about') && 'custom-scrollbar'
         )}>
           {activeView === 'order-confirmed' ? (
             <div className="pb-8 mx-8 md:mx-32">
