@@ -1,6 +1,7 @@
 // @/components/wishlist-view.tsx
 'use client';
 
+import { useState } from 'react';
 import type { Product } from "@/app/page";
 import { WishlistItemCard } from "./wishlist-item-card";
 import { Button } from "./ui/button";
@@ -28,6 +29,16 @@ interface WishlistViewProps {
 
 export function WishlistView({ products, likedProducts, onLikeToggle, onAddToCart, cart, onClearWishlist }: WishlistViewProps) {
   const wishlistedProducts = products.filter(p => likedProducts[p.id]);
+  const [unlikingItems, setUnlikingItems] = useState<number[]>([]);
+
+  const handleUnlike = (productId: number) => {
+    setUnlikingItems(prev => [...prev, productId]);
+  };
+
+  const handleAnimationEnd = (productId: number) => {
+    onLikeToggle(productId);
+    setUnlikingItems(prev => prev.filter(id => id !== productId));
+  };
 
   return (
     <div className="p-8 text-white h-full flex flex-col relative">
@@ -40,9 +51,11 @@ export function WishlistView({ products, likedProducts, onLikeToggle, onAddToCar
               <WishlistItemCard 
                 key={product.id}
                 product={product}
-                onUnlike={() => onLikeToggle(product.id)}
+                onUnlike={() => handleUnlike(product.id)}
                 onAddToCart={onAddToCart}
                 isInCart={!!cart[product.name]}
+                isUnliking={unlikingItems.includes(product.id)}
+                onAnimationEnd={() => handleAnimationEnd(product.id)}
               />
             ))}
           </div>

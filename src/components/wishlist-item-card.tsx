@@ -12,9 +12,11 @@ interface WishlistItemCardProps {
   onAddToCart: (productName: string, quantity: number) => void;
   onUnlike: () => void;
   isInCart: boolean;
+  isUnliking: boolean;
+  onAnimationEnd: () => void;
 }
 
-export function WishlistItemCard({ product, onAddToCart, onUnlike, isInCart }: WishlistItemCardProps) {
+export function WishlistItemCard({ product, onAddToCart, onUnlike, isInCart, isUnliking, onAnimationEnd }: WishlistItemCardProps) {
   
   const handleAddToCartClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -22,7 +24,13 @@ export function WishlistItemCard({ product, onAddToCart, onUnlike, isInCart }: W
   };
 
   return (
-    <div className="bg-white/90 text-black rounded-2xl p-4 flex gap-4 w-full relative border border-white/30">
+    <div 
+      onAnimationEnd={onAnimationEnd}
+      className={cn(
+        "bg-white/90 text-black rounded-2xl p-4 flex gap-4 w-full relative border border-white/30 transition-all duration-300",
+        isUnliking && 'animate-fade-out-slide-up'
+      )}
+    >
       <div className="w-24 h-24 flex-shrink-0">
         <Image
           src="/choco img.png"
