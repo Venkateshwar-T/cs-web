@@ -18,8 +18,8 @@ const AboutSection = ({ title, children, icon }: { title: string, children: Reac
 
 export function AboutView() {
   return (
-    <div className="bg-[#5D2B79] rounded-t-[40px] mx-8 md:mx-32 animate-fade-in h-[75vh] flex flex-col" style={{ animationDuration: '0.5s', animationDelay: '0.2s', animationFillMode: 'both' }}>
-        <div className="bg-white/20 rounded-t-[40px] py-10 px-12 md:px-24 flex-grow overflow-y-auto custom-scrollbar">
+    <div className="bg-[#5D2B79] rounded-[40px] mx-8 md:mx-32 animate-fade-in h-[85vh] flex flex-col" style={{ animationDuration: '0.5s', animationDelay: '0.2s', animationFillMode: 'both' }}>
+        <div className="bg-white/20 rounded-[40px] py-10 px-12 md:px-24 flex-grow overflow-y-auto custom-scrollbar">
             <SectionTitle className="text-4xl text-center mb-12 font-poppins">
                 Our Philosophy
             </SectionTitle>
