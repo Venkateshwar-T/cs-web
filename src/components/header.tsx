@@ -88,6 +88,7 @@ export function Header({ onSearchSubmit, onProfileOpenChange, isContentScrolled,
   const handleLogoClick = () => {
     setTargetWidth(undefined);
     setSearchInput("");
+    setIsAnimatedSearchExpanded(false);
     onReset();
   };
   
