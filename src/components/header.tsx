@@ -74,8 +74,6 @@ export function Header({ onSearchSubmit, onProfileOpenChange, isContentScrolled,
   
   const handleAnimatedSearchSubmit = (query: string) => {
     onSearchSubmit(query);
-    // We no longer set `setIsAnimatedSearchExpanded(false)` here, 
-    // allowing the search bar to stay open.
   };
   
   const handleAnimatedSearchToggle = () => {
