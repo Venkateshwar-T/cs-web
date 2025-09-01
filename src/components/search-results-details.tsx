@@ -45,36 +45,7 @@ export function SearchResultsDetails({
   onSortChange
 }: SearchResultsDetailsProps) {
 
-  const [isScrolling, setIsScrolling] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-
-  useEffect(() => {
-    const scrollContainer = scrollContainerRef.current;
-
-    const handleScroll = () => {
-      setIsScrolling(true);
-      if (scrollTimeoutRef.current) {
-        clearTimeout(scrollTimeoutRef.current);
-      }
-      scrollTimeoutRef.current = setTimeout(() => {
-        setIsScrolling(false);
-      }, 1500);
-    };
-
-    if (scrollContainer) {
-      scrollContainer.addEventListener('scroll', handleScroll);
-    }
-
-    return () => {
-      if (scrollContainer) {
-        scrollContainer.removeEventListener('scroll', handleScroll);
-      }
-      if (scrollTimeoutRef.current) {
-        clearTimeout(scrollTimeoutRef.current);
-      }
-    };
-  }, []);
   
   useEffect(() => {
     if (isSearching && scrollContainerRef.current) {
@@ -87,10 +58,7 @@ export function SearchResultsDetails({
         <div className="bg-white/20 h-full w-full rounded-t-[40px] pt-4 md:pt-8 pl-4 md:pl-8">
             <div 
                 ref={scrollContainerRef}
-                className={cn(
-                "h-full overflow-y-auto pr-4 md:pr-8 pb-8",
-                isScrolling ? "custom-scrollbar" : "no-scrollbar"
-                )}
+                className="h-full overflow-y-auto custom-scrollbar pr-4 md:pr-8 pb-8"
             >
                 <div className={cn(
                     "flex flex-col md:flex-row justify-between md:items-center text-white mb-2",
