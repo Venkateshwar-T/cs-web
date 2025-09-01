@@ -16,12 +16,11 @@ interface SearchBarProps {
     onSubmit: (e: React.FormEvent<HTMLFormElement>, searchInput: string) => void;
     searchInput: string;
     onSearchInputChange: (value: string) => void;
-    isAnimatedSearchExpanded: boolean;
 }
 
 const textsToType = ["Corporate gifts", "Family presents", "Festive gifts", "Birthday surprises", "Anniversary specials"];
 
-export function SearchBar({ formRef, activeView, isEnquireOpen, targetWidth, onSubmit, searchInput, onSearchInputChange, isAnimatedSearchExpanded }: SearchBarProps) {
+export function SearchBar({ formRef, activeView, isEnquireOpen, targetWidth, onSubmit, searchInput, onSearchInputChange }: SearchBarProps) {
     const [placeholder, setPlaceholder] = useState("");
     const isSearchActive = activeView === 'search' || activeView === 'order-confirmed';
 
@@ -68,7 +67,7 @@ export function SearchBar({ formRef, activeView, isEnquireOpen, targetWidth, onS
             "container max-w-screen-2xl px-8 md:px-12 transition-all duration-500 ease-in-out",
             isSearchActive ? '-mt-[3.75rem]' : 'mt-8 sm:mt-12 md:mt-16',
             isEnquireOpen && "opacity-50 transition-opacity duration-100",
-            (activeView === 'about' || isAnimatedSearchExpanded) && "opacity-0 pointer-events-none -mt-[3.75rem]"
+            (activeView === 'about') && "opacity-0 pointer-events-none -mt-[3.75rem]"
         )}>
             <form 
                 ref={formRef}

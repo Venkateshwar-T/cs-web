@@ -12,16 +12,26 @@ import type { ActiveView } from "@/app/page";
 import { AnimatedSearchBar } from "./animated-search-bar";
 
 interface HeaderProps {
-  onSearchSubmit: (query: string) => void;
+  onSearchSubmit: (query: string, fromAnimated?: boolean) => void;
   onProfileOpenChange: (isOpen: boolean) => void;
   isContentScrolled: boolean;
   onReset: () => void;
   onNavigate: (view: 'about' | 'faq') => void;
   activeView: ActiveView;
   isSearchingOnAbout: boolean;
+  isUsingAnimatedSearch: boolean;
 }
 
-export function Header({ onSearchSubmit, onProfileOpenChange, isContentScrolled, onReset, onNavigate, activeView, isSearchingOnAbout }: HeaderProps) {
+export function Header({ 
+  onSearchSubmit, 
+  onProfileOpenChange, 
+  isContentScrolled, 
+  onReset, 
+  onNavigate, 
+  activeView, 
+  isSearchingOnAbout,
+  isUsingAnimatedSearch
+}: HeaderProps) {
   const [searchInput, setSearchInput] = useState("");
   const [isEnquireOpen, setIsEnquireOpen] = useState(false);
   const [targetWidth, setTargetWidth] = useState<number | undefined>(undefined);
@@ -39,7 +49,7 @@ export function Header({ onSearchSubmit, onProfileOpenChange, isContentScrolled,
   }, [isAnimatedSearchExpanded]);
   
   useEffect(() => {
-    if (isAnimatedSearchExpanded) {
+    if (isAnimatedSearchExpanded || isUsingAnimatedSearch) {
         setIsNavVisible(false);
     } else {
         // Delay making nav visible to allow for animation
@@ -48,7 +58,7 @@ export function Header({ onSearchSubmit, onProfileOpenChange, isContentScrolled,
         }, 300); // Should match animation duration
         return () => clearTimeout(timer);
     }
-  }, [isAnimatedSearchExpanded]);
+  }, [isAnimatedSearchExpanded, isUsingAnimatedSearch]);
 
   useEffect(() => {
     if (activeView !== 'about') {
@@ -79,7 +89,7 @@ export function Header({ onSearchSubmit, onProfileOpenChange, isContentScrolled,
   };
   
   const handleAnimatedSearchSubmit = (query: string) => {
-    onSearchSubmit(query);
+    onSearchSubmit(query, true);
   };
   
   const handleAnimatedSearchToggle = () => {
@@ -119,14 +129,14 @@ export function Header({ onSearchSubmit, onProfileOpenChange, isContentScrolled,
             isNavVisible={isNavVisible}
           />
           
-          {isAnimatedSearchExpanded && (
+          {(isAnimatedSearchExpanded || isUsingAnimatedSearch) && (
              <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
                 <AnimatedSearchBar 
                     onSearchSubmit={handleAnimatedSearchSubmit}
-                    isExpanded={isAnimatedSearchExpanded}
+                    isExpanded={isAnimatedSearchExpanded || isUsingAnimatedSearch}
                     onExpandedChange={setIsAnimatedSearchExpanded}
                     width={targetWidth}
-                    isSearchingOnAbout={isSearchingOnAbout}
+                    isSearchingOnAbout={isSearchingOnAbout || isUsingAnimatedSearch}
                 />
              </div>
           )}
@@ -143,16 +153,17 @@ export function Header({ onSearchSubmit, onProfileOpenChange, isContentScrolled,
           />
         </div>
 
-        <SearchBar
-          formRef={formRef}
-          activeView={activeView}
-          isEnquireOpen={isEnquireOpen}
-          targetWidth={targetWidth}
-          onSubmit={handleSearchSubmit}
-          searchInput={searchInput}
-          onSearchInputChange={setSearchInput}
-          isAnimatedSearchExpanded={isAnimatedSearchExpanded}
-        />
+        {!(isAnimatedSearchExpanded || isUsingAnimatedSearch) && (
+           <SearchBar
+              formRef={formRef}
+              activeView={activeView}
+              isEnquireOpen={isEnquireOpen}
+              targetWidth={targetWidth}
+              onSubmit={handleSearchSubmit}
+              searchInput={searchInput}
+              onSearchInputChange={setSearchInput}
+            />
+        )}
       </header>
     </>
   );

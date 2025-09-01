@@ -89,6 +89,7 @@ export default function Home() {
   });
   const [isContentScrolled, setIsContentScrolled] = useState(false);
   const [isSearchingOnAbout, setIsSearchingOnAbout] = useState(false);
+  const [isUsingAnimatedSearch, setIsUsingAnimatedSearch] = useState(false);
 
   useEffect(() => {
     if (selectedProduct || isImageExpanded || isCartVisible /*|| isLoginOpen*/ || isSignUpOpen || isCompleteDetailsOpen || isProfileOpen) {
@@ -111,7 +112,7 @@ export default function Home() {
     }
   }, [isCartOpen]);
 
-  const handleSearchSubmit = (query: string) => {
+  const handleSearchSubmit = (query: string, fromAnimated: boolean = false) => {
     setSearchQuery(query);
     if (activeView === 'about') {
       setIsSearchingOnAbout(true);
@@ -122,12 +123,16 @@ export default function Home() {
     setSelectedProduct(null);
     setFilters(initialFilterState);
     setSortOption("featured");
+    if (fromAnimated) {
+      setIsUsingAnimatedSearch(true);
+    }
   };
   
   const handleResetToHome = () => {
     setActiveView('home');
     setSearchQuery('');
     setIsSearchingOnAbout(false);
+    setIsUsingAnimatedSearch(false);
   };
 
   const handleAddToCart = (productName: string, quantity: number, animate: boolean = true) => {
@@ -261,6 +266,7 @@ export default function Home() {
           onNavigate={(view) => setActiveView(view as ActiveView)}
           activeView={activeView}
           isSearchingOnAbout={isSearchingOnAbout}
+          isUsingAnimatedSearch={isUsingAnimatedSearch}
         />
         <main onScroll={handleScroll} className={cn(
           "flex-grow overflow-y-auto flex flex-col transition-all duration-500 relative",
