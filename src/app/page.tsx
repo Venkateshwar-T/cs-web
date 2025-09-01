@@ -112,6 +112,12 @@ export default function Home() {
     setIsOrderConfirmed(false);
   };
   
+  const handleResetToHome = () => {
+    setIsSearchActive(false);
+    setIsOrderConfirmed(false);
+    setSearchQuery('');
+  };
+
   const handleAddToCart = (productName: string, quantity: number, animate: boolean = true) => {
     const newCart = { ...cart, [productName]: quantity };
     if (quantity <= 0) {
@@ -226,10 +232,10 @@ export default function Home() {
       <div className={cn("flex flex-col h-screen", isPopupOpen ? 'opacity-50' : '')}>
         <Header 
           onSearchSubmit={handleSearchSubmit} 
-          onSearchActiveChange={setIsSearchActive} 
           isCartVisible={isCartVisible}
           onProfileOpenChange={setIsProfileOpen}
           isContentScrolled={isContentScrolled}
+          onReset={handleResetToHome}
         />
         <main onScroll={handleScroll} className={cn(
           "flex-grow overflow-y-auto flex flex-col transition-all duration-500 relative",

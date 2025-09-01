@@ -10,24 +10,25 @@ import { UserActions } from "./header/user-actions";
 import { SearchBar } from "./header/search-bar";
 
 interface HeaderProps {
-  onSearchActiveChange: (isActive: boolean) => void;
   onSearchSubmit: (query: string) => void;
   isCartVisible: boolean;
   onProfileOpenChange: (isOpen: boolean) => void;
   isContentScrolled: boolean;
+  onReset: () => void;
 }
 
-export function Header({ onSearchActiveChange, onSearchSubmit, isCartVisible, onProfileOpenChange, isContentScrolled }: HeaderProps) {
+export function Header({ onSearchSubmit, isCartVisible, onProfileOpenChange, isContentScrolled, onReset }: HeaderProps) {
   const [isSearchSubmitted, setIsSearchSubmitted] = useState(false);
+  const [searchInput, setSearchInput] = useState("");
   const [isEnquireOpen, setIsEnquireOpen] = useState(false);
   const [targetWidth, setTargetWidth] = useState<number | undefined>(undefined);
   const formRef = useRef<HTMLFormElement>(null);
   const { toast } = useToast();
 
-  const handleSearchSubmit = (e: React.FormEvent<HTMLFormElement>, searchInput: string) => {
+  const handleSearchSubmit = (e: React.FormEvent<HTMLFormElement>, currentSearchInput: string) => {
     e.preventDefault();
     
-    if (!searchInput.trim()) {
+    if (!currentSearchInput.trim()) {
       toast({
         title: "Empty Field",
         description: "Search field cannot be empty.",
@@ -43,14 +44,14 @@ export function Header({ onSearchActiveChange, onSearchSubmit, isCartVisible, on
     }
     
     setIsSearchSubmitted(true);
-    onSearchActiveChange(true);
-    onSearchSubmit(searchInput.trim());
+    onSearchSubmit(currentSearchInput.trim());
   };
 
   const handleLogoClick = () => {
     setIsSearchSubmitted(false);
-    onSearchActiveChange(false);
     setTargetWidth(undefined);
+    setSearchInput("");
+    onReset();
   };
 
   return (
@@ -83,6 +84,8 @@ export function Header({ onSearchActiveChange, onSearchSubmit, isCartVisible, on
           isEnquireOpen={isEnquireOpen}
           targetWidth={targetWidth}
           onSubmit={handleSearchSubmit}
+          searchInput={searchInput}
+          onSearchInputChange={setSearchInput}
         />
       </header>
     </>

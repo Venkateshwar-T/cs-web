@@ -12,13 +12,14 @@ interface SearchBarProps {
     isEnquireOpen: boolean;
     targetWidth: number | undefined;
     onSubmit: (e: React.FormEvent<HTMLFormElement>, searchInput: string) => void;
+    searchInput: string;
+    onSearchInputChange: (value: string) => void;
 }
 
 const textsToType = ["Corporate gifts", "Family presents", "Festive gifts", "Birthday surprises", "Anniversary specials"];
 
-export function SearchBar({ formRef, isSearchSubmitted, isEnquireOpen, targetWidth, onSubmit }: SearchBarProps) {
+export function SearchBar({ formRef, isSearchSubmitted, isEnquireOpen, targetWidth, onSubmit, searchInput, onSearchInputChange }: SearchBarProps) {
     const [placeholder, setPlaceholder] = useState("");
-    const [searchInput, setSearchInput] = useState("");
 
     useEffect(() => {
         if (isSearchSubmitted) return;
@@ -77,7 +78,7 @@ export function SearchBar({ formRef, isSearchSubmitted, isEnquireOpen, targetWid
                     name="search"
                     autoComplete="off"
                     value={searchInput}
-                    onChange={(e) => setSearchInput(e.target.value)}
+                    onChange={(e) => onSearchInputChange(e.target.value)}
                     placeholder={isSearchSubmitted ? 'Search for gifts...' : placeholder}
                     className={`w-full pl-12 pr-4 h-11 rounded-full bg-transparent border-none focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-gray-500 text-lg md:text-xl text-black`}
                 />
