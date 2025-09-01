@@ -11,13 +11,14 @@ interface WishlistItemCardProps {
   product: Product;
   onAddToCart: (productName: string, quantity: number) => void;
   onUnlike: () => void;
+  isInCart: boolean;
 }
 
-export function WishlistItemCard({ product, onAddToCart, onUnlike }: WishlistItemCardProps) {
+export function WishlistItemCard({ product, onAddToCart, onUnlike, isInCart }: WishlistItemCardProps) {
   
   const handleAddToCartClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    onAddToCart(product.name, 1);
+    onAddToCart(product.name, isInCart ? 0 : 1);
   };
 
   return (
@@ -50,9 +51,14 @@ export function WishlistItemCard({ product, onAddToCart, onUnlike }: WishlistIte
         <Button
           size="sm"
           onClick={handleAddToCartClick}
-          className="w-full rounded-full uppercase bg-transparent border-2 border-b-[3px] border-custom-purple-dark text-custom-purple-dark hover:bg-custom-purple-dark hover:text-white h-9 px-6 text-xs"
+          className={cn(
+            "w-full rounded-full uppercase border-2 border-b-[3px] h-9 px-6 text-xs transition-colors duration-300",
+            isInCart
+              ? 'bg-custom-gold border-custom-gold text-custom-purple-dark hover:bg-custom-gold/90'
+              : 'bg-transparent border-custom-gold text-custom-purple-dark hover:bg-custom-gold hover:text-custom-purple-dark'
+          )}
         >
-          Add to Cart
+          {isInCart ? 'ADDED' : 'ADD'}
         </Button>
       </div>
     </div>

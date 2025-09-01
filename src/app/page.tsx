@@ -363,6 +363,7 @@ export default function Home() {
               likedProducts={likedProducts}
               onLikeToggle={handleLikeToggle}
               onAddToCart={handleAddToCart}
+              cart={cart}
             />
           </div>
         </>

@@ -9,9 +9,10 @@ interface WishlistViewProps {
   likedProducts: Record<number, boolean>;
   onLikeToggle: (productId: number) => void;
   onAddToCart: (productName: string, quantity: number) => void;
+  cart: Record<string, number>;
 }
 
-export function WishlistView({ products, likedProducts, onLikeToggle, onAddToCart }: WishlistViewProps) {
+export function WishlistView({ products, likedProducts, onLikeToggle, onAddToCart, cart }: WishlistViewProps) {
   const wishlistedProducts = products.filter(p => likedProducts[p.id]);
 
   return (
@@ -26,6 +27,7 @@ export function WishlistView({ products, likedProducts, onLikeToggle, onAddToCar
               product={product}
               onUnlike={() => onLikeToggle(product.id)}
               onAddToCart={onAddToCart}
+              isInCart={!!cart[product.name]}
             />
           ))}
         </div>
