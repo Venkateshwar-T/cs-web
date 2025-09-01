@@ -37,6 +37,14 @@ export function Header({ onSearchSubmit, onProfileOpenChange, isContentScrolled,
       setIsAnimatedSearchExpanded(false);
     }
   }, [activeView, isSearchingOnAbout]);
+  
+  useEffect(() => {
+    // When the animated search bar is closed, reset the target width
+    // to ensure it's recalculated on the next open.
+    if (!isAnimatedSearchExpanded) {
+      setTargetWidth(undefined);
+    }
+  }, [isAnimatedSearchExpanded]);
 
   useEffect(() => {
     if (isAnimatedSearchExpanded) {

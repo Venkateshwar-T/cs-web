@@ -14,7 +14,7 @@ interface AnimatedSearchBarProps {
   isExpanded: boolean;
   onExpandedChange: (expanded: boolean) => void;
   className?: string;
-  width?: number;
+  width: number | undefined;
   isSearchingOnAbout: boolean;
 }
 
@@ -55,7 +55,6 @@ export function AnimatedSearchBar({
       setInputValue("");
     } else {
       onExpandedChange(false);
-      setInputValue("");
     }
   };
 
@@ -66,7 +65,7 @@ export function AnimatedSearchBar({
       <motion.div
         className="flex items-center h-11 rounded-full bg-white text-black shadow-lg overflow-hidden"
         initial={{ width: 0 }}
-        animate={{ width: width ? `${width}px` : "300px" }}
+        animate={{ width: width ? `${width}px` : "0px" }}
         transition={{ duration: 0.3, ease: "easeInOut" }}
       >
         <div className="flex items-center w-full h-full">
