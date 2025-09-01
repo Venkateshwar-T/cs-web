@@ -1,4 +1,3 @@
-
 // @/components/header.tsx
 "use client";
 
@@ -50,6 +49,12 @@ export function Header({ onSearchSubmit, onProfileOpenChange, isContentScrolled,
         return () => clearTimeout(timer);
     }
   }, [isAnimatedSearchExpanded]);
+
+  useEffect(() => {
+    if (activeView !== 'about') {
+      setIsAnimatedSearchExpanded(false);
+    }
+  }, [activeView]);
 
 
   const handleSearchSubmit = (e: React.FormEvent<HTMLFormElement>, currentSearchInput: string) => {
@@ -146,6 +151,7 @@ export function Header({ onSearchSubmit, onProfileOpenChange, isContentScrolled,
           onSubmit={handleSearchSubmit}
           searchInput={searchInput}
           onSearchInputChange={setSearchInput}
+          isAnimatedSearchExpanded={isAnimatedSearchExpanded}
         />
       </header>
     </>
