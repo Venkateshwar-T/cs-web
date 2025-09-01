@@ -11,6 +11,9 @@ import { IoLogoFacebook } from "react-icons/io5";
 import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetHeader } from "@/components/ui/sheet";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
+import { AnimatedSearchBar } from "../animated-search-bar";
+import type { ActiveView } from "@/app/page";
+
 
 interface UserActionsProps {
     isEnquireOpen: boolean;
@@ -18,10 +21,8 @@ interface UserActionsProps {
     onEnquireOpenChange: (isOpen: boolean) => void;
     onProfileOpenChange: (isOpen: boolean) => void;
     onNavigate: (view: 'about' | 'faq') => void;
-    activeView: string;
-    showSearchIcon: boolean;
-    onToggleSearch?: () => void;
-    isSearchExpanded?: boolean;
+    activeView: ActiveView;
+    onSearchSubmit: (query: string) => void;
 }
 
 const navLinks = [
@@ -29,28 +30,17 @@ const navLinks = [
     { id: "faq", label: "FAQ" },
 ] as const;
 
-export function UserActions({ isEnquireOpen, isCompactHeader, onEnquireOpenChange, onProfileOpenChange, onNavigate, activeView, showSearchIcon, onToggleSearch, isSearchExpanded }: UserActionsProps) {
+export function UserActions({ isEnquireOpen, isCompactHeader, onEnquireOpenChange, onProfileOpenChange, onNavigate, activeView, onSearchSubmit }: UserActionsProps) {
     
     return (
         <>
             <div className="flex flex-1 justify-end animate-slide-in-from-right" style={{ animationDuration: '0.5s' }}>
                 {/* Desktop Actions */}
                 <div className="hidden md:flex items-center gap-1">
-                    {showSearchIcon && (
-                         <div className={cn(
-                           "flex items-center gap-1 transition-opacity duration-300",
-                           isSearchExpanded && 'opacity-0 pointer-events-none'
-                         )}>
-                            <button 
-                              onClick={onToggleSearch}
-                              className="h-11 w-11 rounded-full flex items-center justify-center hover:opacity-90 transition-opacity opacity-0 animate-slide-in-from-right-and-fade" 
-                              style={{animationDuration: '0.5s', animationDelay: '0.1s', animationFillMode: 'forwards'}}
-                            >
-                                <div className="bg-white h-10 w-10 rounded-full flex items-center justify-center">
-                                    <Image src="/icons/search_icon.png" alt="Search" width={24} height={24} />
-                                </div>
-                            </button>
-                             <Separator orientation="vertical" className="h-6 bg-foreground/50 mx-1 lg:mx-2 opacity-0 animate-slide-in-from-right-and-fade" style={{animationDuration: '0.5s', animationDelay: '0.1s', animationFillMode: 'forwards'}} />
+                    {activeView === 'about' && (
+                         <div className="flex items-center gap-1">
+                            <AnimatedSearchBar onSearchSubmit={onSearchSubmit} />
+                             <Separator orientation="vertical" className="h-6 bg-foreground/50 mx-1 lg:mx-2" />
                          </div>
                     )}
                     <Popover open={isEnquireOpen} onOpenChange={onEnquireOpenChange}>

@@ -15,15 +15,13 @@ interface SearchBarProps {
     onSubmit: (e: React.FormEvent<HTMLFormElement>, searchInput: string) => void;
     searchInput: string;
     onSearchInputChange: (value: string) => void;
-    isSearchExpanded?: boolean;
 }
 
 const textsToType = ["Corporate gifts", "Family presents", "Festive gifts", "Birthday surprises", "Anniversary specials"];
 
-export function SearchBar({ formRef, activeView, isEnquireOpen, targetWidth, onSubmit, searchInput, onSearchInputChange, isSearchExpanded }: SearchBarProps) {
+export function SearchBar({ formRef, activeView, isEnquireOpen, targetWidth, onSubmit, searchInput, onSearchInputChange }: SearchBarProps) {
     const [placeholder, setPlaceholder] = useState("");
     const isSearchActive = activeView === 'search';
-    const isAboutActive = activeView === 'about';
 
     useEffect(() => {
         if (activeView !== 'home') return;
@@ -63,21 +61,18 @@ export function SearchBar({ formRef, activeView, isEnquireOpen, targetWidth, onS
         onSubmit(e, searchInput);
     };
     
-    const showExpandedSearch = isAboutActive && isSearchExpanded;
-
     return (
         <div className={cn(
             "container max-w-screen-2xl px-8 md:px-12 transition-all duration-500 ease-in-out",
-            (isSearchActive || showExpandedSearch) ? '-mt-[3.75rem]' : 'mt-8 sm:mt-12 md:mt-16',
+            isSearchActive ? '-mt-[3.75rem]' : 'mt-8 sm:mt-12 md:mt-16',
             isEnquireOpen && "opacity-50 transition-opacity duration-100",
-            (isAboutActive && !isSearchExpanded) && "opacity-0 pointer-events-none -mt-[3.75rem]"
+            activeView === 'about' && "opacity-0 pointer-events-none -mt-[3.75rem]"
         )}>
             <form 
                 ref={formRef}
                 onSubmit={handleSubmit} 
-                className={cn(`relative mx-auto transition-all duration-500 ease-in-out`,
-                  !targetWidth && !isSearchActive && !showExpandedSearch ? 'max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl' : '',
-                  showExpandedSearch ? 'animate-slide-down' : 'animate-slide-down'
+                className={cn(`relative mx-auto transition-all duration-500 ease-in-out animate-slide-down`,
+                  !targetWidth && !isSearchActive ? 'max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl' : ''
                 )}
                 style={{ 
                     maxWidth: targetWidth ? `${targetWidth}px` : undefined, 

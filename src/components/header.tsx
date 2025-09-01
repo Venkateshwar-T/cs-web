@@ -24,24 +24,10 @@ export function Header({ onSearchSubmit, isCartVisible, onProfileOpenChange, isC
   const [searchInput, setSearchInput] = useState("");
   const [isEnquireOpen, setIsEnquireOpen] = useState(false);
   const [targetWidth, setTargetWidth] = useState<number | undefined>(undefined);
-  const [isSearchExpanded, setIsSearchExpanded] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
   const { toast } = useToast();
   
   const isCompactHeader = activeView !== 'home';
-
-  useEffect(() => {
-    // Reset the expanded search when view changes from 'about'
-    if (activeView !== 'about') {
-      setIsSearchExpanded(false);
-    }
-  }, [activeView]);
-
-  const handleToggleSearchExpand = () => {
-    if (activeView === 'about') {
-      setIsSearchExpanded(prev => !prev);
-    }
-  };
 
   const handleSearchSubmit = (e: React.FormEvent<HTMLFormElement>, currentSearchInput: string) => {
     e.preventDefault();
@@ -62,7 +48,6 @@ export function Header({ onSearchSubmit, isCartVisible, onProfileOpenChange, isC
     }
     
     onSearchSubmit(currentSearchInput.trim());
-    setIsSearchExpanded(false); // Collapse if it was expanded
   };
 
   const handleLogoClick = () => {
@@ -99,9 +84,7 @@ export function Header({ onSearchSubmit, isCartVisible, onProfileOpenChange, isC
             onProfileOpenChange={onProfileOpenChange}
             onNavigate={onNavigate}
             activeView={activeView}
-            showSearchIcon={activeView === 'about'}
-            onToggleSearch={handleToggleSearchExpand}
-            isSearchExpanded={isSearchExpanded}
+            onSearchSubmit={(query) => onSearchSubmit(query)}
           />
         </div>
 
@@ -113,7 +96,6 @@ export function Header({ onSearchSubmit, isCartVisible, onProfileOpenChange, isC
           onSubmit={handleSearchSubmit}
           searchInput={searchInput}
           onSearchInputChange={setSearchInput}
-          isSearchExpanded={isSearchExpanded}
         />
       </header>
     </>
