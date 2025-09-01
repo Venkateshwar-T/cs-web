@@ -32,22 +32,24 @@ export function Header({ onSearchSubmit, onProfileOpenChange, isContentScrolled,
   const { toast } = useToast();
   
   useEffect(() => {
-    if (activeView !== 'about') {
-      setIsAnimatedSearchExpanded(false);
-    }
-     // When search is no longer active on about page, collapse the search bar
+    // When search is no longer active on about page, collapse the search bar
     if (activeView === 'about' && !isSearchingOnAbout) {
       setIsAnimatedSearchExpanded(false);
     }
+  }, [activeView, isSearchingOnAbout]);
 
-    if (!isAnimatedSearchExpanded) {
+  useEffect(() => {
+    if (isAnimatedSearchExpanded) {
+        setIsNavVisible(false);
+    } else {
         // Delay making nav visible to allow for animation
         const timer = setTimeout(() => {
             setIsNavVisible(true);
         }, 300); // Should match animation duration
         return () => clearTimeout(timer);
     }
-  }, [activeView, isAnimatedSearchExpanded, isSearchingOnAbout]);
+  }, [isAnimatedSearchExpanded]);
+
 
   const handleSearchSubmit = (e: React.FormEvent<HTMLFormElement>, currentSearchInput: string) => {
     e.preventDefault();
@@ -77,17 +79,13 @@ export function Header({ onSearchSubmit, onProfileOpenChange, isContentScrolled,
   };
   
   const handleAnimatedSearchToggle = () => {
-    if (!isAnimatedSearchExpanded) {
-      if (formRef.current) {
-        const isLargeDesktop = window.innerWidth >= 1280;
-        const reductionFactor = isLargeDesktop ? 0.85 : 0.5;
-        // Use the initial width of the main search bar to calculate the target width
-        const initialFormWidth = formRef.current.offsetWidth;
-        setTargetWidth(initialFormWidth * reductionFactor);
-      }
-      setIsAnimatedSearchExpanded(true);
-      setIsNavVisible(false);
+    if (!isAnimatedSearchExpanded && formRef.current) {
+      const isLargeDesktop = window.innerWidth >= 1280;
+      const reductionFactor = isLargeDesktop ? 0.85 : 0.5;
+      const initialFormWidth = formRef.current.offsetWidth;
+      setTargetWidth(initialFormWidth * reductionFactor);
     }
+    setIsAnimatedSearchExpanded(prev => !prev);
   };
   
   const handleLogoClick = () => {
