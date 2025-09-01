@@ -1,7 +1,7 @@
 // @/components/profile-details-view.tsx
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import type { ProfileInfo } from "@/app/page";
@@ -10,13 +10,44 @@ import { Button } from './ui/button';
 
 interface ProfileDetailsViewProps {
   profile: ProfileInfo;
+  onHasChangesChange: (hasChanges: boolean) => void;
+  onCancel: () => void;
 }
 
-export function ProfileDetailsView({ profile }: ProfileDetailsViewProps) {
+export function ProfileDetailsView({ profile, onHasChangesChange, onCancel }: ProfileDetailsViewProps) {
+  const [name, setName] = useState(profile.name);
+  const [phone, setPhone] = useState(profile.phone);
+  const [email, setEmail] = useState(profile.email);
+  const [password, setPassword] = useState('yourpassword'); // Example password
   const [showPassword, setShowPassword] = useState(false);
+
+  useEffect(() => {
+    const hasChanges = 
+      name !== profile.name || 
+      phone !== profile.phone || 
+      email !== profile.email || 
+      password !== 'yourpassword'; // Compare against initial/saved password
+    onHasChangesChange(hasChanges);
+  }, [name, phone, email, password, profile, onHasChangesChange]);
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
+  };
+  
+  const handleCancel = () => {
+    setName(profile.name);
+    setPhone(profile.phone);
+    setEmail(profile.email);
+    setPassword('yourpassword');
+    onCancel();
+  };
+
+  const handleSave = () => {
+    // Here you would typically call an API to save the data
+    const updatedProfile = { name, phone, email };
+    console.log("Saving data:", updatedProfile, "Password:", password);
+    onHasChangesChange(false); // Reset changes status after save
+    // You might want to update the profile prop from the parent component after a successful save
   };
 
   return (
@@ -28,13 +59,13 @@ export function ProfileDetailsView({ profile }: ProfileDetailsViewProps) {
         <AvatarFallback>{profile.name.charAt(0).toUpperCase()}</AvatarFallback>
       </Avatar>
 
-      <div className="w-full max-w-xs space-y-4">
+      <div className="w-full max-w-sm space-y-4">
         <div className="space-y-2">
           <label htmlFor="name" className="text-sm font-medium">Name</label>
           <Input 
             id="name" 
-            value={profile.name} 
-            readOnly 
+            value={name}
+            onChange={(e) => setName(e.target.value)}
             className="bg-white/10 border-white/20 rounded-2xl h-12 text-base" 
           />
         </div>
@@ -42,8 +73,8 @@ export function ProfileDetailsView({ profile }: ProfileDetailsViewProps) {
           <label htmlFor="phone" className="text-sm font-medium">Phone Number</label>
           <Input 
             id="phone" 
-            value={profile.phone} 
-            readOnly 
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
             className="bg-white/10 border-white/20 rounded-2xl h-12 text-base" 
           />
         </div>
@@ -51,8 +82,9 @@ export function ProfileDetailsView({ profile }: ProfileDetailsViewProps) {
           <label htmlFor="email" className="text-sm font-medium">Email</label>
           <Input 
             id="email" 
-            value={profile.email} 
-            readOnly 
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             className="bg-white/10 border-white/20 rounded-2xl h-12 text-base" 
           />
         </div>
@@ -62,8 +94,8 @@ export function ProfileDetailsView({ profile }: ProfileDetailsViewProps) {
                 <Input 
                     id="password" 
                     type={showPassword ? "text" : "password"} 
-                    value="yourpassword" // Replace with actual password state if needed
-                    readOnly 
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                     className="bg-white/10 border-white/20 rounded-2xl h-12 text-base pr-10" 
                 />
                 <button
@@ -78,12 +110,13 @@ export function ProfileDetailsView({ profile }: ProfileDetailsViewProps) {
 
         <div className="flex items-center justify-between gap-4 pt-4 pb-8">
             <Button 
+                onClick={handleCancel}
                 variant="outline"
                 className="bg-transparent text-base text-white border-custom-gold border-2 rounded-full px-12 hover:bg-custom-gold hover:text-custom-purple-dark"
             >
                 Cancel
             </Button>
-            <Button className="bg-custom-gold text-base text-custom-purple-dark rounded-full px-14 hover:bg-custom-gold/90">
+            <Button onClick={handleSave} className="bg-custom-gold text-base text-custom-purple-dark rounded-full px-14 hover:bg-custom-gold/90">
                 Save
             </Button>
         </div>

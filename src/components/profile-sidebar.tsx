@@ -1,7 +1,7 @@
 // @/components/profile-sidebar.tsx
 'use client';
 
-import * as React from 'react';
+import React from 'react';
 import Image from 'next/image';
 import { Heart, ListOrdered, LogOut } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -16,11 +16,10 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
-import { Button } from './ui/button';
 
 interface ProfileSidebarProps {
   activeTab: string;
-  setActiveTab: (tab: string) => void;
+  onTabChange: (tab: string) => void;
 }
 
 const mainSidebarItems = [
@@ -29,21 +28,21 @@ const mainSidebarItems = [
   { id: 'My Orders', label: 'My Orders', icon: <ListOrdered /> },
 ];
 
-export function ProfileSidebar({ activeTab, setActiveTab }: ProfileSidebarProps) {
+export function ProfileSidebar({ activeTab, onTabChange }: ProfileSidebarProps) {
   const handleLogout = () => {
     // Implement logout logic here
     console.log("User logged out");
   };
   
   return (
-    <div className="flex flex-col h-full bg-white pt-6 pb-4">
-      <nav className="flex-grow">
+    <div className="flex flex-col justify-between h-full bg-white pt-6 pb-4">
+      <nav>
         {mainSidebarItems.map((item) => {
           const isActive = activeTab === item.id;
           return (
             <button
               key={item.id}
-              onClick={() => setActiveTab(item.id)}
+              onClick={() => onTabChange(item.id)}
               className={cn(
                 "flex items-center gap-4 w-full py-3 px-6 font-medium transition-all duration-200",
                 isActive
