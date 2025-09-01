@@ -260,6 +260,7 @@ export default function Home() {
           onReset={handleResetToHome}
           onNavigate={(view) => setActiveView(view as ActiveView)}
           activeView={activeView}
+          isSearchingOnAbout={isSearchingOnAbout}
         />
         <main onScroll={handleScroll} className={cn(
           "flex-grow overflow-y-auto flex flex-col transition-all duration-500 relative",

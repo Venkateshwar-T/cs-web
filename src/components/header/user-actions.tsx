@@ -1,3 +1,4 @@
+
 // @/components/header/user-actions.tsx
 'use client';
 
@@ -22,6 +23,7 @@ interface UserActionsProps {
     activeView: ActiveView;
     onAnimatedSearchToggle: () => void;
     isAnimatedSearchExpanded: boolean;
+    isSearchingOnAbout: boolean;
 }
 
 const navLinks = [
@@ -37,6 +39,7 @@ export function UserActions({
     activeView,
     onAnimatedSearchToggle,
     isAnimatedSearchExpanded,
+    isSearchingOnAbout,
 }: UserActionsProps) {
     
     return (
@@ -44,7 +47,7 @@ export function UserActions({
             <div className="flex flex-1 justify-end animate-slide-in-from-right" style={{ animationDuration: '0.5s' }}>
                 {/* Desktop Actions */}
                 <div className="hidden md:flex items-center gap-1">
-                    {activeView === 'about' && !isAnimatedSearchExpanded && (
+                    {activeView === 'about' && !isAnimatedSearchExpanded && !isSearchingOnAbout && (
                          <div className={cn(
                             "flex items-center gap-1 transition-opacity duration-300",
                          )}>

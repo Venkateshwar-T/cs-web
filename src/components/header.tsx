@@ -1,3 +1,4 @@
+
 // @/components/header.tsx
 "use client";
 
@@ -18,9 +19,10 @@ interface HeaderProps {
   onReset: () => void;
   onNavigate: (view: 'about' | 'faq') => void;
   activeView: ActiveView;
+  isSearchingOnAbout: boolean;
 }
 
-export function Header({ onSearchSubmit, onProfileOpenChange, isContentScrolled, onReset, onNavigate, activeView }: HeaderProps) {
+export function Header({ onSearchSubmit, onProfileOpenChange, isContentScrolled, onReset, onNavigate, activeView, isSearchingOnAbout }: HeaderProps) {
   const [searchInput, setSearchInput] = useState("");
   const [isEnquireOpen, setIsEnquireOpen] = useState(false);
   const [targetWidth, setTargetWidth] = useState<number | undefined>(undefined);
@@ -33,6 +35,11 @@ export function Header({ onSearchSubmit, onProfileOpenChange, isContentScrolled,
     if (activeView !== 'about') {
       setIsAnimatedSearchExpanded(false);
     }
+     // When search is no longer active on about page, collapse the search bar
+    if (activeView === 'about' && !isSearchingOnAbout) {
+      setIsAnimatedSearchExpanded(false);
+    }
+
     if (!isAnimatedSearchExpanded) {
         // Delay making nav visible to allow for animation
         const timer = setTimeout(() => {
@@ -40,7 +47,7 @@ export function Header({ onSearchSubmit, onProfileOpenChange, isContentScrolled,
         }, 300); // Should match animation duration
         return () => clearTimeout(timer);
     }
-  }, [activeView, isAnimatedSearchExpanded]);
+  }, [activeView, isAnimatedSearchExpanded, isSearchingOnAbout]);
 
   const handleSearchSubmit = (e: React.FormEvent<HTMLFormElement>, currentSearchInput: string) => {
     e.preventDefault();
@@ -64,8 +71,9 @@ export function Header({ onSearchSubmit, onProfileOpenChange, isContentScrolled,
   };
   
   const handleAnimatedSearchSubmit = (query: string) => {
-    setIsAnimatedSearchExpanded(false);
     onSearchSubmit(query);
+    // We no longer set `setIsAnimatedSearchExpanded(false)` here, 
+    // allowing the search bar to stay open.
   };
   
   const handleAnimatedSearchToggle = () => {
@@ -128,6 +136,7 @@ export function Header({ onSearchSubmit, onProfileOpenChange, isContentScrolled,
             activeView={activeView}
             onAnimatedSearchToggle={handleAnimatedSearchToggle}
             isAnimatedSearchExpanded={isAnimatedSearchExpanded}
+            isSearchingOnAbout={isSearchingOnAbout}
           />
         </div>
 
