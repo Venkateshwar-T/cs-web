@@ -3,12 +3,15 @@
 'use client';
 
 import Image from 'next/image';
-import { Trash2, Plus, Minus } from 'lucide-react';
+import { Plus, Minus } from 'lucide-react';
 import { Button } from './ui/button';
+import { FaTrash } from 'react-icons/fa';
 
 interface CartItemCardProps {
     productName: string;
     quantity: number;
+    onQuantityChange: (productName: string, newQuantity: number) => void;
+    onRemove: (productName: string) => void;
 }
 
 const selectedFlavours = [
@@ -17,17 +20,21 @@ const selectedFlavours = [
     { name: 'Dark Chocolate', price: 75 },
 ];
 
-export function CartItemCard({ productName, quantity }: CartItemCardProps) {
+export function CartItemCard({ productName, quantity, onQuantityChange, onRemove }: CartItemCardProps) {
 
     const handleIncrement = (e: React.MouseEvent) => {
         e.stopPropagation();
-        // onAddToCart(product.name, quantity + 1);
+        onQuantityChange(productName, quantity + 1);
     };
 
     const handleDecrement = (e: React.MouseEvent) => {
         e.stopPropagation();
-        // onAddToCart(product.name, quantity - 1);
+        onQuantityChange(productName, quantity - 1);
     };
+    
+    const handleRemove = () => {
+        onRemove(productName);
+    }
 
     return (
         <div className="w-full bg-white/80 rounded-2xl p-4 text-black relative">
@@ -64,8 +71,8 @@ export function CartItemCard({ productName, quantity }: CartItemCardProps) {
                 </div>
 
                 <div className="absolute top-4 right-4 flex flex-col items-end gap-12">
-                     <button className="text-custom-purple-dark hover:text-custom-purple-dark/80">
-                        <Trash2 size={20} />
+                     <button onClick={handleRemove} className="text-custom-purple-dark hover:text-red-600 transition-colors">
+                        <FaTrash size={20} />
                     </button>
                     <div className="flex items-center justify-between rounded-full text-white h-9 w-32 border-2 border-custom-purple-dark overflow-hidden">
                         <Button

@@ -124,9 +124,11 @@ export default function Home() {
   };
 
   const handleAddToCart = (productName: string, quantity: number, animate: boolean = true) => {
-    const newCart = { ...cart, [productName]: quantity };
+    const newCart = { ...cart };
     if (quantity <= 0) {
       delete newCart[productName];
+    } else {
+      newCart[productName] = quantity;
     }
     setCart(newCart);
 
@@ -355,6 +357,7 @@ export default function Home() {
                     cart={cart}
                     onClearCart={handleClearCart}
                     onFinalizeOrder={handleOpenCompleteDetails}
+                    onQuantityChange={handleAddToCart}
                   />
               </div>
           </div>

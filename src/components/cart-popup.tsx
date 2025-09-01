@@ -1,3 +1,4 @@
+
 // @/components/cart-popup.tsx
 'use client';
 
@@ -25,9 +26,10 @@ interface CartPopupProps {
   cart: Record<string, number>;
   onClearCart: () => void;
   onFinalizeOrder: () => void;
+  onQuantityChange: (productName: string, newQuantity: number) => void;
 }
 
-export function CartPopup({ onClose, cart, onClearCart, onFinalizeOrder }: CartPopupProps) {
+export function CartPopup({ onClose, cart, onClearCart, onFinalizeOrder, onQuantityChange }: CartPopupProps) {
   const cartItems = Object.entries(cart);
 
   return (
@@ -80,6 +82,8 @@ export function CartPopup({ onClose, cart, onClearCart, onFinalizeOrder }: CartP
                     key={productName}
                     productName={productName}
                     quantity={quantity}
+                    onQuantityChange={onQuantityChange}
+                    onRemove={() => onQuantityChange(productName, 0)}
                   />
                 ))}
               </div>
