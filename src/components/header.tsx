@@ -60,13 +60,6 @@ export function Header({
     }
   }, [isAnimatedSearchExpanded, isUsingAnimatedSearch]);
 
-  useEffect(() => {
-    if (activeView !== 'about') {
-      setIsAnimatedSearchExpanded(false);
-    }
-  }, [activeView]);
-
-
   const handleSearchSubmit = (e: React.FormEvent<HTMLFormElement>, currentSearchInput: string) => {
     e.preventDefault();
     
@@ -108,6 +101,8 @@ export function Header({
     onReset();
   };
   
+  const showAnimatedSearch = isAnimatedSearchExpanded || isUsingAnimatedSearch;
+  
   return (
     <>
       {isEnquireOpen && (
@@ -129,11 +124,11 @@ export function Header({
             isNavVisible={isNavVisible}
           />
           
-          {(isAnimatedSearchExpanded || isUsingAnimatedSearch) && (
+          {showAnimatedSearch && (
              <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
                 <AnimatedSearchBar 
                     onSearchSubmit={handleAnimatedSearchSubmit}
-                    isExpanded={isAnimatedSearchExpanded || isUsingAnimatedSearch}
+                    isExpanded={showAnimatedSearch}
                     onExpandedChange={setIsAnimatedSearchExpanded}
                     width={targetWidth}
                     isSearchingOnAbout={isSearchingOnAbout || isUsingAnimatedSearch}
@@ -153,7 +148,7 @@ export function Header({
           />
         </div>
 
-        {!(isAnimatedSearchExpanded || isUsingAnimatedSearch) && (
+        {!showAnimatedSearch && (
            <SearchBar
               formRef={formRef}
               activeView={activeView}
