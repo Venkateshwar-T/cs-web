@@ -33,19 +33,13 @@ export function AnimatedSearchBar({
 
   const containerVariants = {
     collapsed: {
-      width: "44px",
+      width: "0px",
       transition: { duration: 0.3, ease: "easeInOut" },
     },
     expanded: {
       width: "300px",
       transition: { duration: 0.3, ease: "easeInOut" },
     },
-  };
-
-  const handleIconClick = () => {
-    if (!isExpanded) {
-        onExpandedChange(true);
-    }
   };
 
   const handleCloseClick = (e: React.MouseEvent) => {
@@ -69,6 +63,8 @@ export function AnimatedSearchBar({
     setInputValue("");
   };
 
+  if (!isExpanded) return null;
+
   return (
     <form onSubmit={handleSubmit} className={cn("flex items-center", className)}>
       <motion.div
@@ -76,7 +72,6 @@ export function AnimatedSearchBar({
         variants={containerVariants}
         initial="collapsed"
         animate={isExpanded ? "expanded" : "collapsed"}
-        onClick={handleIconClick}
         style={{ cursor: isExpanded ? "auto" : "pointer" }}
       >
         <div className="flex items-center w-full h-full">
@@ -84,27 +79,25 @@ export function AnimatedSearchBar({
                 <Image src="/icons/search_icon.png" alt="Search" width={24} height={24} />
             </div>
 
-            {isExpanded && (
-                <div className="flex-1 flex items-center pr-2">
-                    <input
-                        ref={inputRef}
-                        type="text"
-                        placeholder="Search for gifts..."
-                        value={inputValue}
-                        onChange={(e) => setInputValue(e.target.value)}
-                        className="w-full bg-transparent outline-none text-black placeholder:text-gray-500"
-                        onClick={(e) => e.stopPropagation()}
-                    />
-                    <button
-                        type="button"
-                        onClick={handleCloseClick}
-                        className="p-2 hover:bg-gray-200 rounded-full"
-                        aria-label="Close search"
-                    >
-                        <X size={20} />
-                    </button>
-                </div>
-            )}
+            <div className="flex-1 flex items-center pr-2">
+                <input
+                    ref={inputRef}
+                    type="text"
+                    placeholder="Search for gifts..."
+                    value={inputValue}
+                    onChange={(e) => setInputValue(e.target.value)}
+                    className="w-full bg-transparent outline-none text-black placeholder:text-gray-500"
+                    onClick={(e) => e.stopPropagation()}
+                />
+                <button
+                    type="button"
+                    onClick={handleCloseClick}
+                    className="p-2 hover:bg-gray-200 rounded-full"
+                    aria-label="Close search"
+                >
+                    <X size={20} />
+                </button>
+            </div>
         </div>
       </motion.div>
     </form>

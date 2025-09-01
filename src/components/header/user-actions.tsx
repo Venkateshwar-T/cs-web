@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { Menu, Phone, Search } from "lucide-react";
+import { Menu, Phone } from "lucide-react";
 import { AiOutlineInstagram, AiOutlineWhatsApp } from "react-icons/ai";
 import { IoLogoFacebook } from "react-icons/io5";
 import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetHeader } from "@/components/ui/sheet";

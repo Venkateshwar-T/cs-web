@@ -8,7 +8,7 @@ interface NavigationProps {
   isEnquireOpen: boolean;
   onNavigate: (view: 'about' | 'faq') => void;
   activeView: string;
-  isAnimatedSearchExpanded: boolean;
+  isNavVisible: boolean;
 }
 
 const navLinks = [
@@ -17,15 +17,14 @@ const navLinks = [
 ] as const;
 
 
-export function Navigation({ isEnquireOpen, onNavigate, activeView, isAnimatedSearchExpanded }: NavigationProps) {
-    const shouldHideNav = activeView === 'search' || isAnimatedSearchExpanded;
+export function Navigation({ isEnquireOpen, onNavigate, activeView, isNavVisible }: NavigationProps) {
+    const shouldHideNav = activeView === 'search';
 
     return (
         <nav className={cn(
             "hidden md:flex flex-1 justify-center items-center gap-4 lg:gap-8 text-base lg:text-lg transition-opacity duration-300",
-            shouldHideNav ? "opacity-0" : "opacity-100 animate-fade-in",
+            (shouldHideNav || !isNavVisible) ? "opacity-0" : "opacity-100",
         )}
-        style={{ animationDelay: shouldHideNav ? '0s' : '0.3s' }}
         >
             {navLinks.map((link) => {
                 const isActive = activeView === link.id;
@@ -39,7 +38,7 @@ export function Navigation({ isEnquireOpen, onNavigate, activeView, isAnimatedSe
                             isActive ? "text-custom-gold font-semibold" : "text-foreground/80"
                         )}
                         // Disable interaction while hidden to prevent accidental clicks
-                        disabled={shouldHideNav}
+                        disabled={shouldHideNav || !isNavVisible}
                     >
                         {link.label}
                     </button>
