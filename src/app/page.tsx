@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useEffect, type UIEvent } from 'react';
@@ -170,10 +171,19 @@ export default function Home() {
   };
 
   const handleLikeToggle = (productId: number) => {
-    setLikedProducts(prev => ({
-      ...prev,
-      [productId]: !prev[productId]
-    }));
+    setLikedProducts(prev => {
+      const newLiked = { ...prev };
+      if (newLiked[productId]) {
+        delete newLiked[productId];
+      } else {
+        newLiked[productId] = true;
+      }
+      return newLiked;
+    });
+  };
+  
+  const handleClearWishlist = () => {
+    setLikedProducts({});
   };
 
   const handleToggleCartPopup = () => {
@@ -364,6 +374,7 @@ export default function Home() {
               onLikeToggle={handleLikeToggle}
               onAddToCart={handleAddToCart}
               cart={cart}
+              onClearWishlist={handleClearWishlist}
             />
           </div>
         </>

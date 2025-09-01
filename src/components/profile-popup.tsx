@@ -1,3 +1,4 @@
+
 // @/components/profile-popup.tsx
 'use client';
 
@@ -27,6 +28,7 @@ interface ProfilePopupProps {
   onLikeToggle: (productId: number) => void;
   onAddToCart: (productName: string, quantity: number) => void;
   cart: Record<string, number>;
+  onClearWishlist: () => void;
 }
 
 export function ProfilePopup({ 
@@ -37,7 +39,8 @@ export function ProfilePopup({
   likedProducts, 
   onLikeToggle,
   onAddToCart,
-  cart
+  cart,
+  onClearWishlist,
 }: ProfilePopupProps) {
   const [activeTab, setActiveTab] = useState('My Profile');
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
@@ -103,6 +106,7 @@ export function ProfilePopup({
                       onLikeToggle={onLikeToggle}
                       onAddToCart={onAddToCart}
                       cart={cart}
+                      onClearWishlist={onClearWishlist}
                     />
                   )}
                   {/* Add other views here based on activeTab */}
