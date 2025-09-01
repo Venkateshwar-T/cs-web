@@ -1,3 +1,4 @@
+
 // @/components/animated-search-bar.tsx
 'use client';
 
@@ -70,7 +71,7 @@ export function AnimatedSearchBar({
       >
         <div className="flex items-center w-full h-full">
             <div className="w-11 h-11 flex-shrink-0 flex items-center justify-center">
-                <Image src="/icons/search_icon.png" alt="Search" width={24} height={24} />
+                <Image src="/icons/search_icon.png" alt="Search" width={28} height={28} />
             </div>
 
             <div className="flex-1 flex items-center pr-2">
