@@ -54,8 +54,8 @@ export function WishlistItemCard({ product, onAddToCart, onUnlike, isInCart }: W
           className={cn(
             "w-full rounded-full uppercase border-2 border-b-[3px] h-9 px-6 text-xs transition-colors duration-300",
             isInCart
-              ? 'bg-custom-gold border-custom-gold text-custom-purple-dark hover:bg-custom-gold/90'
-              : 'bg-transparent border-custom-gold text-custom-purple-dark hover:bg-custom-gold hover:text-custom-purple-dark'
+              ? 'bg-custom-gold border-custom-purple-dark text-custom-purple-dark hover:bg-custom-gold/90'
+              : 'bg-transparent border-custom-purple-dark text-custom-purple-dark hover:bg-custom-purple-dark hover:text-white'
           )}
         >
           {isInCart ? 'ADDED' : 'ADD'}
