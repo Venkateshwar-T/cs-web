@@ -18,16 +18,15 @@ const navLinks = [
 
 
 export function Navigation({ isEnquireOpen, onNavigate, activeView, isAnimatedSearchExpanded }: NavigationProps) {
-    if (activeView === 'search' || isAnimatedSearchExpanded) {
-        return (
-            <div className="hidden md:flex flex-1 justify-center items-center gap-4 lg:gap-8 text-base lg:text-lg">
-                {/* Placeholder for spacing when search bar is active */}
-            </div>
-        );
-    }
-    
+    const shouldHideNav = activeView === 'search' || isAnimatedSearchExpanded;
+
     return (
-        <nav className="hidden md:flex flex-1 justify-center items-center gap-4 lg:gap-8 text-base lg:text-lg transition-opacity duration-100 animate-fade-in" style={{ animationDuration: '0.5s', animationDelay: '0.05s' }}>
+        <nav className={cn(
+            "hidden md:flex flex-1 justify-center items-center gap-4 lg:gap-8 text-base lg:text-lg transition-opacity duration-300",
+            shouldHideNav ? "opacity-0" : "opacity-100 animate-fade-in",
+        )}
+        style={{ animationDelay: shouldHideNav ? '0s' : '0.3s' }}
+        >
             {navLinks.map((link) => {
                 const isActive = activeView === link.id;
                 return (
@@ -39,6 +38,8 @@ export function Navigation({ isEnquireOpen, onNavigate, activeView, isAnimatedSe
                             isEnquireOpen && "opacity-50",
                             isActive ? "text-custom-gold font-semibold" : "text-foreground/80"
                         )}
+                        // Disable interaction while hidden to prevent accidental clicks
+                        disabled={shouldHideNav}
                     >
                         {link.label}
                     </button>
