@@ -191,6 +191,10 @@ export default function Home() {
     setIsSearchActive(true);
   };
 
+  const handleProfileUpdate = (updatedProfile: Partial<ProfileInfo>) => {
+    setProfileInfo(prev => ({...prev, ...updatedProfile}));
+  };
+
   const handleScroll = (event: UIEvent<HTMLElement>) => {
     const scrollTop = event.currentTarget.scrollTop;
     if (isOrderConfirmed) {
@@ -340,7 +344,11 @@ export default function Home() {
         <>
           <div className="fixed inset-0 z-40 bg-black/50" />
           <div className="fixed inset-0 z-50 flex items-center justify-center">
-            <ProfilePopup onClose={() => setIsProfileOpen(false)} profile={profileInfo} />
+            <ProfilePopup 
+              onClose={() => setIsProfileOpen(false)} 
+              profile={profileInfo} 
+              onProfileUpdate={handleProfileUpdate}
+            />
           </div>
         </>
       )}

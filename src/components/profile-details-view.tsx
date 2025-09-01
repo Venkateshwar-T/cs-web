@@ -11,10 +11,10 @@ import { Button } from './ui/button';
 interface ProfileDetailsViewProps {
   profile: ProfileInfo;
   onHasChangesChange: (hasChanges: boolean) => void;
-  onCancel: () => void;
+  onProfileUpdate: (updatedProfile: Partial<ProfileInfo>) => void;
 }
 
-export function ProfileDetailsView({ profile, onHasChangesChange, onCancel }: ProfileDetailsViewProps) {
+export function ProfileDetailsView({ profile, onHasChangesChange, onProfileUpdate }: ProfileDetailsViewProps) {
   const [name, setName] = useState(profile.name);
   const [phone, setPhone] = useState(profile.phone);
   const [email, setEmail] = useState(profile.email);
@@ -26,9 +26,17 @@ export function ProfileDetailsView({ profile, onHasChangesChange, onCancel }: Pr
       name !== profile.name || 
       phone !== profile.phone || 
       email !== profile.email || 
-      password !== 'yourpassword'; // Compare against initial/saved password
+      password !== 'yourpassword';
     onHasChangesChange(hasChanges);
   }, [name, phone, email, password, profile, onHasChangesChange]);
+  
+  // When the profile prop changes from the parent, update the local state
+  useEffect(() => {
+    setName(profile.name);
+    setPhone(profile.phone);
+    setEmail(profile.email);
+  }, [profile]);
+
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -39,15 +47,13 @@ export function ProfileDetailsView({ profile, onHasChangesChange, onCancel }: Pr
     setPhone(profile.phone);
     setEmail(profile.email);
     setPassword('yourpassword');
-    onCancel();
+    onHasChangesChange(false);
   };
 
   const handleSave = () => {
-    // Here you would typically call an API to save the data
     const updatedProfile = { name, phone, email };
-    console.log("Saving data:", updatedProfile, "Password:", password);
-    onHasChangesChange(false); // Reset changes status after save
-    // You might want to update the profile prop from the parent component after a successful save
+    onProfileUpdate(updatedProfile);
+    onHasChangesChange(false);
   };
 
   return (
@@ -59,7 +65,7 @@ export function ProfileDetailsView({ profile, onHasChangesChange, onCancel }: Pr
         <AvatarFallback>{profile.name.charAt(0).toUpperCase()}</AvatarFallback>
       </Avatar>
 
-      <div className="w-full max-w-sm space-y-4">
+      <div className="w-full max-w-md space-y-4">
         <div className="space-y-2">
           <label htmlFor="name" className="text-sm font-medium">Name</label>
           <Input 

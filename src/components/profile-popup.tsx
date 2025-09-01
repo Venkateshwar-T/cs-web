@@ -20,9 +20,10 @@ import {
 interface ProfilePopupProps {
   onClose: () => void;
   profile: ProfileInfo;
+  onProfileUpdate: (updatedProfile: Partial<ProfileInfo>) => void;
 }
 
-export function ProfilePopup({ onClose, profile }: ProfilePopupProps) {
+export function ProfilePopup({ onClose, profile, onProfileUpdate }: ProfilePopupProps) {
   const [activeTab, setActiveTab] = useState('My Profile');
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   const [isDialogVisible, setIsDialogVisible] = useState(false);
@@ -77,7 +78,7 @@ export function ProfilePopup({ onClose, profile }: ProfilePopupProps) {
                     <ProfileDetailsView 
                       profile={profile} 
                       onHasChangesChange={setHasUnsavedChanges}
-                      onCancel={handleClose}
+                      onProfileUpdate={onProfileUpdate}
                     />
                   )}
                   {/* Add other views here based on activeTab */}
