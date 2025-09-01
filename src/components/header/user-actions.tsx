@@ -37,9 +37,9 @@ export function UserActions({ isEnquireOpen, isCompactHeader, onEnquireOpenChang
                 <div className="hidden md:flex items-center gap-1">
                     {showSearchIcon && (
                          <div className="flex items-center gap-1 opacity-0 animate-slide-in-from-right-and-fade" style={{animationDuration: '0.5s', animationDelay: '0.1s', animationFillMode: 'forwards'}}>
-                            <button className="h-9 w-9 rounded-full flex items-center justify-center hover:opacity-90 transition-opacity">
-                                <div className="bg-white h-8 w-8 rounded-full flex items-center justify-center">
-                                    <Image src="/icons/search_icon.png" alt="Search" width={20} height={20} />
+                            <button className="h-11 w-11 rounded-full flex items-center justify-center hover:opacity-90 transition-opacity">
+                                <div className="bg-white h-10 w-10 rounded-full flex items-center justify-center">
+                                    <Image src="/icons/search_icon.png" alt="Search" width={24} height={24} />
                                 </div>
                             </button>
                              <Separator orientation="vertical" className="h-6 bg-foreground/50 mx-1 lg:mx-2" />
