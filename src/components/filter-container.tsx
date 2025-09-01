@@ -12,12 +12,12 @@ import { useRef, useEffect } from "react";
 
 
 const FilterSection = ({ title, icon, children }: { title: string, icon: React.ReactNode, children: React.ReactNode }) => (
-  <div className="space-y-2">
+  <div className="space-y-3">
     <div className="flex items-center gap-2">
         {icon}
         <h3 className="text-base text-white font-bold font-plex-sans-condensed">{title}</h3>
     </div>
-    <div className="space-y-2">{children}</div>
+    <div className="space-y-2 pl-0">{children}</div>
   </div>
 );
 
