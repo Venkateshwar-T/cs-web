@@ -23,7 +23,7 @@ const FooterSection = ({ title, children }: { title: string; children: React.Rea
 
 export function Footer() {
     return (
-        <footer className="bg-custom-gray-dark text-white font-poppins rounded-t-3xl mt-8 mr-10 ml-10 py-10 px-4 md:px-16">
+        <footer className="bg-footer-gray text-white font-poppins rounded-t-3xl mt-8 mr-10 ml-10 py-10 px-4 md:px-16">
             <div className="container mx-20 grid grid-cols-1 md:grid-cols-5 gap-18">
                 {/* Logo */}
                 <div className="md:col-span-1 flex items-start">

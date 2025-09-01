@@ -11,7 +11,7 @@ export default {
   theme: {
     extend: {
       boxShadow: {
-        'custom-dark': '5px 5px 3px hsla(278, 49%, 22%, 0.8)',
+        'custom-dark': '5px 5px 3px hsla(277, 48.70%, 22.20%, 0.80)',
       },
       spacing: {
         '1.5': '0.375rem',
@@ -28,7 +28,8 @@ export default {
         'custom-gold': '#FFD139',
         'custom-purple-light': '#E1BEE7',
         'custom-purple-dark': '#5D2B79',
-        'custom-gray-dark': '#353535',
+        'custom-gray-dark': 'rgb(12, 12, 12)',
+        'footer-gray': '#353535',
         sparkle: 'hsl(var(--sparkle))',
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
