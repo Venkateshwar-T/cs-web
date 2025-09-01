@@ -88,6 +88,7 @@ export default function Home() {
     email: 'john.doe@example.com',
   });
   const [isContentScrolled, setIsContentScrolled] = useState(false);
+  const [isSearchingOnAbout, setIsSearchingOnAbout] = useState(false);
 
   useEffect(() => {
     if (selectedProduct || isImageExpanded || isCartVisible /*|| isLoginOpen*/ || isSignUpOpen || isCompleteDetailsOpen || isProfileOpen) {
@@ -112,7 +113,11 @@ export default function Home() {
 
   const handleSearchSubmit = (query: string) => {
     setSearchQuery(query);
-    setActiveView('search');
+    if (activeView === 'about') {
+      setIsSearchingOnAbout(true);
+    } else {
+      setActiveView('search');
+    }
     setIsSearching(true);
     setSelectedProduct(null);
     setFilters(initialFilterState);
@@ -122,6 +127,7 @@ export default function Home() {
   const handleResetToHome = () => {
     setActiveView('home');
     setSearchQuery('');
+    setIsSearchingOnAbout(false);
   };
 
   const handleAddToCart = (productName: string, quantity: number, animate: boolean = true) => {
@@ -270,7 +276,33 @@ export default function Home() {
             </div>
           ) : activeView === 'about' ? (
             <div className={cn("transition-opacity duration-500 w-full h-full")}>
-              <AboutView />
+              {isSearchingOnAbout ? (
+                 <div className="flex w-full h-full items-start">
+                    <FilterContainer 
+                      filters={filters} 
+                      onFilterChange={handleFilterChange} 
+                      isSearching={isSearching}
+                    />
+                    <div className="h-full flex-grow ml-8 mr-8 relative">
+                        <SearchResultsDetails 
+                          products={allProducts}
+                          query={searchQuery} 
+                          onAddToCart={handleAddToCart} 
+                          cart={cart}
+                          onProductClick={handleProductClick}
+                          activeFilters={activeFilters}
+                          onRemoveFilter={handleRemoveFilter}
+                          likedProducts={likedProducts}
+                          onLikeToggle={handleLikeToggle}
+                          isSearching={isSearching}
+                          sortOption={sortOption}
+                          onSortChange={setSortOption}
+                        />
+                    </div>
+                  </div>
+              ) : (
+                <AboutView />
+              )}
             </div>
           ) : ( // search view
             <div className="flex w-full h-full items-start">
@@ -302,7 +334,7 @@ export default function Home() {
       </div>
 
        <div className={cn("fixed bottom-8 right-4 z-[60] transition-all duration-300")}>
-          {activeView === 'search' && (
+          {(activeView === 'search' || isSearchingOnAbout) && (
             <Button
               onClick={handleToggleCartPopup}
               className={cn(
