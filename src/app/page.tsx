@@ -251,7 +251,7 @@ export default function Home() {
   ] as { type: keyof FilterState; value: string; label: string }[];
 
   const isPopupOpen = selectedProduct || isImageExpanded || isCartVisible /*|| isLoginOpen*/ || isSignUpOpen || isCompleteDetailsOpen || isProfileOpen;
-  const isSearchActive = activeView === 'search' || activeView === 'order-confirmed' || isSearchingOnAbout;
+  const isSearchActive = activeView === 'search' || activeView === 'order-confirmed' || isSearchingOnAbout || activeView === 'about';
 
   return (
     <>
@@ -424,7 +424,7 @@ export default function Home() {
               onProfileUpdate={handleProfileUpdate}
               products={allProducts}
               likedProducts={likedProducts}
-              onLikeToggle={onLikeToggle}
+              onLikeToggle={handleLikeToggle}
               onAddToCart={onAddToCart}
               cart={cart}
               onClearWishlist={handleClearWishlist}
