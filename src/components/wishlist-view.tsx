@@ -20,7 +20,7 @@ export function WishlistView({ products, likedProducts, onLikeToggle, onAddToCar
       <h2 className="text-3xl font-normal font-poppins self-start mb-6">My Wishlist</h2>
       
       {wishlistedProducts.length > 0 ? (
-        <div className="flex-grow overflow-y-auto pr-4 space-y-4">
+        <div className="flex-grow overflow-y-auto pr-4 space-y-4 custom-scrollbar">
           {wishlistedProducts.map(product => (
             <WishlistItemCard 
               key={product.id}
