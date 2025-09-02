@@ -8,6 +8,8 @@ import { SignUpPopup } from '@/components/signup-popup';
 import { CompleteDetailsPopup } from '@/components/complete-details-popup';
 import type { Product, ProfileInfo } from '@/app/page';
 import { cn } from '@/lib/utils';
+import { LoginPopup } from '../login-popup';
+import { useState } from 'react';
 
 interface PopupsManagerProps {
   selectedProduct: Product | null;
@@ -63,35 +65,47 @@ export function PopupsManager({
   onClearWishlist,
   setIsProfileOpen,
   setIsSignUpOpen,
-  onLoginClick,
   setIsCompleteDetailsOpen,
   onConfirmOrder,
 }: PopupsManagerProps) {
   
-  const isAnyPopupVisible = selectedProduct || isCartVisible || isProfileOpen || isSignUpOpen || isCompleteDetailsOpen;
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const isAnyPopupVisible = selectedProduct || isCartVisible || isProfileOpen || isSignUpOpen || isCompleteDetailsOpen || isLoginOpen;
+
+  const handleOpenLogin = () => {
+    setIsSignUpOpen(false);
+    setIsLoginOpen(true);
+  };
+
+  const handleOpenSignUp = () => {
+    setIsLoginOpen(false);
+    setIsSignUpOpen(true);
+  };
+
 
   return (
     <>
       {isAnyPopupVisible && <div className="fixed inset-0 z-10 bg-black/50" />}
       
       {selectedProduct && (
-          <div className={cn("fixed inset-0 z-20 flex items-start justify-center pt-36 transition-opacity duration-300", isCartVisible && "pointer-events-none opacity-65")}>
-              <div className="h-full flex-grow ml-[calc(17%+2rem)] mr-8 relative w-[calc(83%-4rem)]">
-                  <ProductPopup 
-                    product={selectedProduct} 
-                    onClose={onClosePopup}
-                    onImageExpandChange={onImageExpandChange}
-                    isLiked={!!likedProducts[selectedProduct.id]}
-                    onLikeToggle={() => onLikeToggle(selectedProduct.id)}
-                    cart={cart}
-                    onAddToCart={onAddToCart}
-                  />
-              </div>
+        <div className="fixed inset-0 z-20 flex items-start justify-center pt-36">
+          <div className="h-full flex-grow ml-[calc(17%+2rem)] mr-8 relative w-[calc(83%-4rem)]">
+              <ProductPopup 
+                product={selectedProduct} 
+                onClose={onClosePopup}
+                onImageExpandChange={onImageExpandChange}
+                isLiked={!!likedProducts[selectedProduct.id]}
+                onLikeToggle={() => onLikeToggle(selectedProduct.id)}
+                cart={cart}
+                onAddToCart={onAddToCart}
+              />
+              {isCartVisible && <div className="absolute inset-0 z-10 bg-black/50 rounded-t-[40px]" />}
           </div>
+        </div>
       )}
 
       {isCartVisible && (
-          <div className={cn("fixed inset-0 z-[30] flex items-start justify-center pt-36", isCartOpen ? 'animate-slide-up-in' : 'animate-slide-down-out' )}>
+          <div className={cn("fixed inset-0 z-30 flex items-start justify-center pt-36", isCartOpen ? 'animate-slide-up-in' : 'animate-slide-down-out' )}>
               <div className="h-full flex-grow ml-[calc(17%+2rem)] mr-8 relative w-[calc(83%-4rem)]">
                   <CartPopup
                     onClose={onToggleCartPopup}
@@ -123,9 +137,15 @@ export function PopupsManager({
       <SignUpPopup 
         open={isSignUpOpen}
         onOpenChange={setIsSignUpOpen}
-        onLoginClick={onLoginClick}
+        onLoginClick={handleOpenLogin}
       />
       
+      <LoginPopup
+        open={isLoginOpen}
+        onOpenChange={setIsLoginOpen}
+        onSignUpClick={handleOpenSignUp}
+      />
+
       <CompleteDetailsPopup
         open={isCompleteDetailsOpen}
         onOpenChange={setIsCompleteDetailsOpen}

@@ -114,7 +114,7 @@ export function ProfileDetailsView({ profile, onHasChangesChange, onProfileUpdat
                 <button
                     type="button"
                     onClick={togglePasswordVisibility}
-                    className="absolute inset-y-0 right-0 flex items-center pr-3 text-white/70 hover:text-white"
+                    className="absolute inset-y-0 right-0 flex items-center pr-3 text-black/70 hover:text-black"
                 >
                     {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                 </button>

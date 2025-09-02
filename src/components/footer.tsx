@@ -2,8 +2,7 @@
 'use client';
 
 import Image from 'next/image';
-import Link from 'next/link';
-import { Mail, Phone } from 'lucide-react';
+import { Mail } from 'lucide-react';
 import { AiOutlineInstagram } from 'react-icons/ai';
 import { IoLogoFacebook, IoLogoWhatsapp } from 'react-icons/io5';
 import { Separator } from './ui/separator';
