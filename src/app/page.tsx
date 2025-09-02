@@ -161,10 +161,12 @@ export default function Home() {
   };
 
   const handleFilterChange = (newFilters: Partial<FilterState>) => {
+    setIsSearching(true);
     setFilters(prev => ({ ...prev, ...newFilters }));
   };
 
   const handleRemoveFilter = (filterType: keyof FilterState, value: string) => {
+    setIsSearching(true);
     setFilters(prev => {
       const currentValues = prev[filterType];
       if (Array.isArray(currentValues)) {
@@ -225,6 +227,11 @@ export default function Home() {
     }
   };
 
+  const handleSortChange = (value: string) => {
+    setIsSearching(true);
+    setSortOption(value);
+  };
+
   const getLabelById = (id: string, options: { id: string, label: string }[]) => {
     return options.find(option => option.id === id)?.label || id;
   };
@@ -261,7 +268,7 @@ export default function Home() {
               likedProducts={likedProducts}
               onLikeToggle={handleLikeToggle}
               sortOption={sortOption}
-              onSortChange={setSortOption}
+              onSortChange={handleSortChange}
             />
           );
         }
@@ -301,7 +308,7 @@ export default function Home() {
             likedProducts={likedProducts}
             onLikeToggle={handleLikeToggle}
             sortOption={sortOption}
-            onSortChange={setSortOption}
+            onSortChange={handleSortChange}
           />
         );
       case 'order-confirmed':
