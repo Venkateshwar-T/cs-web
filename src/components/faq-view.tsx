@@ -1,14 +1,17 @@
 // @/components/faq-view.tsx
 'use client';
 
-import { motion } from 'framer-motion';
+import * as React from 'react';
+import { motion, useAnimation } from 'framer-motion';
 import { SectionTitle } from "./section-title";
 import {
   Accordion,
   AccordionContent,
-  AccordionItem,
+  AccordionItem as AccordionItemPrimitive,
   AccordionTrigger,
 } from "@/components/ui/accordion"
+import { cn } from '@/lib/utils';
+
 
 const faqData = [
     {
@@ -63,7 +66,53 @@ const itemVariants = {
   },
 };
 
+const AccordionContext = React.createContext<{ value: string; setValue: (value: string) => void; } | null>(null);
+
+const useAccordionContext = () => {
+    const context = React.useContext(AccordionContext);
+    if (!context) {
+        throw new Error('useAccordionContext must be used within an AccordionProvider');
+    }
+    return context;
+};
+
+
+const FaqAccordionItem = ({ item, value }: { item: { question: string; answer: string }, value: string }) => {
+    const { value: openValue } = useAccordionContext();
+    const isOpen = openValue === value;
+    const controls = useAnimation();
+
+    React.useEffect(() => {
+        if (isOpen) {
+            controls.start({ scale: 1.02 });
+        } else {
+            controls.start({ scale: 1 });
+        }
+    }, [isOpen, controls]);
+
+    return (
+        <motion.div
+            variants={itemVariants}
+            whileHover={{ scale: 1.02 }}
+            animate={controls}
+            transition={{ duration: 0.2 }}
+            className="origin-center"
+        >
+            <AccordionItemPrimitive value={value} className="bg-black/20 rounded-2xl px-6 border-b-0">
+                <AccordionTrigger className="text-left text-xl font-bold text-white hover:no-underline data-[state=open]:text-custom-gold hover:text-custom-gold transition-colors duration-300 py-5">
+                    {item.question}
+                </AccordionTrigger>
+                <AccordionContent className="pt-0 pb-5 text-white/80 text-base leading-relaxed">
+                    {item.answer}
+                </AccordionContent>
+            </AccordionItemPrimitive>
+        </motion.div>
+    );
+};
+
 export function FaqView() {
+  const [value, setValue] = React.useState('');
+
   return (
     <div className="bg-[#5D2B79] rounded-[40px] mx-8 md:mx-32 animate-fade-in h-[85vh] flex flex-col" style={{ animationDuration: '0.5s', animationDelay: '0.2s', animationFillMode: 'both' }}>
         <div className="bg-white/10 rounded-[40px] py-10 px-12 md:px-24 flex-grow overflow-y-auto no-scrollbar">
@@ -77,25 +126,13 @@ export function FaqView() {
               initial="hidden"
               animate="visible"
             >
-              <Accordion type="single" collapsible className="w-full space-y-4">
-                  {faqData.map((item, index) => (
-                    <motion.div
-                      key={index}
-                      variants={itemVariants}
-                      whileHover={{ scale: 1.02 }}
-                      className="origin-center"
-                    >
-                      <AccordionItem value={`item-${index}`} className="bg-black/20 rounded-2xl px-6 border-b-0">
-                          <AccordionTrigger className="text-left text-xl font-bold text-white hover:no-underline hover:text-custom-gold transition-colors duration-300 py-5">
-                              {item.question}
-                          </AccordionTrigger>
-                          <AccordionContent className="pt-0 pb-5 text-white/80 text-base leading-relaxed">
-                              {item.answer}
-                          </AccordionContent>
-                      </AccordionItem>
-                    </motion.div>
-                  ))}
-              </Accordion>
+              <AccordionContext.Provider value={{ value, setValue }}>
+                  <Accordion type="single" collapsible value={value} onValueChange={setValue} className="w-full space-y-4">
+                      {faqData.map((item, index) => (
+                        <FaqAccordionItem key={index} item={item} value={`item-${index}`} />
+                      ))}
+                  </Accordion>
+              </AccordionContext.Provider>
             </motion.div>
         </div>
     </div>
