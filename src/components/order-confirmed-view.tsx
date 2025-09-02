@@ -3,11 +3,12 @@
 
 import { useState, useEffect, Fragment } from 'react';
 import { Button } from './ui/button';
-import { Phone, Loader2 } from 'lucide-react';
+import { Phone } from 'lucide-react';
 import { IoLogoWhatsapp } from 'react-icons/io5';
 import { Separator } from './ui/separator';
 import { OrderSummaryItem } from './order-summary-item';
 import { motion } from 'framer-motion';
+import { Loader } from './loader';
 
 // Mock data for product prices - in a real app this would come from a database or state management
 const productPrices: Record<string, number> = {
@@ -61,14 +62,9 @@ const itemVariants = {
   },
 };
 
-const Loader = () => (
+const ProcessingView = () => (
     <div className="flex flex-col items-center justify-center h-full text-center gap-6">
-        <motion.div
-            animate={{ rotate: 360 }}
-            transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-        >
-            <Loader2 className="w-16 h-16 text-custom-purple-dark" />
-        </motion.div>
+        <Loader className="w-16 h-16 text-custom-gold" />
         <motion.p 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -115,7 +111,7 @@ export function OrderConfirmedView({ cart }: OrderConfirmedViewProps) {
       className="bg-[#9A7DAB] rounded-[40px] py-8 px-72 text-white h-[85vh] flex items-center justify-center"
     >
         {isLoading ? (
-            <Loader />
+            <ProcessingView />
         ) : (
             <motion.div 
               className="flex flex-col items-center gap-5 text-center w-full"
