@@ -53,7 +53,7 @@ export function FloatingCartButton({
             <X className="h-8 w-8 text-custom-purple-dark" />
           ) : (
             <>
-              <Image src="/icons/cart.png" alt="Cart" width={24} height={24} />
+              <Image src="/icons/cart.png" alt="Cart" width={24} height={24} onDragStart={(e) => e.preventDefault()}/>
               {totalQuantity > 0 && (
                 <div className="absolute -top-1 -right-1 bg-custom-purple-dark text-white text-xs font-bold rounded-full h-4 w-4 flex items-center justify-center">
                   {totalQuantity}

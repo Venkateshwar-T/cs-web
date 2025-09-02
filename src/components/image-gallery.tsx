@@ -41,6 +41,7 @@ export function ImageGallery({ product, onImageExpandChange }: ImageGalleryProps
                             objectFit="cover"
                             className="rounded-xl"
                             data-ai-hint={productImages[activeIndex].hint}
+                            onDragStart={(e) => e.preventDefault()}
                         />
                     </div>
                      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/30 rounded-xl">
@@ -74,6 +75,7 @@ export function ImageGallery({ product, onImageExpandChange }: ImageGalleryProps
                                     objectFit="cover"
                                     className="rounded-md"
                                     data-ai-hint={image.hint}
+                                    onDragStart={(e) => e.preventDefault()}
                                 />
                             </button>
                         ))}
@@ -90,6 +92,7 @@ export function ImageGallery({ product, onImageExpandChange }: ImageGalleryProps
                             height={1200}
                             className="object-contain max-h-[90vh] w-auto"
                             data-ai-hint={productImages[activeIndex].hint}
+                            onDragStart={(e) => e.preventDefault()}
                         />
                          <button 
                             onClick={handleCloseExpanded} 
