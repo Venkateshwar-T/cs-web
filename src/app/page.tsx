@@ -347,7 +347,7 @@ export default function Home() {
       </div>
 
        <div className={cn("fixed bottom-8 right-4 z-[60] transition-all duration-300")}>
-          {(activeView === 'search' || isSearchingOnAbout) && (
+          {(activeView === 'search' || isSearchingOnAbout) && activeView !== 'order-confirmed' && (
             <Button
               onClick={handleToggleCartPopup}
               className={cn(
