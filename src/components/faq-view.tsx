@@ -1,5 +1,7 @@
 // @/components/faq-view.tsx
+'use client';
 
+import { motion } from 'framer-motion';
 import { SectionTitle } from "./section-title";
 import {
   Accordion,
@@ -37,42 +39,64 @@ const faqData = [
         question: "What is your shipping policy?",
         answer: "Shipping timelines and costs depend on your location and the size of your order. Our team will provide you with an estimated delivery date and shipping cost when they finalize your order."
     },
-    {
-        question: "Do you ship internationally?",
-        answer: "Currently, we only ship within India."
-    },
-    {
-        question: "Can I order a mix of flavors in one box?",
-        answer: "Yes, absolutely! We specialize in creating personalized assortments. You can select a variety of flavors and fillings to create a box that is perfectly tailored to your taste."
-    },
-    {
-        question: "Why do some flavors cost extra?",
-        answer: "Certain specialty flavors, such as those with premium nuts or unique ingredients, require an additional charge to cover the cost of sourcing. This cost is clearly shown on the product page before you add the item to your cart."
-    }
 ];
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { y: 20, opacity: 0 },
+  visible: {
+    y: 0,
+    opacity: 1,
+    transition: {
+      type: 'spring',
+      stiffness: 100,
+    },
+  },
+};
 
 export function FaqView() {
   return (
     <div className="bg-[#5D2B79] rounded-[40px] mx-8 md:mx-32 animate-fade-in h-[85vh] flex flex-col" style={{ animationDuration: '0.5s', animationDelay: '0.2s', animationFillMode: 'both' }}>
-        <div className="bg-white/20 rounded-[40px] py-10 px-12 md:px-24 flex-grow overflow-y-auto no-scrollbar">
+        <div className="bg-white/10 rounded-[40px] py-10 px-12 md:px-24 flex-grow overflow-y-auto no-scrollbar">
             <SectionTitle className="text-4xl text-center mb-12 font-poppins">
                 Frequently Asked Questions
             </SectionTitle>
             
-            <div className="max-w-4xl mx-auto">
+            <motion.div
+              className="max-w-4xl mx-auto"
+              variants={containerVariants}
+              initial="hidden"
+              animate="visible"
+            >
               <Accordion type="single" collapsible className="w-full space-y-4">
                   {faqData.map((item, index) => (
-                      <AccordionItem key={index} value={`item-${index}`} className="border-b-2 border-white/20 last:border-b-0">
-                          <AccordionTrigger className="text-left text-xl font-bold text-white hover:no-underline hover:text-custom-gold transition-colors duration-300 pb-4">
+                    <motion.div
+                      key={index}
+                      variants={itemVariants}
+                      whileHover={{ scale: 1.02 }}
+                      className="origin-center"
+                    >
+                      <AccordionItem value={`item-${index}`} className="bg-black/20 rounded-2xl px-6 border-b-0">
+                          <AccordionTrigger className="text-left text-xl font-bold text-white hover:no-underline hover:text-custom-gold transition-colors duration-300 py-5">
                               {item.question}
                           </AccordionTrigger>
-                          <AccordionContent className="pt-0 pb-6 text-white/80 text-base leading-relaxed">
+                          <AccordionContent className="pt-0 pb-5 text-white/80 text-base leading-relaxed">
                               {item.answer}
                           </AccordionContent>
                       </AccordionItem>
+                    </motion.div>
                   ))}
               </Accordion>
-            </div>
+            </motion.div>
         </div>
     </div>
   );
