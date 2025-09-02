@@ -1,6 +1,33 @@
 
+'use client';
+
 import Image from "next/image";
 import { SectionTitle } from "./section-title";
+import { motion } from "framer-motion";
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.2,
+      delayChildren: 0.1,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { y: 20, opacity: 0 },
+  visible: {
+    y: 0,
+    opacity: 1,
+    transition: {
+      type: "spring",
+      stiffness: 100,
+    },
+  },
+};
+
 
 export function ExploreCategories() {
   const categoryImages = [
@@ -24,9 +51,14 @@ export function ExploreCategories() {
             <SectionTitle className="pl-8">
                 Explore Categories
             </SectionTitle>
-            <div className="flex flex-1 justify-around items-center gap-8 pt-2 pb-8">
+            <motion.div 
+                className="flex flex-1 justify-around items-center gap-8 pt-2 pb-8"
+                variants={containerVariants}
+                initial="hidden"
+                animate="visible"
+            >
                 {categoryImages.map((image) => (
-                <div key={image.id} className="flex-1 max-w-64 aspect-[5/6]">
+                <motion.div key={image.id} className="flex-1 max-w-64 aspect-[5/6]" variants={itemVariants}>
                     <Image
                     src={image.src}
                     alt={image.alt}
@@ -36,16 +68,21 @@ export function ExploreCategories() {
                     className="w-full h-full object-cover rounded-[40px]"
                     onDragStart={(e) => e.preventDefault()}
                     />
-                </div>
+                </motion.div>
                 ))}
-            </div>
+            </motion.div>
 
             <SectionTitle className="pl-8">
                 Explore Flavours
             </SectionTitle>
-            <div className="flex flex-1 justify-around items-center gap-8 pt-2 pb-8">
+            <motion.div 
+                className="flex flex-1 justify-around items-center gap-8 pt-2 pb-8"
+                variants={containerVariants}
+                initial="hidden"
+                animate="visible"
+            >
                 {flavourImages.map((image) => (
-                <div key={image.id} className="flex-1 max-w-44 aspect-[5/6]">
+                <motion.div key={image.id} className="flex-1 max-w-44 aspect-[5/6]" variants={itemVariants}>
                     <Image
                     src={image.src}
                     alt={image.alt}
@@ -55,9 +92,9 @@ export function ExploreCategories() {
                     className="w-full h-full object-cover rounded-[40px]"
                     onDragStart={(e) => e.preventDefault()}
                     />
-                </div>
+                </motion.div>
                 ))}
-            </div>
+            </motion.div>
         </div>
     </div>
   );
