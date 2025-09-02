@@ -2,7 +2,8 @@
 'use client';
 
 import { cn } from "@/lib/utils";
-import { SlidersHorizontal, ChefHat, Cake, Package, Weight } from 'lucide-react';
+import { SlidersHorizontal } from 'lucide-react';
+import Image from 'next/image';
 import { Slider } from '@/components/ui/slider';
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
@@ -112,7 +113,7 @@ export function FilterContainer({ filters, onFilterChange, isSearching }: Filter
                     ))}
                   </div>
                   
-                  <FilterSection title="Flavours & Fillings" icon={<ChefHat className="h-5 w-5 text-white" />}>
+                  <FilterSection title="Flavours & Fillings" icon={<Image src="/icons/flavours_icon.png" alt="Flavours" width={20} height={20} />}>
                     {flavourOptions.map((option) => (
                       <CheckboxItem
                         key={option.id}
@@ -124,7 +125,7 @@ export function FilterContainer({ filters, onFilterChange, isSearching }: Filter
                     ))}
                   </FilterSection>
 
-                  <FilterSection title="Best for Occasion" icon={<Cake className="h-5 w-5 text-white" />}>
+                  <FilterSection title="Best for Occasion" icon={<Image src="/icons/occasion_icon.png" alt="Occasion" width={20} height={20} />}>
                     {occasionOptions.map((option) => (
                       <CheckboxItem
                         key={option.id}
@@ -137,7 +138,7 @@ export function FilterContainer({ filters, onFilterChange, isSearching }: Filter
                     ))}
                   </FilterSection>
 
-                  <FilterSection title="Product Type" icon={<Package className="h-5 w-5 text-white" />}>
+                  <FilterSection title="Product Type" icon={<Image src="/icons/product_type_icon.png" alt="Product Type" width={20} height={20} />}>
                     {productTypeOptions.map((option) => (
                       <CheckboxItem
                         key={option.id}
@@ -150,7 +151,7 @@ export function FilterContainer({ filters, onFilterChange, isSearching }: Filter
                     ))}
                   </FilterSection>
 
-                  <FilterSection title="Weight" icon={<Weight className="h-5 w-5 text-white" />}>
+                  <FilterSection title="Weight" icon={<Image src="/icons/weight_icon.png" alt="Weight" width={20} height={20} />}>
                     {weightOptions.map((option) => (
                       <CheckboxItem
                         key={option.id}
