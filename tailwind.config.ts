@@ -177,13 +177,11 @@ export default {
           '0%': {
             transform: 'translateX(-100%)',
           },
+          '75%': {
+            transform: 'translateX(-20%)',
+          },
           '100%': {
             transform: 'translateX(0%)',
-          },
-        },
-        pulse: {
-          '50%': {
-            opacity: '.5',
           },
         },
         'sparkle-glow': {
@@ -220,8 +218,7 @@ export default {
         'slide-up-and-out': 'slide-up-and-out 1s ease-in-out forwards',
         'cut-through': 'cut-through 0.8s ease-in-out forwards',
         'shake': 'shake 4s ease-in-out infinite',
-        'loader-bar': 'loader-bar 1.5s ease-out forwards',
-        pulse: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        'loader-bar': 'loader-bar 1.5s ease-in-out forwards',
         'sparkle-glow': 'sparkle-glow 3s ease-in-out infinite',
         'slide-up-in': 'slide-up-in 0.3s ease-out forwards',
         'slide-down-out': 'slide-down-out 0.3s ease-out forwards',
