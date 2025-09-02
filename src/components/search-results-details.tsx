@@ -1,8 +1,9 @@
 
+
 'use client';
 
 import { ProductCard } from "./product-card";
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
 import type { Product, FilterState } from "@/app/page";
 import { X } from 'lucide-react';
@@ -54,7 +55,7 @@ export function SearchResultsDetails({
   }, [isSearching]);
 
   return (
-    <div className="bg-[#5D2B79] h-full flex-grow rounded-t-[40px] relative">
+    <div className="bg-[#5D2B79] h-full flex-grow rounded-t-[40px] relative min-h-0">
         <div className="bg-white/20 h-full w-full rounded-t-[40px] pt-4 md:pt-8 pl-4 md:pl-8">
             <div 
                 ref={scrollContainerRef}
