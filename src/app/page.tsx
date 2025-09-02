@@ -236,7 +236,7 @@ export default function Home() {
     ...filters.selectedWeights.map(id => ({ type: 'selectedWeights', value: id, label: getLabelById(id, weightOptions) })),
   ] as { type: keyof FilterState; value: string; label: string }[];
 
-  const isPopupOpen = selectedProduct || isImageExpanded || isCartVisible || isSignUpOpen || isCompleteDetailsOpen || isProfileOpen;
+  const isPopupOpen = selectedProduct || isImageExpanded || isSignUpOpen || isCompleteDetailsOpen || isProfileOpen;
 
   const renderActiveView = () => {
     switch (activeView) {
@@ -322,7 +322,7 @@ export default function Home() {
     <>
       <SparkleBackground />
       <LoaderBar isLoading={isSearching} onAnimationComplete={() => setIsSearching(false)} />
-      <div className={cn("flex flex-col h-screen", isPopupOpen ? 'opacity-50' : '')}>
+      <div className={cn("flex flex-col h-screen", isPopupOpen || isCartVisible ? 'opacity-50' : '')}>
         <Header 
           onSearchSubmit={handleSearchSubmit} 
           onProfileOpenChange={setIsProfileOpen}
