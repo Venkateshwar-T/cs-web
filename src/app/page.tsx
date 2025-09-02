@@ -215,6 +215,7 @@ export default function Home() {
   // };
 
   const handleOpenCompleteDetails = () => {
+    setSelectedProduct(null);
     setIsCompleteDetailsOpen(true);
   }
 
@@ -424,8 +425,8 @@ export default function Home() {
               onProfileUpdate={handleProfileUpdate}
               products={allProducts}
               likedProducts={likedProducts}
-              onLikeToggle={handleLikeToggle}
-              onAddToCart={onAddToCart}
+              onLikeToggle={onLikeToggle}
+              onAddToCart={handleAddToCart}
               cart={cart}
               onClearWishlist={handleClearWishlist}
             />
