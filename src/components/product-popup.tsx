@@ -2,7 +2,6 @@
 'use client';
 
 import { useState } from 'react';
-import Image from 'next/image';
 import type { Product } from '@/app/page';
 import { FlavoursSection } from './flavours-section';
 import { ImageGallery } from './image-gallery';
@@ -10,6 +9,7 @@ import { ProductDetails } from './product-details';
 import { Separator } from './ui/separator';
 import { ProductPopupFooter } from './product-popup-footer';
 import { cn } from '@/lib/utils';
+import { X } from 'lucide-react';
 
 export type Flavour = {
   id: number;
@@ -43,13 +43,14 @@ export function ProductPopup({ product, onClose, onImageExpandChange, isLiked, o
   
   return (
     <div className="relative h-full w-full">
-      <button 
-        onClick={onClose} 
-        className="absolute -top-4 -right-4 text-white hover:text-gray-200 z-10"
-      >
-        <Image src="/icons/cross_button.png" alt="Close" width={20} height={20} />
-      </button>
       <div className={cn("bg-[#9A7DAB] rounded-t-[40px] pt-6 md:px-4 lg:px-5 xl:px-8 text-white h-full overflow-hidden relative flex flex-col ring-4 ring-custom-purple-dark")}>
+        <button 
+          onClick={onClose} 
+          className="absolute top-4 right-4 text-white bg-black/30 p-1.5 rounded-full hover:bg-black/50 transition-colors z-20"
+          aria-label="Close"
+        >
+          <X size={20} />
+        </button>
         
         <div className="flex flex-row flex-grow h-full md:gap-4 lg:gap-4 xl:gap-8">
           {/* Left Section */}
