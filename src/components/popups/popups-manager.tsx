@@ -75,7 +75,7 @@ export function PopupsManager({
       {isAnyPopupVisible && <div className="fixed inset-0 z-40 bg-black/50" />}
       
       {selectedProduct && (
-          <div className={cn("fixed inset-0 z-50 flex items-start justify-center pt-36", isCartVisible && "pointer-events-none")}>
+          <div className={cn("fixed inset-0 z-50 flex items-start justify-center pt-36 transition-opacity duration-300", isCartVisible && "pointer-events-none opacity-50")}>
               <div className="h-full flex-grow ml-[calc(17%+2rem)] mr-8 relative w-[calc(83%-4rem)]">
                   <ProductPopup 
                     product={selectedProduct} 
