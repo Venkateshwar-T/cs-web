@@ -49,7 +49,7 @@ export function UserActions({
                 <div className="hidden md:flex items-center gap-1">
                     {activeView === 'about' && !isAnimatedSearchExpanded && !isSearchingOnAbout && (
                          <div className={cn(
-                            "flex items-center gap-1 transition-opacity duration-300",
+                            "flex items-center gap-1",
                             isEnquireOpen && "opacity-50"
                          )}>
                             <div 
