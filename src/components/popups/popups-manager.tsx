@@ -67,12 +67,15 @@ export function PopupsManager({
   setIsCompleteDetailsOpen,
   onConfirmOrder,
 }: PopupsManagerProps) {
+  
+  const isAnyPopupVisible = selectedProduct || isCartVisible || isProfileOpen || isSignUpOpen || isCompleteDetailsOpen;
+
   return (
     <>
+      {isAnyPopupVisible && <div className="fixed inset-0 z-40 bg-black/50" />}
+      
       {selectedProduct && (
-         <>
-          <div className="fixed inset-0 z-40 bg-black/50" />
-          <div className="fixed inset-0 z-50 flex items-start justify-center pt-36">
+          <div className={cn("fixed inset-0 z-50 flex items-start justify-center pt-36", isCartVisible && "pointer-events-none")}>
               <div className="h-full flex-grow ml-[calc(17%+2rem)] mr-8 relative w-[calc(83%-4rem)]">
                   <ProductPopup 
                     product={selectedProduct} 
@@ -85,12 +88,9 @@ export function PopupsManager({
                   />
               </div>
           </div>
-        </>
       )}
 
       {isCartVisible && (
-         <>
-          {!selectedProduct && <div className="fixed inset-0 z-40 bg-black/50" />}
           <div className={cn("fixed inset-0 z-[60] flex items-start justify-center pt-36", isCartOpen ? 'animate-slide-up-in' : 'animate-slide-down-out' )}>
               <div className="h-full flex-grow ml-[calc(17%+2rem)] mr-8 relative w-[calc(83%-4rem)]">
                   <CartPopup
@@ -102,12 +102,9 @@ export function PopupsManager({
                   />
               </div>
           </div>
-        </>
       )}
 
       {isProfileOpen && (
-        <>
-          <div className="fixed inset-0 z-40 bg-black/50" />
           <div className="fixed inset-0 z-50 flex items-center justify-center">
             <ProfilePopup 
               onClose={() => setIsProfileOpen(false)} 
@@ -121,7 +118,6 @@ export function PopupsManager({
               onClearWishlist={onClearWishlist}
             />
           </div>
-        </>
       )}
 
       <SignUpPopup 

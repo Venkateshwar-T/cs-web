@@ -194,9 +194,6 @@ export default function Home() {
   };
 
   const handleToggleCartPopup = () => {
-    if (!isCartOpen) {
-      setSelectedProduct(null); // Close product popup if opening cart
-    }
     setIsCartOpen(prev => !prev);
   }
 
