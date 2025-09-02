@@ -425,7 +425,7 @@ export default function Home() {
               onProfileUpdate={handleProfileUpdate}
               products={allProducts}
               likedProducts={likedProducts}
-              onLikeToggle={onLikeToggle}
+              onLikeToggle={handleLikeToggle}
               onAddToCart={handleAddToCart}
               cart={cart}
               onClearWishlist={handleClearWishlist}
