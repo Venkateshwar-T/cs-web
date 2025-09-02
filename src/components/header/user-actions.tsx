@@ -7,8 +7,8 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Menu, Phone } from "lucide-react";
-import { AiOutlineInstagram, AiOutlineWhatsApp } from "react-icons/ai";
-import { IoLogoFacebook } from "react-icons/io5";
+import { AiOutlineInstagram } from "react-icons/ai";
+import { IoLogoFacebook, IoLogoWhatsapp } from "react-icons/io5";
 import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetHeader } from "@/components/ui/sheet";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
@@ -94,7 +94,7 @@ export function UserActions({
                                 <p className="text-xs font-medium self-center">-OR-</p>
                                 <Button asChild className="w-full h-auto py-2 bg-custom-purple-dark hover:bg-custom-purple-dark/90 text-white rounded-full text-lg font-plex-sans">
                                     <a href="https://wa.me/1234567890" target="_blank" rel="noopener noreferrer">
-                                        <AiOutlineWhatsApp className="mr-2 h-6 w-6" /> Whatsapp Us
+                                        <IoLogoWhatsapp className="mr-2 h-6 w-6" /> Whatsapp Us
                                     </a>
                                  </Button>
                             </div>

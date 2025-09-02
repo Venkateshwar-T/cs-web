@@ -4,8 +4,8 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { Mail, Phone } from 'lucide-react';
-import { AiOutlineInstagram, AiOutlineWhatsApp } from 'react-icons/ai';
-import { IoLogoFacebook } from 'react-icons/io5';
+import { AiOutlineInstagram } from 'react-icons/ai';
+import { IoLogoFacebook, IoLogoWhatsapp } from 'react-icons/io5';
 import { Separator } from './ui/separator';
 
 const FooterSection = ({ title, children }: { title: string; children: React.ReactNode }) => (
@@ -38,7 +38,7 @@ export function Footer() {
                         <span>chocosmiley79@gmail.com</span>
                     </a>
                     <a href="https://wa.me/917411414007" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-sm text-gray-300 hover:text-custom-gold transition-colors">
-                        <AiOutlineWhatsApp size={18} />
+                        <IoLogoWhatsapp size={18} />
                         <span>+91 74114 14007</span>
                     </a>
                 </FooterSection>

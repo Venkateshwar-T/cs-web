@@ -4,7 +4,7 @@
 import { useState, useEffect, Fragment } from 'react';
 import { Button } from './ui/button';
 import { Phone } from 'lucide-react';
-import { AiOutlineWhatsApp } from 'react-icons/ai';
+import { IoLogoWhatsapp } from 'react-icons/io5';
 import { Separator } from './ui/separator';
 import { OrderSummaryItem } from './order-summary-item';
 
@@ -86,7 +86,7 @@ export function OrderConfirmedView({ cart }: OrderConfirmedViewProps) {
               </Button>
               <Button asChild className="h-auto py-2 px-8 bg-custom-purple-dark hover:bg-custom-purple-dark/90 text-white rounded-full text-base font-plex-sans shadow-lg">
                   <a href="https://wa.me/1234567890" target="_blank" rel="noopener noreferrer">
-                      <AiOutlineWhatsApp className="mr-2 h-5 w-5" /> Whatsapp Us
+                      <IoLogoWhatsapp className="mr-2 h-5 w-5" /> Whatsapp Us
                   </a>
               </Button>
           </div>
