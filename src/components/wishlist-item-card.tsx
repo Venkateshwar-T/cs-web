@@ -28,17 +28,18 @@ export function WishlistItemCard({ product, onAddToCart, onUnlike, isInCart, isU
     <div 
       onAnimationEnd={onAnimationEnd}
       className={cn(
-        "bg-white/90 text-black rounded-2xl p-4 flex gap-4 w-full relative border border-white/30 transition-all duration-300 overflow-hidden",
+        "bg-white/90 text-black rounded-2xl p-2 flex gap-4 w-full relative border border-white/30 transition-all duration-300 overflow-hidden",
         isUnliking && 'animate-fade-out-slide-up'
       )}
     >
-      <div className="w-24 h-24 flex-shrink-0">
+      <div className="w-20 h-20 flex-shrink-0">
         <Image
           src="/choco img.png"
           alt={product.name}
           width={100}
           height={100}
           className="rounded-lg object-cover w-full h-full"
+          onDragStart={(e) => e.preventDefault()}
         />
       </div>
 
@@ -47,16 +48,16 @@ export function WishlistItemCard({ product, onAddToCart, onUnlike, isInCart, isU
           <h3 className="font-bold text-lg leading-tight pr-8">{product.name}</h3>
           <p className="text-sm text-black/70">250g | Assorted | Hard-Box</p>
         </div>
-        <p className="font-bold text-2xl text-custom-purple-dark mt-2">₹750</p>
+        <p className="font-bold text-xl text-black mt-2">₹750</p>
       </div>
 
-      <div className="absolute top-4 right-4">
+      <div className="absolute top-1 right-2">
         <button onClick={onUnlike} className="p-1">
           <Heart className="h-6 w-6 text-red-500 fill-red-500" />
         </button>
       </div>
 
-      <div className="absolute bottom-4 right-4">
+      <div className="absolute bottom-2 right-2">
         <Button
           size="sm"
           onClick={handleAddToCartClick}

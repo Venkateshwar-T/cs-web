@@ -34,6 +34,7 @@ export function ExploreCategories() {
                     height={400}
                     data-ai-hint={image.hint}
                     className="w-full h-full object-cover rounded-[40px]"
+                    onDragStart={(e) => e.preventDefault()}
                     />
                 </div>
                 ))}
@@ -52,6 +53,7 @@ export function ExploreCategories() {
                     height={400}
                     data-ai-hint={image.hint}
                     className="w-full h-full object-cover rounded-[40px]"
+                    onDragStart={(e) => e.preventDefault()}
                     />
                 </div>
                 ))}

@@ -68,48 +68,48 @@ export function ProfileDetailsView({ profile, onHasChangesChange, onProfileUpdat
       <h2 className="text-3xl font-normal font-poppins self-start mb-6">My Profile</h2>
       
       <Avatar className="w-24 h-24 mb-4">
-        <AvatarImage src="https://picsum.photos/200" alt="User avatar" data-ai-hint="person portrait" />
+        <AvatarImage src="https://picsum.photos/200" alt="User avatar" data-ai-hint="person portrait" onDragStart={(e) => e.preventDefault()}/>
         <AvatarFallback>{profile.name.charAt(0).toUpperCase()}</AvatarFallback>
       </Avatar>
 
-      <div className="w-full max-w-xs space-y-4">
-        <div className="space-y-2">
-          <label htmlFor="name" className="text-sm font-medium">Name</label>
+      <div className="w-full max-w-xs space-y-3">
+        <div className="space-y-1">
+          <label htmlFor="name" className="pl-3 text-m font-medium">Name</label>
           <Input 
             id="name" 
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="bg-white/10 border-white/20 rounded-2xl h-12 text-base" 
+            className="bg-white border-white/20 text-black rounded-2xl h-12 text-base" 
           />
         </div>
-        <div className="space-y-2">
-          <label htmlFor="phone" className="text-sm font-medium">Phone Number</label>
+        <div className="space-y-1">
+          <label htmlFor="phone" className="p-3 text-m font-medium">Phone Number</label>
           <Input 
             id="phone" 
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
-            className="bg-white/10 border-white/20 rounded-2xl h-12 text-base" 
+            className="bg-white border-white/20 text-black rounded-2xl h-12 text-base" 
           />
         </div>
-        <div className="space-y-2">
-          <label htmlFor="email" className="text-sm font-medium">Email</label>
+        <div className="space-y-1">
+          <label htmlFor="email" className="p-3 text-m font-medium">Email</label>
           <Input 
             id="email" 
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="bg-white/10 border-white/20 rounded-2xl h-12 text-base" 
+            className="bg-white border-white/20 text-black rounded-2xl h-12 text-base" 
           />
         </div>
-        <div className="space-y-2">
-            <label htmlFor="password" className="text-sm font-medium">Password</label>
+        <div className="space-y-1">
+            <label htmlFor="password" className="p-3 text-m font-medium">Password</label>
             <div className="relative">
                 <Input 
                     id="password" 
                     type={showPassword ? "text" : "password"} 
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="bg-white/10 border-white/20 rounded-2xl h-12 text-base pr-10" 
+                    className="bg-white border-white/20 text-black rounded-2xl h-12 text-base pr-10" 
                 />
                 <button
                     type="button"

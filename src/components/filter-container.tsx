@@ -113,7 +113,7 @@ export function FilterContainer({ filters, onFilterChange, isSearching }: Filter
                     ))}
                   </div>
                   
-                  <FilterSection title="Flavours & Fillings" icon={<Image src="/icons/flavours_icon.png" alt="Flavours" width={20} height={20} />}>
+                  <FilterSection title="Flavours & Fillings" icon={<Image src="/icons/flavours_icon.png" alt="Flavours" width={18} height={18} onDragStart={(e) => e.preventDefault()}/>}>
                     {flavourOptions.map((option) => (
                       <CheckboxItem
                         key={option.id}
@@ -125,7 +125,7 @@ export function FilterContainer({ filters, onFilterChange, isSearching }: Filter
                     ))}
                   </FilterSection>
 
-                  <FilterSection title="Best for Occasion" icon={<Image src="/icons/occasion_icon.png" alt="Occasion" width={20} height={20} />}>
+                  <FilterSection title="Best for Occasion" icon={<Image src="/icons/occasion_icon.png" alt="Occasion" width={18} height={18} onDragStart={(e) => e.preventDefault()}/>}>
                     {occasionOptions.map((option) => (
                       <CheckboxItem
                         key={option.id}
@@ -138,7 +138,7 @@ export function FilterContainer({ filters, onFilterChange, isSearching }: Filter
                     ))}
                   </FilterSection>
 
-                  <FilterSection title="Product Type" icon={<Image src="/icons/product_type_icon.png" alt="Product Type" width={20} height={20} />}>
+                  <FilterSection title="Product Type" icon={<Image src="/icons/product_type_icon.png" alt="Product Type" width={16} height={16} onDragStart={(e) => e.preventDefault()}/>}>
                     {productTypeOptions.map((option) => (
                       <CheckboxItem
                         key={option.id}
@@ -151,7 +151,7 @@ export function FilterContainer({ filters, onFilterChange, isSearching }: Filter
                     ))}
                   </FilterSection>
 
-                  <FilterSection title="Weight" icon={<Image src="/icons/weight_icon.png" alt="Weight" width={20} height={20} />}>
+                  <FilterSection title="Weight" icon={<Image src="/icons/weight_icon.png" alt="Weight" width={14} height={14} onDragStart={(e) => e.preventDefault()}/>}>
                     {weightOptions.map((option) => (
                       <CheckboxItem
                         key={option.id}

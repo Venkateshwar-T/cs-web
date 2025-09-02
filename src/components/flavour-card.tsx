@@ -42,6 +42,7 @@ export function FlavourCard({ flavour, onAddToCart, quantity }: FlavourCardProps
           objectFit="cover"
           className="rounded-full"
           data-ai-hint={flavour.hint}
+          onDragStart={(e) => e.preventDefault()}
         />
       </div>
       <div className="mt-2 text-center">

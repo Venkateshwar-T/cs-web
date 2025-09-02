@@ -8,12 +8,6 @@ import { AiOutlineInstagram, AiOutlineWhatsApp } from 'react-icons/ai';
 import { IoLogoFacebook } from 'react-icons/io5';
 import { Separator } from './ui/separator';
 
-const FooterLink = ({ href, children }: { href: string; children: React.ReactNode }) => (
-    <Link href={href} className="text-sm text-gray-300 hover:text-white transition-colors">
-        {children}
-    </Link>
-);
-
 const FooterSection = ({ title, children }: { title: string; children: React.ReactNode }) => (
     <div className="flex flex-col gap-3">
         <h3 className="font-bold text-white text-lg">{title}</h3>
@@ -33,6 +27,7 @@ export function Footer() {
                         width={200}
                         height={80}
                         className="w-48"
+                        onDragStart={(e) => e.preventDefault()}
                     />
                 </div>
 

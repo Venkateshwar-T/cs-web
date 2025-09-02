@@ -67,10 +67,10 @@ export function ProfileSidebar({ activeTab, onTabChange }: ProfileSidebarProps) 
                 "flex items-center gap-4 w-full py-3 text-base font-medium transition-all duration-200 text-custom-purple-dark/70 hover:bg-custom-purple-dark/10 rounded-md"
               )}
             >
-              <div className="h-6 w-6 flex-shrink-0 text-[#ff2000]/60">
+              <div className="h-6 w-6 flex-shrink-0 text-red-600">
                  <LogOut className="h-6 w-6" />
               </div>
-              <span className="text-[#ff2000]/60">Log Out</span>
+              <span className="text-red-600">Log Out</span>
             </button>
           </AlertDialogTrigger>
           <AlertDialogContent>
