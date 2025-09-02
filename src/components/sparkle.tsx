@@ -42,7 +42,7 @@ export const Sparkle = ({ size, color, style, mousePosition }: SparkleProps) => 
         setIsNear(false);
     }
 
-  }, [mousePosition]);
+  }, [mousePosition.x, mousePosition.y]);
 
   return (
     <div
