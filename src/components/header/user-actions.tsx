@@ -50,6 +50,7 @@ export function UserActions({
                     {activeView === 'about' && !isAnimatedSearchExpanded && !isSearchingOnAbout && (
                          <div className={cn(
                             "flex items-center gap-1 transition-opacity duration-300",
+                            isEnquireOpen && "opacity-50"
                          )}>
                             <div 
                                 className="flex items-center justify-center opacity-0 animate-slide-in-from-right-and-fade"
