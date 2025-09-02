@@ -2,7 +2,7 @@
 'use client';
 
 import * as React from 'react';
-import { motion, useAnimation } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { SectionTitle } from "./section-title";
 import {
   Accordion,
@@ -10,7 +10,6 @@ import {
   AccordionItem as AccordionItemPrimitive,
   AccordionTrigger,
 } from "@/components/ui/accordion"
-import { cn } from '@/lib/utils';
 
 
 const faqData = [
@@ -80,21 +79,12 @@ const useAccordionContext = () => {
 const FaqAccordionItem = ({ item, value }: { item: { question: string; answer: string }, value: string }) => {
     const { value: openValue } = useAccordionContext();
     const isOpen = openValue === value;
-    const controls = useAnimation();
-
-    React.useEffect(() => {
-        if (isOpen) {
-            controls.start({ scale: 1.02 });
-        } else {
-            controls.start({ scale: 1 });
-        }
-    }, [isOpen, controls]);
 
     return (
         <motion.div
             variants={itemVariants}
             whileHover={{ scale: 1.02 }}
-            animate={controls}
+            animate={{ scale: isOpen ? 1.02 : 1 }}
             transition={{ duration: 0.2 }}
             className="origin-center"
         >
