@@ -1,3 +1,4 @@
+
 // @/components/faq-view.tsx
 
 import { SectionTitle } from "./section-title";
@@ -7,7 +8,6 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion"
-import { ChevronDown } from "lucide-react";
 
 const faqData = [
     {
@@ -66,7 +66,6 @@ export function FaqView() {
                         <AccordionItem key={index} value={`item-${index}`} className="bg-black/20 rounded-2xl px-6 border-b-0">
                             <AccordionTrigger className="text-left text-lg font-semibold text-custom-gold hover:no-underline py-4">
                                 {item.question}
-                                <ChevronDown className="h-6 w-6 shrink-0 stroke-custom-gold transition-transform duration-200" />
                             </AccordionTrigger>
                             <AccordionContent className="pt-2 pb-4 text-white/90 text-base leading-relaxed">
                                 {item.answer}
