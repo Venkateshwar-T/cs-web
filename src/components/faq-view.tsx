@@ -1,4 +1,3 @@
-
 // @/components/faq-view.tsx
 
 import { SectionTitle } from "./section-title";
@@ -60,14 +59,14 @@ export function FaqView() {
                 Frequently Asked Questions
             </SectionTitle>
             
-            <div className="max-w-4xl mx-auto">
-                <Accordion type="single" collapsible className="w-full space-y-4">
+            <div className="max-w-4xl mx-auto bg-white text-black rounded-2xl p-4">
+                <Accordion type="single" collapsible className="w-full">
                     {faqData.map((item, index) => (
-                        <AccordionItem key={index} value={`item-${index}`} className="bg-black/20 rounded-2xl px-6 border-b-0">
-                            <AccordionTrigger className="text-left text-lg font-semibold text-custom-gold hover:no-underline py-4">
+                        <AccordionItem key={index} value={`item-${index}`} className="px-4 border-b last:border-b-0 border-gray-200">
+                            <AccordionTrigger className="text-left text-lg font-semibold text-custom-purple-dark hover:no-underline py-4">
                                 {item.question}
                             </AccordionTrigger>
-                            <AccordionContent className="pt-2 pb-4 text-white/90 text-base leading-relaxed">
+                            <AccordionContent className="pt-0 pb-4 text-gray-700 text-base leading-relaxed">
                                 {item.answer}
                             </AccordionContent>
                         </AccordionItem>
