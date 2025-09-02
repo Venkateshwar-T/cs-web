@@ -271,7 +271,7 @@ export default function Home() {
         <main onScroll={handleScroll} className={cn(
           "flex-grow overflow-y-auto flex flex-col transition-all duration-500 relative",
           activeView === 'home' ? 'pt-72' : 'pt-36',
-          (activeView === 'order-confirmed' || activeView === 'about') && 'custom-scrollbar'
+          (activeView === 'order-confirmed' || activeView === 'about') && 'no-scrollbar'
         )}>
           {activeView === 'order-confirmed' ? (
             <div className="pb-8 mx-8 md:mx-32">
@@ -282,7 +282,7 @@ export default function Home() {
               <ExploreCategories />
             </div>
           ) : activeView === 'about' ? (
-             <div className="flex flex-col w-full">
+            <>
               {isSearchingOnAbout ? (
                  <div className="flex w-full h-full items-start flex-grow">
                     <FilterContainer 
@@ -315,7 +315,7 @@ export default function Home() {
                   <Footer />
                 </div>
               )}
-            </div>
+            </>
           ) : ( // search view
             <div className="flex w-full h-full items-start">
               <FilterContainer 
