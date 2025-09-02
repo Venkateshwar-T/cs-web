@@ -364,14 +364,14 @@ export default function Home() {
         likedProducts={likedProducts}
         onLikeToggle={handleLikeToggle}
         cart={cart}
-        onAddToCart={onAddToCart}
+        onAddToCart={handleAddToCart}
         onToggleCartPopup={handleToggleCartPopup}
         onClearCart={handleClearCart}
         onFinalizeOrder={handleOpenCompleteDetails}
         onProfileUpdate={handleProfileUpdate}
         profileInfo={profileInfo}
         allProducts={allProducts}
-        onClearWishlist={onClearWishlist}
+        onClearWishlist={handleClearWishlist}
         setIsProfileOpen={setIsProfileOpen}
         setIsSignUpOpen={setIsSignUpOpen}
         onLoginClick={handleOpenSignUp}
