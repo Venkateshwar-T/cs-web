@@ -69,7 +69,7 @@ const ProcessingView = () => (
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2 }}
-            className="font-semibold font-plex-sans text-3xl text-black"
+            className="font-base font-poppins text-3xl text-black"
         >
             Processing Your Order...
         </motion.p>
