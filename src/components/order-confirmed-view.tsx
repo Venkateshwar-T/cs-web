@@ -1,3 +1,4 @@
+
 // @/components/order-confirmed-view.tsx
 'use client';
 
@@ -7,6 +8,7 @@ import { Phone } from 'lucide-react';
 import { IoLogoWhatsapp } from 'react-icons/io5';
 import { Separator } from './ui/separator';
 import { OrderSummaryItem } from './order-summary-item';
+import { motion } from 'framer-motion';
 
 // Mock data for product prices - in a real app this would come from a database or state management
 const productPrices: Record<string, number> = {
@@ -37,6 +39,29 @@ function generateOrderId() {
     return result;
 }
 
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15,
+      delayChildren: 0.2,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { y: 20, opacity: 0 },
+  visible: {
+    y: 0,
+    opacity: 1,
+    transition: {
+      type: 'spring',
+      stiffness: 100,
+    },
+  },
+};
+
 export function OrderConfirmedView({ cart }: OrderConfirmedViewProps) {
     const [orderId, setOrderId] = useState('');
     
@@ -58,10 +83,20 @@ export function OrderConfirmedView({ cart }: OrderConfirmedViewProps) {
     const total = subtotalAfterDiscount + gstAmount;
 
   return (
-    <div className="bg-[#9A7DAB] rounded-[40px] py-8 px-72 text-white h-[85vh]">
-      <div className="flex flex-col items-center gap-5 text-center">
+    <motion.div 
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+      className="bg-[#9A7DAB] rounded-[40px] py-8 px-72 text-white h-[85vh]"
+    >
+      <motion.div 
+        className="flex flex-col items-center gap-5 text-center"
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+      >
           
-          <div className="flex items-center">
+          <motion.div variants={itemVariants} className="flex items-center">
             <div className="relative z-10 flex h-14 w-14 items-center justify-center rounded-full bg-custom-purple-dark border-4 border-custom-gold">
               <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M20 6L9 17L4 12" stroke="#FFD139" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="animate-tick"/>
@@ -70,15 +105,15 @@ export function OrderConfirmedView({ cart }: OrderConfirmedViewProps) {
             <div className="h-10 -ml-4 rounded-r-full bg-custom-gold pl-10 pr-6 flex items-center">
                 <span className="text-custom-purple-dark font-bold text-lg">Order Request Received!</span>
             </div>
-          </div>
+          </motion.div>
 
-          <p className="font-plex-sans font-semibold text-sm text-black">Order ID: {orderId}</p>
+          <motion.p variants={itemVariants} className="font-plex-sans font-semibold text-sm text-black">Order ID: {orderId}</motion.p>
 
-          <p className="font-semibold font-plex-sans text-lg max-w-2xl text-black">
+          <motion.p variants={itemVariants} className="font-semibold font-plex-sans text-lg max-w-2xl text-black">
               To finalize your order and process the 50% advance payment, please connect with us directly.
-          </p>
+          </motion.p>
 
-          <div className="flex items-center gap-4">
+          <motion.div variants={itemVariants} className="flex items-center gap-4">
                <Button asChild className="h-auto py-2 px-12 bg-custom-purple-dark hover:bg-custom-purple-dark/90 text-white rounded-full text-base font-plex-sans shadow-lg">
                   <a href="tel:+1234567890">
                       <Phone className="mr-2 h-4 w-4" /> Call Us
@@ -89,9 +124,9 @@ export function OrderConfirmedView({ cart }: OrderConfirmedViewProps) {
                       <IoLogoWhatsapp className="mr-2 h-5 w-5" /> Whatsapp Us
                   </a>
               </Button>
-          </div>
+          </motion.div>
 
-          <div className="bg-white w-full rounded-3xl mt-2 text-black p-6 flex flex-col">
+          <motion.div variants={itemVariants} className="bg-white w-full rounded-3xl mt-2 text-black p-6 flex flex-col">
               <div className="flex justify-between items-center mb-2 flex-shrink-0">
                   <h3 className="font-bold text-xl">Order Summary</h3>
                   <p className="font-bold text-xl">Total: ₹{total > 0 ? total.toFixed(2) : '0.00'}</p>
@@ -108,8 +143,9 @@ export function OrderConfirmedView({ cart }: OrderConfirmedViewProps) {
                       </Fragment>
                   ))}
               </div>
-          </div>
-      </div>
-    </div>
+          </motion.div>
+      </motion.div>
+    </motion.div>
   );
 }
+
