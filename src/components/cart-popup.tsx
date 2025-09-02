@@ -64,9 +64,9 @@ export function CartPopup({ onClose, cart, onClearCart, onFinalizeOrder, onQuant
           </AlertDialogTrigger>
           <AlertDialogContent>
             <AlertDialogHeader>
-              <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+              <AlertDialogTitle>Are you sure?</AlertDialogTitle>
               <AlertDialogDescription>
-                This action cannot be undone. This will permanently remove all items from your cart.
+                This will permanently remove all items from your cart. This action cannot be undone.
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
@@ -85,7 +85,7 @@ export function CartPopup({ onClose, cart, onClearCart, onFinalizeOrder, onQuant
           >
             {cartItems.length === 0 ? (
               <div className="flex items-center justify-center h-full">
-                <p className="text-xl text-white/70">Your cart is empty.</p>
+                <p className="text-xl text-black">Your cart is empty.</p>
               </div>
             ) : (
               <div className="space-y-4 pb-4">

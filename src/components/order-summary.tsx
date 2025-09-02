@@ -36,7 +36,7 @@ export function OrderSummary({ cart }: OrderSummaryProps) {
 
   if (cartItems.length === 0) {
       return (
-          <div className="bg-white/90 text-black rounded-2xl p-6 h-full flex items-center justify-center border border-custom-purple-dark">
+          <div className="bg-white/90 text-black rounded-2xl p-6 h-[95%] flex items-center justify-center border border-custom-purple-dark">
               <p className="text-center text-gray-500">Your order summary will appear here once you add items to your cart.</p>
           </div>
       );

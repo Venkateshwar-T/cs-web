@@ -58,7 +58,7 @@ export function UserActions({
                             >
                                 <button onClick={onAnimatedSearchToggle} className="h-11 w-11 flex items-center justify-center" aria-label="Open search">
                                     <div className="h-10 w-10 bg-white rounded-full flex items-center justify-center">
-                                        <Image src="/icons/search_icon.png" alt="Search" width={24} height={24} />
+                                        <Image src="/icons/search_icon.png" alt="Search" width={24} height={24} onDragStart={(e) => e.preventDefault()}/>
                                     </div>
                                 </button>
                                 <Separator orientation="vertical" className="h-6 bg-foreground/50 mx-1 lg:mx-2" />

@@ -37,7 +37,7 @@ export function Navigation({ isEnquireOpen, onNavigate, activeView, isNavVisible
                         className={cn(
                             "transition-colors hover:text-custom-gold", 
                             isEnquireOpen && "opacity-50",
-                            isActive ? "text-custom-gold font-semibold" : "text-foreground/80"
+                            isActive ? "text-custom-gold font-base" : "text-foreground/80"
                         )}
                     >
                         {link.label}
