@@ -65,9 +65,9 @@ export function SearchBar({ formRef, activeView, isEnquireOpen, targetWidth, onS
     return (
         <div className={cn(
             "container max-w-screen-2xl px-8 md:px-12 transition-all duration-500 ease-in-out",
-            isSearchActive || activeView === 'about' ? '-mt-[3.75rem]' : 'mt-8 sm:mt-12 md:mt-16',
+            isSearchActive || activeView === 'about' || activeView === 'faq' ? '-mt-[3.75rem]' : 'mt-8 sm:mt-12 md:mt-16',
             isEnquireOpen && "opacity-50 transition-opacity duration-100",
-            (activeView === 'about') && "opacity-0 pointer-events-none"
+            (activeView === 'about' || activeView === 'faq') && "opacity-0 pointer-events-none"
         )}>
             <form 
                 ref={formRef}
