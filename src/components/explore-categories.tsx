@@ -11,7 +11,7 @@ const containerVariants = {
     opacity: 1,
     transition: {
       staggerChildren: 0.2,
-      delayChildren: 0.3,
+      delayChildren: 0.1,
     },
   },
 };
@@ -50,7 +50,7 @@ export function ExploreCategories() {
       className="bg-[#5D2B79] h-full rounded-t-[40px] mx-8 md:mx-32"
       initial={{ opacity: 0, y: 50 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ type: 'spring', stiffness: 80, damping: 15, delay: 0.4 }}
+      transition={{ type: 'spring', stiffness: 80, damping: 15 }}
     >
         <div className="bg-white/20 h-full rounded-t-[40px] py-6 px-12 overflow-y-auto no-scrollbar">
             <SectionTitle className="pl-8">
