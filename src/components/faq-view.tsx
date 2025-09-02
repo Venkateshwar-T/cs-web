@@ -1,6 +1,5 @@
 // @/components/faq-view.tsx
 
-import Image from "next/image";
 import { SectionTitle } from "./section-title";
 import {
   Accordion,
@@ -55,37 +54,24 @@ const faqData = [
 export function FaqView() {
   return (
     <div className="bg-[#5D2B79] rounded-[40px] mx-8 md:mx-32 animate-fade-in h-[85vh] flex flex-col" style={{ animationDuration: '0.5s', animationDelay: '0.2s', animationFillMode: 'both' }}>
-        <div className="bg-white/20 rounded-[40px] py-10 px-12 md:px-16 flex-grow overflow-y-auto no-scrollbar">
-            <SectionTitle className="text-4xl text-left mb-12 font-poppins">
+        <div className="bg-white/20 rounded-[40px] py-10 px-12 md:px-24 flex-grow overflow-y-auto no-scrollbar">
+            <SectionTitle className="text-4xl text-center mb-12 font-poppins">
                 Frequently Asked Questions
             </SectionTitle>
             
-            <div className="flex gap-16 items-start">
-                <div className="w-2/3">
-                    <Accordion type="single" collapsible className="w-full space-y-4">
-                        {faqData.map((item, index) => (
-                            <AccordionItem key={index} value={`item-${index}`} className="border-b-2 border-white/30 last:border-b-0">
-                                <AccordionTrigger className="text-left text-xl font-bold text-white hover:no-underline pb-4">
-                                    {item.question}
-                                </AccordionTrigger>
-                                <AccordionContent className="pt-0 pb-4 text-white/80 text-base leading-relaxed">
-                                    {item.answer}
-                                </AccordionContent>
-                            </AccordionItem>
-                        ))}
-                    </Accordion>
-                </div>
-                <div className="w-1/3 sticky top-0">
-                    <Image 
-                        src="https://picsum.photos/600/800" 
-                        alt="Abstract art"
-                        width={600}
-                        height={800}
-                        data-ai-hint="abstract art"
-                        className="rounded-3xl object-cover"
-                        onDragStart={(e) => e.preventDefault()}
-                    />
-                </div>
+            <div className="max-w-4xl mx-auto">
+              <Accordion type="single" collapsible className="w-full space-y-4">
+                  {faqData.map((item, index) => (
+                      <AccordionItem key={index} value={`item-${index}`} className="border-b-2 border-white/20 last:border-b-0">
+                          <AccordionTrigger className="text-left text-xl font-bold text-white hover:no-underline hover:text-custom-gold transition-colors duration-300 pb-4">
+                              {item.question}
+                          </AccordionTrigger>
+                          <AccordionContent className="pt-0 pb-6 text-white/80 text-base leading-relaxed">
+                              {item.answer}
+                          </AccordionContent>
+                      </AccordionItem>
+                  ))}
+              </Accordion>
             </div>
         </div>
     </div>
