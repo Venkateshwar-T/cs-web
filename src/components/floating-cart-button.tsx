@@ -34,7 +34,7 @@ export function FloatingCartButton({
   if (!shouldShow) return null;
 
   return (
-    <div className={cn("fixed bottom-8 right-4 z-[60] transition-all duration-300")}>
+    <div className={cn("fixed bottom-8 right-4 z-[70] transition-all duration-300")}>
       <Button
         onClick={onToggleCart}
         className={cn(
