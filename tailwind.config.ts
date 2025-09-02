@@ -178,7 +178,7 @@ export default {
             transform: 'translateX(-100%)',
           },
           '75%': {
-            transform: 'translateX(-20%)',
+            transform: 'translateX(-40%)',
           },
           '100%': {
             transform: 'translateX(0%)',
