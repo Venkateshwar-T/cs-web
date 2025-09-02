@@ -83,14 +83,16 @@ export function AnimatedSearchBar({
                     className="w-full bg-transparent outline-none text-black placeholder:text-gray-500 text-lg md:text-xl"
                     onClick={(e) => e.stopPropagation()}
                 />
-                <button
-                    type="button"
-                    onClick={handleCloseClick}
-                    className="p-2 hover:bg-gray-200 rounded-full"
-                    aria-label="Close search"
-                >
-                    <X size={20} />
-                </button>
+                {inputValue && (
+                  <button
+                      type="button"
+                      onClick={handleCloseClick}
+                      className="p-2 hover:bg-gray-200 rounded-full"
+                      aria-label="Close search"
+                  >
+                      <X size={20} />
+                  </button>
+                )}
             </div>
         </div>
       </motion.div>
