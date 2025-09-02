@@ -11,7 +11,7 @@ const containerVariants = {
     opacity: 1,
     transition: {
       staggerChildren: 0.2,
-      delayChildren: 0.1,
+      delayChildren: 0.3,
     },
   },
 };
@@ -46,7 +46,12 @@ export function ExploreCategories() {
   ];
 
   return (
-    <div className="bg-[#5D2B79] h-full rounded-t-[40px] mx-8 md:mx-32 animate-fade-in" style={{ animationDuration: '0.5s', animationDelay: '0.6s', animationFillMode: 'both' }}>
+    <motion.div 
+      className="bg-[#5D2B79] h-full rounded-t-[40px] mx-8 md:mx-32"
+      initial={{ opacity: 0, y: 50 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ type: 'spring', stiffness: 80, damping: 15, delay: 0.4 }}
+    >
         <div className="bg-white/20 h-full rounded-t-[40px] py-6 px-12 overflow-y-auto no-scrollbar">
             <SectionTitle className="pl-8">
                 Explore Categories
@@ -96,6 +101,6 @@ export function ExploreCategories() {
                 ))}
             </motion.div>
         </div>
-    </div>
+    </motion.div>
   );
 }
