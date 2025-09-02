@@ -64,12 +64,12 @@ const itemVariants = {
 
 const ProcessingView = () => (
     <div className="flex flex-col items-center justify-center h-full text-center gap-6">
-        <Loader className="w-16 h-16 text-custom-gold" />
+        <Loader className="w-24 h-24 text-custom-gold" />
         <motion.p 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2 }}
-            className="font-semibold font-plex-sans text-xl text-black"
+            className="font-semibold font-plex-sans text-3xl text-black"
         >
             Processing Your Order...
         </motion.p>
@@ -122,7 +122,7 @@ export function OrderConfirmedView({ cart }: OrderConfirmedViewProps) {
                 <motion.div variants={itemVariants} className="flex items-center">
                   <div className="relative z-10 flex h-14 w-14 items-center justify-center rounded-full bg-custom-purple-dark border-4 border-custom-gold">
                     <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M20 6L9 17L4 12" stroke="#FFD139" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="animate-tick"/>
+                        <path d="M4 12L9 17L20 6" stroke="#FFD139" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="animate-tick"/>
                     </svg>
                   </div>
                   <div className="h-10 -ml-4 rounded-r-full bg-custom-gold pl-10 pr-6 flex items-center">
