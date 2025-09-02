@@ -26,9 +26,10 @@ interface ProductPopupProps {
   onLikeToggle: () => void;
   onAddToCart: (productName: string, quantity: number, animate?: boolean) => void;
   cart: Record<string, number>;
+  onToggleCartPopup: () => void;
 }
 
-export function ProductPopup({ product, onClose, onImageExpandChange, isLiked, onLikeToggle, onAddToCart, cart }: ProductPopupProps) {
+export function ProductPopup({ product, onClose, onImageExpandChange, isLiked, onLikeToggle, onAddToCart, cart, onToggleCartPopup }: ProductPopupProps) {
   const [flavourCart, setFlavourCart] = useState<Record<string, number>>({});
   
   const handleFlavourAddToCart = (flavourId: number, quantity: number) => {
@@ -70,7 +71,7 @@ export function ProductPopup({ product, onClose, onImageExpandChange, isLiked, o
               <div className="h-full py-0 pr-6 overflow-y-auto custom-scrollbar pb-28">
                   <ProductDetails product={product} isLiked={isLiked} onLikeToggle={onLikeToggle} />
               </div>
-              <ProductPopupFooter product={product} onAddToCart={onAddToCart} quantity={productQuantity} />
+              <ProductPopupFooter product={product} onAddToCart={onAddToCart} quantity={productQuantity} onToggleCartPopup={onToggleCartPopup} />
           </div>
         </div>
       </div>

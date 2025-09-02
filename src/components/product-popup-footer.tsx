@@ -10,9 +10,10 @@ interface ProductPopupFooterProps {
     product: Product;
     onAddToCart: (productName: string, quantity: number, animate?: boolean) => void;
     quantity: number;
+    onToggleCartPopup: () => void;
 }
 
-export function ProductPopupFooter({ product, onAddToCart, quantity }: ProductPopupFooterProps) {
+export function ProductPopupFooter({ product, onAddToCart, quantity, onToggleCartPopup }: ProductPopupFooterProps) {
 
     const handleAddToCartClick = () => {
         onAddToCart(product.name, 1, false);
@@ -24,6 +25,13 @@ export function ProductPopupFooter({ product, onAddToCart, quantity }: ProductPo
 
     const handleDecrement = () => {
         onAddToCart(product.name, quantity - 1, false);
+    };
+
+    const handleBuyNow = () => {
+        if (quantity === 0) {
+            onAddToCart(product.name, 1, false);
+        }
+        onToggleCartPopup();
     };
 
     return (
@@ -76,6 +84,7 @@ export function ProductPopupFooter({ product, onAddToCart, quantity }: ProductPo
                         )}
                         <Button
                             size="sm"
+                            onClick={handleBuyNow}
                             className="rounded-full font-semibold text-sm md:text-sm lg:text-sm xl:text-base border border-white bg-white text-custom-purple-dark md:px-2 xl:px-4 lg:px-4 py-1.5 h-auto hover:bg-custom-purple-dark hover:text-white"
                         >
                             Buy Now

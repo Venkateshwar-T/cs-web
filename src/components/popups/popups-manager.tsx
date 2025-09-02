@@ -98,6 +98,7 @@ export function PopupsManager({
                 onLikeToggle={() => onLikeToggle(selectedProduct.id)}
                 cart={cart}
                 onAddToCart={onAddToCart}
+                onToggleCartPopup={onToggleCartPopup}
               />
               {isCartVisible && <div className="absolute inset-0 z-30 bg-black/50 rounded-t-[40px]" />}
           </div>
