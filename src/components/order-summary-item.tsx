@@ -20,6 +20,7 @@ export function OrderSummaryItem({ productName, quantity, price }: OrderSummaryI
                     layout="fill"
                     objectFit="cover"
                     className="rounded-md"
+                    onDragStart={(e) => e.preventDefault()}
                 />
             </div>
             <div className="flex flex-col items-start gap-3">

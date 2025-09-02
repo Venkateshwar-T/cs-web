@@ -99,7 +99,7 @@ export function PopupsManager({
                 cart={cart}
                 onAddToCart={onAddToCart}
               />
-              {isCartVisible && <div className="absolute inset-0 z-10 bg-black/50 rounded-t-[40px]" />}
+              {isCartVisible && <div className="absolute inset-0 z-30 bg-black/50 rounded-t-[40px]" />}
           </div>
         </div>
       )}
