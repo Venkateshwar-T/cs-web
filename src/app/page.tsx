@@ -16,6 +16,7 @@ import { HomeView } from '@/components/views/HomeView';
 import { SearchView } from '@/components/views/SearchView';
 import { PopupsManager } from '@/components/popups/popups-manager';
 import { FloatingCartButton } from '@/components/floating-cart-button';
+import { FaqView } from '@/components/faq-view';
 
 
 export type Product = {
@@ -38,7 +39,7 @@ export type ProfileInfo = {
   email: string;
 }
 
-export type ActiveView = 'home' | 'search' | 'about' | 'order-confirmed';
+export type ActiveView = 'home' | 'search' | 'about' | 'faq' | 'order-confirmed';
 
 const initialFilterState: FilterState = {
   priceRange: [0, 3000],
@@ -106,7 +107,7 @@ export default function Home() {
 
   const handleSearchSubmit = (query: string, fromAnimated: boolean = false) => {
     setSearchQuery(query);
-    if (activeView === 'about') {
+    if (activeView === 'about' || activeView === 'faq') {
       setIsSearchingOnAbout(true);
     } else {
       setActiveView('search');
@@ -217,7 +218,7 @@ export default function Home() {
 
   const handleScroll = (event: UIEvent<HTMLElement>) => {
     const scrollTop = event.currentTarget.scrollTop;
-    if (activeView === 'order-confirmed' || activeView === 'about') {
+    if (activeView === 'order-confirmed' || activeView === 'about' || activeView === 'faq') {
       setIsContentScrolled(scrollTop > 10);
     } else {
       setIsContentScrolled(false);
@@ -242,6 +243,49 @@ export default function Home() {
       case 'home':
         return <HomeView />;
       case 'search':
+      case 'about':
+      case 'faq':
+        if (isSearchingOnAbout) {
+          return (
+            <SearchView
+              filters={filters}
+              onFilterChange={handleFilterChange}
+              isSearching={isSearching}
+              products={allProducts}
+              query={searchQuery}
+              onAddToCart={handleAddToCart}
+              cart={cart}
+              onProductClick={handleProductClick}
+              activeFilters={activeFilters}
+              onRemoveFilter={handleRemoveFilter}
+              likedProducts={likedProducts}
+              onLikeToggle={handleLikeToggle}
+              sortOption={sortOption}
+              onSortChange={setSortOption}
+            />
+          );
+        }
+        if (activeView === 'about') {
+          return (
+            <div className="flex flex-col flex-grow">
+              <div className="flex-grow">
+                <AboutView />
+              </div>
+              <Footer />
+            </div>
+          );
+        }
+         if (activeView === 'faq') {
+          return (
+            <div className="flex flex-col flex-grow">
+              <div className="flex-grow">
+                <FaqView />
+              </div>
+              <Footer />
+            </div>
+          );
+        }
+        // This case handles 'search' view itself
         return (
           <SearchView
             filters={filters}
@@ -259,36 +303,6 @@ export default function Home() {
             sortOption={sortOption}
             onSortChange={setSortOption}
           />
-        );
-      case 'about':
-        return (
-          <>
-            {isSearchingOnAbout ? (
-              <SearchView
-                filters={filters}
-                onFilterChange={handleFilterChange}
-                isSearching={isSearching}
-                products={allProducts}
-                query={searchQuery}
-                onAddToCart={handleAddToCart}
-                cart={cart}
-                onProductClick={handleProductClick}
-                activeFilters={activeFilters}
-                onRemoveFilter={handleRemoveFilter}
-                likedProducts={likedProducts}
-                onLikeToggle={handleLikeToggle}
-                sortOption={sortOption}
-                onSortChange={setSortOption}
-              />
-            ) : (
-              <div className="flex flex-col flex-grow">
-                <div className="flex-grow">
-                  <AboutView />
-                </div>
-                <Footer />
-              </div>
-            )}
-          </>
         );
       case 'order-confirmed':
         return (
@@ -322,7 +336,7 @@ export default function Home() {
         <main onScroll={handleScroll} className={cn(
           "flex-grow flex flex-col transition-all duration-500 relative",
           activeView === 'home' ? 'pt-72 overflow-hidden' : 'pt-36 overflow-y-auto',
-          (activeView === 'order-confirmed' || (activeView === 'about' && !isSearchingOnAbout)) && 'no-scrollbar'
+          (activeView === 'order-confirmed' || (activeView === 'about' && !isSearchingOnAbout) || (activeView === 'faq' && !isSearchingOnAbout)) && 'no-scrollbar'
         )}>
            {renderActiveView()}
         </main>
@@ -350,14 +364,14 @@ export default function Home() {
         likedProducts={likedProducts}
         onLikeToggle={handleLikeToggle}
         cart={cart}
-        onAddToCart={handleAddToCart}
+        onAddToCart={onAddToCart}
         onToggleCartPopup={handleToggleCartPopup}
         onClearCart={handleClearCart}
         onFinalizeOrder={handleOpenCompleteDetails}
         onProfileUpdate={handleProfileUpdate}
         profileInfo={profileInfo}
         allProducts={allProducts}
-        onClearWishlist={handleClearWishlist}
+        onClearWishlist={onClearWishlist}
         setIsProfileOpen={setIsProfileOpen}
         setIsSignUpOpen={setIsSignUpOpen}
         onLoginClick={handleOpenSignUp}

@@ -106,7 +106,7 @@ export function Header({
   return (
     <>
       {isEnquireOpen && (
-          <div className="fixed inset-0 z-40 bg-black/50 transition-opacity duration-100" />
+          <div className="fixed inset-0 z-40 bg-black/50" />
       )}
       <header className={cn(
         "fixed top-0 z-50 w-full bg-transparent pt-6 pb-8 transition-all duration-100", 
