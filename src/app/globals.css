@@ -143,7 +143,7 @@
 
 @keyframes tick {
   0%, 15%, 100% {
-    stroke-dashoffset: 24;
+    stroke-dashoffset: -24;
   }
   30%, 85% {
     stroke-dashoffset: 0;
@@ -153,5 +153,5 @@
 .animate-tick {
   animation: tick 3s ease-in-out infinite;
   stroke-dasharray: 24;
-  stroke-dashoffset: 24;
+  stroke-dashoffset: 0;
 }
