@@ -1,10 +1,9 @@
-
 // @/components/order-confirmed-view.tsx
 'use client';
 
 import { useState, useEffect, Fragment } from 'react';
 import { Button } from './ui/button';
-import { Phone } from 'lucide-react';
+import { Phone, Loader2 } from 'lucide-react';
 import { IoLogoWhatsapp } from 'react-icons/io5';
 import { Separator } from './ui/separator';
 import { OrderSummaryItem } from './order-summary-item';
@@ -62,11 +61,37 @@ const itemVariants = {
   },
 };
 
+const Loader = () => (
+    <div className="flex flex-col items-center justify-center h-full text-center gap-6">
+        <motion.div
+            animate={{ rotate: 360 }}
+            transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+        >
+            <Loader2 className="w-16 h-16 text-custom-purple-dark" />
+        </motion.div>
+        <motion.p 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2 }}
+            className="font-semibold font-plex-sans text-xl text-black"
+        >
+            Processing Your Order...
+        </motion.p>
+    </div>
+);
+
+
 export function OrderConfirmedView({ cart }: OrderConfirmedViewProps) {
     const [orderId, setOrderId] = useState('');
+    const [isLoading, setIsLoading] = useState(true);
     
     useEffect(() => {
         setOrderId(generateOrderId());
+        const timer = setTimeout(() => {
+            setIsLoading(false);
+        }, 3000); // Simulate a 3-second processing time
+
+        return () => clearTimeout(timer);
     }, []);
 
     const cartItems = Object.entries(cart);
@@ -87,65 +112,67 @@ export function OrderConfirmedView({ cart }: OrderConfirmedViewProps) {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className="bg-[#9A7DAB] rounded-[40px] py-8 px-72 text-white h-[85vh]"
+      className="bg-[#9A7DAB] rounded-[40px] py-8 px-72 text-white h-[85vh] flex items-center justify-center"
     >
-      <motion.div 
-        className="flex flex-col items-center gap-5 text-center"
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
-      >
-          
-          <motion.div variants={itemVariants} className="flex items-center">
-            <div className="relative z-10 flex h-14 w-14 items-center justify-center rounded-full bg-custom-purple-dark border-4 border-custom-gold">
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M20 6L9 17L4 12" stroke="#FFD139" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="animate-tick"/>
-              </svg>
-            </div>
-            <div className="h-10 -ml-4 rounded-r-full bg-custom-gold pl-10 pr-6 flex items-center">
-                <span className="text-custom-purple-dark font-bold text-lg">Order Request Received!</span>
-            </div>
-          </motion.div>
+        {isLoading ? (
+            <Loader />
+        ) : (
+            <motion.div 
+              className="flex flex-col items-center gap-5 text-center w-full"
+              variants={containerVariants}
+              initial="hidden"
+              animate="visible"
+            >
+                <motion.div variants={itemVariants} className="flex items-center">
+                  <div className="relative z-10 flex h-14 w-14 items-center justify-center rounded-full bg-custom-purple-dark border-4 border-custom-gold">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20 6L9 17L4 12" stroke="#FFD139" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="animate-tick"/>
+                    </svg>
+                  </div>
+                  <div className="h-10 -ml-4 rounded-r-full bg-custom-gold pl-10 pr-6 flex items-center">
+                      <span className="text-custom-purple-dark font-bold text-lg">Order Request Received!</span>
+                  </div>
+                </motion.div>
 
-          <motion.p variants={itemVariants} className="font-plex-sans font-semibold text-sm text-black">Order ID: {orderId}</motion.p>
+                <motion.p variants={itemVariants} className="font-plex-sans font-semibold text-sm text-black">Order ID: {orderId}</motion.p>
 
-          <motion.p variants={itemVariants} className="font-semibold font-plex-sans text-lg max-w-2xl text-black">
-              To finalize your order and process the 50% advance payment, please connect with us directly.
-          </motion.p>
+                <motion.p variants={itemVariants} className="font-semibold font-plex-sans text-lg max-w-2xl text-black">
+                    To finalize your order and process the 50% advance payment, please connect with us directly.
+                </motion.p>
 
-          <motion.div variants={itemVariants} className="flex items-center gap-4">
-               <Button asChild className="h-auto py-2 px-12 bg-custom-purple-dark hover:bg-custom-purple-dark/90 text-white rounded-full text-base font-plex-sans shadow-lg">
-                  <a href="tel:+1234567890">
-                      <Phone className="mr-2 h-4 w-4" /> Call Us
-                  </a>
-              </Button>
-              <Button asChild className="h-auto py-2 px-8 bg-custom-purple-dark hover:bg-custom-purple-dark/90 text-white rounded-full text-base font-plex-sans shadow-lg">
-                  <a href="https://wa.me/1234567890" target="_blank" rel="noopener noreferrer">
-                      <IoLogoWhatsapp className="mr-2 h-5 w-5" /> Whatsapp Us
-                  </a>
-              </Button>
-          </motion.div>
+                <motion.div variants={itemVariants} className="flex items-center gap-4">
+                    <Button asChild className="h-auto py-2 px-12 bg-custom-purple-dark hover:bg-custom-purple-dark/90 text-white rounded-full text-base font-plex-sans shadow-lg">
+                        <a href="tel:+1234567890">
+                            <Phone className="mr-2 h-4 w-4" /> Call Us
+                        </a>
+                    </Button>
+                    <Button asChild className="h-auto py-2 px-8 bg-custom-purple-dark hover:bg-custom-purple-dark/90 text-white rounded-full text-base font-plex-sans shadow-lg">
+                        <a href="https://wa.me/1234567890" target="_blank" rel="noopener noreferrer">
+                            <IoLogoWhatsapp className="mr-2 h-5 w-5" /> Whatsapp Us
+                        </a>
+                    </Button>
+                </motion.div>
 
-          <motion.div variants={itemVariants} className="bg-white w-full rounded-3xl mt-2 text-black p-6 flex flex-col">
-              <div className="flex justify-between items-center mb-2 flex-shrink-0">
-                  <h3 className="font-bold text-xl">Order Summary</h3>
-                  <p className="font-bold text-xl">Total: ₹{total > 0 ? total.toFixed(2) : '0.00'}</p>
-              </div>
-              <div className="flex-grow overflow-y-auto min-h-0 pr-2 always-visible-scrollbar max-h-[25vh]">
-                   {cartItems.map(([name, quantity], index) => (
-                      <Fragment key={name}>
-                        <OrderSummaryItem
-                            productName={name}
-                            quantity={quantity}
-                            price={productPrices[name] || 0}
-                        />
-                        {index < cartItems.length - 1 && <Separator className="bg-gray-200 my-2" />}
-                      </Fragment>
-                  ))}
-              </div>
-          </motion.div>
-      </motion.div>
+                <motion.div variants={itemVariants} className="bg-white w-full rounded-3xl mt-2 text-black p-6 flex flex-col">
+                    <div className="flex justify-between items-center mb-2 flex-shrink-0">
+                        <h3 className="font-bold text-xl">Order Summary</h3>
+                        <p className="font-bold text-xl">Total: ₹{total > 0 ? total.toFixed(2) : '0.00'}</p>
+                    </div>
+                    <div className="flex-grow overflow-y-auto min-h-0 pr-2 always-visible-scrollbar max-h-[25vh]">
+                        {cartItems.map(([name, quantity], index) => (
+                            <Fragment key={name}>
+                              <OrderSummaryItem
+                                  productName={name}
+                                  quantity={quantity}
+                                  price={productPrices[name] || 0}
+                              />
+                              {index < cartItems.length - 1 && <Separator className="bg-gray-200 my-2" />}
+                            </Fragment>
+                        ))}
+                    </div>
+                </motion.div>
+            </motion.div>
+        )}
     </motion.div>
   );
 }
-
