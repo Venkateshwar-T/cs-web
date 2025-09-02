@@ -19,7 +19,7 @@ const navLinks = [
 
 
 export function Navigation({ isEnquireOpen, onNavigate, activeView, isNavVisible }: NavigationProps) {
-    const shouldHideNav = activeView === 'search';
+    const shouldHideNav = activeView === 'search' || activeView === 'order-confirmed';
 
     if (shouldHideNav || !isNavVisible) {
         return <nav className="hidden md:flex flex-1 justify-center items-center gap-4 lg:gap-8 text-base lg:text-lg" />;
