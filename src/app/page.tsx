@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useEffect, type UIEvent } from 'react';
@@ -83,6 +84,14 @@ export default function Home() {
   const [isContentScrolled, setIsContentScrolled] = useState(false);
   const [isSearchingOnAbout, setIsSearchingOnAbout] = useState(false);
   const [isUsingAnimatedSearch, setIsUsingAnimatedSearch] = useState(false);
+  const [isPageLoading, setIsPageLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsPageLoading(false);
+    }, 800);
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     if (selectedProduct || isImageExpanded || isCartVisible || isSignUpOpen || isCompleteDetailsOpen || isProfileOpen) {
@@ -246,6 +255,8 @@ export default function Home() {
   const isPopupOpen = selectedProduct || isImageExpanded || isCartVisible || isSignUpOpen || isCompleteDetailsOpen || isProfileOpen;
 
   const renderActiveView = () => {
+    if (isPageLoading) return null;
+
     switch (activeView) {
       case 'home':
         return <HomeView />;
@@ -328,7 +339,7 @@ export default function Home() {
   return (
     <>
       <SparkleBackground />
-      <LoaderBar isLoading={isSearching} onAnimationComplete={() => setIsSearching(false)} />
+      <LoaderBar isLoading={isPageLoading || isSearching} onAnimationComplete={() => setIsSearching(false)} />
       <div className={cn("flex flex-col h-screen", (isPopupOpen && !isCartVisible) || (isPopupOpen && isCartVisible) ? 'opacity-50' : '')}>
         <Header 
           onSearchSubmit={handleSearchSubmit} 
@@ -343,7 +354,8 @@ export default function Home() {
         <main onScroll={handleScroll} className={cn(
           "flex-grow flex flex-col transition-all duration-500 relative",
           activeView === 'home' ? 'pt-72 overflow-hidden' : 'pt-36 overflow-y-auto',
-          (activeView === 'order-confirmed' || (activeView === 'about' && !isSearchingOnAbout) || (activeView === 'faq' && !isSearchingOnAbout)) && 'no-scrollbar'
+          (activeView === 'order-confirmed' || (activeView === 'about' && !isSearchingOnAbout) || (activeView === 'faq' && !isSearchingOnAbout)) && 'no-scrollbar',
+          isPageLoading && 'opacity-0'
         )}>
            {renderActiveView()}
         </main>
