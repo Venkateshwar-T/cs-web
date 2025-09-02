@@ -1,4 +1,3 @@
-
 // @/components/animated-search-bar.tsx
 'use client';
 
@@ -58,6 +57,8 @@ export function AnimatedSearchBar({
     }
   };
 
+  const showCloseButton = inputValue || (isExpanded && !isSearchingOnAbout);
+
   if (!isExpanded) return null;
 
   return (
@@ -83,7 +84,7 @@ export function AnimatedSearchBar({
                     className="w-full bg-transparent outline-none text-black placeholder:text-gray-500 text-lg md:text-xl"
                     onClick={(e) => e.stopPropagation()}
                 />
-                {inputValue && (
+                {showCloseButton && (
                   <button
                       type="button"
                       onClick={handleCloseClick}
