@@ -8,6 +8,7 @@ import { X } from 'lucide-react';
 import { MobileImageGallery } from '../mobile-image-gallery';
 import { ProductDetails } from '../product-details';
 import { FlavoursSection } from '../flavours-section';
+import { Separator } from '../ui/separator';
 
 interface MobileProductDetailViewProps {
   product: Product;
@@ -53,6 +54,7 @@ export function MobileProductDetailView({
         <div className="p-4">
           <ProductDetails product={product} isLiked={isLiked} onLikeToggle={onLikeToggle} isMobile={true} />
         </div>
+        <Separator className="my-4 bg-white/30" />
         <div className="px-4 pb-4">
           <FlavoursSection onAddToCart={onFlavourAddToCart} cart={flavourCart} isMobile={true} />
         </div>
