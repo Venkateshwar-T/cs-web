@@ -49,7 +49,7 @@ export function ProductCard({ product, onAddToCart, quantity, onProductClick, is
   return (
     <div
       onClick={() => onProductClick(product)}
-      className="bg-white text-black rounded-2xl overflow-hidden flex flex-col h-full shadow-custom-dark cursor-pointer transition-transform duration-200 hover:-translate-y-1"
+      className="bg-white text-black rounded-lg md:rounded-2xl overflow-hidden flex flex-col h-full shadow-custom-dark cursor-pointer transition-transform duration-200 hover:-translate-y-1"
     >
       <div className="relative w-full pt-[80%]">
         <Image
@@ -57,7 +57,7 @@ export function ProductCard({ product, onAddToCart, quantity, onProductClick, is
           alt={product.name}
           layout="fill"
           objectFit="cover"
-          className="rounded-t-2xl"
+          className="rounded-t-lg md:rounded-t-2xl"
         />
       </div>
       <div className="p-2 md:p-3 flex flex-col flex-grow">
@@ -109,12 +109,12 @@ export function ProductCard({ product, onAddToCart, quantity, onProductClick, is
                 <Button
                   size="sm"
                   onClick={handleAddToCartClick}
-                  className="w-full rounded-full uppercase bg-transparent border-2 border-b-[3px] border-custom-purple-dark text-custom-purple-dark hover:bg-custom-purple-dark hover:text-white h-8 md:h-9 text-xs"
+                  className="w-full rounded-full uppercase bg-transparent border-2 border-b-[3px] border-custom-purple-dark text-custom-purple-dark hover:bg-custom-purple-dark hover:text-white h-8 text-xs"
                 >
                   Add
                 </Button>
               ) : (
-                <div className="flex items-center justify-between w-full rounded-full text-white h-8 md:h-9 border-2 border-custom-purple-dark overflow-hidden">
+                <div className="flex items-center justify-between w-full rounded-full text-white h-8 border-2 border-custom-purple-dark overflow-hidden">
                   <Button
                     size="icon"
                     variant="ghost"
