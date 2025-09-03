@@ -163,13 +163,13 @@ export function SearchResultsDetails({
                   {activeFilters.length > 0 && (
                     <div className="flex gap-2 mb-4 flex-nowrap overflow-x-auto no-scrollbar md:flex-wrap md:overflow-x-visible">
                       {activeFilters.map(filter => (
-                        <div key={`${filter.type}-${filter.value}`} className="flex-shrink-0 flex items-center bg-custom-gold text-custom-purple-dark rounded-full px-2.5 py-0.5 text-xs font-medium">
+                        <div key={`${filter.type}-${filter.value}`} className="flex-shrink-0 flex items-center bg-custom-gold text-custom-purple-dark rounded-full px-2.5 py-0.5 text-xs font-medium md:px-3 md:py-1 md:text-sm">
                           <span>{filter.label}</span>
                           <button
                             onClick={() => onRemoveFilter(filter.type, filter.value)}
-                            className="ml-1.5 -mr-1 p-0.5 rounded-full hover:bg-black/10"
+                            className="ml-1.5 -mr-1 p-0.5 rounded-full hover:bg-black/10 md:ml-2 md:-mr-1.5 md:p-1"
                           >
-                            <X className="h-3 w-3" />
+                            <X className="h-3 w-3 md:h-4 md:w-4" />
                           </button>
                         </div>
                       ))}
