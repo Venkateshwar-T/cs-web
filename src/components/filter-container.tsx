@@ -78,7 +78,7 @@ export function FilterContainer({ filters, onFilterChange, isSearching }: Filter
   const handleWeightChange = createHandler('selectedWeights');
 
   return (
-    <div className={cn("bg-custom-gray-dark shadow-custom-dark h-full w-[17%] rounded-tr-[40px] animate-slide-in-from-left")} style={{ animationDuration: '0.5s' }}>
+    <div className={cn("bg-custom-gray-dark shadow-custom-dark h-full w-full rounded-tr-[40px] animate-slide-in-from-left")} style={{ animationDuration: '0.5s' }}>
         <div className="bg-white/20 h-full w-full rounded-tr-[40px] md:pt-2 md:pl-3 lg:pt-4 lg:pl-4 xl:pt-8 xl:pl-8">
             <div ref={scrollContainerRef} className="h-full overflow-y-auto custom-scrollbar pr-8 pb-8">
                 <div className="flex items-center text-white font-bold mb-6 text-lg">
