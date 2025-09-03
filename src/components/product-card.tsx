@@ -49,9 +49,9 @@ export function ProductCard({ product, onAddToCart, quantity, onProductClick, is
   return (
     <div
       onClick={() => onProductClick(product)}
-      className="bg-white text-black rounded-lg md:rounded-2xl overflow-hidden flex flex-col h-full shadow-custom-dark cursor-pointer transition-transform duration-200 hover:-translate-y-1"
+      className="bg-white text-black rounded-lg md:rounded-2xl overflow-hidden flex flex-col h-full shadow-custom-dark cursor-pointer transition-transform duration-200 md:hover:-translate-y-1"
     >
-      <div className="relative w-full pt-[80%]">
+      <div className="relative w-full pt-[80%] rounded-t-lg md:rounded-t-2xl">
         <Image
           src="/choco img.png"
           alt={product.name}
