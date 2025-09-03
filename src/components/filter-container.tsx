@@ -99,7 +99,7 @@ export function FilterContainer({ filters, onFilterChange, isSearching, isMobile
             <div className="space-y-2 pl-0">
               {priceOptions.map((option) => (
                  <CheckboxItem
-                    key={option.id}
+                    key={`mobile-${option.id}`}
                     id={`mobile-${option.id}`}
                     label={option.label}
                     checked={filters.selectedPriceOptions.includes(option.id)}
