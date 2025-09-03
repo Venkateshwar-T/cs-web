@@ -23,7 +23,7 @@ export function MobileProductDetailView({ product, onClose, onAddToCart, cart, o
     <div className={cn(
       "relative bg-[#9A7DAB] rounded-t-[20px] h-full ring-4 ring-custom-purple-dark"
     )}>
-      <div className="bg-white/20 h-full w-full rounded-t-[20px] relative overflow-y-auto custom-scrollbar">
+      <div className="bg-white/20 h-full w-full rounded-t-[20px] relative overflow-y-auto no-scrollbar">
         <div className="sticky top-0 z-20 flex justify-end p-2">
             <Button 
               variant="ghost" 
@@ -37,7 +37,7 @@ export function MobileProductDetailView({ product, onClose, onAddToCart, cart, o
         <div className="-mt-12">
            <MobileImageGallery product={product} onImageExpandChange={() => {}} />
         </div>
-        <div className="p-4 text-white">
+        <div className="p-4">
           <ProductDetails product={product} isLiked={isLiked} onLikeToggle={onLikeToggle} isMobile={true} />
         </div>
       </div>
