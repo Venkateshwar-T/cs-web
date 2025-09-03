@@ -22,7 +22,7 @@ export function MobileProductDetailView({ product, onClose }: MobileProductDetai
           variant="ghost" 
           size="icon" 
           onClick={onClose}
-          className="absolute top-2 right-2 z-20 h-8 w-8 text-white hover:text-white/80"
+          className="absolute top-2 right-2 z-20 h-8 w-8 text-white rounded-full hover:bg-custom-gold hover:text-custom-purple-dark"
         >
           <X className="h-6 w-6" />
         </Button>
