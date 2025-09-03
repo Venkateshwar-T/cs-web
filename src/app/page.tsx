@@ -426,6 +426,8 @@ export default function Home() {
               onAddToCart={handleAddToCart}
               cart={cart}
               onToggleCartPopup={handleToggleCartPopup}
+              isLiked={!!likedProducts[selectedProductForMobile.id]}
+              onLikeToggle={() => handleLikeToggle(selectedProductForMobile.id)}
             />
           </div>
         </>

@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { X } from 'lucide-react';
 import { MobileImageGallery } from '../mobile-image-gallery';
+import { ProductDetails } from '../product-details';
 
 interface MobileProductDetailViewProps {
   product: Product;
@@ -13,9 +14,11 @@ interface MobileProductDetailViewProps {
   onAddToCart: (productName: string, quantity: number, animate?: boolean) => void;
   cart: Record<string, number>;
   onToggleCartPopup: () => void;
+  isLiked: boolean;
+  onLikeToggle: () => void;
 }
 
-export function MobileProductDetailView({ product, onClose, onAddToCart, cart, onToggleCartPopup }: MobileProductDetailViewProps) {
+export function MobileProductDetailView({ product, onClose, onAddToCart, cart, onToggleCartPopup, isLiked, onLikeToggle }: MobileProductDetailViewProps) {
   return (
     <div className={cn(
       "relative bg-[#9A7DAB] rounded-t-[20px] h-full ring-4 ring-custom-purple-dark"
@@ -34,7 +37,9 @@ export function MobileProductDetailView({ product, onClose, onAddToCart, cart, o
         <div className="-mt-12">
            <MobileImageGallery product={product} onImageExpandChange={() => {}} />
         </div>
-        {/* Other content like description, etc. will go here */}
+        <div className="p-4 text-white">
+          <ProductDetails product={product} isLiked={isLiked} onLikeToggle={onLikeToggle} />
+        </div>
       </div>
     </div>
   );
