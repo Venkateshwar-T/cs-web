@@ -96,14 +96,13 @@ export function SearchResultsDetails({
                                   <SlidersHorizontal className="h-5 w-5" />
                               </Button>
                           </SheetTrigger>
-                          <SheetContent side="bottom" className="bg-custom-purple-dark text-white border-t-2 border-custom-gold rounded-t-3xl h-auto">
-                              <SheetHeader>
+                          <SheetContent side="bottom" className="bg-custom-purple-dark text-white border-t-2 border-custom-gold rounded-t-3xl h-auto p-0">
+                              <SheetHeader className="p-4 border-b border-white/20">
                                   <SheetTitle className="text-white text-center">Filters</SheetTitle>
                               </SheetHeader>
                               <FilterContainer 
                                 filters={filters}
                                 onFilterChange={onFilterChange}
-                                isSearching={isSearching}
                                 isMobile={true}
                               />
                           </SheetContent>
@@ -164,11 +163,11 @@ export function SearchResultsDetails({
                   {activeFilters.length > 0 && (
                     <div className="flex gap-2 mb-4 flex-nowrap overflow-x-auto no-scrollbar md:flex-wrap md:overflow-x-visible">
                       {activeFilters.map(filter => (
-                        <div key={`${filter.type}-${filter.value}`} className="flex-shrink-0 flex items-center bg-custom-gold text-custom-purple-dark rounded-full px-3 py-1 text-sm font-medium">
+                        <div key={`${filter.type}-${filter.value}`} className="flex-shrink-0 flex items-center bg-custom-gold text-custom-purple-dark rounded-full px-2.5 py-0.5 text-xs font-medium">
                           <span>{filter.label}</span>
                           <button
                             onClick={() => onRemoveFilter(filter.type, filter.value)}
-                            className="ml-2 -mr-1 p-0.5 rounded-full hover:bg-black/10"
+                            className="ml-1.5 -mr-1 p-0.5 rounded-full hover:bg-black/10"
                           >
                             <X className="h-3 w-3" />
                           </button>
