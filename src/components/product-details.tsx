@@ -30,7 +30,7 @@ export function ProductDetails({ product, isLiked, onLikeToggle, isMobile = fals
         <div className={cn("flex flex-col gap-4 h-full animate-slide-in-from-right text-black")} style={{ animationDuration: '0.5s' }}>
             {/* Title and Like button */}
             <div className="flex justify-between items-start">
-                <h2 className={cn("font-bold font-plex-sans-condensed", isMobile ? "text-xl" : "text-3xl")}>{product.name}</h2>
+                <h2 className={cn("font-bold font-plex-sans-condensed", isMobile ? "text-2xl" : "text-3xl")}>{product.name}</h2>
                 <div className="relative">
                     <button onClick={handleLikeClick} className="p-1">
                         <Heart 
