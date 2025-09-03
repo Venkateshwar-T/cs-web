@@ -28,7 +28,7 @@ export function MobileProductDetailView({
   onAddToCart, 
   cart, 
   onToggleCartPopup, 
-  isLiked, 
+  isLiked,
   onLikeToggle,
   flavourCart,
   onFlavourAddToCart,
@@ -81,7 +81,7 @@ export function MobileProductDetailView({
             <FlavoursSection onAddToCart={onFlavourAddToCart} cart={flavourCart} isMobile={true} />
           </div>
           <Separator className="my-4 bg-white/30" />
-          <div className="bg-custom-purple-dark pt-4 mt-4">
+          <div className="bg-custom-purple-dark pt-4 rounded-t-2xl">
             <div className="flex justify-between items-center mb-4 px-4">
                 <div className="flex flex-col items-start">
                     <p className="text-sm line-through opacity-70">₹1000</p>
