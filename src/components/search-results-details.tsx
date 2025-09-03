@@ -162,9 +162,9 @@ export function SearchResultsDetails({
                     </Select>
                   </div>
                   {activeFilters.length > 0 && (
-                    <div className="flex flex-wrap gap-2 mb-4">
+                    <div className="flex gap-2 mb-4 flex-nowrap overflow-x-auto no-scrollbar md:flex-wrap md:overflow-x-visible">
                       {activeFilters.map(filter => (
-                        <div key={`${filter.type}-${filter.value}`} className="flex items-center bg-custom-gold text-custom-purple-dark rounded-full px-3 py-1 text-sm font-medium">
+                        <div key={`${filter.type}-${filter.value}`} className="flex-shrink-0 flex items-center bg-custom-gold text-custom-purple-dark rounded-full px-3 py-1 text-sm font-medium">
                           <span>{filter.label}</span>
                           <button
                             onClick={() => onRemoveFilter(filter.type, filter.value)}
