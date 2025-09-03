@@ -4,6 +4,7 @@
 import type { Product, FilterState } from '@/app/page';
 import { FilterContainer } from '@/components/filter-container';
 import { SearchResultsDetails } from '@/components/search-results-details';
+import { cn } from '@/lib/utils';
 
 interface SearchViewProps {
   filters: FilterState;
@@ -40,12 +41,14 @@ export function SearchView({
 }: SearchViewProps) {
   return (
     <div className="flex w-full items-start flex-grow min-h-0">
-      <FilterContainer 
-        filters={filters} 
-        onFilterChange={onFilterChange} 
-        isSearching={isSearching}
-      />
-      <div className="h-full flex-grow ml-8 mr-8 relative min-h-0">
+      <div className="hidden md:block w-[17%] h-full">
+        <FilterContainer 
+          filters={filters} 
+          onFilterChange={onFilterChange} 
+          isSearching={isSearching}
+        />
+      </div>
+      <div className={cn("h-full flex-grow md:ml-8 md:mr-8 relative min-h-0 w-full md:w-auto")}>
         <SearchResultsDetails 
           products={products}
           query={query} 

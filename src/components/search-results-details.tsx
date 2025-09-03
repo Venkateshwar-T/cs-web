@@ -1,12 +1,11 @@
 
-
 'use client';
 
 import { ProductCard } from "./product-card";
 import { useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
 import type { Product, FilterState } from "@/app/page";
-import { X } from 'lucide-react';
+import { X, SlidersHorizontal, ArrowUpDown } from 'lucide-react';
 import {
   Select,
   SelectContent,
@@ -14,6 +13,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { Button } from '@/components/ui/button';
 import { ProductCardSkeleton } from "./product-card-skeleton";
 
 interface SearchResultsDetailsProps {
@@ -55,14 +55,30 @@ export function SearchResultsDetails({
   }, [isSearching]);
 
   return (
-    <div className="bg-[#5D2B79] h-full flex-grow rounded-t-[40px] relative min-h-0">
-        <div className="bg-white/20 h-full w-full rounded-t-[40px] pt-4 md:pt-8 pl-4 md:pl-8">
+    <div className="bg-[#5D2B79] h-full md:h-full rounded-t-[40px] relative min-h-0 mx-4 md:mx-0">
+        <div className="bg-white/20 h-full w-full rounded-t-[40px] pt-4 md:pt-8 px-4 md:pl-8 md:pr-0">
             <div 
                 ref={scrollContainerRef}
-                className="h-full overflow-y-auto custom-scrollbar pr-4 md:pr-8 pb-8"
+                className="h-full overflow-y-auto custom-scrollbar md:pr-8 pb-8"
             >
+                {/* Mobile Header */}
+                <div className="md:hidden flex justify-between items-center text-white mb-4">
+                  <h2 className="text-sm">
+                    Showing results for <span className="italic text-custom-gold">{query}</span>
+                  </h2>
+                  <div className="flex items-center gap-2">
+                    <Button variant="ghost" size="icon" className="h-8 w-8">
+                      <SlidersHorizontal className="h-5 w-5" />
+                    </Button>
+                    <Button variant="ghost" size="icon" className="h-8 w-8">
+                      <ArrowUpDown className="h-5 w-5" />
+                    </Button>
+                  </div>
+                </div>
+                
+                {/* Desktop Header */}
                 <div className={cn(
-                    "flex flex-col md:flex-row justify-between md:items-center text-white mb-2",
+                    "hidden md:flex flex-col md:flex-row justify-between md:items-center text-white mb-2",
                     activeFilters.length === 0 && 'mb-4'
                 )}>
                   <h2 className="text-lg md:text-xl mb-2 md:mb-0">
@@ -98,7 +114,7 @@ export function SearchResultsDetails({
                     ))}
                   </div>
                 )}
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+                <div className="hidden md:grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
                 {isSearching 
                   ? Array.from({ length: 12 }).map((_, index) => <ProductCardSkeleton key={index} />)
                   : products.map((product) => (
