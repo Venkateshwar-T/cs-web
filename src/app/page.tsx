@@ -21,6 +21,7 @@ import { FloatingCartButton } from '@/components/floating-cart-button';
 import { FaqView } from '@/components/faq-view';
 import { BottomNavbar } from '@/components/bottom-navbar';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { MobileProductDetailView } from '@/components/views/MobileProductDetailView';
 
 
 export type Product = {
@@ -315,7 +316,6 @@ export default function Home() {
               onSortSheetOpenChange={setIsSortSheetOpen}
               selectedProductForMobile={selectedProductForMobile}
               onCloseMobileProductDetail={handleCloseMobileProductDetail}
-              onImageExpandChange={setIsImageExpanded}
             />
           );
         }
@@ -363,7 +363,6 @@ export default function Home() {
             onSortSheetOpenChange={setIsSortSheetOpen}
             selectedProductForMobile={selectedProductForMobile}
             onCloseMobileProductDetail={handleCloseMobileProductDetail}
-            onImageExpandChange={setIsImageExpanded}
           />
         );
       case 'order-confirmed':
@@ -384,7 +383,7 @@ export default function Home() {
     <>
       <SparkleBackground />
       <LoaderBar isLoading={isPageLoading || isSearching} onAnimationComplete={() => setIsSearching(false)} />
-      <div className={cn("flex flex-col h-screen", (isPopupOpen && !isCartVisible) || (isPopupOpen && isCartVisible) ? 'opacity-50' : '')}>
+      <div className={cn("flex flex-col h-screen", (isPopupOpen && !isCartVisible) ? 'opacity-50' : '')}>
         <Header 
           onSearchSubmit={handleSearchSubmit} 
           onProfileOpenChange={setIsProfileOpen}
@@ -416,6 +415,21 @@ export default function Home() {
         cartMessage={cartMessage}
         cart={cart}
       />
+      
+      {selectedProductForMobile && (
+        <>
+          <div className="fixed inset-0 z-50 bg-black/50" />
+          <div className="fixed inset-x-4 bottom-0 top-16 z-[60] md:hidden">
+            <MobileProductDetailView 
+              product={selectedProductForMobile} 
+              onClose={handleCloseMobileProductDetail} 
+              onAddToCart={handleAddToCart}
+              cart={cart}
+              onToggleCartPopup={handleToggleCartPopup}
+            />
+          </div>
+        </>
+      )}
 
       <PopupsManager
         selectedProduct={selectedProduct}

@@ -7,7 +7,6 @@ import type { Product, FilterState } from '@/app/page';
 import { FilterContainer } from '@/components/filter-container';
 import { SearchResultsDetails } from '@/components/search-results-details';
 import { cn } from '@/lib/utils';
-import { MobileProductDetailView } from './MobileProductDetailView';
 
 interface SearchViewProps {
   filters: FilterState;
@@ -31,7 +30,6 @@ interface SearchViewProps {
   onSortSheetOpenChange: (open: boolean) => void;
   selectedProductForMobile: Product | null;
   onCloseMobileProductDetail: () => void;
-  onImageExpandChange: (isExpanded: boolean) => void;
 }
 
 export function SearchView({
@@ -56,7 +54,6 @@ export function SearchView({
   onSortSheetOpenChange,
   selectedProductForMobile,
   onCloseMobileProductDetail,
-  onImageExpandChange
 }: SearchViewProps) {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   
@@ -97,15 +94,6 @@ export function SearchView({
           onSortSheetOpenChange={onSortSheetOpenChange}
         />
       </div>
-      {selectedProductForMobile && (
-        <div className="absolute inset-0 z-10 md:hidden px-4">
-          <MobileProductDetailView
-            product={selectedProductForMobile}
-            onClose={onCloseMobileProductDetail}
-            onImageExpandChange={onImageExpandChange}
-          />
-        </div>
-      )}
     </div>
   );
 }

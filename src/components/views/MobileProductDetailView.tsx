@@ -1,4 +1,3 @@
-
 // @/components/views/MobileProductDetailView.tsx
 'use client';
 
@@ -11,13 +10,15 @@ import { MobileImageGallery } from '../mobile-image-gallery';
 interface MobileProductDetailViewProps {
   product: Product;
   onClose: () => void;
-  onImageExpandChange: (isExpanded: boolean) => void;
+  onAddToCart: (productName: string, quantity: number, animate?: boolean) => void;
+  cart: Record<string, number>;
+  onToggleCartPopup: () => void;
 }
 
-export function MobileProductDetailView({ product, onClose, onImageExpandChange }: MobileProductDetailViewProps) {
+export function MobileProductDetailView({ product, onClose, onAddToCart, cart, onToggleCartPopup }: MobileProductDetailViewProps) {
   return (
     <div className={cn(
-      "relative bg-[#5D2B79] rounded-t-[20px] h-full"
+      "relative bg-[#9A7DAB] rounded-t-[20px] h-full ring-4 ring-custom-purple-dark"
     )}>
       <div className="bg-white/20 h-full w-full rounded-t-[20px] relative overflow-y-auto custom-scrollbar">
         <div className="sticky top-0 z-20 flex justify-end p-2">
@@ -31,7 +32,7 @@ export function MobileProductDetailView({ product, onClose, onImageExpandChange 
             </Button>
         </div>
         <div className="-mt-12">
-          <MobileImageGallery product={product} onImageExpandChange={onImageExpandChange} />
+           <MobileImageGallery product={product} onImageExpandChange={() => {}} />
         </div>
         {/* Other content like description, etc. will go here */}
       </div>
