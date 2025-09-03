@@ -63,7 +63,7 @@ export function ProductCard({ product, onAddToCart, quantity, onProductClick, is
       <div className="p-2 md:p-3 flex flex-col flex-grow">
         <div className="flex-grow md:flex-grow-0">
           <div className="flex justify-between items-start">
-            <h3 className="font-bold text-sm leading-tight flex-1 pr-2 whitespace-nowrap truncate">{product.name}</h3>
+            <h3 className="font-bold text-sm md:text-base leading-tight flex-1 pr-2 whitespace-nowrap truncate">{product.name}</h3>
             <div className="relative">
               <button onClick={handleLikeClick} className="pl-1 py-1">
                 <Heart 
@@ -97,7 +97,7 @@ export function ProductCard({ product, onAddToCart, quantity, onProductClick, is
               )}
             </div>
           </div>
-          <p className="text-xs text-[#9A7DAB] mt-1 whitespace-nowrap truncate">250g | Assorted | Hard Box</p>
+          <p className="text-xs md:text-sm text-[#9A7DAB] mt-1 whitespace-nowrap truncate">250g | Assorted | Hard Box</p>
         </div>
         <div className="mt-2 md:mt-4">
           <p className="text-xs text-gray-500 line-through font-bold">₹1000</p>
