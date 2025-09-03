@@ -20,6 +20,7 @@ import { PopupsManager } from '@/components/popups/popups-manager';
 import { FloatingCartButton } from '@/components/floating-cart-button';
 import { FaqView } from '@/components/faq-view';
 import { BottomNavbar } from '@/components/bottom-navbar';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 
 export type Product = {
@@ -90,6 +91,9 @@ export default function Home() {
   const [isPageLoading, setIsPageLoading] = useState(true);
   const [isFilterSheetOpen, setIsFilterSheetOpen] = useState(false);
   const [isSortSheetOpen, setIsSortSheetOpen] = useState(false);
+  const [selectedProductForMobile, setSelectedProductForMobile] = useState<Product | null>(null);
+  const isMobile = useIsMobile();
+
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -99,7 +103,7 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    if (selectedProduct || isImageExpanded || isCartVisible || isSignUpOpen || isCompleteDetailsOpen || isProfileOpen) {
+    if (selectedProduct || isImageExpanded || isCartVisible || isSignUpOpen || isCompleteDetailsOpen || isProfileOpen || selectedProductForMobile) {
       document.body.classList.add('overflow-hidden');
     } else {
       document.body.classList.remove('overflow-hidden');
@@ -107,7 +111,7 @@ export default function Home() {
     return () => {
       document.body.classList.remove('overflow-hidden');
     };
-  }, [selectedProduct, isImageExpanded, isCartVisible, isSignUpOpen, isCompleteDetailsOpen, isProfileOpen]);
+  }, [selectedProduct, isImageExpanded, isCartVisible, isSignUpOpen, isCompleteDetailsOpen, isProfileOpen, selectedProductForMobile]);
 
 
   useEffect(() => {
@@ -137,6 +141,7 @@ export default function Home() {
     setIsSearching(true);
     setIsNewSearch(true); // Flag that this is a new search
     setSelectedProduct(null);
+    setSelectedProductForMobile(null);
     setFilters(initialFilterState);
     setSortOption("featured");
     if (fromAnimated) {
@@ -176,11 +181,19 @@ export default function Home() {
   };
 
   const handleProductClick = (product: Product) => {
-    setSelectedProduct(product);
+     if (isMobile) {
+      setSelectedProductForMobile(product);
+    } else {
+      setSelectedProduct(product);
+    }
   };
 
   const handleClosePopup = () => {
     setSelectedProduct(null);
+  };
+  
+  const handleCloseMobileProductDetail = () => {
+    setSelectedProductForMobile(null);
   };
 
   const handleFilterChange = (newFilters: Partial<FilterState>) => {
@@ -300,6 +313,8 @@ export default function Home() {
               onFilterSheetOpenChange={setIsFilterSheetOpen}
               isSortSheetOpen={isSortSheetOpen}
               onSortSheetOpenChange={setIsSortSheetOpen}
+              selectedProductForMobile={selectedProductForMobile}
+              onCloseMobileProductDetail={handleCloseMobileProductDetail}
             />
           );
         }
@@ -345,6 +360,8 @@ export default function Home() {
             onFilterSheetOpenChange={setIsFilterSheetOpen}
             isSortSheetOpen={isSortSheetOpen}
             onSortSheetOpenChange={setIsSortSheetOpen}
+            selectedProductForMobile={selectedProductForMobile}
+            onCloseMobileProductDetail={handleCloseMobileProductDetail}
           />
         );
       case 'order-confirmed':
@@ -427,5 +444,3 @@ export default function Home() {
     </>
   );
 }
-
-    

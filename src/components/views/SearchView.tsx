@@ -7,6 +7,7 @@ import type { Product, FilterState } from '@/app/page';
 import { FilterContainer } from '@/components/filter-container';
 import { SearchResultsDetails } from '@/components/search-results-details';
 import { cn } from '@/lib/utils';
+import { MobileProductDetailView } from './MobileProductDetailView';
 
 interface SearchViewProps {
   filters: FilterState;
@@ -28,6 +29,8 @@ interface SearchViewProps {
   onFilterSheetOpenChange: (open: boolean) => void;
   isSortSheetOpen: boolean;
   onSortSheetOpenChange: (open: boolean) => void;
+  selectedProductForMobile: Product | null;
+  onCloseMobileProductDetail: () => void;
 }
 
 export function SearchView({
@@ -50,6 +53,8 @@ export function SearchView({
   onFilterSheetOpenChange,
   isSortSheetOpen,
   onSortSheetOpenChange,
+  selectedProductForMobile,
+  onCloseMobileProductDetail,
 }: SearchViewProps) {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   
@@ -61,7 +66,7 @@ export function SearchView({
   }, [isNewSearch]);
 
   return (
-    <div ref={scrollContainerRef} className="flex w-full items-start flex-grow min-h-0 overflow-y-auto custom-scrollbar">
+    <div ref={scrollContainerRef} className="flex w-full items-start flex-grow min-h-0 overflow-y-auto custom-scrollbar relative">
       <div className="hidden md:block w-full md:w-auto md:sticky md:top-0 md:w-[17%] h-full">
         <FilterContainer 
           filters={filters} 
@@ -90,8 +95,12 @@ export function SearchView({
           onSortSheetOpenChange={onSortSheetOpenChange}
         />
       </div>
+      {selectedProductForMobile && (
+        <MobileProductDetailView
+          product={selectedProductForMobile}
+          onClose={onCloseMobileProductDetail}
+        />
+      )}
     </div>
   );
 }
-
-    
