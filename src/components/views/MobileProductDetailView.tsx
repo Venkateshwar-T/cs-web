@@ -38,7 +38,7 @@ export function MobileProductDetailView({ product, onClose, onAddToCart, cart, o
            <MobileImageGallery product={product} onImageExpandChange={() => {}} />
         </div>
         <div className="p-4 text-white">
-          <ProductDetails product={product} isLiked={isLiked} onLikeToggle={onLikeToggle} />
+          <ProductDetails product={product} isLiked={isLiked} onLikeToggle={onLikeToggle} isMobile={true} />
         </div>
       </div>
     </div>

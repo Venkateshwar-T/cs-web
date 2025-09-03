@@ -10,9 +10,10 @@ interface ProductDetailsProps {
     product: Product;
     isLiked: boolean;
     onLikeToggle: () => void;
+    isMobile?: boolean;
 }
 
-export function ProductDetails({ product, isLiked, onLikeToggle }: ProductDetailsProps) {
+export function ProductDetails({ product, isLiked, onLikeToggle, isMobile = false }: ProductDetailsProps) {
     const [isAnimating, setIsAnimating] = useState(false);
     const [likeClickCount, setLikeClickCount] = useState(0);
 
@@ -25,17 +26,17 @@ export function ProductDetails({ product, isLiked, onLikeToggle }: ProductDetail
     };
 
     return (
-        <div className="flex flex-col gap-4 h-full animate-slide-in-from-right" style={{ animationDuration: '0.5s' }}>
+        <div className={cn("flex flex-col gap-4 h-full animate-slide-in-from-right", isMobile && "text-black")} style={{ animationDuration: '0.5s' }}>
             {/* Title and Like button */}
             <div className="flex justify-between items-start">
-                <h2 className="text-3xl font-bold font-plex-sans-condensed">{product.name}</h2>
+                <h2 className={cn("font-bold font-plex-sans-condensed", isMobile ? "text-2xl" : "text-3xl")}>{product.name}</h2>
                 <div className="relative">
                     <button onClick={handleLikeClick} className="p-1">
                         <Heart 
                             key={likeClickCount}
                             className={cn(
                                 "h-7 w-7 stroke-current transition-colors duration-300", 
-                                isLiked ? 'text-red-500 fill-red-500' : 'text-inherit',
+                                isLiked ? 'text-red-500 fill-red-500' : (isMobile ? 'text-black' : 'text-inherit'),
                                 'animate-heart-pop'
                             )} 
                         />
@@ -71,43 +72,43 @@ export function ProductDetails({ product, isLiked, onLikeToggle }: ProductDetail
                       <circle cx="12" cy="12" r="7" fill="#137C00"/>
                   </svg>
                 </div>
-                <p className="text-base font-normal font-poppins">250g | Assorted | Hard-Box</p>
+                <p className={cn("font-normal font-poppins", isMobile ? "text-sm" : "text-base")}>250g | Assorted | Hard-Box</p>
             </div>
 
             {/* Best for */}
             <div>
-                <p className="text-base font-semibold font-plex-sans-condensed">
+                <p className={cn("font-semibold font-plex-sans-condensed", isMobile ? "text-sm" : "text-base")}>
                     Best for: Weddings, Corporate Gifts, Birthdays & Anniversaries, Festive Seasons
                 </p>
             </div>
 
             {/* Product Description */}
             <div>
-                <p className="text-base font-medium font-plex-sans">
+                <p className={cn("font-medium font-plex-sans", isMobile ? "text-sm" : "text-base")}>
                     This premium hard-box presents a curated assortment of handcrafted chocolates. The collection is fully customizable, allowing you to select from a variety of dark, milk, and white chocolates to create a truly personalized gift.
                 </p>
             </div>
 
             {/* Ingredients */}
             <div>
-                 <p className="text-base font-normal font-plex-sans-condensed">
+                 <p className={cn("font-plex-sans-condensed", isMobile ? "text-xs" : "text-base")}>
                     <span className="font-medium">Ingredients:</span> Sugar, Edible Vegetable Fat, Cocoa Solids, Emulsifiers (492, 322). Contains Added Natural (Vanilla) Flavouring Substances.
                 </p>
             </div>
             
             {/* Nutritional Information */}
             <div>
-                <p className="text-base font-normal font-plex-sans-condensed">
+                <p className={cn("font-plex-sans-condensed", isMobile ? "text-xs" : "text-base")}>
                     <span className="font-medium">Nutritional Information:</span> Made with Hydrogenated Vegetable Fat. Contains Trans Fats.
                 </p>
             </div>
 
             {/* Allergen Alert */}
             <div>
-                <p className="text-sm font-semibold">Allergen Alert:</p>
-                <ul className="list-disc pl-5 text-sm font-semibold">
-                    <li>Contains soy.</li>
-                    <li>May contain traces of milk solids.</li>
+                <p className={cn("font-semibold", isMobile ? "text-sm" : "text-base")}>Allergen Alert:</p>
+                <ul className="list-disc pl-5 font-semibold">
+                    <li className={cn(isMobile ? "text-xs" : "text-sm")}>Contains soy.</li>
+                    <li className={cn(isMobile ? "text-xs" : "text-sm")}>May contain traces of milk solids.</li>
                 </ul>
             </div>
         </div>

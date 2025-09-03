@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState } from 'react';
@@ -69,7 +68,7 @@ export function ProductPopup({ product, onClose, onImageExpandChange, isLiked, o
           {/* Right Section */}
           <div className="flex-grow h-full xl:relative lg:relative">
               <div className="h-full py-0 pr-6 overflow-y-auto custom-scrollbar pb-28">
-                  <ProductDetails product={product} isLiked={isLiked} onLikeToggle={onLikeToggle} />
+                  <ProductDetails product={product} isLiked={isLiked} onLikeToggle={onLikeToggle} isMobile={false} />
               </div>
               <ProductPopupFooter product={product} onAddToCart={onAddToCart} quantity={productQuantity} onToggleCartPopup={onToggleCartPopup} />
           </div>
