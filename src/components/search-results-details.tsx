@@ -152,7 +152,7 @@ export function SearchResultsDetails({
                         ))}
                       </div>
                     )}
-                    <div className="border-b border-white/20 my-4" />
+                    <div className="border-b border-white/20 my-4 md:hidden" />
                   </div>
                   
                   {/* Desktop Header */}

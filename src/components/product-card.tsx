@@ -69,7 +69,7 @@ export function ProductCard({ product, onAddToCart, quantity, onProductClick, is
                 <Heart 
                   key={likeClickCount}
                   className={cn(
-                    "h-5 md:h-6 w-5 md:w-6 stroke-current transition-colors duration-300", 
+                    "h-5 w-5 md:h-6 md:w-6 stroke-current transition-colors duration-300", 
                     isLiked ? 'text-red-500 fill-red-500' : 'text-black',
                     'animate-heart-pop'
                   )} 
