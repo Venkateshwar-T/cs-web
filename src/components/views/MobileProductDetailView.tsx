@@ -69,7 +69,7 @@ export function MobileProductDetailView({
               <X className="h-6 w-6" />
             </Button>
         </div>
-        <div className="flex-grow overflow-y-auto no-scrollbar pb-4">
+        <div className="flex-grow overflow-y-auto no-scrollbar pb-2">
           <div className="-mt-2">
             <MobileImageGallery product={product} onImageExpandChange={() => {}} />
           </div>
@@ -90,16 +90,16 @@ export function MobileProductDetailView({
                 <p className="text-3xl font-bold">₹750</p>
             </div>
             
-            <div className="space-y-3">
+            <div className="space-y-0">
               {productQuantity === 0 ? (
                   <Button
-                      className="w-full rounded-full font-semibold text-sm border-2 border-custom-gold bg-custom-gold text-custom-purple-dark py-2 h-auto hover:bg-custom-gold/90"
+                      className="w-[50%] rounded-full font-semibold text-sm border-2 border-custom-gold bg-custom-gold text-custom-purple-dark py-1 h-auto hover:bg-custom-gold/90"
                       onClick={handleAddToCartClick}
                   >
                       Add to Cart
                   </Button>
               ) : (
-                  <div className="flex items-center justify-center w-full rounded-full h-10 border-2 border-white overflow-hidden">
+                  <div className="flex items-center justify-center w-[50%] rounded-full h-8 border-2 border-white overflow-hidden">
                       <Button size="icon" variant="ghost" onClick={handleDecrement} className="h-full rounded-none bg-white hover:bg-white/90 text-custom-purple-dark hover:text-custom-purple-dark flex-1">
                           <Minus className="h-5 w-5" />
                       </Button>
@@ -113,7 +113,7 @@ export function MobileProductDetailView({
               )}
                <Button
                   onClick={handleBuyNow}
-                  className="w-full rounded-full font-semibold text-sm border border-white bg-white text-custom-purple-dark py-2 h-auto hover:bg-custom-purple-dark hover:text-white"
+                  className="w-[50%] rounded-full font-semibold text-sm border border-white bg-white text-custom-purple-dark py-1 h-auto hover:bg-custom-purple-dark hover:text-white"
               >
                   Buy Now
               </Button>
