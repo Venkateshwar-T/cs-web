@@ -30,10 +30,10 @@ export function MobileImageGallery({ product, onImageExpandChange }: MobileImage
 
     return (
         <>
-            <div className="flex flex-col gap-2 p-4">
+            <div className="flex flex-col items-center gap-2 p-4">
                 
                 {/* Main Image */}
-                <div className="group relative w-full aspect-square">
+                <div className="group relative w-5/6 aspect-square">
                     <Image
                         src={productImages[activeIndex].src}
                         alt={productImages[activeIndex].alt}
@@ -55,7 +55,7 @@ export function MobileImageGallery({ product, onImageExpandChange }: MobileImage
                 </div>
 
                 {/* Thumbnails */}
-                <div className="grid grid-cols-4 gap-2">
+                <div className="grid grid-cols-4 gap-2 w-5/6">
                     {productImages.map((image, index) => (
                         <button
                             key={image.id} 
