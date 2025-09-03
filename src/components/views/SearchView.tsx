@@ -21,6 +21,10 @@ interface SearchViewProps {
   onLikeToggle: (productId: number) => void;
   sortOption: string;
   onSortChange: (value: string) => void;
+  isFilterSheetOpen: boolean;
+  onFilterSheetOpenChange: (open: boolean) => void;
+  isSortSheetOpen: boolean;
+  onSortSheetOpenChange: (open: boolean) => void;
 }
 
 export function SearchView({
@@ -38,10 +42,14 @@ export function SearchView({
   onLikeToggle,
   sortOption,
   onSortChange,
+  isFilterSheetOpen,
+  onFilterSheetOpenChange,
+  isSortSheetOpen,
+  onSortSheetOpenChange,
 }: SearchViewProps) {
   return (
     <div className="flex w-full items-start flex-grow min-h-0">
-      <div className="hidden md:block w-[17%] h-full">
+      <div className="hidden md:block md:w-[17%] h-full">
         <FilterContainer 
           filters={filters} 
           onFilterChange={onFilterChange} 
@@ -62,6 +70,12 @@ export function SearchView({
           isSearching={isSearching}
           sortOption={sortOption}
           onSortChange={onSortChange}
+          filters={filters}
+          onFilterChange={onFilterChange}
+          isFilterSheetOpen={isFilterSheetOpen}
+          onFilterSheetOpenChange={onFilterSheetOpenChange}
+          isSortSheetOpen={isSortSheetOpen}
+          onSortSheetOpenChange={onSortSheetOpenChange}
         />
       </div>
     </div>

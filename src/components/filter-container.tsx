@@ -40,9 +40,10 @@ interface FilterContainerProps {
     filters: FilterState;
     onFilterChange: (newFilters: Partial<FilterState>) => void;
     isSearching: boolean;
+    isMobile?: boolean;
 }
 
-export function FilterContainer({ filters, onFilterChange, isSearching }: FilterContainerProps) {
+export function FilterContainer({ filters, onFilterChange, isSearching, isMobile = false }: FilterContainerProps) {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -76,6 +77,88 @@ export function FilterContainer({ filters, onFilterChange, isSearching }: Filter
   const handleOccasionChange = createHandler('selectedOccasions');
   const handleProductTypeChange = createHandler('selectedProductTypes');
   const handleWeightChange = createHandler('selectedWeights');
+
+  if (isMobile) {
+    return (
+      <div className="h-[75vh] flex flex-col">
+        <div ref={scrollContainerRef} className="flex-grow overflow-y-auto custom-scrollbar px-4 pb-8">
+          <div className="space-y-6">
+            <div className="space-y-2">
+              <p className="text-sm text-white/80 font-poppins">Price</p>
+              <p className="text-base text-white font-semibold font-plex-sans">
+                ₹{filters.priceRange[0]} - ₹{filters.priceRange[1]}
+              </p>
+              <Slider
+                value={filters.priceRange}
+                onValueChange={handleSliderChange}
+                max={3000}
+                step={100}
+                className="w-full"
+              />
+            </div>
+            <div className="space-y-2 pl-0">
+              {priceOptions.map((option) => (
+                 <CheckboxItem
+                    key={option.id}
+                    id={`mobile-${option.id}`}
+                    label={option.label}
+                    checked={filters.selectedPriceOptions.includes(option.id)}
+                    onCheckedChange={(checked) => handlePriceOptionChange(option.id, !!checked)}
+                  />
+              ))}
+            </div>
+            <FilterSection title="Flavours & Fillings" icon={<Image src="/icons/flavours_icon.png" alt="Flavours" width={18} height={18} onDragStart={(e) => e.preventDefault()}/>}>
+              {flavourOptions.map((option) => (
+                <CheckboxItem
+                  key={`mobile-${option.id}`}
+                  id={`mobile-${option.id}`}
+                  label={option.label}
+                  checked={filters.selectedFlavours.includes(option.id)}
+                  onCheckedChange={(checked) => handleFlavourChange(option.id, !!checked)}
+                />
+              ))}
+            </FilterSection>
+            <FilterSection title="Best for Occasion" icon={<Image src="/icons/occasion_icon.png" alt="Occasion" width={18} height={18} onDragStart={(e) => e.preventDefault()}/>}>
+              {occasionOptions.map((option) => (
+                <CheckboxItem
+                  key={`mobile-${option.id}`}
+                  id={`mobile-${option.id}`}
+                  label={option.label}
+                  count={option.count}
+                  checked={filters.selectedOccasions.includes(option.id)}
+                  onCheckedChange={(checked) => handleOccasionChange(option.id, !!checked)}
+                />
+              ))}
+            </FilterSection>
+            <FilterSection title="Product Type" icon={<Image src="/icons/product_type_icon.png" alt="Product Type" width={16} height={16} onDragStart={(e) => e.preventDefault()}/>}>
+              {productTypeOptions.map((option) => (
+                <CheckboxItem
+                  key={`mobile-${option.id}`}
+                  id={`mobile-${option.id}`}
+                  label={option.label}
+                  count={option.count}
+                  checked={filters.selectedProductTypes.includes(option.id)}
+                  onCheckedChange={(checked) => handleProductTypeChange(option.id, !!checked)}
+                />
+              ))}
+            </FilterSection>
+            <FilterSection title="Weight" icon={<Image src="/icons/weight_icon.png" alt="Weight" width={14} height={14} onDragStart={(e) => e.preventDefault()}/>}>
+              {weightOptions.map((option) => (
+                <CheckboxItem
+                  key={`mobile-${option.id}`}
+                  id={`mobile-${option.id}`}
+                  label={option.label}
+                  count={option.count}
+                  checked={filters.selectedWeights.includes(option.id)}
+                  onCheckedChange={(checked) => handleWeightChange(option.id, !!checked)}
+                />
+              ))}
+            </FilterSection>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={cn("bg-custom-gray-dark shadow-custom-dark h-full w-full rounded-tr-[40px] animate-slide-in-from-left")} style={{ animationDuration: '0.5s' }}>

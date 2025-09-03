@@ -87,6 +87,8 @@ export default function Home() {
   const [isSearchingOnAbout, setIsSearchingOnAbout] = useState(false);
   const [isUsingAnimatedSearch, setIsUsingAnimatedSearch] = useState(false);
   const [isPageLoading, setIsPageLoading] = useState(true);
+  const [isFilterSheetOpen, setIsFilterSheetOpen] = useState(false);
+  const [isSortSheetOpen, setIsSortSheetOpen] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -241,6 +243,7 @@ export default function Home() {
   const handleSortChange = (value: string) => {
     setIsSearching(true);
     setSortOption(value);
+    setIsSortSheetOpen(false); // Close sheet on selection
   };
 
   const getLabelById = (id: string, options: { id: string, label: string }[]) => {
@@ -282,6 +285,10 @@ export default function Home() {
               onLikeToggle={handleLikeToggle}
               sortOption={sortOption}
               onSortChange={handleSortChange}
+              isFilterSheetOpen={isFilterSheetOpen}
+              onFilterSheetOpenChange={setIsFilterSheetOpen}
+              isSortSheetOpen={isSortSheetOpen}
+              onSortSheetOpenChange={setIsSortSheetOpen}
             />
           );
         }
@@ -322,6 +329,10 @@ export default function Home() {
             onLikeToggle={handleLikeToggle}
             sortOption={sortOption}
             onSortChange={handleSortChange}
+            isFilterSheetOpen={isFilterSheetOpen}
+            onFilterSheetOpenChange={setIsFilterSheetOpen}
+            isSortSheetOpen={isSortSheetOpen}
+            onSortSheetOpenChange={setIsSortSheetOpen}
           />
         );
       case 'order-confirmed':
