@@ -30,7 +30,7 @@ export function MobileImageGallery({ product, onImageExpandChange }: MobileImage
 
     return (
         <>
-            <div className="flex flex-col gap-2 p-2">
+            <div className="flex flex-col gap-2 p-4">
                 
                 {/* Main Image */}
                 <div className="group relative w-full aspect-square">
