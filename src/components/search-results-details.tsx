@@ -196,10 +196,10 @@ export function SearchResultsDetails({
                     </div>
                   )}
 
-                  {/* Mobile Product Grid */}
-                  <div className="grid grid-cols-2 gap-4 md:hidden">
+                  {/* Unified Product Grid for all screen sizes */}
+                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
                     {isSearching 
-                      ? Array.from({ length: 4 }).map((_, index) => <ProductCardSkeleton key={index} />)
+                      ? Array.from({ length: 12 }).map((_, index) => <ProductCardSkeleton key={index} />)
                       : products.map((product) => (
                           <ProductCard
                             key={product.id}
@@ -212,24 +212,6 @@ export function SearchResultsDetails({
                           />
                       ))
                     }
-                  </div>
-
-                  {/* Desktop Product Grid */}
-                  <div className="hidden md:grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
-                  {isSearching 
-                    ? Array.from({ length: 12 }).map((_, index) => <ProductCardSkeleton key={index} />)
-                    : products.map((product) => (
-                        <ProductCard
-                          key={product.id}
-                          product={product}
-                          onAddToCart={onAddToCart}
-                          quantity={cart[product.name] || 0}
-                          onProductClick={onProductClick}
-                          isLiked={!!likedProducts[product.id]}
-                          onLikeToggle={() => onLikeToggle(product.id)}
-                        />
-                    ))
-                  }
                   </div>
               </div>
           </div>
