@@ -81,44 +81,43 @@ export function MobileProductDetailView({
             <FlavoursSection onAddToCart={onFlavourAddToCart} cart={flavourCart} isMobile={true} />
           </div>
           <Separator className="my-4 bg-white/30" />
-        </div>
-        
-        <div className="bg-custom-purple-dark rounded-t-2xl p-4 text-white flex-shrink-0">
-          <div className="flex justify-between items-center mb-4">
-              <div className="flex flex-col items-center">
-                  <p className="text-sm line-through opacity-70">₹1000</p>
-                  <p className="text-sm text-custom-gold font-semibold">25% OFF</p>
-              </div>
-              <p className="text-3xl font-bold">₹750</p>
-          </div>
-          
-          <div className="space-y-3">
-            {productQuantity === 0 ? (
-                <Button
-                    className="w-full rounded-full font-semibold text-base border-2 border-custom-gold bg-custom-gold text-custom-purple-dark py-2.5 h-auto hover:bg-custom-gold/90"
-                    onClick={handleAddToCartClick}
-                >
-                    Add to Cart
-                </Button>
-            ) : (
-                <div className="flex items-center justify-center w-full rounded-full h-11 border-2 border-white overflow-hidden">
-                    <Button size="icon" variant="ghost" onClick={handleDecrement} className="h-full rounded-none bg-white hover:bg-white/90 text-custom-purple-dark hover:text-custom-purple-dark flex-1">
-                        <Minus className="h-5 w-5" />
-                    </Button>
-                    <div className="flex-1 text-center bg-custom-purple-dark text-white h-full flex items-center justify-center">
-                        <span className="font-bold px-2 text-lg">{productQuantity}</span>
-                    </div>
-                    <Button size="icon" variant="ghost" onClick={handleIncrement} className="h-full rounded-none bg-white hover:bg-white/90 text-custom-purple-dark hover:text-custom-purple-dark flex-1">
-                        <Plus className="h-5 w-5" />
-                    </Button>
+          <div className="bg-custom-purple-dark rounded-2xl p-4 text-white mx-4">
+            <div className="flex justify-between items-center mb-4">
+                <div className="flex flex-col items-start">
+                    <p className="text-sm line-through opacity-70">₹1000</p>
+                    <p className="text-sm text-custom-gold font-semibold">25% OFF</p>
                 </div>
-            )}
-             <Button
-                onClick={handleBuyNow}
-                className="w-full rounded-full font-semibold text-base border border-white bg-white text-custom-purple-dark py-2.5 h-11 hover:bg-custom-purple-dark hover:text-white"
-            >
-                Buy Now
-            </Button>
+                <p className="text-3xl font-bold">₹750</p>
+            </div>
+            
+            <div className="space-y-3">
+              {productQuantity === 0 ? (
+                  <Button
+                      className="w-full rounded-full font-semibold text-base border-2 border-custom-gold bg-custom-gold text-custom-purple-dark py-2.5 h-auto hover:bg-custom-gold/90"
+                      onClick={handleAddToCartClick}
+                  >
+                      Add to Cart
+                  </Button>
+              ) : (
+                  <div className="flex items-center justify-center w-full rounded-full h-11 border-2 border-white overflow-hidden">
+                      <Button size="icon" variant="ghost" onClick={handleDecrement} className="h-full rounded-none bg-white hover:bg-white/90 text-custom-purple-dark hover:text-custom-purple-dark flex-1">
+                          <Minus className="h-5 w-5" />
+                      </Button>
+                      <div className="flex-1 text-center bg-custom-purple-dark text-white h-full flex items-center justify-center">
+                          <span className="font-bold px-2 text-lg">{productQuantity}</span>
+                      </div>
+                      <Button size="icon" variant="ghost" onClick={handleIncrement} className="h-full rounded-none bg-white hover:bg-white/90 text-custom-purple-dark hover:text-custom-purple-dark flex-1">
+                          <Plus className="h-5 w-5" />
+                      </Button>
+                  </div>
+              )}
+               <Button
+                  onClick={handleBuyNow}
+                  className="w-full rounded-full font-semibold text-base border border-white bg-white text-custom-purple-dark py-2.5 h-auto hover:bg-custom-purple-dark hover:text-white"
+              >
+                  Buy Now
+              </Button>
+            </div>
           </div>
         </div>
       </div>
