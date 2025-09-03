@@ -198,7 +198,7 @@ export function SearchResultsDetails({
                   <div className="grid grid-cols-2 gap-4 md:hidden">
                     {isSearching 
                       ? Array.from({ length: 4 }).map((_, index) => <ProductCardSkeleton key={index} />)
-                      : products.slice(0,4).map((product) => (
+                      : products.map((product) => (
                           <ProductCard
                             key={product.id}
                             product={product}
