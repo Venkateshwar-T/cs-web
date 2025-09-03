@@ -29,12 +29,12 @@ export function FlavourCard({ flavour, onAddToCart, quantity }: FlavourCardProps
   return (
     <div 
       className={cn(
-        "flex flex-col justify-center bg-white/30 md:py-7 md:px-2 lg:p-3 md:rounded-[5px] lg:rounded-[20px] md:w-[calc(40%-0.75rem)] lg:w-[calc(35%-0.75rem)] xl:w-[calc(25%-0.75rem)] h-[100%] flex-shrink-0 transition-transform duration-200",
+        "flex flex-col justify-center bg-white/30 p-2 rounded-[20px] w-28 md:py-7 md:px-2 lg:p-3 md:rounded-[5px] lg:rounded-[20px] md:w-[calc(40%-0.75rem)] lg:w-[calc(35%-0.75rem)] xl:w-[calc(25%-0.75rem)] flex-shrink-0 transition-transform duration-200",
         isAnimating && 'animate-pop'
       )}
       onAnimationEnd={() => setIsAnimating(false)}
     >
-      <div className="relative lg:w-full aspect-square">
+      <div className="relative w-full aspect-square">
         <Image
           src={flavour.src}
           alt={flavour.name}

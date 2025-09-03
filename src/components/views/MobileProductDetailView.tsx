@@ -7,6 +7,7 @@ import { cn } from '@/lib/utils';
 import { X } from 'lucide-react';
 import { MobileImageGallery } from '../mobile-image-gallery';
 import { ProductDetails } from '../product-details';
+import { FlavoursSection } from '../flavours-section';
 
 interface MobileProductDetailViewProps {
   product: Product;
@@ -16,9 +17,21 @@ interface MobileProductDetailViewProps {
   onToggleCartPopup: () => void;
   isLiked: boolean;
   onLikeToggle: () => void;
+  flavourCart: Record<string, number>;
+  onFlavourAddToCart: (flavourId: number, quantity: number) => void;
 }
 
-export function MobileProductDetailView({ product, onClose, onAddToCart, cart, onToggleCartPopup, isLiked, onLikeToggle }: MobileProductDetailViewProps) {
+export function MobileProductDetailView({ 
+  product, 
+  onClose, 
+  onAddToCart, 
+  cart, 
+  onToggleCartPopup, 
+  isLiked, 
+  onLikeToggle,
+  flavourCart,
+  onFlavourAddToCart,
+}: MobileProductDetailViewProps) {
   return (
     <div className={cn(
       "relative bg-[#9A7DAB] rounded-t-[20px] h-full ring-4 ring-custom-purple-dark"
@@ -39,6 +52,9 @@ export function MobileProductDetailView({ product, onClose, onAddToCart, cart, o
         </div>
         <div className="p-4">
           <ProductDetails product={product} isLiked={isLiked} onLikeToggle={onLikeToggle} isMobile={true} />
+        </div>
+        <div className="px-4 pb-4">
+          <FlavoursSection onAddToCart={onFlavourAddToCart} cart={flavourCart} isMobile={true} />
         </div>
       </div>
     </div>

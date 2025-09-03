@@ -11,6 +11,7 @@ import { cn } from '@/lib/utils';
 interface FlavoursSectionProps {
   onAddToCart: (flavourId: number, quantity: number) => void;
   cart: Record<string, number>;
+  isMobile?: boolean;
 }
 
 const flavours: Flavour[] = [
@@ -27,7 +28,7 @@ const flavours: Flavour[] = [
     { id: 11, name: 'White Chocolate', src: '/flavours/whitechoco.png', hint: 'white chocolate' },
 ];
 
-export function FlavoursSection({ onAddToCart, cart }: FlavoursSectionProps) {
+export function FlavoursSection({ onAddToCart, cart, isMobile = false }: FlavoursSectionProps) {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
@@ -67,7 +68,11 @@ export function FlavoursSection({ onAddToCart, cart }: FlavoursSectionProps) {
   };
 
   return (
-    <div className="bg-[#5D2B79] md:rounded-[15px] lg:rounded-[40px] py-5 px-4 md:h-[85%] lg:h-full relative flex flex-col animate-fade-in" style={{ animationDuration: '0.5s', animationDelay: '0.2s', animationFillMode: 'both' }}>
+    <div className={cn(
+        "relative flex flex-col animate-fade-in",
+        isMobile ? "py-2" : "bg-[#5D2B79] md:rounded-[15px] lg:rounded-[40px] py-5 px-4 md:h-[85%] lg:h-full"
+      )} 
+      style={{ animationDuration: '0.5s', animationDelay: '0.2s', animationFillMode: 'both' }}>
       <SectionTitle className="text-sm md:text-m lg:text-xl md:pl-0 lg:pl-4 mb-2 pt-0 font-poppins">Flavours & Fillings</SectionTitle>
       
       {canScrollLeft && (

@@ -93,6 +93,7 @@ export default function Home() {
   const [isFilterSheetOpen, setIsFilterSheetOpen] = useState(false);
   const [isSortSheetOpen, setIsSortSheetOpen] = useState(false);
   const [selectedProductForMobile, setSelectedProductForMobile] = useState<Product | null>(null);
+  const [mobileFlavourCart, setMobileFlavourCart] = useState<Record<string, number>>({});
   const isMobile = useIsMobile();
 
 
@@ -175,6 +176,14 @@ export default function Home() {
         setIsCartButtonExpanded(false);
       }, 1500);
     }
+  };
+
+  const handleMobileFlavourAddToCart = (flavourId: number, quantity: number) => {
+    const newFlavourCart = { ...mobileFlavourCart, [flavourId.toString()]: quantity };
+    if (quantity <= 0) {
+      delete newFlavourCart[flavourId.toString()];
+    }
+    setMobileFlavourCart(newFlavourCart);
   };
 
   const handleClearCart = () => {
@@ -428,6 +437,8 @@ export default function Home() {
               onToggleCartPopup={handleToggleCartPopup}
               isLiked={!!likedProducts[selectedProductForMobile.id]}
               onLikeToggle={() => handleLikeToggle(selectedProductForMobile.id)}
+              onFlavourAddToCart={handleMobileFlavourAddToCart}
+              flavourCart={mobileFlavourCart}
             />
           </div>
         </>
