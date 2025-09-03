@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState } from 'react';
@@ -26,17 +27,17 @@ export function ProductDetails({ product, isLiked, onLikeToggle, isMobile = fals
     };
 
     return (
-        <div className={cn("flex flex-col gap-4 h-full animate-slide-in-from-right", isMobile && "text-black")} style={{ animationDuration: '0.5s' }}>
+        <div className={cn("flex flex-col gap-4 h-full animate-slide-in-from-right text-black")} style={{ animationDuration: '0.5s' }}>
             {/* Title and Like button */}
             <div className="flex justify-between items-start">
-                <h2 className={cn("font-bold font-plex-sans-condensed", isMobile ? "text-2xl" : "text-3xl")}>{product.name}</h2>
+                <h2 className={cn("font-bold font-plex-sans-condensed", isMobile ? "text-xl" : "text-3xl")}>{product.name}</h2>
                 <div className="relative">
                     <button onClick={handleLikeClick} className="p-1">
                         <Heart 
                             key={likeClickCount}
                             className={cn(
                                 "h-7 w-7 stroke-current transition-colors duration-300", 
-                                isLiked ? 'text-red-500 fill-red-500' : (isMobile ? 'text-black' : 'text-inherit'),
+                                isLiked ? 'text-red-500 fill-red-500' : 'text-black',
                                 'animate-heart-pop'
                             )} 
                         />
