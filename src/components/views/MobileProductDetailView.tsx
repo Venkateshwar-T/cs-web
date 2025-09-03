@@ -14,8 +14,7 @@ interface MobileProductDetailViewProps {
 export function MobileProductDetailView({ product, onClose }: MobileProductDetailViewProps) {
   return (
     <div className={cn(
-      "absolute inset-0 z-10 md:hidden bg-[#5D2B79] rounded-t-[20px] animate-slide-up-in",
-      "h-full" // Ensure it takes full height of its relative parent
+      "relative bg-[#5D2B79] rounded-t-[20px] animate-slide-up-in h-full"
     )}>
       <div className="bg-white/20 h-full w-full rounded-t-[20px] relative">
         <Button 

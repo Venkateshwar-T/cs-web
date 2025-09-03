@@ -96,10 +96,12 @@ export function SearchView({
         />
       </div>
       {selectedProductForMobile && (
-        <MobileProductDetailView
-          product={selectedProductForMobile}
-          onClose={onCloseMobileProductDetail}
-        />
+        <div className="absolute inset-0 z-10 md:hidden px-4">
+          <MobileProductDetailView
+            product={selectedProductForMobile}
+            onClose={onCloseMobileProductDetail}
+          />
+        </div>
       )}
     </div>
   );

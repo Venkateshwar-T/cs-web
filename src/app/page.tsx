@@ -397,8 +397,7 @@ export default function Home() {
           "flex-grow flex flex-col transition-all duration-500 relative",
           "pb-16 md:pb-0", // Padding for bottom nav bar
           activeView === 'home' ? 'pt-24 md:pt-72 overflow-hidden' : 'pt-24 md:pt-36',
-          (activeView === 'search' && !selectedProductForMobile) && 'overflow-y-auto',
-          (activeView === 'search' && selectedProductForMobile) && 'overflow-hidden',
+          (activeView === 'search') && 'overflow-y-auto',
           (activeView === 'order-confirmed' || (activeView === 'about' && !isSearchingOnAbout) || (activeView === 'faq' && !isSearchingOnAbout)) && 'no-scrollbar',
           isPageLoading && 'opacity-0'
         )}>
