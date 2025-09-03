@@ -114,11 +114,11 @@ export function SearchResultsDetails({
                                   <ArrowUpDown className="h-5 w-5" />
                                 </Button>
                             </SheetTrigger>
-                            <SheetContent side="bottom" className="bg-custom-purple-dark text-white border-t-2 border-custom-gold rounded-t-3xl h-auto">
-                                <SheetHeader>
+                            <SheetContent side="bottom" className="bg-custom-purple-dark text-white border-t-2 border-custom-gold rounded-t-3xl h-auto p-0">
+                                <SheetHeader className="p-4 border-b border-white/20">
                                     <SheetTitle className="text-white text-center">Sort By</SheetTitle>
                                 </SheetHeader>
-                                <div className="flex flex-col gap-2 py-4">
+                                <div className="flex flex-col gap-2 p-4">
                                   {sortOptions.map(option => (
                                       <Button
                                         key={option.value}
@@ -140,13 +140,13 @@ export function SearchResultsDetails({
                     {activeFilters.length > 0 && (
                       <div className="flex gap-2 mt-4 flex-nowrap overflow-x-auto no-scrollbar md:flex-wrap md:overflow-x-visible">
                         {activeFilters.map(filter => (
-                          <div key={`${filter.type}-${filter.value}`} className="flex-shrink-0 flex items-center bg-custom-gold text-custom-purple-dark rounded-full px-2.5 py-0.5 text-xs font-medium">
+                          <div key={`${filter.type}-${filter.value}`} className="flex-shrink-0 flex items-center bg-custom-gold text-custom-purple-dark rounded-full px-2.5 py-0.5 text-xs font-medium md:px-3 md:py-1 md:text-sm">
                             <span>{filter.label}</span>
                             <button
                               onClick={() => onRemoveFilter(filter.type, filter.value)}
-                              className="ml-1.5 -mr-1 p-0.5 rounded-full hover:bg-black/10"
+                              className="ml-1.5 -mr-1 p-0.5 rounded-full hover:bg-black/10 md:ml-2 md:-mr-1.5 md:p-1"
                             >
-                              <X className="h-3 w-3" />
+                              <X className="h-3 w-3 md:h-4 md:w-4" />
                             </button>
                           </div>
                         ))}
@@ -181,13 +181,13 @@ export function SearchResultsDetails({
                   {activeFilters.length > 0 && (
                     <div className="hidden md:flex gap-2 mb-4 flex-nowrap overflow-x-auto no-scrollbar md:flex-wrap md:overflow-x-visible">
                       {activeFilters.map(filter => (
-                        <div key={`${filter.type}-${filter.value}`} className="flex-shrink-0 flex items-center bg-custom-gold text-custom-purple-dark rounded-full px-3 py-1 text-sm font-medium">
+                        <div key={`${filter.type}-${filter.value}`} className="flex-shrink-0 flex items-center bg-custom-gold text-custom-purple-dark rounded-full px-2.5 py-0.5 text-xs font-medium md:px-3 md:py-1 md:text-sm">
                           <span>{filter.label}</span>
                           <button
                             onClick={() => onRemoveFilter(filter.type, filter.value)}
-                            className="ml-2 -mr-1.5 p-1 rounded-full hover:bg-black/10"
+                            className="ml-1.5 -mr-1 p-0.5 rounded-full hover:bg-black/10 md:ml-2 md:-mr-1.5 md:p-1"
                           >
-                            <X className="h-4 w-4" />
+                            <X className="h-3 w-3 md:h-4 md:w-4" />
                           </button>
                         </div>
                       ))}
