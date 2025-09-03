@@ -81,7 +81,7 @@ export function SearchResultsDetails({
       <div className="bg-[#5D2B79] h-full rounded-t-[20px] md:rounded-t-[40px] relative min-h-0 mx-4 md:mx-0">
           <div className="bg-white/20 h-full w-full rounded-t-[20px] md:rounded-t-[40px] pt-4 md:pt-8 flex flex-col">
               {/* Header section - now separate and non-scrolling */}
-              <div className="flex-shrink-0 px-4 md:px-8">
+              <div className="flex-shrink-0 px-4 md:px-8 pb-4">
                 {/* Mobile Header and Filters */}
                 <div className="md:hidden">
                   <div>
@@ -156,10 +156,7 @@ export function SearchResultsDetails({
                 </div>
                 
                 {/* Desktop Header */}
-                <div className={cn(
-                    "hidden md:flex flex-col md:flex-row justify-between md:items-center text-white mb-2",
-                    activeFilters.length === 0 && 'mb-4'
-                )}>
+                <div className="hidden md:flex flex-col md:flex-row justify-between md:items-center text-white">
                   <h2 className="text-lg md:text-xl mb-2 md:mb-0">
                     Showing results for <span className="italic text-custom-gold">{query}</span>
                   </h2>
@@ -179,7 +176,7 @@ export function SearchResultsDetails({
                   </Select>
                 </div>
                 {activeFilters.length > 0 && (
-                  <div className="hidden md:flex gap-2 mb-4 flex-nowrap overflow-x-auto no-scrollbar md:flex-wrap md:overflow-x-visible">
+                  <div className="hidden md:flex gap-2 mt-4 flex-nowrap overflow-x-auto no-scrollbar md:flex-wrap md:overflow-x-visible">
                     {activeFilters.map(filter => (
                       <div key={`${filter.type}-${filter.value}`} className="flex-shrink-0 flex items-center bg-custom-gold text-custom-purple-dark rounded-full px-3 py-1 text-sm font-medium">
                         <span>{filter.label}</span>
