@@ -55,8 +55,8 @@ export function SearchResultsDetails({
   }, [isSearching]);
 
   return (
-    <div className="bg-[#5D2B79] h-full md:h-full rounded-t-[40px] relative min-h-0 mx-4 md:mx-0">
-        <div className="bg-white/20 h-full w-full rounded-t-[40px] pt-4 md:pt-8 px-4 md:pl-8 md:pr-0">
+    <div className="bg-[#5D2B79] h-full rounded-t-[20px] md:rounded-t-[40px] relative min-h-0 mx-4 md:mx-0">
+        <div className="bg-white/20 h-full w-full rounded-t-[20px] md:rounded-t-[40px] pt-4 md:pt-8 px-4 md:pl-8 md:pr-0">
             <div 
                 ref={scrollContainerRef}
                 className="h-full overflow-y-auto custom-scrollbar md:pr-8 pb-8"
@@ -67,10 +67,10 @@ export function SearchResultsDetails({
                     Showing results for <span className="italic text-custom-gold">{query}</span>
                   </h2>
                   <div className="flex items-center gap-2">
-                    <Button variant="ghost" size="icon" className="h-8 w-8">
+                    <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-custom-gold hover:text-custom-purple-dark">
                       <SlidersHorizontal className="h-5 w-5" />
                     </Button>
-                    <Button variant="ghost" size="icon" className="h-8 w-8">
+                    <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-custom-gold hover:text-custom-purple-dark">
                       <ArrowUpDown className="h-5 w-5" />
                     </Button>
                   </div>
