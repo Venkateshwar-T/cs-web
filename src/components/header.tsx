@@ -1,3 +1,4 @@
+
 // @/components/header.tsx
 "use client";
 
@@ -11,6 +12,7 @@ import { SearchBar } from "./header/search-bar";
 import type { ActiveView } from "@/app/page";
 import { AnimatedSearchBar } from "./animated-search-bar";
 import Image from "next/image";
+import { MobileSearchBar } from "./mobile-search-bar";
 
 interface HeaderProps {
   onSearchSubmit: (query: string, fromAnimated?: boolean) => void;
@@ -40,6 +42,7 @@ export function Header({
   const [isNavVisible, setIsNavVisible] = useState(true);
   const formRef = useRef<HTMLFormElement>(null);
   const { toast } = useToast();
+  const [isMobileSearchExpanded, setIsMobileSearchExpanded] = useState(false);
   
   useEffect(() => {
     // When the animated search bar is closed, reset the target width
@@ -116,14 +119,16 @@ export function Header({
       )}>
         <div className="container relative flex h-16 md:h-20 max-w-screen-2xl items-center justify-between px-4 sm:px-6 lg:px-8 xl:px-24">
           
-          <Logo onLogoClick={handleLogoClick} isEnquireOpen={isEnquireOpen} />
+          {!isMobileSearchExpanded && <Logo onLogoClick={handleLogoClick} isEnquireOpen={isEnquireOpen} />}
           
-          <Navigation 
-            isEnquireOpen={isEnquireOpen}
-            onNavigate={onNavigate}
-            activeView={activeView}
-            isNavVisible={isNavVisible}
-          />
+          <div className="hidden md:flex flex-1">
+            <Navigation 
+              isEnquireOpen={isEnquireOpen}
+              onNavigate={onNavigate}
+              activeView={activeView}
+              isNavVisible={isNavVisible}
+            />
+          </div>
           
           {showAnimatedSearch && (
              <div className={cn(
@@ -140,23 +145,32 @@ export function Header({
              </div>
           )}
           
-          <UserActions 
-            isEnquireOpen={isEnquireOpen}
-            onEnquireOpenChange={setIsEnquireOpen}
-            onProfileOpenChange={onProfileOpenChange}
-            onNavigate={onNavigate}
-            activeView={activeView}
-            onAnimatedSearchToggle={handleAnimatedSearchToggle}
-            isAnimatedSearchExpanded={isAnimatedSearchExpanded}
-            isSearchingOnAbout={isSearchingOnAbout}
-          />
+          <div className="hidden md:flex flex-1 justify-end">
+            <UserActions 
+              isEnquireOpen={isEnquireOpen}
+              onEnquireOpenChange={setIsEnquireOpen}
+              onProfileOpenChange={onProfileOpenChange}
+              onNavigate={onNavigate}
+              activeView={activeView}
+              onAnimatedSearchToggle={handleAnimatedSearchToggle}
+              isAnimatedSearchExpanded={isAnimatedSearchExpanded}
+              isSearchingOnAbout={isSearchingOnAbout}
+            />
+          </div>
 
-          <div className="md:hidden">
-              <button onClick={handleAnimatedSearchToggle} className="h-10 w-10 flex items-center justify-center" aria-label="Open search">
+          <div className="md:hidden flex-1 flex justify-end items-center">
+            {isMobileSearchExpanded ? (
+              <MobileSearchBar
+                onSearchSubmit={onSearchSubmit}
+                onCollapse={() => setIsMobileSearchExpanded(false)}
+              />
+            ) : (
+              <button onClick={() => setIsMobileSearchExpanded(true)} className="h-10 w-10 flex items-center justify-center" aria-label="Open search">
                   <div className="h-10 w-10 bg-white rounded-full flex items-center justify-center">
                       <Image src="/icons/search_icon.png" alt="Search" width={24} height={24} onDragStart={(e) => e.preventDefault()}/>
                   </div>
               </button>
+            )}
           </div>
         </div>
 
