@@ -29,7 +29,7 @@ export function Logo({ onLogoClick, isEnquireOpen }: LogoProps) {
                     alt="Online Chocolate Store" 
                     width={120} 
                     height={55}
-                    className={cn("hidden sm:block w-20 md:w-24 lg:w-32", isEnquireOpen && "opacity-50")}
+                    className={cn("w-20 md:w-24 lg:w-32", isEnquireOpen && "opacity-50")}
                     onDragStart={(e) => e.preventDefault()}
                 />
             </div>

@@ -10,6 +10,7 @@ import { UserActions } from "./header/user-actions";
 import { SearchBar } from "./header/search-bar";
 import type { ActiveView } from "@/app/page";
 import { AnimatedSearchBar } from "./animated-search-bar";
+import Image from "next/image";
 
 interface HeaderProps {
   onSearchSubmit: (query: string, fromAnimated?: boolean) => void;
@@ -109,11 +110,11 @@ export function Header({
           <div className="fixed inset-0 z-40 bg-black/50" />
       )}
       <header className={cn(
-        "fixed top-0 z-50 w-full bg-transparent pt-6 pb-8 transition-all duration-100", 
+        "fixed top-0 z-50 w-full bg-transparent pt-4 md:pt-6 pb-4 md:pb-8 transition-all duration-100", 
         isContentScrolled && 'bg-background border-b-2',
         (isEnquireOpen && isContentScrolled) && 'bg-[#2e1440] border-b-2 border-custom-purple-dark',
       )}>
-        <div className="container relative flex h-20 max-w-screen-2xl items-center justify-between px-4 sm:px-6 lg:px-8 xl:px-24">
+        <div className="container relative flex h-16 md:h-20 max-w-screen-2xl items-center justify-between px-4 sm:px-6 lg:px-8 xl:px-24">
           
           <Logo onLogoClick={handleLogoClick} isEnquireOpen={isEnquireOpen} />
           
@@ -149,19 +150,29 @@ export function Header({
             isAnimatedSearchExpanded={isAnimatedSearchExpanded}
             isSearchingOnAbout={isSearchingOnAbout}
           />
+
+          <div className="md:hidden">
+              <button onClick={handleAnimatedSearchToggle} className="h-10 w-10 flex items-center justify-center" aria-label="Open search">
+                  <div className="h-10 w-10 bg-white rounded-full flex items-center justify-center">
+                      <Image src="/icons/search_icon.png" alt="Search" width={24} height={24} onDragStart={(e) => e.preventDefault()}/>
+                  </div>
+              </button>
+          </div>
         </div>
 
-        {!showAnimatedSearch && (
-           <SearchBar
-              formRef={formRef}
-              activeView={activeView}
-              isEnquireOpen={isEnquireOpen}
-              targetWidth={targetWidth}
-              onSubmit={handleSearchSubmit}
-              searchInput={searchInput}
-              onSearchInputChange={setSearchInput}
-            />
-        )}
+        <div className="hidden md:block">
+          {!showAnimatedSearch && (
+            <SearchBar
+                formRef={formRef}
+                activeView={activeView}
+                isEnquireOpen={isEnquireOpen}
+                targetWidth={targetWidth}
+                onSubmit={handleSearchSubmit}
+                searchInput={searchInput}
+                onSearchInputChange={setSearchInput}
+              />
+          )}
+        </div>
       </header>
     </>
   );

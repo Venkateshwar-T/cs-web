@@ -1,4 +1,5 @@
 
+
 'use client';
 
 import { useState, useEffect, type UIEvent } from 'react';
@@ -18,6 +19,7 @@ import { SearchView } from '@/components/views/SearchView';
 import { PopupsManager } from '@/components/popups/popups-manager';
 import { FloatingCartButton } from '@/components/floating-cart-button';
 import { FaqView } from '@/components/faq-view';
+import { BottomNavbar } from '@/components/bottom-navbar';
 
 
 export type Product = {
@@ -40,7 +42,7 @@ export type ProfileInfo = {
   email: string;
 }
 
-export type ActiveView = 'home' | 'search' | 'about' | 'faq' | 'order-confirmed';
+export type ActiveView = 'home' | 'search' | 'about' | 'faq' | 'order-confirmed' | 'cart' | 'profile';
 
 const initialFilterState: FilterState = {
   priceRange: [0, 3000],
@@ -325,7 +327,7 @@ export default function Home() {
       case 'order-confirmed':
         return (
           <>
-            <div className="pb-8 mx-8 md:mx-32">
+            <div className="pb-8 mx-4 md:mx-32">
               <OrderConfirmedView cart={cart} />
             </div>
             <Footer />
@@ -353,7 +355,8 @@ export default function Home() {
         />
         <main onScroll={handleScroll} className={cn(
           "flex-grow flex flex-col transition-all duration-500 relative",
-          activeView === 'home' ? 'pt-72 overflow-hidden' : 'pt-36 overflow-y-auto',
+          "pb-20 md:pb-0", // Padding for bottom nav bar
+          activeView === 'home' ? 'pt-24 md:pt-72 overflow-hidden' : 'pt-24 md:pt-36 overflow-y-auto',
           (activeView === 'order-confirmed' || (activeView === 'about' && !isSearchingOnAbout) || (activeView === 'faq' && !isSearchingOnAbout)) && 'no-scrollbar',
           isPageLoading && 'opacity-0'
         )}>
@@ -397,6 +400,7 @@ export default function Home() {
         setIsCompleteDetailsOpen={setIsCompleteDetailsOpen}
         onConfirmOrder={handleConfirmOrder}
       />
+      <BottomNavbar activeView={activeView} onNavigate={(view) => setActiveView(view)} />
     </>
   );
 }

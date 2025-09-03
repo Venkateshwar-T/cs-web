@@ -44,7 +44,7 @@ export function UserActions({
     
     return (
         <>
-            <div className="flex flex-1 justify-end animate-slide-in-from-right" style={{ animationDuration: '0.5s' }}>
+            <div className="hidden md:flex flex-1 justify-end animate-slide-in-from-right" style={{ animationDuration: '0.5s' }}>
                 {/* Desktop Actions */}
                 <div className="hidden md:flex items-center gap-1">
                     {(activeView === 'about' || activeView === 'faq') && !isAnimatedSearchExpanded && !isSearchingOnAbout && (
@@ -121,58 +121,6 @@ export function UserActions({
                     </div>
                 </div>
                 
-                {/* Mobile Actions (Hamburger Menu) */}
-                <div className={cn(
-                    "md:hidden transition-opacity duration-100", 
-                    isEnquireOpen && "opacity-50"
-                )}>
-                    <Sheet>
-                        <SheetTrigger asChild>
-                            <Button variant="ghost" size="icon">
-                                <Menu className="h-6 w-6" />
-                                <span className="sr-only">Open menu</span>
-                            </Button>
-                        </SheetTrigger>
-                        <SheetContent side="right" className="w-[300px] sm:w-[400px]">
-                            <SheetHeader />
-                            <nav className="flex flex-col gap-8 text-lg mt-12">
-                                {navLinks.map((link) => {
-                                    const isActive = activeView === link.id;
-                                    return (
-                                        <SheetClose asChild key={link.id}>
-                                            <button
-                                                onClick={() => onNavigate(link.id)}
-                                                className={cn(
-                                                    "transition-colors hover:text-custom-gold",
-                                                    isActive ? "text-custom-gold font-semibold" : "text-foreground/80"
-                                                )}
-                                            >
-                                                {link.label}
-                                            </button>
-                                        </SheetClose>
-                                    )
-                                })}
-                            </nav>
-                            <Separator className="my-8" />
-                            <div className="flex flex-col gap-4">
-                                <Button asChild size="lg" className="bg-custom-gold text-white rounded-full font-normal text-base hover:bg-white hover:text-custom-gold border border-custom-gold">
-                                    <a href="mailto:contact@bizhome.com">Enquire Now</a>
-                                </Button>
-                                <div className="flex items-center justify-center gap-4 mt-4">
-                                    <Link href="#" aria-label="Instagram">
-                                        <AiOutlineInstagram className="h-8 w-8 transition-colors hover:text-custom-gold" />
-                                    </Link>
-                                    <Link href="#" aria-label="Facebook">
-                                        <IoLogoFacebook className="h-8 w-8 transition-colors hover:text-custom-gold" />
-                                    </Link>
-                                    <Link href="#" aria-label="Profile">
-                                        <Image src="/icons/profile_icon.png" alt="Profile" width={36} height={36} className="h-9 w-9 transition-colors hover:opacity-80" onDragStart={(e) => e.preventDefault()} />
-                                    </Link>
-                                </div>
-                            </div>
-                        </SheetContent>
-                    </Sheet>
-                </div>
             </div>
         </>
     );
