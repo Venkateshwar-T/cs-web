@@ -72,7 +72,7 @@ export function FilterContainer({ filters, onFilterChange, isMobile = false }: F
   if (isMobile) {
     return (
       <div className="h-[75vh] flex flex-col">
-        <div className="flex-grow overflow-y-auto custom-scrollbar px-4 pb-8">
+        <div className="flex-grow overflow-y-auto custom-scrollbar px-6 py-4">
           <div className="space-y-6">
             <div className="space-y-2">
               <p className="text-sm text-white/80 font-poppins">Price</p>
