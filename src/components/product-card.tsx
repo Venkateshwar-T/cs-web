@@ -100,11 +100,15 @@ export function ProductCard({ product, onAddToCart, quantity, onProductClick, is
           <p className="text-xs md:text-sm text-[#9A7DAB] mt-1 whitespace-nowrap truncate">250g | Assorted | Hard Box</p>
         </div>
         <div className="mt-2 md:mt-4">
-          <p className="text-xs text-gray-500 line-through font-bold">₹1000</p>
-          <div className="flex items-center">
-            <p className="font-bold text-sm md:text-base">₹750</p>
-            <p className="text-custom-gold text-xs font-semibold ml-2">25% OFF</p>
-            <div className="flex-grow ml-2">
+          <div className="flex flex-col items-start gap-2 md:flex-row md:items-center md:gap-0">
+            <div>
+              <p className="text-xs text-gray-500 line-through font-bold">₹1000</p>
+              <div className="flex items-center">
+                <p className="font-bold text-sm md:text-base">₹750</p>
+                <p className="text-custom-gold text-xs font-semibold ml-2">25% OFF</p>
+              </div>
+            </div>
+            <div className="w-full md:w-auto md:flex-grow md:ml-2">
               {quantity === 0 ? (
                 <Button
                   size="sm"
