@@ -1,7 +1,8 @@
+
 export function ProductCardSkeleton() {
   return (
-    <div className="bg-white/80 text-black rounded-3xl overflow-hidden flex flex-col h-full shadow-custom-dark animate-pulse">
-      <div className="relative w-full pt-[80%] bg-gray-300/50 rounded-t-3xl"></div>
+    <div className="bg-white/80 text-black rounded-2xl overflow-hidden flex flex-col h-full shadow-custom-dark animate-pulse">
+      <div className="relative w-full pt-[80%] bg-gray-300/50 rounded-t-2xl"></div>
       <div className="p-3 flex flex-col flex-grow">
         <div className="flex-grow">
           <div className="h-5 w-3/4 bg-gray-300/50 rounded"></div>

@@ -49,7 +49,7 @@ export function ProductCard({ product, onAddToCart, quantity, onProductClick, is
   return (
     <div
       onClick={() => onProductClick(product)}
-      className="bg-white text-black rounded-3xl overflow-hidden flex flex-col h-full shadow-custom-dark cursor-pointer transition-transform duration-200 hover:-translate-y-1"
+      className="bg-white text-black rounded-2xl overflow-hidden flex flex-col h-full shadow-custom-dark cursor-pointer transition-transform duration-200 hover:-translate-y-1"
     >
       <div className="relative w-full pt-[80%]">
         <Image
@@ -57,13 +57,13 @@ export function ProductCard({ product, onAddToCart, quantity, onProductClick, is
           alt={product.name}
           layout="fill"
           objectFit="cover"
-          className="rounded-t-3xl"
+          className="rounded-t-2xl"
         />
       </div>
       <div className="p-2 md:p-3 flex flex-col flex-grow">
         <div className="flex-grow md:flex-grow-0">
           <div className="flex justify-between items-start">
-            <h3 className="font-bold text-sm md:text-lg leading-tight flex-1 pr-2 whitespace-nowrap truncate">{product.name}</h3>
+            <h3 className="font-bold text-sm leading-tight flex-1 pr-2 whitespace-nowrap truncate">{product.name}</h3>
             <div className="relative">
               <button onClick={handleLikeClick} className="pl-1 py-1">
                 <Heart 
