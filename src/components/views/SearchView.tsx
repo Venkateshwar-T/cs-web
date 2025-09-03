@@ -31,6 +31,7 @@ interface SearchViewProps {
   onSortSheetOpenChange: (open: boolean) => void;
   selectedProductForMobile: Product | null;
   onCloseMobileProductDetail: () => void;
+  onImageExpandChange: (isExpanded: boolean) => void;
 }
 
 export function SearchView({
@@ -55,6 +56,7 @@ export function SearchView({
   onSortSheetOpenChange,
   selectedProductForMobile,
   onCloseMobileProductDetail,
+  onImageExpandChange
 }: SearchViewProps) {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   
@@ -100,6 +102,7 @@ export function SearchView({
           <MobileProductDetailView
             product={selectedProductForMobile}
             onClose={onCloseMobileProductDetail}
+            onImageExpandChange={onImageExpandChange}
           />
         </div>
       )}

@@ -6,13 +6,15 @@ import type { Product } from '@/app/page';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { X } from 'lucide-react';
+import { MobileImageGallery } from '../mobile-image-gallery';
 
 interface MobileProductDetailViewProps {
   product: Product;
   onClose: () => void;
+  onImageExpandChange: (isExpanded: boolean) => void;
 }
 
-export function MobileProductDetailView({ product, onClose }: MobileProductDetailViewProps) {
+export function MobileProductDetailView({ product, onClose, onImageExpandChange }: MobileProductDetailViewProps) {
   return (
     <div className={cn(
       "relative bg-[#5D2B79] rounded-t-[20px] h-full"
@@ -26,7 +28,9 @@ export function MobileProductDetailView({ product, onClose }: MobileProductDetai
         >
           <X className="h-6 w-6" />
         </Button>
-        {/* Content will go here */}
+        <div className="pt-2">
+          <MobileImageGallery product={product} onImageExpandChange={onImageExpandChange} />
+        </div>
       </div>
     </div>
   );

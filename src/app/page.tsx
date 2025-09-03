@@ -315,6 +315,7 @@ export default function Home() {
               onSortSheetOpenChange={setIsSortSheetOpen}
               selectedProductForMobile={selectedProductForMobile}
               onCloseMobileProductDetail={handleCloseMobileProductDetail}
+              onImageExpandChange={setIsImageExpanded}
             />
           );
         }
@@ -362,6 +363,7 @@ export default function Home() {
             onSortSheetOpenChange={setIsSortSheetOpen}
             selectedProductForMobile={selectedProductForMobile}
             onCloseMobileProductDetail={handleCloseMobileProductDetail}
+            onImageExpandChange={setIsImageExpanded}
           />
         );
       case 'order-confirmed':
