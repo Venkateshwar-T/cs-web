@@ -47,7 +47,7 @@ export function ExploreCategories() {
 
   return (
     <motion.div 
-      className="bg-[#5D2B79] h-full rounded-t-[20px] md:rounded-t-[40px] mx-4 md:mx-32"
+      className="bg-[#5D2B79] h-full rounded-t-[20px] md:rounded-t-[40px] md:mx-32"
       initial={{ opacity: 0, y: 50 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ type: 'spring', stiffness: 80, damping: 15 }}
@@ -81,17 +81,17 @@ export function ExploreCategories() {
                 Explore Flavours
             </SectionTitle>
             <motion.div 
-                className="flex flex-col md:flex-row flex-1 justify-around items-center gap-2 md:gap-8 pt-2 pb-8"
+                className="flex flex-row md:flex-row md:flex-wrap overflow-x-auto no-scrollbar md:overflow-visible flex-1 md:justify-around items-center gap-4 md:gap-8 pt-2 pb-8"
                 variants={containerVariants}
                 initial="hidden"
                 animate="visible"
             >
                 {flavourImages.map((image) => (
-                <motion.div key={image.id} className="flex-1 w-full max-w-xs md:max-w-44 aspect-[5/6]" variants={itemVariants}>
+                <motion.div key={image.id} className="w-24 md:flex-1 md:w-full max-w-xs md:max-w-44 flex-shrink-0 md:flex-shrink aspect-square md:aspect-[5/6]" variants={itemVariants}>
                     <Image
                     src={image.src}
                     alt={image.alt}
-                    width={600}
+                    width={400}
                     height={400}
                     data-ai-hint={image.hint}
                     className="w-full h-full object-cover rounded-[20px] md:rounded-[40px]"
