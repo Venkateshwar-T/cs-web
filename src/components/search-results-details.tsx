@@ -78,10 +78,10 @@ export function SearchResultsDetails({
 
   return (
     <>
-      <div className="bg-[#5D2B79] h-full rounded-t-[20px] md:rounded-t-[40px] relative min-h-0 mx-4 md:mx-0">
+      <div className="bg-[#5D2B79] h-full rounded-t-[20px] md:rounded-t-[40px] relative min-h-0">
           <div className="bg-white/20 h-full w-full rounded-t-[20px] md:rounded-t-[40px] pt-4 md:pt-8 flex flex-col">
               {/* Header section - now separate and non-scrolling */}
-              <div className="flex-shrink-0 px-4 md:px-8 pb-2">
+              <div className="flex-shrink-0 px-4 md:px-8">
                 {/* Mobile Header and Filters */}
                 <div className="md:hidden">
                   <div>
@@ -195,7 +195,7 @@ export function SearchResultsDetails({
               {/* Scrollable grid section */}
               <div 
                   ref={scrollContainerRef}
-                  className="flex-grow h-full overflow-y-auto custom-scrollbar pb-8 min-h-0 px-4 md:px-8"
+                  className="flex-grow h-full overflow-y-auto custom-scrollbar pb-8 min-h-0 px-4 md:px-8 pt-4"
               >
                 {/* Unified Product Grid for all screen sizes */}
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
