@@ -79,9 +79,9 @@ export function SearchResultsDetails({
   return (
     <>
       <div className="bg-[#5D2B79] h-full rounded-t-[20px] md:rounded-t-[40px] relative min-h-0 mx-4 md:mx-0">
-          <div className="bg-white/20 h-full w-full rounded-t-[20px] md:rounded-t-[40px] pt-4 md:pt-8 px-4 md:px-8 flex flex-col">
+          <div className="bg-white/20 h-full w-full rounded-t-[20px] md:rounded-t-[40px] pt-4 md:pt-8 flex flex-col">
               {/* Header section - now separate and non-scrolling */}
-              <div className="flex-shrink-0">
+              <div className="flex-shrink-0 px-4 md:px-8">
                 {/* Mobile Header and Filters */}
                 <div className="md:hidden">
                   <div>
@@ -137,7 +137,7 @@ export function SearchResultsDetails({
                       </div>
                     </div>
                     {activeFilters.length > 0 && (
-                      <div className="flex gap-2 mt-4 flex-nowrap overflow-x-auto no-scrollbar md:flex-wrap md:overflow-x-visible">
+                      <div className="flex gap-2 mt-1 flex-nowrap overflow-x-auto no-scrollbar md:flex-wrap md:overflow-x-visible">
                         {activeFilters.map(filter => (
                           <div key={`${filter.type}-${filter.value}`} className="flex-shrink-0 flex items-center bg-custom-gold text-custom-purple-dark rounded-full px-2.5 py-0.5 text-xs font-medium md:px-3 md:py-1 md:text-sm">
                             <span>{filter.label}</span>
@@ -198,10 +198,10 @@ export function SearchResultsDetails({
               {/* Scrollable grid section */}
               <div 
                   ref={scrollContainerRef}
-                  className="flex-grow h-full overflow-y-auto custom-scrollbar pb-8 min-h-0"
+                  className="flex-grow h-full overflow-y-auto custom-scrollbar pb-8 min-h-0 px-4 md:px-8"
               >
                 {/* Unified Product Grid for all screen sizes */}
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 pr-4">
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
                   {isSearching 
                     ? Array.from({ length: 12 }).map((_, index) => <ProductCardSkeleton key={index} />)
                     : products.map((product) => (
