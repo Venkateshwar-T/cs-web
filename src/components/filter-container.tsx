@@ -244,5 +244,3 @@ export function FilterContainer({ filters, onFilterChange, isMobile = false }: F
     </div>
   );
 }
-
-    
