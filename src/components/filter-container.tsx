@@ -9,7 +9,6 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import type { FilterState } from '@/app/page';
 import { priceOptions, flavourOptions, occasionOptions, productTypeOptions, weightOptions } from '@/lib/filter-options';
-import { useRef, useEffect } from "react";
 
 
 const FilterSection = ({ title, icon, children }: { title: string, icon: React.ReactNode, children: React.ReactNode }) => (
@@ -39,18 +38,10 @@ const CheckboxItem = ({ id, label, checked, onCheckedChange, count }: { id: stri
 interface FilterContainerProps {
     filters: FilterState;
     onFilterChange: (newFilters: Partial<FilterState>) => void;
-    isSearching: boolean;
     isMobile?: boolean;
 }
 
-export function FilterContainer({ filters, onFilterChange, isSearching, isMobile = false }: FilterContainerProps) {
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (isSearching && scrollContainerRef.current) {
-      scrollContainerRef.current.scrollTop = 0;
-    }
-  }, [isSearching]);
+export function FilterContainer({ filters, onFilterChange, isMobile = false }: FilterContainerProps) {
 
   const handlePriceOptionChange = (optionId: string, checked: boolean) => {
     const newSelected = checked
@@ -81,7 +72,7 @@ export function FilterContainer({ filters, onFilterChange, isSearching, isMobile
   if (isMobile) {
     return (
       <div className="h-[75vh] flex flex-col">
-        <div ref={scrollContainerRef} className="flex-grow overflow-y-auto custom-scrollbar px-4 pb-8">
+        <div className="flex-grow overflow-y-auto custom-scrollbar px-4 pb-8">
           <div className="space-y-6">
             <div className="space-y-2">
               <p className="text-sm text-white/80 font-poppins">Price</p>
@@ -163,7 +154,7 @@ export function FilterContainer({ filters, onFilterChange, isSearching, isMobile
   return (
     <div className={cn("bg-custom-gray-dark shadow-custom-dark h-full w-full rounded-tr-[40px] animate-slide-in-from-left")} style={{ animationDuration: '0.5s' }}>
         <div className="bg-white/20 h-full w-full rounded-tr-[40px] md:pt-2 md:pl-3 lg:pt-4 lg:pl-4 xl:pt-8 xl:pl-8">
-            <div ref={scrollContainerRef} className="h-full overflow-y-auto custom-scrollbar pr-8 pb-8">
+            <div className="h-full overflow-y-auto custom-scrollbar pr-8 pb-8">
                 <div className="flex items-center text-white font-bold mb-6 text-lg">
                     <SlidersHorizontal className="lg:h-5 lg:w-5 xl:h-6 xl:w-6 mr-3 flex-shrink-0" />
                     <h2 className="h-full w-full font-poppins">Filters & Sorting</h2>
@@ -253,3 +244,5 @@ export function FilterContainer({ filters, onFilterChange, isSearching, isMobile
     </div>
   );
 }
+
+    

@@ -61,6 +61,7 @@ const allProducts: Product[] = Array.from({ length: 12 }).map((_, i) => ({
 export default function Home() {
   const [activeView, setActiveView] = useState<ActiveView>('home');
   const [isSearching, setIsSearching] = useState(false);
+  const [isNewSearch, setIsNewSearch] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [cart, setCart] = useState<Record<string, number>>({
     'Diwali Collection Box 1': 1,
@@ -117,6 +118,14 @@ export default function Home() {
       return () => clearTimeout(timer);
     }
   }, [isCartOpen]);
+  
+  useEffect(() => {
+    if (isNewSearch) {
+      // Reset isNewSearch after a short delay to allow components to react
+      const timer = setTimeout(() => setIsNewSearch(false), 50);
+      return () => clearTimeout(timer);
+    }
+  }, [isNewSearch]);
 
   const handleSearchSubmit = (query: string, fromAnimated: boolean = false) => {
     setSearchQuery(query);
@@ -126,6 +135,7 @@ export default function Home() {
       setActiveView('search');
     }
     setIsSearching(true);
+    setIsNewSearch(true); // Flag that this is a new search
     setSelectedProduct(null);
     setFilters(initialFilterState);
     setSortOption("featured");
@@ -274,6 +284,7 @@ export default function Home() {
               filters={filters}
               onFilterChange={handleFilterChange}
               isSearching={isSearching}
+              isNewSearch={isNewSearch}
               products={allProducts}
               query={searchQuery}
               onAddToCart={handleAddToCart}
@@ -318,6 +329,7 @@ export default function Home() {
             filters={filters}
             onFilterChange={handleFilterChange}
             isSearching={isSearching}
+            isNewSearch={isNewSearch}
             products={allProducts}
             query={searchQuery}
             onAddToCart={handleAddToCart}
@@ -415,3 +427,5 @@ export default function Home() {
     </>
   );
 }
+
+    
