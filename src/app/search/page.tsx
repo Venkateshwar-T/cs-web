@@ -231,6 +231,8 @@ function SearchPageComponent() {
     }
   };
 
+  const cartItemCount = Object.values(cart).reduce((acc, quantity) => acc + quantity, 0);
+
   return (
     <>
       <SparkleBackground />
@@ -254,7 +256,7 @@ function SearchPageComponent() {
             onNavigate={(view) => router.push(`/${view}`)}
             activeView={'search'}
             isSearchingOnAbout={false}
-            isUsingAnimatedSearch={false}
+            isUsingAnimatedSearch={true}
           />
         )}
         <main className={cn(
@@ -346,7 +348,7 @@ function SearchPageComponent() {
         setIsCompleteDetailsOpen={setIsCompleteDetailsOpen}
         onConfirmOrder={handleConfirmOrder}
       />
-      <BottomNavbar activeView={'search'} onNavigate={handleNavigation} />
+      <BottomNavbar activeView={'search'} onNavigate={handleNavigation} cartItemCount={cartItemCount} />
     </>
   );
 }

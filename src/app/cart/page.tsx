@@ -86,6 +86,7 @@ export default function CartPage() {
 
 
   const cartItems = Object.entries(cart);
+  const cartItemCount = Object.values(cart).reduce((acc, quantity) => acc + quantity, 0);
 
   return (
     <>
@@ -97,7 +98,7 @@ export default function CartPage() {
           onReset={() => router.push('/')}
           onNavigate={handleHeaderNavigate}
           activeView={'cart'}
-          isVisible={isHeaderVisible}
+          isUsingAnimatedSearch={false}
         />
         <main onScroll={handleScroll} className={cn(
           "flex-grow flex flex-col transition-all duration-300 relative min-h-0 md:pb-0",
@@ -146,7 +147,7 @@ export default function CartPage() {
             </>
           )}
         </main>
-        <BottomNavbar activeView={activeView} onNavigate={handleNavigation} />
+        <BottomNavbar activeView={activeView} onNavigate={handleNavigation} cartItemCount={cartItemCount} />
       </div>
 
       <PopupsManager

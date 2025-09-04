@@ -183,6 +183,8 @@ export default function Home() {
     }
   };
 
+  const cartItemCount = Object.values(cart).reduce((acc, quantity) => acc + quantity, 0);
+
   return (
     <>
       <SparkleBackground />
@@ -241,7 +243,7 @@ export default function Home() {
         setIsCompleteDetailsOpen={setIsCompleteDetailsOpen}
         onConfirmOrder={handleConfirmOrder}
       />
-      <BottomNavbar activeView={activeView} onNavigate={handleNavigation} />
+      <BottomNavbar activeView={activeView} onNavigate={handleNavigation} cartItemCount={cartItemCount} />
     </>
   );
 }
