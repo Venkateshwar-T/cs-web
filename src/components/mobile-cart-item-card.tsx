@@ -45,7 +45,7 @@ export function MobileCartItemCard({ productName, quantity, onQuantityChange, on
                         <h3 className="font-bold text-base pr-6 truncate">{productName}</h3>
                         <p className="text-xs text-black/80 truncate">250g | Assorted | Hard-Box</p>
                         
-                        <p className="font-semibold mt-2 text-sm">Selected Flavours & Fillings</p>
+                        <p className="font-semibold text-xs text-black/80 mt-2">Selected Flavours & Fillings</p>
                         <ul className="list-disc list-inside text-xs mt-1 space-y-0.5 font-medium">
                             {selectedFlavours.map((flavour, index) => (
                                 <li key={index} className="flex justify-between">
