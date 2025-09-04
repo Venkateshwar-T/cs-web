@@ -105,15 +105,28 @@ export function Header({
           {!isMobileSearchExpanded && <Logo onLogoClick={handleLogoClick} isEnquireOpen={isEnquireOpen} />}
           
           <div className="hidden md:flex flex-1">
-            <Navigation 
-              isEnquireOpen={isEnquireOpen}
-              onNavigate={onNavigate}
-              activeView={activeView}
-              isNavVisible={isNavVisible}
-            />
+             {activeView === 'search' ? (
+                <div className="flex-1 flex justify-center">
+                    <AnimatedSearchBar 
+                        onSearchSubmit={handleAnimatedSearchSubmit}
+                        isExpanded={true}
+                        onExpandedChange={() => {}}
+                        width={500}
+                        isSearchingOnAbout={false}
+                        activeView={activeView}
+                    />
+                </div>
+            ) : (
+              isNavVisible &&
+              <Navigation 
+                isEnquireOpen={isEnquireOpen}
+                onNavigate={onNavigate}
+                activeView={activeView}
+              />
+            )}
           </div>
           
-          {showAnimatedSearch && (
+          {showAnimatedSearch && activeView !== 'search' && (
              <div className={cn(
                 "absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2",
                 isEnquireOpen && "opacity-50 pointer-events-none"
@@ -124,6 +137,7 @@ export function Header({
                     onExpandedChange={setIsAnimatedSearchExpanded}
                     width={500}
                     isSearchingOnAbout={isSearchingOnAbout || isUsingAnimatedSearch}
+                    activeView={activeView}
                 />
              </div>
           )}
@@ -158,7 +172,7 @@ export function Header({
         </div>
 
         <div className="hidden md:block">
-          {!showAnimatedSearch && (
+          {activeView === 'home' && !showAnimatedSearch && (
             <SearchBar
                 formRef={formRef}
                 activeView={activeView}

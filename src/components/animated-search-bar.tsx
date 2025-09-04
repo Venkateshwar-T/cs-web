@@ -7,6 +7,7 @@ import { X } from "lucide-react";
 import Image from "next/image";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
+import type { ActiveView } from "@/app/page";
 
 interface AnimatedSearchBarProps {
   onSearchSubmit: (query: string) => void;
@@ -15,6 +16,7 @@ interface AnimatedSearchBarProps {
   className?: string;
   width: number | undefined;
   isSearchingOnAbout: boolean;
+  activeView: ActiveView;
 }
 
 export function AnimatedSearchBar({ 
@@ -24,6 +26,7 @@ export function AnimatedSearchBar({
   className,
   width,
   isSearchingOnAbout,
+  activeView,
 }: AnimatedSearchBarProps) {
   const [inputValue, setInputValue] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
@@ -57,7 +60,7 @@ export function AnimatedSearchBar({
     }
   };
 
-  const showCloseButton = inputValue || (isExpanded && !isSearchingOnAbout);
+  const showCloseButton = inputValue && activeView !== 'search';
 
   if (!isExpanded) return null;
 
