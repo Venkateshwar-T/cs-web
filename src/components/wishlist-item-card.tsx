@@ -30,7 +30,7 @@ export function WishlistItemCard({ product, onAddToCart, onUnlike, isInCart, isU
        <div 
         onAnimationEnd={onAnimationEnd}
         className={cn(
-          "w-full bg-transparent pl-3 py-3 pr-4 text-black relative transition-all duration-300 overflow-hidden",
+          "w-full bg-transparent p-3 text-black relative transition-all duration-300 overflow-hidden",
           !isLastItem && "border-b border-black/10",
           isUnliking && 'animate-fade-out-slide-up',
         )}
@@ -49,13 +49,13 @@ export function WishlistItemCard({ product, onAddToCart, onUnlike, isInCart, isU
           </div>
 
           <div className="flex flex-col justify-between flex-grow self-stretch min-w-0">
+            <div className="flex justify-between items-start gap-2">
+                <h3 className="font-bold text-sm leading-tight flex-1 truncate">{product.name}</h3>
+                <button onClick={onUnlike} className="p-1 flex-shrink-0">
+                  <Heart className="h-5 w-5 text-red-500 fill-red-500" />
+                </button>
+            </div>
             <div>
-              <div className="flex justify-between items-start gap-2">
-                  <h3 className="font-bold text-base leading-tight flex-1 truncate">{product.name}</h3>
-                  <button onClick={onUnlike} className="p-1 flex-shrink-0">
-                    <Heart className="h-5 w-5 text-red-500 fill-red-500" />
-                  </button>
-              </div>
               <p className="text-xs text-black/70 truncate">250g | Assorted | Hard-Box</p>
             </div>
             <div className="flex justify-between items-end gap-2">
