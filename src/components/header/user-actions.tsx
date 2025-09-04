@@ -9,10 +9,12 @@ import { Separator } from "@/components/ui/separator";
 import { Menu, Phone } from "lucide-react";
 import { AiOutlineInstagram } from "react-icons/ai";
 import { IoLogoFacebook, IoLogoWhatsapp } from "react-icons/io5";
-import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetHeader, SheetTitle } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import type { ActiveView } from "@/app/page";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { useState } from "react";
 
 
 interface UserActionsProps {
@@ -41,6 +43,8 @@ export function UserActions({
     isAnimatedSearchExpanded,
     isSearchingOnAbout,
 }: UserActionsProps) {
+    const isMobile = useIsMobile();
+    const [isEnquireSheetOpen, setIsEnquireSheetOpen] = useState(false);
     
     return (
         <div className="flex items-center animate-slide-in-from-right" style={{ animationDuration: '0.5s' }}>
@@ -129,8 +133,8 @@ export function UserActions({
                             <span className="sr-only">Open menu</span>
                         </Button>
                     </SheetTrigger>
-                    <SheetContent side="right" className="bg-background text-white w-[250px] flex flex-col">
-                        <SheetHeader>
+                    <SheetContent side="right" className="bg-background text-white w-[250px] flex flex-col p-0">
+                        <SheetHeader className="p-4">
                             <SheetTitle className="sr-only">Menu</SheetTitle>
                             <Link href="/" className="mb-4">
                                 <Image 
@@ -142,7 +146,7 @@ export function UserActions({
                             </Link>
                             <Separator className="bg-white/20"/>
                         </SheetHeader>
-                        <div className="flex flex-col h-full pt-4">
+                        <div className="flex flex-col h-full pt-2 px-4">
                            <nav className="flex flex-col gap-4 text-lg">
                              {navLinks.map((link) => {
                                 const isActive = activeView === link.id;
@@ -163,7 +167,7 @@ export function UserActions({
                            </nav>
                            <SheetClose asChild>
                             <Button 
-                                onClick={() => onEnquireOpenChange(true)}
+                                onClick={() => setIsEnquireSheetOpen(true)}
                                 variant="outline"
                                 className="w-full justify-center text-custom-gold border-custom-gold hover:bg-custom-gold hover:text-custom-purple-dark mt-4"
                             >
@@ -178,6 +182,29 @@ export function UserActions({
                                     <IoLogoFacebook className="h-7 w-7 transition-colors hover:text-custom-gold" />
                                 </Link>
                             </div>
+                        </div>
+                    </SheetContent>
+                </Sheet>
+                 <Sheet open={isEnquireSheetOpen} onOpenChange={setIsEnquireSheetOpen}>
+                    <SheetContent side="bottom" className="bg-custom-purple-dark text-white rounded-t-3xl border-t-2 border-custom-gold p-6">
+                        <SheetHeader className="text-center">
+                            <SheetTitle className="text-xl font-bold text-white font-plex-sans">Looking for a Perfect Gift?</SheetTitle>
+                            <SheetDescription className="text-white/80 font-plex-sans-condensed text-base">
+                                Get personalized advice on flavours, packaging, and more.
+                            </SheetDescription>
+                        </SheetHeader>
+                        <div className="flex flex-col gap-3 mt-6">
+                            <Button asChild className="w-full h-auto py-3 bg-white hover:bg-white/90 text-custom-purple-dark rounded-full text-lg font-plex-sans">
+                                <a href="tel:+1234567890">
+                                    <Phone className="mr-2 h-5 w-5" /> Call Us
+                                </a>
+                            </Button>
+                            <p className="text-sm font-medium self-center text-white/80">-OR-</p>
+                            <Button asChild className="w-full h-auto py-3 bg-white hover:bg-white/90 text-custom-purple-dark rounded-full text-lg font-plex-sans">
+                                <a href="https://wa.me/1234567890" target="_blank" rel="noopener noreferrer">
+                                    <IoLogoWhatsapp className="mr-2 h-6 w-6" /> Whatsapp Us
+                                </a>
+                             </Button>
                         </div>
                     </SheetContent>
                 </Sheet>
