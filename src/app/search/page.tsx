@@ -1,50 +1,19 @@
 
-
 'use client';
 
-import { useState, useEffect, type UIEvent } from 'react';
-import Image from 'next/image';
-import { Header } from "@/components/header";
+import { Suspense, useState, useEffect } from 'react';
+import { useSearchParams, useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
-import { flavourOptions, occasionOptions, productTypeOptions, weightOptions } from '@/lib/filter-options';
+import { Header } from '@/components/header';
 import { SparkleBackground } from '@/components/sparkle-background';
-import { X } from 'lucide-react';
-import { OrderConfirmedView } from '@/components/order-confirmed-view';
-import { Footer } from '@/components/footer';
-import { AboutView } from '@/components/about-view';
-import { HomeView } from '@/components/views/HomeView';
-import { SearchView } from '@/components/views/SearchView';
-import { PopupsManager } from '@/components/popups/popups-manager';
-import { FloatingCartButton } from '@/components/floating-cart-button';
-import { FaqView } from '@/components/faq-view';
 import { BottomNavbar } from '@/components/bottom-navbar';
+import { PopupsManager } from '@/components/popups/popups-manager';
+import { SearchView } from '@/components/views/SearchView';
+import { HomeView } from '@/components/views/HomeView';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { MobileProductDetailView } from '@/components/views/MobileProductDetailView';
-import { useRouter } from 'next/navigation';
-
-
-export type Product = {
-  id: number;
-  name: string;
-};
-
-export type FilterState = {
-  priceRange: [number, number];
-  selectedPriceOptions: string[];
-  selectedFlavours: string[];
-  selectedOccasions: string[];
-  selectedProductTypes: string[];
-  selectedWeights: string[];
-};
-
-export type ProfileInfo = {
-  name: string;
-  phone: string;
-  email: string;
-}
-
-export type ActiveView = 'home' | 'search' | 'about' | 'faq' | 'order-confirmed' | 'cart' | 'profile';
+import { flavourOptions, occasionOptions, productTypeOptions, weightOptions } from '@/lib/filter-options';
+import type { Product, FilterState, ProfileInfo, ActiveView } from '@/app/page';
 
 const initialFilterState: FilterState = {
   priceRange: [0, 3000],
@@ -60,20 +29,19 @@ const allProducts: Product[] = Array.from({ length: 12 }).map((_, i) => ({
   name: `Diwali Collection Box ${i + 1}`,
 }));
 
-export default function Home() {
-  const [activeView, setActiveView] = useState<ActiveView>('home');
-  const [isSearching, setIsSearching] = useState(false);
-  const [isNewSearch, setIsNewSearch] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [cart, setCart] = useState<Record<string, number>>({
-    'Diwali Collection Box 1': 1,
-    'Diwali Collection Box 2': 2,
-  });
+function SearchPageComponent() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const query = searchParams.get('q') || '';
+  
+  const [isSearching, setIsSearching] = useState(true);
+  const [isNewSearch, setIsNewSearch] = useState(true);
+  const [cart, setCart] = useState<Record<string, number>>({});
   const [cartMessage, setCartMessage] = useState('');
   const [isCartButtonExpanded, setIsCartButtonExpanded] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [isImageExpanded, setIsImageExpanded] = useState(false);
-  const [likedProducts, setLikedProducts] = useState<Record<number, boolean>>({ 0: true, 2: true, 5: true });
+  const [likedProducts, setLikedProducts] = useState<Record<number, boolean>>({});
   const [sortOption, setSortOption] = useState("featured");
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isCartVisible, setIsCartVisible] = useState(false);
@@ -87,63 +55,25 @@ export default function Home() {
     email: 'john.doe@example.com',
   });
   const [isContentScrolled, setIsContentScrolled] = useState(false);
-  const [isSearchingOnAbout, setIsSearchingOnAbout] = useState(false);
-  const [isUsingAnimatedSearch, setIsUsingAnimatedSearch] = useState(false);
-  const [isPageLoading, setIsPageLoading] = useState(true);
   const [isFilterSheetOpen, setIsFilterSheetOpen] = useState(false);
   const [isSortSheetOpen, setIsSortSheetOpen] = useState(false);
   const [selectedProductForMobile, setSelectedProductForMobile] = useState<Product | null>(null);
   const [mobileFlavourCart, setMobileFlavourCart] = useState<Record<string, number>>({});
   const isMobile = useIsMobile();
-  const router = useRouter();
-
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsPageLoading(false);
-    }, 800);
+    setIsSearching(true);
+    setIsNewSearch(true);
+    const timer = setTimeout(() => setIsSearching(false), 500);
     return () => clearTimeout(timer);
-  }, []);
+  }, [query]);
 
-  useEffect(() => {
-    if (selectedProduct || isImageExpanded || isCartVisible || isSignUpOpen || isCompleteDetailsOpen || isProfileOpen || selectedProductForMobile) {
-      document.body.classList.add('overflow-hidden');
-    } else {
-      document.body.classList.remove('overflow-hidden');
-    }
-    return () => {
-      document.body.classList.remove('overflow-hidden');
-    };
-  }, [selectedProduct, isImageExpanded, isCartVisible, isSignUpOpen, isCompleteDetailsOpen, isProfileOpen, selectedProductForMobile]);
-
-
-  useEffect(() => {
-    if (isCartOpen) {
-      setIsCartVisible(true);
-    } else {
-      const timer = setTimeout(() => setIsCartVisible(false), 300); // Match animation duration
-      return () => clearTimeout(timer);
-    }
-  }, [isCartOpen]);
-  
   useEffect(() => {
     if (isNewSearch) {
-      // Reset isNewSearch after a short delay to allow components to react
       const timer = setTimeout(() => setIsNewSearch(false), 50);
       return () => clearTimeout(timer);
     }
   }, [isNewSearch]);
-
-  const handleSearchSubmit = (query: string, fromAnimated: boolean = false) => {
-    router.push(`/search?q=${encodeURIComponent(query)}`);
-  };
-  
-  const handleResetToHome = () => {
-    setActiveView('home');
-    setSearchQuery('');
-    setIsSearchingOnAbout(false);
-    setIsUsingAnimatedSearch(false);
-  };
 
   const handleAddToCart = (productName: string, quantity: number, animate: boolean = true) => {
     const newCart = { ...cart };
@@ -158,14 +88,11 @@ export default function Home() {
     if (animate && quantity > prevQuantity) {
       setCartMessage(`${quantity - prevQuantity} added`);
       setIsCartButtonExpanded(true);
-  
-      setTimeout(() => {
-        setIsCartButtonExpanded(false);
-      }, 1500);
+      setTimeout(() => setIsCartButtonExpanded(false), 1500);
     }
   };
-
-  const handleMobileFlavourAddToCart = (flavourId: number, quantity: number) => {
+  
+    const handleMobileFlavourAddToCart = (flavourId: number, quantity: number) => {
     const newFlavourCart = { ...mobileFlavourCart, [flavourId.toString()]: quantity };
     if (quantity <= 0) {
       delete newFlavourCart[flavourId.toString()];
@@ -173,29 +100,24 @@ export default function Home() {
     setMobileFlavourCart(newFlavourCart);
   };
 
-  const handleClearCart = () => {
-    setCart({});
-  };
+  const handleClearCart = () => setCart({});
 
   const handleProductClick = (product: Product) => {
-     if (isMobile) {
+    if (isMobile) {
       setSelectedProductForMobile(product);
     } else {
       setSelectedProduct(product);
     }
   };
 
-  const handleClosePopup = () => {
-    setSelectedProduct(null);
-  };
+  const handleClosePopup = () => setSelectedProduct(null);
   
-  const handleCloseMobileProductDetail = () => {
-    setSelectedProductForMobile(null);
-  };
+  const handleCloseMobileProductDetail = () => setSelectedProductForMobile(null);
 
   const handleFilterChange = (newFilters: Partial<FilterState>) => {
     setIsSearching(true);
     setFilters(prev => ({ ...prev, ...newFilters }));
+    setTimeout(() => setIsSearching(false), 500);
   };
 
   const handleRemoveFilter = (filterType: keyof FilterState, value: string) => {
@@ -210,98 +132,133 @@ export default function Home() {
       }
       return prev;
     });
+    setTimeout(() => setIsSearching(false), 500);
   };
 
   const handleLikeToggle = (productId: number) => {
     setLikedProducts(prev => {
       const newLiked = { ...prev };
-      if (newLiked[productId]) {
-        delete newLiked[productId];
-      } else {
-        newLiked[productId] = true;
-      }
+      if (newLiked[productId]) delete newLiked[productId];
+      else newLiked[productId] = true;
       return newLiked;
     });
   };
+
+  const handleClearWishlist = () => setLikedProducts({});
+
+  const handleToggleCartPopup = () => setIsCartOpen(prev => !prev);
   
-  const handleClearWishlist = () => {
-    setLikedProducts({});
-  };
-
-  const handleToggleCartPopup = () => {
-    setIsCartOpen(prev => !prev);
-  }
-
-  const handleOpenSignUp = () => {
-    setIsSignUpOpen(true);
-  };
-
+  const handleOpenSignUp = () => setIsSignUpOpen(true);
+  
   const handleOpenCompleteDetails = () => {
-    setSelectedProduct(null); // Close product popup before opening details popup
+    setSelectedProduct(null);
     setIsCompleteDetailsOpen(true);
-  }
-
+  };
+  
   const handleConfirmOrder = (name: string, phone: string) => {
-    setProfileInfo(prev => ({...prev, name, phone }));
-    setActiveView('order-confirmed');
+    setProfileInfo(prev => ({ ...prev, name, phone }));
+    // Navigate to order confirmed page or show a confirmation view
+    router.push('/order-confirmed'); 
     setIsCartOpen(false);
   };
-
+  
   const handleProfileUpdate = (updatedProfile: Partial<ProfileInfo>) => {
-    setProfileInfo(prev => ({...prev, ...updatedProfile}));
-  };
-
-  const handleScroll = (event: UIEvent<HTMLElement>) => {
-    const scrollTop = event.currentTarget.scrollTop;
-    if (activeView === 'order-confirmed' || activeView === 'about' || activeView === 'faq') {
-      setIsContentScrolled(scrollTop > 10);
-    } else {
-      setIsContentScrolled(false);
-    }
+    setProfileInfo(prev => ({ ...prev, ...updatedProfile }));
   };
 
   const handleSortChange = (value: string) => {
     setIsSearching(true);
     setSortOption(value);
-    setIsSortSheetOpen(false); // Close sheet on selection
+    setIsSortSheetOpen(false);
+    setTimeout(() => setIsSearching(false), 500);
   };
-
+  
   const getLabelById = (id: string, options: { id: string, label: string }[]) => {
     return options.find(option => option.id === id)?.label || id;
   };
-  
+
   const activeFilters = [
     ...filters.selectedFlavours.map(id => ({ type: 'selectedFlavours', value: id, label: getLabelById(id, flavourOptions) })),
     ...filters.selectedOccasions.map(id => ({ type: 'selectedOccasions', value: id, label: getLabelById(id, occasionOptions) })),
     ...filters.selectedProductTypes.map(id => ({ type: 'selectedProductTypes', value: id, label: getLabelById(id, productTypeOptions) })),
     ...filters.selectedWeights.map(id => ({ type: 'selectedWeights', value: id, label: getLabelById(id, weightOptions) })),
   ] as { type: keyof FilterState; value: string; label: string }[];
-
+  
   const isPopupOpen = selectedProduct || isImageExpanded || isCartVisible || isSignUpOpen || isCompleteDetailsOpen || isProfileOpen;
 
   return (
     <>
       <SparkleBackground />
-      <div className={cn("flex flex-col h-screen", (isPopupOpen && !isCartVisible) ? 'opacity-50' : '')}>
+      <div className={cn("flex flex-col h-screen", isPopupOpen ? 'opacity-50' : '')}>
         <Header 
-          onSearchSubmit={handleSearchSubmit} 
+          onSearchSubmit={(q) => router.push(`/search?q=${encodeURIComponent(q)}`)}
           onProfileOpenChange={setIsProfileOpen}
           isContentScrolled={isContentScrolled}
-          onReset={handleResetToHome}
-          onNavigate={(view) => setActiveView(view as ActiveView)}
-          activeView={activeView}
-          isSearchingOnAbout={isSearchingOnAbout}
-          isUsingAnimatedSearch={isUsingAnimatedSearch}
+          onReset={() => router.push('/')}
+          onNavigate={(view) => router.push(`/${view}`)}
+          activeView={'search'}
+          isSearchingOnAbout={false}
+          isUsingAnimatedSearch={false}
         />
-        <main onScroll={handleScroll} className={cn(
+        <main className={cn(
           "flex-grow flex flex-col transition-all duration-500 relative",
-          "pb-16 md:pb-0 pt-24 md:pt-36", // Padding for bottom nav bar
-          'overflow-hidden',
-          isPageLoading && 'opacity-0'
+          "pb-16 md:pb-0 pt-24 md:pt-36",
+          'overflow-y-auto'
         )}>
-           <HomeView />
+           <SearchView
+              filters={filters}
+              onFilterChange={handleFilterChange}
+              isSearching={isSearching}
+              isNewSearch={isNewSearch}
+              products={allProducts}
+              query={query}
+              onAddToCart={handleAddToCart}
+              cart={cart}
+              onProductClick={handleProductClick}
+              activeFilters={activeFilters}
+              onRemoveFilter={handleRemoveFilter}
+              likedProducts={likedProducts}
+              onLikeToggle={handleLikeToggle}
+              sortOption={sortOption}
+              onSortChange={handleSortChange}
+              isFilterSheetOpen={isFilterSheetOpen}
+              onFilterSheetOpenChange={setIsFilterSheetOpen}
+              isSortSheetOpen={isSortSheetOpen}
+              onSortSheetOpenChange={setIsSortSheetOpen}
+              selectedProductForMobile={selectedProductForMobile}
+              onCloseMobileProductDetail={handleCloseMobileProductDetail}
+            />
         </main>
       </div>
+
+       <FloatingCartButton
+        activeView={'search'}
+        isSearchingOnAbout={true}
+        isCartOpen={isCartOpen}
+        onToggleCart={handleToggleCartPopup}
+        isCartButtonExpanded={isCartButtonExpanded}
+        cartMessage={cartMessage}
+        cart={cart}
+      />
+      
+      {selectedProductForMobile && (
+        <>
+          <div className="fixed inset-0 z-50 bg-black/50" />
+          <div className="fixed inset-x-4 bottom-16 top-24 z-[60] md:hidden">
+            <MobileProductDetailView 
+              product={selectedProductForMobile} 
+              onClose={handleCloseMobileProductDetail} 
+              onAddToCart={handleAddToCart}
+              cart={cart}
+              onToggleCartPopup={handleToggleCartPopup}
+              isLiked={!!likedProducts[selectedProductForMobile.id]}
+              onLikeToggle={() => handleLikeToggle(selectedProductForMobile.id)}
+              onFlavourAddToCart={handleMobileFlavourAddToCart}
+              flavourCart={mobileFlavourCart}
+            />
+          </div>
+        </>
+      )}
 
       <PopupsManager
         selectedProduct={selectedProduct}
@@ -329,7 +286,15 @@ export default function Home() {
         setIsCompleteDetailsOpen={setIsCompleteDetailsOpen}
         onConfirmOrder={handleConfirmOrder}
       />
-      <BottomNavbar activeView={activeView} onNavigate={(view) => setActiveView(view)} />
+      <BottomNavbar activeView={'search'} onNavigate={(view) => router.push(view === 'home' ? '/' : `/${view}`)} />
     </>
   );
+}
+
+export default function SearchPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <SearchPageComponent />
+    </Suspense>
+  )
 }

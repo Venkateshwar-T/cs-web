@@ -3,6 +3,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import { useRouter } from 'next/navigation';
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
 import { Logo } from "./header/logo";
@@ -37,20 +38,12 @@ export function Header({
 }: HeaderProps) {
   const [searchInput, setSearchInput] = useState("");
   const [isEnquireOpen, setIsEnquireOpen] = useState(false);
-  const [targetWidth, setTargetWidth] = useState<number | undefined>(undefined);
   const [isAnimatedSearchExpanded, setIsAnimatedSearchExpanded] = useState(false);
   const [isNavVisible, setIsNavVisible] = useState(true);
   const formRef = useRef<HTMLFormElement>(null);
   const { toast } = useToast();
   const [isMobileSearchExpanded, setIsMobileSearchExpanded] = useState(false);
-  
-  useEffect(() => {
-    // When the animated search bar is closed, reset the target width
-    // to ensure it's recalculated on the next open.
-    if (!isAnimatedSearchExpanded) {
-      setTargetWidth(undefined);
-    }
-  }, [isAnimatedSearchExpanded]);
+  const router = useRouter();
   
   useEffect(() => {
     if (isAnimatedSearchExpanded || isUsingAnimatedSearch) {
@@ -75,33 +68,23 @@ export function Header({
       });
       return;
     }
-
-    if (formRef.current && activeView === 'home') {
-      const isLargeDesktop = window.innerWidth >= 1280;
-      const reductionFactor = isLargeDesktop ? 0.85 : 0.5;
-      setTargetWidth(formRef.current.offsetWidth * reductionFactor);
-    }
     
-    onSearchSubmit(currentSearchInput.trim());
+    router.push(`/search?q=${encodeURIComponent(currentSearchInput.trim())}`);
   };
   
   const handleAnimatedSearchSubmit = (query: string) => {
+    router.push(`/search?q=${encodeURIComponent(query)}`);
     onSearchSubmit(query, true);
   };
   
   const handleAnimatedSearchToggle = () => {
-    if (!isAnimatedSearchExpanded && formRef.current) {
-      const isLargeDesktop = window.innerWidth >= 1280;
-      const reductionFactor = isLargeDesktop ? 0.85 : 0.5;
-      setTargetWidth(formRef.current.offsetWidth * reductionFactor);
-    }
     setIsAnimatedSearchExpanded(prev => !prev);
   };
   
   const handleLogoClick = () => {
-    setTargetWidth(undefined);
     setSearchInput("");
     setIsAnimatedSearchExpanded(false);
+    router.push('/');
     onReset();
   };
   
@@ -139,7 +122,7 @@ export function Header({
                     onSearchSubmit={handleAnimatedSearchSubmit}
                     isExpanded={showAnimatedSearch}
                     onExpandedChange={setIsAnimatedSearchExpanded}
-                    width={targetWidth}
+                    width={500}
                     isSearchingOnAbout={isSearchingOnAbout || isUsingAnimatedSearch}
                 />
              </div>
@@ -161,7 +144,7 @@ export function Header({
           <div className="md:hidden flex-1 flex justify-end items-center">
             {isMobileSearchExpanded ? (
               <MobileSearchBar
-                onSearchSubmit={onSearchSubmit}
+                onSearchSubmit={(query) => router.push(`/search?q=${encodeURIComponent(query)}`)}
                 onCollapse={() => setIsMobileSearchExpanded(false)}
               />
             ) : (
@@ -180,7 +163,6 @@ export function Header({
                 formRef={formRef}
                 activeView={activeView}
                 isEnquireOpen={isEnquireOpen}
-                targetWidth={targetWidth}
                 onSubmit={handleSearchSubmit}
                 searchInput={searchInput}
                 onSearchInputChange={setSearchInput}

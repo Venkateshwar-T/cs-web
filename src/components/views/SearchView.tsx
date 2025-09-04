@@ -52,8 +52,6 @@ export function SearchView({
   onFilterSheetOpenChange,
   isSortSheetOpen,
   onSortSheetOpenChange,
-  selectedProductForMobile,
-  onCloseMobileProductDetail,
 }: SearchViewProps) {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   

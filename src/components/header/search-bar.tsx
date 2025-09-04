@@ -12,7 +12,6 @@ interface SearchBarProps {
     formRef: RefObject<HTMLFormElement>;
     activeView: ActiveView;
     isEnquireOpen: boolean;
-    targetWidth: number | undefined;
     onSubmit: (e: React.FormEvent<HTMLFormElement>, searchInput: string) => void;
     searchInput: string;
     onSearchInputChange: (value: string) => void;
@@ -20,7 +19,7 @@ interface SearchBarProps {
 
 const textsToType = ["Corporate gifts", "Family presents", "Festive gifts", "Birthday surprises", "Anniversary specials"];
 
-export function SearchBar({ formRef, activeView, isEnquireOpen, targetWidth, onSubmit, searchInput, onSearchInputChange }: SearchBarProps) {
+export function SearchBar({ formRef, activeView, isEnquireOpen, onSubmit, searchInput, onSearchInputChange }: SearchBarProps) {
     const [placeholder, setPlaceholder] = useState("");
     const isSearchActive = activeView === 'search' || activeView === 'order-confirmed';
 
@@ -71,11 +70,9 @@ export function SearchBar({ formRef, activeView, isEnquireOpen, targetWidth, onS
             <form 
                 ref={formRef}
                 onSubmit={handleSubmit} 
-                className={cn(`relative mx-auto transition-all duration-500 ease-in-out animate-slide-down`,
-                  !targetWidth && !isSearchActive ? 'max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl' : ''
+                className={cn(`relative mx-auto transition-all duration-500 ease-in-out animate-slide-down max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl`
                 )}
                 style={{ 
-                    maxWidth: targetWidth ? `${targetWidth}px` : undefined, 
                     animationDuration: '0.5s', animationDelay: '0.05s'
                 }}
             >
