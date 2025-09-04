@@ -172,6 +172,17 @@ export default function Home() {
 
   const isPopupOpen = selectedProduct || isImageExpanded || isCartVisible || isSignUpOpen || isCompleteDetailsOpen || isProfileOpen;
 
+  const handleNavigation = (view: ActiveView) => {
+    if (view === 'cart') {
+      router.push('/cart');
+    } else if (view === 'profile') {
+      setIsProfileOpen(true);
+    } else {
+       router.push('/');
+      setActiveView(view);
+    }
+  };
+
   return (
     <>
       <SparkleBackground />
@@ -230,7 +241,7 @@ export default function Home() {
         setIsCompleteDetailsOpen={setIsCompleteDetailsOpen}
         onConfirmOrder={handleConfirmOrder}
       />
-      <BottomNavbar activeView={activeView} onNavigate={(view) => setActiveView(view)} />
+      <BottomNavbar activeView={activeView} onNavigate={handleNavigation} />
     </>
   );
 }
