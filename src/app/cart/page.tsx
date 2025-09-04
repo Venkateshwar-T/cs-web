@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState } from 'react';
@@ -7,6 +8,7 @@ import { Header } from '@/components/header';
 import { BottomNavbar } from '@/components/bottom-navbar';
 import { SparkleBackground } from '@/components/sparkle-background';
 import { cn } from '@/lib/utils';
+import { PopupsManager } from '@/components/popups/popups-manager';
 
 export default function CartPage() {
   const [activeView, setActiveView] = useState<ActiveView>('cart');
@@ -18,9 +20,8 @@ export default function CartPage() {
       router.push('/');
     } else if (view === 'profile') {
       setIsProfileOpen(true);
-    } else {
-      // Already on cart, do nothing
     }
+    // If view is 'cart', do nothing as we are already on the page.
   };
 
   const handleHeaderNavigate = (view: 'about' | 'faq') => {
@@ -50,6 +51,33 @@ export default function CartPage() {
         </main>
         <BottomNavbar activeView={activeView} onNavigate={handleNavigation} />
       </div>
+
+      <PopupsManager
+        selectedProduct={null}
+        isCartVisible={false}
+        isCartOpen={false}
+        isProfileOpen={isProfileOpen}
+        isSignUpOpen={false}
+        isCompleteDetailsOpen={false}
+        onClosePopup={() => {}}
+        onImageExpandChange={() => {}}
+        likedProducts={{}}
+        onLikeToggle={() => {}}
+        cart={{}}
+        onAddToCart={() => {}}
+        onToggleCartPopup={() => {}}
+        onClearCart={() => {}}
+        onFinalizeOrder={() => {}}
+        onProfileUpdate={() => {}}
+        profileInfo={{ name: '', phone: '', email: '' }}
+        allProducts={[]}
+        onClearWishlist={() => {}}
+        setIsProfileOpen={setIsProfileOpen}
+        setIsSignUpOpen={() => {}}
+        onLoginClick={() => {}}
+        setIsCompleteDetailsOpen={() => {}}
+        onConfirmOrder={() => {}}
+      />
     </>
   );
 }
