@@ -49,7 +49,7 @@ export function MobileCartItemCard({ productName, quantity, onQuantityChange, on
                         <ul className="list-disc list-inside text-xs mt-1 space-y-0.5 font-medium">
                            {selectedFlavours.map((flavour, index) => (
                                 <li key={index}>
-                                    <span>{flavour.name}</span>
+                                    <span className="w-24 inline-block">{flavour.name}</span>
                                     <span className='ml-1'>+₹{flavour.price}</span>
                                 </li>
                             ))}
