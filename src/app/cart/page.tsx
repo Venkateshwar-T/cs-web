@@ -14,6 +14,7 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { MobileCartItemCard } from '@/components/mobile-cart-item-card';
+import { MobileCartSummary } from '@/components/mobile-cart-summary';
 
 // Mock data for products
 const mockProducts = [
@@ -60,6 +61,11 @@ export default function CartPage() {
     handleQuantityChange(productName, 0);
   };
 
+  const handleCheckout = () => {
+    // Handle checkout logic here
+    console.log('Proceeding to checkout');
+  };
+
   const cartItems = Object.entries(cart);
 
   return (
@@ -76,7 +82,8 @@ export default function CartPage() {
         <main className={cn(
           "flex-grow flex flex-col transition-all duration-300 relative min-h-0",
           "pt-24 md:pt-36",
-          "pb-16 md:pb-0"
+          // Add padding bottom for mobile to avoid overlap with fixed summary
+          isMobile ? "pb-48" : "pb-16 md:pb-0" 
         )}>
           {cartItems.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-full gap-4 text-center px-4">
@@ -114,6 +121,7 @@ export default function CartPage() {
             </>
           )}
         </main>
+        {isMobile && cartItems.length > 0 && <MobileCartSummary cart={cart} onCheckout={handleCheckout} />}
         <BottomNavbar activeView={activeView} onNavigate={handleNavigation} />
       </div>
 
