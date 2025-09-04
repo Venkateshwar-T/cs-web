@@ -1,9 +1,55 @@
 'use client';
 
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import type { ActiveView, ProfileInfo } from '@/app/page';
+import { Header } from '@/components/header';
+import { BottomNavbar } from '@/components/bottom-navbar';
+import { SparkleBackground } from '@/components/sparkle-background';
+import { cn } from '@/lib/utils';
+
 export default function CartPage() {
+  const [activeView, setActiveView] = useState<ActiveView>('cart');
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const router = useRouter();
+
+  const handleNavigation = (view: ActiveView) => {
+    if (view === 'home') {
+      router.push('/');
+    } else if (view === 'profile') {
+      setIsProfileOpen(true);
+    } else {
+      // Already on cart, do nothing
+    }
+  };
+
+  const handleHeaderNavigate = (view: 'about' | 'faq') => {
+    router.push(`/?view=${view}`);
+  }
+
   return (
-    <div>
-      {/* The cart page is ready for your instructions. */}
-    </div>
+    <>
+      <SparkleBackground />
+      <div className="flex flex-col h-screen">
+        <Header
+          onProfileOpenChange={setIsProfileOpen}
+          isContentScrolled={false}
+          onReset={() => router.push('/')}
+          onNavigate={handleHeaderNavigate}
+          activeView={'cart'}
+          onSearchSubmit={(query) => router.push(`/search?q=${query}`)}
+          isSearchingOnAbout={false}
+          isUsingAnimatedSearch={false}
+        />
+        <main className={cn(
+          "flex-grow flex flex-col transition-all duration-300 relative min-h-0",
+          "pt-24 md:pt-36",
+          "pb-16 md:pb-0"
+        )}>
+          {/* Cart content will go here */}
+        </main>
+        <BottomNavbar activeView={activeView} onNavigate={handleNavigation} />
+      </div>
+    </>
   );
 }
