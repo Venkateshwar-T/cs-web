@@ -1,5 +1,4 @@
 
-
 'use client';
 
 import { useState, useEffect, type UIEvent } from 'react';
@@ -295,7 +294,7 @@ export default function Home() {
         />
         <main onScroll={handleScroll} className={cn(
           "flex-grow flex flex-col transition-all duration-500 relative",
-          "pb-16 md:pb-0 pt-24 md:pt-36", // Padding for bottom nav bar
+          "pb-16 md:pb-0", // Padding for bottom nav bar
           'overflow-hidden',
           isPageLoading && 'opacity-0'
         )}>
