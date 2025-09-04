@@ -12,6 +12,7 @@ import type { ActiveView } from "@/app/page";
 import { AnimatedSearchBar } from "./animated-search-bar";
 import Image from "next/image";
 import { MobileSearchBar } from "./mobile-search-bar";
+import { SearchBar } from "./header/search-bar";
 
 interface HeaderProps {
   onProfileOpenChange: (isOpen: boolean) => void;
@@ -75,7 +76,7 @@ export function Header({
           <div className="hidden md:flex flex-1">
              {activeView === 'search' ? (
                 <div className="flex-1 flex justify-center items-center px-4 lg:px-8">
-                    <div className="w-full max-w-lg">
+                    <div className="w-full max-w-md lg:max-w-xl xl:max-w-2xl">
                       <AnimatedSearchBar 
                           onSearchSubmit={handleAnimatedSearchSubmit}
                           isExpanded={true}
