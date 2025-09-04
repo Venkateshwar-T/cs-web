@@ -170,15 +170,6 @@ export default function Home() {
     setProfileInfo(prev => ({...prev, ...updatedProfile}));
   };
 
-  const handleScroll = (event: UIEvent<HTMLElement>) => {
-    const scrollTop = event.currentTarget.scrollTop;
-    if (activeView === 'order-confirmed' || activeView === 'about' || activeView === 'faq') {
-      setIsContentScrolled(scrollTop > 10);
-    } else {
-      setIsContentScrolled(false);
-    }
-  };
-
   const isPopupOpen = selectedProduct || isImageExpanded || isCartVisible || isSignUpOpen || isCompleteDetailsOpen || isProfileOpen;
 
   return (
@@ -192,10 +183,9 @@ export default function Home() {
           onNavigate={(view) => router.push(view)}
           activeView={activeView}
         />
-        <main onScroll={handleScroll} className={cn(
+        <main className={cn(
           "flex-grow flex flex-col items-center justify-start transition-all duration-500 relative",
           "pb-16 md:pb-0 pt-28",
-          'overflow-y-auto custom-scrollbar',
           isPageLoading && 'opacity-0'
         )}>
           <div className='w-full'>
@@ -208,7 +198,7 @@ export default function Home() {
               onSearchInputChange={setSearchInput}
             />
           </div>
-          <div className="mt-8 w-full">
+          <div className="mt-8 w-full flex-grow min-h-0">
             <ExploreCategories />
           </div>
         </main>
