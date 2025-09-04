@@ -3,18 +3,34 @@
 'use client';
 
 import { useState } from 'react';
-import type { ProfileInfo } from '@/app/page';
+import type { Product, ProfileInfo } from '@/app/page';
 import { cn } from '@/lib/utils';
 import { MyProfileTab } from './my-profile-tab';
+import { WishlistView } from './wishlist-view';
 
 interface ProfileMobileViewProps {
   profile: ProfileInfo;
   onProfileUpdate: (updatedProfile: Partial<ProfileInfo>) => void;
+  products: Product[];
+  likedProducts: Record<number, boolean>;
+  onLikeToggle: (productId: number) => void;
+  onAddToCart: (productName: string, quantity: number) => void;
+  cart: Record<string, number>;
+  onClearWishlist: () => void;
 }
 
 const tabs = ['My Profile', 'My Wishlist', 'My Orders'];
 
-export function ProfileMobileView({ profile, onProfileUpdate }: ProfileMobileViewProps) {
+export function ProfileMobileView({ 
+  profile, 
+  onProfileUpdate, 
+  products, 
+  likedProducts, 
+  onLikeToggle, 
+  onAddToCart, 
+  cart, 
+  onClearWishlist 
+}: ProfileMobileViewProps) {
   const [activeTab, setActiveTab] = useState('My Profile');
 
   return (
@@ -42,9 +58,15 @@ export function ProfileMobileView({ profile, onProfileUpdate }: ProfileMobileVie
           <MyProfileTab profile={profile} onProfileUpdate={onProfileUpdate} />
         )}
         {activeTab === 'My Wishlist' && (
-          <div className="text-center p-8">
-            <p>Wishlist items will be shown here.</p>
-          </div>
+          <WishlistView
+            products={products}
+            likedProducts={likedProducts}
+            onLikeToggle={onLikeToggle}
+            onAddToCart={onAddToCart}
+            cart={cart}
+            onClearWishlist={onClearWishlist}
+            isMobile={true}
+          />
         )}
         {activeTab === 'My Orders' && (
           <div className="text-center p-8">

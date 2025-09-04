@@ -1,4 +1,3 @@
-
 // @/components/wishlist-item-card.tsx
 'use client';
 

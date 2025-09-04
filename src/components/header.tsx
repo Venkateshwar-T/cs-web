@@ -53,7 +53,7 @@ export function Header({
   }, [isAnimatedSearchExpanded]);
 
   const handleAnimatedSearchSubmit = (query: string) => {
-    onSearchSubmit(query);
+    router.push(`/search?q=${encodeURIComponent(query)}`);
   };
   
   const handleAnimatedSearchToggle = () => {
@@ -86,7 +86,7 @@ export function Header({
              {activeView === 'search' ? (
                 <div className="w-full max-w-sm md:max-w-md lg:max-w-lg xl:max-w-2xl">
                   <AnimatedSearchBar 
-                      onSearchSubmit={handleAnimatedSearchSubmit}
+                      onSearchSubmit={onSearchSubmit}
                       isExpanded={true}
                       onExpandedChange={() => {}}
                       isSearchingOnAbout={isSearchingOnAbout}

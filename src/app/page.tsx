@@ -184,7 +184,7 @@ export default function Home() {
           onProfileOpenChange={setIsProfileOpen}
           isContentScrolled={isContentScrolled}
           onReset={handleResetToHome}
-          onNavigate={(view) => router.push(view)}
+          onNavigate={(view) => setActiveView(view)}
           activeView={activeView}
         />
         <main className={cn(

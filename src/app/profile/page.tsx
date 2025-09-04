@@ -3,7 +3,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import type { ActiveView, ProfileInfo } from '@/app/page';
+import type { ActiveView, ProfileInfo, Product } from '@/app/page';
 import { Header } from '@/components/header';
 import { BottomNavbar } from '@/components/bottom-navbar';
 import { SparkleBackground } from '@/components/sparkle-background';
@@ -12,12 +12,18 @@ import { useCart } from '@/hooks/use-cart';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { ProfileMobileView } from '@/components/profile-mobile-view';
 
+const allProducts: Product[] = Array.from({ length: 12 }).map((_, i) => ({
+  id: i,
+  name: `Diwali Collection Box ${i + 1}`,
+}));
+
 export default function ProfilePage() {
   const [activeView, setActiveView] = useState<ActiveView>('profile');
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const router = useRouter();
-  const { cart } = useCart();
+  const { cart, updateCart } = useCart();
   const isMobile = useIsMobile();
+  const [likedProducts, setLikedProducts] = useState<Record<number, boolean>>({1:true, 2:true});
   
   const [profileInfo, setProfileInfo] = useState<ProfileInfo>({
     name: 'John Doe',
@@ -42,6 +48,22 @@ export default function ProfilePage() {
     setProfileInfo(prev => ({ ...prev, ...updatedProfile }));
   };
 
+  const handleLikeToggle = (productId: number) => {
+    setLikedProducts(prev => {
+      const newLiked = { ...prev };
+      if (newLiked[productId]) {
+        delete newLiked[productId];
+      } else {
+        newLiked[productId] = true;
+      }
+      return newLiked;
+    });
+  };
+
+  const handleClearWishlist = () => {
+    setLikedProducts({});
+  };
+
   const cartItemCount = Object.values(cart).reduce((acc, quantity) => acc + quantity, 0);
 
   return (
@@ -64,6 +86,12 @@ export default function ProfilePage() {
             <ProfileMobileView 
               profile={profileInfo}
               onProfileUpdate={handleProfileUpdate}
+              products={allProducts}
+              likedProducts={likedProducts}
+              onLikeToggle={handleLikeToggle}
+              onAddToCart={updateCart}
+              cart={cart}
+              onClearWishlist={handleClearWishlist}
             />
           ) : (
             <div className="flex flex-col items-center justify-center h-full gap-4 text-center px-4">
