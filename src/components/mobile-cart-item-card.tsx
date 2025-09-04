@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { FaTrash } from 'react-icons/fa';
 import { cn } from '@/lib/utils';
 import { Button } from './ui/button';
-import { Minus, Plus } from 'lucide-react';
+import { Minus, Plus, ArrowDown } from 'lucide-react';
 
 interface MobileCartItemCardProps {
     productName: string;
@@ -97,11 +97,14 @@ export function MobileCartItemCard({ productName, quantity, onQuantityChange, on
                     </div>
 
                     <div className="mt-2 flex items-center justify-between">
-                        <div className="flex items-baseline gap-2">
+                         <div className="flex items-baseline gap-2">
                            <p className="text-sm line-through text-black/70 font-semibold">₹1000</p>
-                           <p className="text-lg font-bold">₹750</p>
-                           <p className="text-xs text-custom-gold font-semibold">25% OFF</p>
+                           <div className="flex items-center gap-1 text-custom-gold bg-custom-gold/20 px-1.5 py-0.5 rounded-md">
+                            <ArrowDown className="h-3 w-3" />
+                            <span className="text-xs font-semibold">25%</span>
+                           </div>
                         </div>
+                        <p className="text-lg font-bold">₹750</p>
                     </div>
                 </div>
             </div>
