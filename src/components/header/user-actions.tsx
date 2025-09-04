@@ -161,17 +161,16 @@ export function UserActions({
                                 )
                             })}
                            </nav>
-                           <div className="mt-auto flex flex-col gap-4">
-                             <SheetClose asChild>
-                                <Button 
-                                    onClick={() => onEnquireOpenChange(true)}
-                                    variant="outline"
-                                    className="w-full justify-center text-custom-gold border-custom-gold hover:bg-custom-gold hover:text-custom-purple-dark"
-                                >
-                                    Enquire Now
-                                </Button>
-                             </SheetClose>
-                            <div className="flex items-center gap-4 mt-2">
+                           <SheetClose asChild>
+                            <Button 
+                                onClick={() => onEnquireOpenChange(true)}
+                                variant="outline"
+                                className="w-full justify-center text-custom-gold border-custom-gold hover:bg-custom-gold hover:text-custom-purple-dark mt-4"
+                            >
+                                Enquire Now
+                            </Button>
+                           </SheetClose>
+                           <div className="mt-auto flex items-center gap-4">
                                 <Link href="#" aria-label="Instagram">
                                     <AiOutlineInstagram className="h-7 w-7 transition-colors hover:text-custom-gold" />
                                 </Link>
@@ -179,7 +178,6 @@ export function UserActions({
                                     <IoLogoFacebook className="h-7 w-7 transition-colors hover:text-custom-gold" />
                                 </Link>
                             </div>
-                           </div>
                         </div>
                     </SheetContent>
                 </Sheet>
