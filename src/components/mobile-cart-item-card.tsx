@@ -1,3 +1,4 @@
+
 // @/components/mobile-cart-item-card.tsx
 'use client';
 
@@ -62,7 +63,7 @@ export function MobileCartItemCard({ productName, quantity, onQuantityChange, on
                         >
                             <Minus className="h-4 w-4" />
                         </Button>
-                        <div className="flex-1 text-center h-full flex items-center justify-center">
+                        <div className="flex-1 text-center bg-gray-200 h-full flex items-center justify-center">
                             <span className="font-bold px-1 text-sm">{quantity}</span>
                         </div>
                         <Button
@@ -75,7 +76,7 @@ export function MobileCartItemCard({ productName, quantity, onQuantityChange, on
                         </Button>
                     </div>
                 </div>
-                <div className="w-2/3 flex flex-col justify-between self-stretch">
+                <div className="w-2/3 flex flex-col justify-between self-stretch pr-2">
                     <div>
                         <div className="flex justify-between items-center gap-2">
                             <h3 className="font-bold text-base truncate flex-1">{productName}</h3>
