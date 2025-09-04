@@ -62,7 +62,7 @@ export function MobileCartItemCard({ productName, quantity, onQuantityChange, on
                         >
                             <Minus className="h-4 w-4" />
                         </Button>
-                        <div className="flex-1 text-center bg-white">
+                        <div className="flex-1 text-center bg-gray-200">
                             <span className="font-bold px-1 text-sm">{quantity}</span>
                         </div>
                         <Button
