@@ -28,13 +28,12 @@ export function WishlistItemCard({ product, onAddToCart, onUnlike, isInCart, isU
     <div 
       onAnimationEnd={onAnimationEnd}
       className={cn(
-        "bg-transparent p-3 text-black w-full relative transition-all duration-300 overflow-hidden",
+        "bg-white/90 p-3 text-black w-full relative transition-all duration-300 overflow-hidden rounded-2xl",
         isUnliking && 'animate-fade-out-slide-up',
-        !isLastItem && "border-b border-black/10"
       )}
     >
       <div className="flex gap-3 items-center">
-        <div className="w-1/4 h-20 flex-shrink-0">
+        <div className="w-1/4 h-24 flex-shrink-0">
           <Image
             src="/choco img.png"
             alt={product.name}
@@ -47,15 +46,15 @@ export function WishlistItemCard({ product, onAddToCart, onUnlike, isInCart, isU
 
         <div className="flex flex-col justify-between flex-grow self-stretch">
           <div>
-            <h3 className="font-bold text-base leading-tight pr-8 truncate">{product.name}</h3>
-            <p className="text-xs text-black/70">250g | Assorted | Hard-Box</p>
+            <h3 className="font-bold text-lg leading-tight pr-8">{product.name}</h3>
+            <p className="text-sm text-black/70">250g | Assorted | Hard-Box</p>
           </div>
-          <p className="font-bold text-lg text-black">₹750</p>
+          <p className="font-bold text-xl text-custom-purple-dark">₹750</p>
         </div>
 
         <div className="absolute top-2 right-3">
           <button onClick={onUnlike} className="p-1">
-            <Heart className="h-5 w-5 text-red-500 fill-red-500" />
+            <Heart className="h-6 w-6 text-red-500 fill-red-500" />
           </button>
         </div>
 
@@ -64,7 +63,7 @@ export function WishlistItemCard({ product, onAddToCart, onUnlike, isInCart, isU
             size="sm"
             onClick={handleAddToCartClick}
             className={cn(
-              "rounded-full uppercase border-2 border-b-[3px] h-8 px-5 text-xs transition-colors duration-300 border-custom-purple-dark",
+              "rounded-full uppercase border-2 border-b-[3px] h-9 px-6 text-sm transition-colors duration-300 border-custom-purple-dark",
               isInCart
                 ? 'bg-custom-purple-dark text-white hover:bg-custom-purple-dark/90'
                 : 'bg-transparent text-custom-purple-dark hover:bg-custom-purple-dark hover:text-white'
