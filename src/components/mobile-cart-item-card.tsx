@@ -99,7 +99,7 @@ export function MobileCartItemCard({ productName, quantity, onQuantityChange, on
                     <div className="mt-2 flex items-center justify-between">
                          <div className="flex items-baseline gap-2">
                            <p className="text-sm line-through text-black/70 font-semibold">₹1000</p>
-                           <div className="flex items-center gap-1 text-custom-gold bg-custom-gold/20 px-1.5 py-0.5 rounded-md">
+                           <div className="flex items-center gap-1 text-custom-purple-dark bg-custom-gold px-1.5 py-0.5 rounded-md">
                             <ArrowDown className="h-3 w-3" />
                             <span className="text-xs font-semibold">25%</span>
                            </div>
