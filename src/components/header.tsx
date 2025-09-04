@@ -74,15 +74,16 @@ export function Header({
           
           <div className="hidden md:flex flex-1">
              {activeView === 'search' ? (
-                <div className="flex-1 flex justify-center">
-                    <AnimatedSearchBar 
-                        onSearchSubmit={handleAnimatedSearchSubmit}
-                        isExpanded={true}
-                        onExpandedChange={() => {}}
-                        width={500}
-                        isSearchingOnAbout={false}
-                        activeView={activeView}
-                    />
+                <div className="flex-1 flex justify-center items-center px-4 lg:px-8">
+                    <div className="w-full max-w-lg">
+                      <AnimatedSearchBar 
+                          onSearchSubmit={handleAnimatedSearchSubmit}
+                          isExpanded={true}
+                          onExpandedChange={() => {}}
+                          isSearchingOnAbout={false}
+                          activeView={activeView}
+                      />
+                    </div>
                 </div>
             ) : (
               isNavVisible &&
@@ -96,14 +97,13 @@ export function Header({
           
           {isAnimatedSearchExpanded && activeView !== 'search' && (
              <div className={cn(
-                "absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2",
+                "absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-lg px-4",
                 isEnquireOpen && "opacity-50 pointer-events-none"
               )}>
                 <AnimatedSearchBar 
                     onSearchSubmit={handleAnimatedSearchSubmit}
                     isExpanded={isAnimatedSearchExpanded}
                     onExpandedChange={setIsAnimatedSearchExpanded}
-                    width={500}
                     isSearchingOnAbout={false}
                     activeView={activeView}
                 />
@@ -124,7 +124,7 @@ export function Header({
           </div>
 
           <div className="md:hidden flex-1 flex justify-end items-center">
-            {isMobileSearchExpanded ? (
+            {isMobileSearchExpanded || activeView === 'search' ? (
               <MobileSearchBar
                 onSearchSubmit={(query) => router.push(`/search?q=${encodeURIComponent(query)}`)}
                 onCollapse={() => setIsMobileSearchExpanded(false)}

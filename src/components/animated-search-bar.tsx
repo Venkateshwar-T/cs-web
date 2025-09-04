@@ -14,7 +14,6 @@ interface AnimatedSearchBarProps {
   isExpanded: boolean;
   onExpandedChange: (expanded: boolean) => void;
   className?: string;
-  width: number | undefined;
   isSearchingOnAbout: boolean;
   activeView: ActiveView;
 }
@@ -24,7 +23,6 @@ export function AnimatedSearchBar({
   isExpanded,
   onExpandedChange,
   className,
-  width,
   isSearchingOnAbout,
   activeView,
 }: AnimatedSearchBarProps) {
@@ -65,11 +63,11 @@ export function AnimatedSearchBar({
   if (!isExpanded) return null;
 
   return (
-    <form onSubmit={handleSubmit} className={cn("flex items-center", className)}>
+    <form onSubmit={handleSubmit} className={cn("flex items-center w-full", className)}>
       <motion.div
-        className="flex items-center h-11 rounded-full bg-white text-black shadow-lg overflow-hidden"
+        className="flex items-center h-10 md:h-11 rounded-full bg-white text-black shadow-lg overflow-hidden w-full"
         initial={{ width: 0 }}
-        animate={{ width: width ? `${width}px` : "0px" }}
+        animate={{ width: '100%' }}
         transition={{ duration: 0.3, ease: "easeInOut" }}
       >
         <div className="flex items-center w-full h-full">
