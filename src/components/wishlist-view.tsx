@@ -50,17 +50,72 @@ export function WishlistView({
     setUnlikingItems(prev => prev.filter(id => id !== productId));
   };
 
-  const containerClasses = isMobile 
-    ? "bg-white/80 rounded-2xl flex flex-col p-4" 
-    : "p-8 text-white h-full flex flex-col relative";
+  if (isMobile) {
+    return (
+       <div className="flex flex-col h-full">
+        {wishlistedProducts.length > 0 ? (
+          <div className="bg-white/80 rounded-2xl flex flex-col max-h-[80vh]">
+            <div className="flex justify-between items-center p-4 border-b border-black/10 flex-shrink-0">
+              <p className="text-base font-bold text-black">Total Products: {wishlistedProducts.length}</p>
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button
+                    variant="destructive"
+                    size="sm"
+                    className="bg-red-500 text-white rounded-full hover:bg-red-600/90 text-xs h-8 px-3 disabled:opacity-50"
+                    disabled={wishlistedProducts.length === 0}
+                  >
+                    Clear All
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      This action will permanently remove all items from your wishlist.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogAction onClick={onClearWishlist}>Confirm</AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+            </div>
+            <div className="overflow-y-auto custom-scrollbar">
+              {wishlistedProducts.map((product, index) => (
+                <WishlistItemCard 
+                  key={product.id}
+                  product={product}
+                  onUnlike={() => handleUnlike(product.id)}
+                  onAddToCart={onAddToCart}
+                  isInCart={!!cart[product.name]}
+                  isUnliking={unlikingItems.includes(product.id)}
+                  onAnimationEnd={() => handleAnimationEnd(product.id)}
+                  isLastItem={index === wishlistedProducts.length - 1}
+                />
+              ))}
+            </div>
+          </div>
+        ) : (
+          <div className="flex-grow flex items-center justify-center h-full">
+              <p className="text-center text-lg text-white/70">
+                  Your wishlist is empty. Start adding some products you love!
+              </p>
+          </div>
+        )}
+      </div>
+    );
+  }
 
+  // Desktop view
   return (
-    <div className={containerClasses}>
-      {!isMobile && <h2 className="text-3xl font-normal font-poppins self-start mb-6">My Wishlist</h2>}
+    <div className="p-8 text-white h-full flex flex-col relative">
+      <h2 className="text-3xl font-normal font-poppins self-start mb-6">My Wishlist</h2>
       
       {wishlistedProducts.length > 0 ? (
         <>
-          <div className="flex-grow overflow-y-auto pr-0 md:pr-4 space-y-4 custom-scrollbar">
+          <div className="flex-grow overflow-y-auto pr-4 space-y-4 custom-scrollbar">
             {wishlistedProducts.map(product => (
               <WishlistItemCard 
                 key={product.id}
@@ -70,23 +125,20 @@ export function WishlistView({
                 isInCart={!!cart[product.name]}
                 isUnliking={unlikingItems.includes(product.id)}
                 onAnimationEnd={() => handleAnimationEnd(product.id)}
+                isLastItem={false}
               />
             ))}
           </div>
-          <div className={cn(isMobile ? "flex justify-end mt-4" : "absolute bottom-8 right-8")}>
+          <div className="absolute bottom-8 right-8">
             <AlertDialog>
               <AlertDialogTrigger asChild>
                 <Button 
                   variant="destructive"
-                  size={isMobile ? "sm" : "icon"}
-                  className={cn(
-                    "bg-red-600 hover:bg-red-700 shadow-lg",
-                    isMobile ? "rounded-full h-8 px-3 text-xs" : "h-14 w-14 rounded-full"
-                  )}
+                  size="icon"
+                  className="bg-red-600 hover:bg-red-700 shadow-lg h-14 w-14 rounded-full"
                   disabled={wishlistedProducts.length === 0}
                 >
-                  <FaTrash className={cn(isMobile ? "h-3 w-3 mr-1" : "h-6 w-6")} />
-                  {isMobile && 'Clear All'}
+                  <FaTrash className="h-6 w-6" />
                 </Button>
               </AlertDialogTrigger>
               <AlertDialogContent>
