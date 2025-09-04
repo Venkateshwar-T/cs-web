@@ -170,7 +170,7 @@ export function UserActions({
                                 Enquire Now
                             </Button>
                            </SheetClose>
-                           <div className="mt-auto flex items-center gap-4">
+                           <div className="mt-4 flex items-center gap-4">
                                 <Link href="#" aria-label="Instagram">
                                     <AiOutlineInstagram className="h-7 w-7 transition-colors hover:text-custom-gold" />
                                 </Link>
