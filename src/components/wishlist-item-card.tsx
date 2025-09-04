@@ -102,7 +102,7 @@ export function WishlistItemCard({ product, onAddToCart, onUnlike, isInCart, isU
 
         <div className="flex flex-col justify-between flex-grow self-stretch">
           <div>
-            <h3 className="font-bold text-lg leading-tight pr-8">{product.name}</h3>
+            <h3 className="font-bold text-lg leading-tight pr-8 truncate">{product.name}</h3>
             <p className="text-sm text-black/70">250g | Assorted | Hard-Box</p>
           </div>
           <p className="font-bold text-xl text-custom-purple-dark">₹750</p>
