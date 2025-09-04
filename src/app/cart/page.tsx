@@ -82,8 +82,7 @@ export default function CartPage() {
         <main className={cn(
           "flex-grow flex flex-col transition-all duration-300 relative min-h-0",
           "pt-24 md:pt-36",
-          // Add padding bottom for mobile to avoid overlap with fixed summary
-          isMobile ? "pb-48" : "pb-16 md:pb-0" 
+          "pb-16 md:pb-0" 
         )}>
           {cartItems.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-full gap-4 text-center px-4">
@@ -99,16 +98,19 @@ export default function CartPage() {
           ) : (
             <>
               {isMobile ? (
-                <div className="p-4 space-y-4">
-                  {cartItems.map(([productName, quantity]) => (
-                     <MobileCartItemCard
-                        key={productName}
-                        productName={productName}
-                        quantity={quantity}
-                        onQuantityChange={handleQuantityChange}
-                        onRemove={handleRemove}
-                      />
-                  ))}
+                <div className="p-4">
+                  <div className="space-y-4">
+                    {cartItems.map(([productName, quantity]) => (
+                       <MobileCartItemCard
+                          key={productName}
+                          productName={productName}
+                          quantity={quantity}
+                          onQuantityChange={handleQuantityChange}
+                          onRemove={handleRemove}
+                        />
+                    ))}
+                  </div>
+                  {cartItems.length > 0 && <MobileCartSummary cart={cart} onCheckout={handleCheckout} />}
                 </div>
               ) : (
                 <div className="flex flex-col items-center justify-center h-full gap-4 text-center px-4">
@@ -121,7 +123,6 @@ export default function CartPage() {
             </>
           )}
         </main>
-        {isMobile && cartItems.length > 0 && <MobileCartSummary cart={cart} onCheckout={handleCheckout} />}
         <BottomNavbar activeView={activeView} onNavigate={handleNavigation} />
       </div>
 

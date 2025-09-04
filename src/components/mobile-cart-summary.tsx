@@ -1,3 +1,4 @@
+
 // @/components/mobile-cart-summary.tsx
 'use client';
 
@@ -43,7 +44,7 @@ export function MobileCartSummary({ cart, onCheckout }: MobileCartSummaryProps) 
   const total = subtotalAfterDiscount + gstAmount;
 
   return (
-    <div className="fixed bottom-16 left-0 right-0 bg-custom-purple-dark border-t-2 border-custom-gold rounded-t-2xl p-4 shadow-lg md:hidden z-40">
+    <div className="mt-6 bg-custom-purple-dark border-t-2 border-custom-gold rounded-2xl p-4 shadow-lg">
         <h3 className="font-bold text-lg text-center text-white mb-4">Order Summary</h3>
         
         <div className="space-y-2.5">
