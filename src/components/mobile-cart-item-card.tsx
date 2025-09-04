@@ -75,9 +75,14 @@ export function MobileCartItemCard({ productName, quantity, onQuantityChange, on
                         </Button>
                     </div>
                 </div>
-                <div className="w-2/3 flex flex-col justify-between">
+                <div className="w-2/3 flex flex-col justify-between self-stretch">
                     <div>
-                        <h3 className="font-bold text-base pr-6 truncate">{productName}</h3>
+                        <div className="flex justify-between items-start gap-2">
+                            <h3 className="font-bold text-base truncate flex-1">{productName}</h3>
+                            <button onClick={handleRemove} className="text-black/80 hover:text-red-500 transition-colors flex-shrink-0">
+                                <FaTrash size={18} />
+                            </button>
+                        </div>
                         <p className="text-xs text-black/80 truncate mt-0">250g | Assorted | Hard-Box</p>
                         
                         <p className="font-semibold text-xs text-black/60 mt-2">Selected Flavours & Fillings</p>
@@ -98,12 +103,6 @@ export function MobileCartItemCard({ productName, quantity, onQuantityChange, on
                            <p className="text-xs text-custom-gold font-semibold">25% OFF</p>
                         </div>
                     </div>
-                </div>
-
-                <div className="absolute top-3 right-3">
-                     <button onClick={handleRemove} className="text-black/80 hover:text-red-500 transition-colors">
-                        <FaTrash size={18} />
-                    </button>
                 </div>
             </div>
         </div>
