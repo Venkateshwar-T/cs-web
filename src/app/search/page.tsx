@@ -9,11 +9,11 @@ import { SparkleBackground } from '@/components/sparkle-background';
 import { BottomNavbar } from '@/components/bottom-navbar';
 import { PopupsManager } from '@/components/popups/popups-manager';
 import { SearchView } from '@/components/views/SearchView';
-import { HomeView } from '@/components/views/HomeView';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { MobileProductDetailView } from '@/components/views/MobileProductDetailView';
 import { flavourOptions, occasionOptions, productTypeOptions, weightOptions } from '@/lib/filter-options';
 import type { Product, FilterState, ProfileInfo, ActiveView } from '@/app/page';
+import { FloatingCartButton } from '@/components/floating-cart-button';
 
 const initialFilterState: FilterState = {
   priceRange: [0, 3000],
