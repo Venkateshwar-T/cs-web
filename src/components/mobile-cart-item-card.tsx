@@ -97,9 +97,9 @@ export function MobileCartItemCard({ productName, quantity, onQuantityChange, on
                         
                         <Sheet>
                           <SheetTrigger asChild>
-                            <Button variant="ghost" className="h-auto p-2 mt-2 text-xs rounded-lg hover:bg-black/10">
+                            <Button variant="ghost" className="h-auto p-2 mt-2 text-custom-purple-dark text-xs rounded-lg hover:text-custom-purple-dark hover:bg-black/5">
                               <span>Selected Flavours</span>
-                              <ChevronDown className="h-4 w-4" />
+                              <ChevronDown className="h-4 w-4 text-custom-purple-dark" />
                             </Button>
                           </SheetTrigger>
                           <SheetContent side="bottom" className="bg-custom-purple-dark text-white border-t-2 border-custom-gold rounded-t-3xl h-auto p-0">

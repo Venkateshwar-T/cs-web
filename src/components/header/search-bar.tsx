@@ -87,7 +87,7 @@ export function SearchBar({ formRef, activeView, isEnquireOpen, onSubmit, search
                         value={searchInput}
                         onChange={(e) => onSearchInputChange(e.target.value)}
                         placeholder={activeView !== 'home' ? 'Search for gifts...' : placeholder}
-                        className={`w-full pl-12 pr-10 h-11 rounded-full bg-transparent border-none focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-gray-500 text-lg text-black`}
+                        className={`w-full pl-12 pr-10 h-9 md:h-11 rounded-full bg-transparent border-none focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-gray-500 text-base md:text-lg text-black`}
                     />
                     {searchInput && (
                         <button

@@ -52,13 +52,13 @@ export function ExploreCategories() {
       animate={{ opacity: 1, y: 0 }}
       transition={{ type: 'spring', stiffness: 80, damping: 15 }}
     >
-        <div className="bg-white/20 h-full rounded-t-[20px] md:rounded-t-[40px] py-6 px-4 md:px-12 flex flex-col">
+        <div className="bg-white/20 h-full rounded-t-[25px] md:rounded-t-[40px] py-4 md:py-6 px-4 md:px-12 flex flex-col">
             <div className="flex-grow overflow-y-auto no-scrollbar min-h-0">
-                <SectionTitle className="pl-2 text-lg md:text-2xl md:pl-8 mb-2 md:mb-4">
+                <SectionTitle className="flex justify-center md:justify-start pl-2 text-lg md:text-2xl md:pl-8 mb-2 md:mb-4">
                     Explore Categories
                 </SectionTitle>
                 <motion.div 
-                    className="grid grid-cols-2 md:flex md:flex-row flex-1 justify-around items-center gap-4 md:gap-8 pb-8"
+                    className="grid grid-cols-2 md:flex md:flex-row flex-1 justify-around items-center gap-4 md:gap-8 pb-6"
                     variants={containerVariants}
                     initial="hidden"
                     animate="visible"
@@ -78,7 +78,7 @@ export function ExploreCategories() {
                     ))}
                 </motion.div>
 
-                <SectionTitle className="pl-2 text-lg md:text-2xl md:pl-8 mb-2 md:mb-4">
+                <SectionTitle className="flex justify-center md:justify-start pl-2 text-lg md:text-2xl md:pl-8 mb-2 md:mb-4">
                     Explore Flavours
                 </SectionTitle>
                 <motion.div 

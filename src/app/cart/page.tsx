@@ -103,7 +103,7 @@ export default function CartPage() {
         />
         <main onScroll={handleScroll} className={cn(
           "flex-grow flex flex-col transition-all duration-300 relative min-h-0 md:pb-0",
-          isMobile ? 'pt-0' : "pt-36" 
+          isMobile ? (isHeaderVisible ? 'pt-24' : 'pt-0') : "pt-36" 
         )}>
           {cartItems.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-full gap-4 text-center px-4">
