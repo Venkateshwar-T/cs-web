@@ -63,7 +63,7 @@ export function SearchView({
   }, [isNewSearch]);
 
   return (
-    <div ref={scrollContainerRef} className="flex w-full items-start flex-grow min-h-0 overflow-y-auto custom-scrollbar relative">
+    <div ref={scrollContainerRef} className="flex w-full items-start flex-grow min-h-0 relative">
       <div className="hidden md:block w-full md:w-auto md:sticky md:top-0 md:w-[17%] h-full">
         <FilterContainer 
           filters={filters} 
