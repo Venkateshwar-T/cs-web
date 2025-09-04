@@ -110,13 +110,6 @@ export function UserActions({
                 )}>
                     <Separator orientation="vertical" className="h-6 bg-foreground/50 mx-1 lg:mx-2" />
                     <div className="flex items-center gap-1 lg:gap-2">
-                        <Link href="#" aria-label="Instagram">
-                            <AiOutlineInstagram className="h-7 w-7 lg:h-8 lg:w-8 transition-colors hover:text-custom-gold" />
-                        </Link>
-                        <Link href="#" aria-label="Facebook">
-                            <IoLogoFacebook className="h-7 w-7 lg:h-8 lg:w-8 transition-colors hover:text-custom-gold" />
-                        </Link>
-                        
                         <button onClick={() => onProfileOpenChange(true)} aria-label="Profile" className="ml-1 lg:ml-2">
                             <Image src="/icons/profile_icon.png" alt="Profile" width={36} height={36} className="h-8 w-8 lg:h-9 lg:w-9 transition-colors hover:opacity-80" onDragStart={(e) => e.preventDefault()} />
                         </button>
@@ -200,13 +193,13 @@ export function UserActions({
                             </SheetDescription>
                         </SheetHeader>
                         <div className="flex flex-col gap-3 mt-6">
-                            <Button asChild className="w-full h-auto py-3 bg-white hover:bg-white/90 text-black rounded-full text-lg font-plex-sans">
+                            <Button asChild className="w-full h-auto py-2 bg-white hover:bg-white/90 text-black rounded-full text-base font-plex-sans">
                                 <a href="tel:+1234567890">
                                     <Phone className="mr-2 h-5 w-5" /> Call Us
                                 </a>
                             </Button>
                             <p className="text-sm font-medium self-center text-white/80">-OR-</p>
-                            <Button asChild className="w-full h-auto py-3 bg-white hover:bg-white/90 text-black rounded-full text-lg font-plex-sans">
+                            <Button asChild className="w-full h-auto py-2 bg-white hover:bg-white/90 text-black rounded-full text-base font-plex-sans">
                                 <a href="https://wa.me/1234567890" target="_blank" rel="noopener noreferrer">
                                     <IoLogoWhatsapp className="mr-2 h-6 w-6" /> Whatsapp Us
                                 </a>
