@@ -88,7 +88,7 @@ export function MobileCartItemCard({ productName, quantity, onQuantityChange, on
                 <div className="w-3/4 flex flex-col justify-between self-stretch">
                     <div className="flex flex-col items-start">
                         <div className="flex justify-between items-center w-full gap-2">
-                            <h3 className="font-bold text-base flex-1">{productName}</h3>
+                            <h3 className="font-bold text-base flex-1 truncate">{productName}</h3>
                             <button onClick={handleRemove} className="text-black/80 hover:text-red-500 transition-colors flex-shrink-0">
                                 <FaTrash size={18} />
                             </button>
