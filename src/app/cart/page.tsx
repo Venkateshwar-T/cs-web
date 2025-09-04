@@ -47,7 +47,7 @@ export default function CartPage() {
     if (view === 'home') {
       router.push('/');
     } else if (view === 'profile') {
-      setIsProfileOpen(true);
+      router.push('/profile');
     }
     // If view is 'cart', do nothing as we are already on the page.
   };

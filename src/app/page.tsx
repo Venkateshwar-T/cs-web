@@ -167,7 +167,7 @@ export default function Home() {
     if (view === 'cart') {
       router.push('/cart');
     } else if (view === 'profile') {
-      setIsProfileOpen(true);
+      router.push('/profile');
     } else {
        router.push('/');
       setActiveView(view);

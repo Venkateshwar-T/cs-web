@@ -219,8 +219,8 @@ function SearchPageComponent() {
       router.push('/cart');
     } else if (view === 'home') {
       router.push('/');
-    } else {
-      setIsProfileOpen(true);
+    } else if (view === 'profile') {
+      router.push('/profile');
     }
   };
 
