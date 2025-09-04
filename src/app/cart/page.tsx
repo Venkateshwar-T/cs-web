@@ -16,6 +16,17 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import { MobileCartItemCard } from '@/components/mobile-cart-item-card';
 import { MobileCartSummary } from '@/components/mobile-cart-summary';
 import { useCart } from '@/hooks/use-cart';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 
 // Mock data for products
 const mockProducts = [
@@ -110,17 +121,46 @@ export default function CartPage() {
               {isMobile ? (
                 <div className="flex-grow overflow-y-auto no-scrollbar">
                   <div className="p-4 flex flex-col flex-grow">
-                    <div className="bg-white/80 rounded-2xl overflow-y-auto no-scrollbar max-h-[70vh]">
-                      {cartItems.map(([productName, quantity], index) => (
-                         <MobileCartItemCard
-                            key={productName}
-                            productName={productName}
-                            quantity={quantity}
-                            onQuantityChange={handleQuantityChange}
-                            onRemove={handleRemove}
-                            isLastItem={index === cartItems.length - 1}
-                          />
-                      ))}
+                    <div className="bg-white/80 rounded-2xl flex flex-col max-h-[70vh]">
+                      <div className="flex justify-between items-center p-4 border-b border-black/10 flex-shrink-0">
+                        <p className="text-sm font-bold text-black">Total Products: {cartItems.length}</p>
+                         <AlertDialog>
+                          <AlertDialogTrigger asChild>
+                            <Button
+                              variant="destructive"
+                              size="sm"
+                              className="bg-red-500 text-white rounded-full hover:bg-red-600/90 text-xs h-8 px-3 disabled:opacity-50"
+                              disabled={cartItems.length === 0}
+                            >
+                              Clear Cart
+                            </Button>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                              <AlertDialogDescription>
+                                This will permanently remove all items from your cart. This action cannot be undone.
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel>Cancel</AlertDialogCancel>
+                              <AlertDialogAction onClick={clearCart}>Confirm</AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
+                      </div>
+                      <div className="overflow-y-auto no-scrollbar">
+                        {cartItems.map(([productName, quantity], index) => (
+                           <MobileCartItemCard
+                              key={productName}
+                              productName={productName}
+                              quantity={quantity}
+                              onQuantityChange={handleQuantityChange}
+                              onRemove={handleRemove}
+                              isLastItem={index === cartItems.length - 1}
+                            />
+                        ))}
+                      </div>
                     </div>
                     {cartItems.length > 0 && <MobileCartSummary cart={cart} onCheckout={handleCheckout} />}
                   </div>
