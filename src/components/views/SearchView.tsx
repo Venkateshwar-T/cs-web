@@ -63,14 +63,14 @@ export function SearchView({
   }, [isNewSearch]);
 
   return (
-    <div ref={scrollContainerRef} className="flex w-full items-start flex-grow min-h-0 relative">
+    <div ref={scrollContainerRef} className="flex w-full items-start h-full">
       <div className="hidden md:block w-full md:w-auto md:sticky md:top-0 md:w-[17%] h-full">
         <FilterContainer 
           filters={filters} 
           onFilterChange={onFilterChange}
         />
       </div>
-      <div className={cn("h-full flex-grow md:ml-8 md:mr-8 relative min-h-0 w-full md:w-auto")}>
+      <div className={cn("h-full flex-grow md:ml-8 md:mr-8 relative min-h-0 w-full md:w-auto px-4 md:px-0")}>
         <SearchResultsDetails 
           products={products}
           query={query} 
