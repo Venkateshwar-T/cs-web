@@ -56,7 +56,7 @@ export function MyProfileTab({ profile, onProfileUpdate }: MyProfileTabProps) {
         <AvatarFallback>{profile.name.charAt(0).toUpperCase()}</AvatarFallback>
       </Avatar>
 
-      <div className="w-full max-w-sm space-y-4">
+      <div className="w-full max-w-xs space-y-4">
         <div className="space-y-1">
           <label htmlFor="name" className="pl-3 text-sm font-medium">Name</label>
           <Input 
