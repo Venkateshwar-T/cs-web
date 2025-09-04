@@ -15,14 +15,70 @@ interface WishlistItemCardProps {
   isUnliking: boolean;
   onAnimationEnd: () => void;
   isLastItem: boolean;
+  isMobile?: boolean;
 }
 
-export function WishlistItemCard({ product, onAddToCart, onUnlike, isInCart, isUnliking, onAnimationEnd, isLastItem }: WishlistItemCardProps) {
+export function WishlistItemCard({ product, onAddToCart, onUnlike, isInCart, isUnliking, onAnimationEnd, isLastItem, isMobile = false }: WishlistItemCardProps) {
   
   const handleAddToCartClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     onAddToCart(product.name, isInCart ? 0 : 1);
   };
+
+  if (isMobile) {
+    return (
+       <div 
+        onAnimationEnd={onAnimationEnd}
+        className={cn(
+          "w-full bg-transparent pl-3 py-3 pr-4 text-black relative transition-all duration-300 overflow-hidden",
+          !isLastItem && "border-b border-black/10",
+          isUnliking && 'animate-fade-out-slide-up',
+        )}
+      >
+        <div className="flex gap-3 items-center">
+          <div className="w-1/4 h-20 flex-shrink-0 relative">
+            <Image
+              src="/choco img.png"
+              alt={product.name}
+              layout="fill"
+              objectFit="cover"
+              className="rounded-lg"
+              onDragStart={(e) => e.preventDefault()}
+            />
+          </div>
+
+          <div className="flex flex-col justify-between flex-grow self-stretch">
+            <div>
+              <h3 className="font-bold text-base leading-tight pr-8 truncate">{product.name}</h3>
+              <p className="text-xs text-black/70 truncate">250g | Assorted | Hard-Box</p>
+            </div>
+            <p className="font-bold text-base text-custom-purple-dark mt-1">₹750</p>
+          </div>
+
+          <div className="absolute top-2 right-3">
+            <button onClick={onUnlike} className="p-1">
+              <Heart className="h-5 w-5 text-red-500 fill-red-500" />
+            </button>
+          </div>
+
+          <div className="absolute bottom-3 right-3">
+            <Button
+              size="sm"
+              onClick={handleAddToCartClick}
+              className={cn(
+                "rounded-full uppercase border-2 border-b-[3px] h-8 px-5 text-xs transition-colors duration-300 border-custom-purple-dark",
+                isInCart
+                  ? 'bg-custom-purple-dark text-white hover:bg-custom-purple-dark/90'
+                  : 'bg-transparent text-custom-purple-dark hover:bg-custom-purple-dark hover:text-white'
+              )}
+            >
+              {isInCart ? 'ADDED' : 'ADD'}
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div 

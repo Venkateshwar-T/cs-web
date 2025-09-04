@@ -82,7 +82,7 @@ export function WishlistView({
                 </AlertDialogContent>
               </AlertDialog>
             </div>
-            <div className="overflow-y-auto custom-scrollbar">
+            <div className="overflow-y-auto no-scrollbar">
               {wishlistedProducts.map((product, index) => (
                 <WishlistItemCard 
                   key={product.id}
@@ -93,6 +93,7 @@ export function WishlistView({
                   isUnliking={unlikingItems.includes(product.id)}
                   onAnimationEnd={() => handleAnimationEnd(product.id)}
                   isLastItem={index === wishlistedProducts.length - 1}
+                  isMobile={true}
                 />
               ))}
             </div>
