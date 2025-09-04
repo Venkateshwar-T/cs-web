@@ -52,54 +52,56 @@ export function ExploreCategories() {
       animate={{ opacity: 1, y: 0 }}
       transition={{ type: 'spring', stiffness: 80, damping: 15 }}
     >
-        <div className="bg-white/20 h-full rounded-t-[20px] md:rounded-t-[40px] py-6 px-4 md:px-12 overflow-y-auto no-scrollbar">
-            <SectionTitle className="pl-2 text-lg md:text-2xl md:pl-8 mb-2 md:mb-4">
-                Explore Categories
-            </SectionTitle>
-            <motion.div 
-                className="grid grid-cols-2 md:flex md:flex-row flex-1 justify-around items-center gap-4 md:gap-8 pb-8"
-                variants={containerVariants}
-                initial="hidden"
-                animate="visible"
-            >
-                {categoryImages.map((image) => (
-                <motion.div key={image.id} className="w-full aspect-[5/6]" variants={itemVariants}>
-                    <Image
-                    src={image.src}
-                    alt={image.alt}
-                    width={600}
-                    height={400}
-                    data-ai-hint={image.hint}
-                    className="w-full h-full object-cover rounded-[20px]"
-                    onDragStart={(e) => e.preventDefault()}
-                    />
+        <div className="bg-white/20 h-full rounded-t-[20px] md:rounded-t-[40px] py-6 px-4 md:px-12 flex flex-col">
+            <div className="flex-grow overflow-y-auto no-scrollbar min-h-0">
+                <SectionTitle className="pl-2 text-lg md:text-2xl md:pl-8 mb-2 md:mb-4">
+                    Explore Categories
+                </SectionTitle>
+                <motion.div 
+                    className="grid grid-cols-2 md:flex md:flex-row flex-1 justify-around items-center gap-4 md:gap-8 pb-8"
+                    variants={containerVariants}
+                    initial="hidden"
+                    animate="visible"
+                >
+                    {categoryImages.map((image) => (
+                    <motion.div key={image.id} className="w-full aspect-[5/6]" variants={itemVariants}>
+                        <Image
+                        src={image.src}
+                        alt={image.alt}
+                        width={600}
+                        height={400}
+                        data-ai-hint={image.hint}
+                        className="w-full h-full object-cover rounded-[20px]"
+                        onDragStart={(e) => e.preventDefault()}
+                        />
+                    </motion.div>
+                    ))}
                 </motion.div>
-                ))}
-            </motion.div>
 
-            <SectionTitle className="pl-2 text-lg md:text-2xl md:pl-8 mb-2 md:mb-4">
-                Explore Flavours
-            </SectionTitle>
-            <motion.div 
-                className="flex flex-row md:flex-wrap overflow-x-auto no-scrollbar md:overflow-visible flex-1 md:justify-around items-center gap-4 md:gap-8 pb-8"
-                variants={containerVariants}
-                initial="hidden"
-                animate="visible"
-            >
-                {flavourImages.map((image) => (
-                <motion.div key={image.id} className="w-24 md:flex-1 md:w-full max-w-xs md:max-w-44 flex-shrink-0 md:flex-shrink aspect-square md:aspect-[5/6]" variants={itemVariants}>
-                    <Image
-                    src={image.src}
-                    alt={image.alt}
-                    width={400}
-                    height={400}
-                    data-ai-hint={image.hint}
-                    className="w-full h-full object-cover rounded-[20px]"
-                    onDragStart={(e) => e.preventDefault()}
-                    />
+                <SectionTitle className="pl-2 text-lg md:text-2xl md:pl-8 mb-2 md:mb-4">
+                    Explore Flavours
+                </SectionTitle>
+                <motion.div 
+                    className="flex flex-row md:flex-wrap overflow-x-auto no-scrollbar md:overflow-visible flex-1 md:justify-around items-center gap-4 md:gap-8 pb-8"
+                    variants={containerVariants}
+                    initial="hidden"
+                    animate="visible"
+                >
+                    {flavourImages.map((image) => (
+                    <motion.div key={image.id} className="w-24 md:flex-1 md:w-full max-w-xs md:max-w-44 flex-shrink-0 md:flex-shrink aspect-square md:aspect-[5/6]" variants={itemVariants}>
+                        <Image
+                        src={image.src}
+                        alt={image.alt}
+                        width={400}
+                        height={400}
+                        data-ai-hint={image.hint}
+                        className="w-full h-full object-cover rounded-[20px]"
+                        onDragStart={(e) => e.preventDefault()}
+                        />
+                    </motion.div>
+                    ))}
                 </motion.div>
-                ))}
-            </motion.div>
+            </div>
         </div>
     </motion.div>
   );

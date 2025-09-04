@@ -184,8 +184,8 @@ export default function Home() {
           activeView={activeView}
         />
         <main className={cn(
-          "flex-grow flex flex-col items-center justify-start transition-all duration-500 relative",
-          "pb-16 md:pb-0 pt-28",
+          "flex flex-col items-center justify-start transition-all duration-500 relative flex-grow min-h-0",
+          "pt-28",
           isPageLoading && 'opacity-0'
         )}>
           <div className='w-full'>
