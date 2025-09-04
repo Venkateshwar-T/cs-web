@@ -75,7 +75,7 @@ export function Header({
           
           <div className="hidden md:flex flex-1">
              {activeView === 'search' ? (
-                <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-md lg:max-w-xl xl:max-w-2xl px-4">
+                <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-md px-4">
                   <AnimatedSearchBar 
                       onSearchSubmit={handleAnimatedSearchSubmit}
                       isExpanded={true}
