@@ -130,7 +130,7 @@ export function UserActions({
                     </SheetTrigger>
                     <SheetContent side="right" className="bg-background text-white w-[250px]">
                         <SheetHeader>
-                             <SheetTitle className="sr-only">Menu</SheetTitle>
+                            <SheetTitle className="sr-only">Menu</SheetTitle>
                             <Link href="/" className="mb-4">
                                 <Image 
                                     src="/Choco Smiley Logo.png" 
