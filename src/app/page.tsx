@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState, useEffect, type UIEvent } from 'react';
+import { useState, useEffect, type UIEvent, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { Header } from "@/components/header";
@@ -54,7 +54,7 @@ export default function Home() {
   const isMobile = useIsMobile();
   const router = useRouter();
   const [searchInput, setSearchInput] = useState("");
-  const formRef = useState<HTMLFormElement>(null);
+  const formRef = useRef<HTMLFormElement>(null);
   const { toast } = useToast();
 
 
@@ -200,7 +200,7 @@ export default function Home() {
         )}>
           <div className='w-full'>
             <SearchBar
-              formRef={formRef as any}
+              formRef={formRef}
               activeView={activeView}
               isEnquireOpen={false}
               onSubmit={handleSearchSubmit}
