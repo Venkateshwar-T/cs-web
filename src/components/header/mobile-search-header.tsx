@@ -10,11 +10,15 @@ interface MobileSearchHeaderProps {
     value: string;
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
     onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+    isVisible: boolean;
 }
 
-export function MobileSearchHeader({ value, onChange, onSubmit }: MobileSearchHeaderProps) {
+export function MobileSearchHeader({ value, onChange, onSubmit, isVisible }: MobileSearchHeaderProps) {
     return (
-        <header className="fixed top-0 left-0 right-0 z-50 bg-background h-16 flex items-center px-4 border-b border-white/20">
+        <header className={cn(
+            "fixed top-0 left-0 right-0 z-50 bg-background h-16 flex items-center px-4 border-b border-white/20 transition-transform duration-300 ease-in-out",
+            isVisible ? "translate-y-0" : "-translate-y-full"
+        )}>
             <form onSubmit={onSubmit} className="w-full">
                  <div className="relative flex items-center">
                      <div className="absolute left-3 top-1/2 -translate-y-1/2 z-10">

@@ -1,7 +1,7 @@
 
 'use client';
 
-import { Suspense, useState, useEffect } from 'react';
+import { Suspense, useState, useEffect, type UIEvent } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { Header } from '@/components/header';
@@ -62,6 +62,8 @@ function SearchPageComponent() {
   const [mobileFlavourCart, setMobileFlavourCart] = useState<Record<string, number>>({});
   const isMobile = useIsMobile();
   const [searchInput, setSearchInput] = useState(query);
+  const [lastScrollTop, setLastScrollTop] = useState(0);
+  const [isMobileHeaderVisible, setIsMobileHeaderVisible] = useState(true);
 
 
   useEffect(() => {
@@ -188,6 +190,23 @@ function SearchPageComponent() {
     setIsSortSheetOpen(false);
     setTimeout(() => setIsSearching(false), 500);
   };
+
+  const handleScroll = (event: UIEvent<HTMLDivElement>) => {
+    if (!isMobile) return;
+
+    const currentScrollTop = event.currentTarget.scrollTop;
+    // A small threshold to prevent hiding the header on minor scrolls
+    if (Math.abs(currentScrollTop - lastScrollTop) <= 10) {
+      return;
+    }
+
+    if (currentScrollTop > lastScrollTop && currentScrollTop > 56) { // 56px is header height
+      setIsMobileHeaderVisible(false);
+    } else {
+      setIsMobileHeaderVisible(true);
+    }
+    setLastScrollTop(currentScrollTop <= 0 ? 0 : currentScrollTop);
+  };
   
   const getLabelById = (id: string, options: { id: string, label: string }[]) => {
     return options.find(option => option.id === id)?.label || id;
@@ -214,6 +233,7 @@ function SearchPageComponent() {
               e.preventDefault();
               handleSearchSubmit(searchInput);
             }}
+            isVisible={isMobileHeaderVisible}
           />
         ) : (
           <Header 
@@ -228,7 +248,7 @@ function SearchPageComponent() {
           />
         )}
         <main className={cn(
-          "flex-grow flex transition-all duration-500 relative min-h-0",
+          "flex-grow flex flex-col transition-all duration-500 relative min-h-0",
           "pb-16 md:pb-0",
           isMobile ? "pt-16" : "pt-24 md:pt-36"
         )}>
@@ -254,6 +274,7 @@ function SearchPageComponent() {
               onSortSheetOpenChange={setIsSortSheetOpen}
               selectedProductForMobile={selectedProductForMobile}
               onCloseMobileProductDetail={handleCloseMobileProductDetail}
+              onScroll={handleScroll}
             />
         </main>
       </div>

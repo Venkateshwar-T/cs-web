@@ -2,7 +2,7 @@
 
 'use client';
 
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, type UIEvent } from 'react';
 import type { Product, FilterState } from '@/app/page';
 import { FilterContainer } from '@/components/filter-container';
 import { SearchResultsDetails } from '@/components/search-results-details';
@@ -30,6 +30,7 @@ interface SearchViewProps {
   onSortSheetOpenChange: (open: boolean) => void;
   selectedProductForMobile: Product | null;
   onCloseMobileProductDetail: () => void;
+  onScroll: (event: UIEvent<HTMLDivElement>) => void;
 }
 
 export function SearchView({
@@ -52,6 +53,7 @@ export function SearchView({
   onFilterSheetOpenChange,
   isSortSheetOpen,
   onSortSheetOpenChange,
+  onScroll,
 }: SearchViewProps) {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   
@@ -63,7 +65,7 @@ export function SearchView({
   }, [isNewSearch]);
 
   return (
-    <div ref={scrollContainerRef} className="flex w-full items-start h-full">
+    <div className="flex w-full items-start h-full flex-grow min-h-0">
       <div className="hidden md:block w-full md:w-auto md:sticky md:top-0 md:w-[17%] h-full">
         <FilterContainer 
           filters={filters} 
@@ -90,6 +92,7 @@ export function SearchView({
           onFilterSheetOpenChange={onFilterSheetOpenChange}
           isSortSheetOpen={isSortSheetOpen}
           onSortSheetOpenChange={onSortSheetOpenChange}
+          onScroll={onScroll}
         />
       </div>
     </div>

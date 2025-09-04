@@ -2,7 +2,7 @@
 'use client';
 
 import { ProductCard } from "./product-card";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, type UIEvent } from "react";
 import { cn } from "@/lib/utils";
 import type { Product, FilterState } from "@/app/page";
 import { X, SlidersHorizontal, ArrowUpDown } from 'lucide-react';
@@ -37,6 +37,7 @@ interface SearchResultsDetailsProps {
   onFilterSheetOpenChange: (open: boolean) => void;
   isSortSheetOpen: boolean;
   onSortSheetOpenChange: (open: boolean) => void;
+  onScroll: (event: UIEvent<HTMLDivElement>) => void;
 }
 
 const sortOptions = [
@@ -65,7 +66,8 @@ export function SearchResultsDetails({
   isFilterSheetOpen,
   onFilterSheetOpenChange,
   isSortSheetOpen,
-  onSortSheetOpenChange
+  onSortSheetOpenChange,
+  onScroll,
 }: SearchResultsDetailsProps) {
 
   const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -78,7 +80,7 @@ export function SearchResultsDetails({
 
   return (
     <>
-      <div className="bg-[#5D2B79] h-full rounded-t-[20px] md:rounded-t-[40px] relative mt-4 md:mt-0 min-h-0 flex flex-col">
+      <div className="bg-[#5D2B79] h-full rounded-t-[20px] md:rounded-t-[40px] relative md:mt-0 min-h-0 flex flex-col">
           <div className="bg-white/20 h-full w-full rounded-t-[20px] md:rounded-t-[40px] pt-4 md:pt-6 flex flex-col">
               {/* Header section - now separate and non-scrolling */}
               <div className="flex-shrink-0 px-4 md:pb-4 md:px-8">
@@ -195,6 +197,7 @@ export function SearchResultsDetails({
               {/* Scrollable grid section */}
               <div 
                   ref={scrollContainerRef}
+                  onScroll={onScroll}
                   className="flex-grow h-full overflow-y-auto custom-scrollbar pb-8 min-h-0 px-4 md:px-8"
               >
                 {/* Unified Product Grid for all screen sizes */}
