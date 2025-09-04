@@ -6,6 +6,13 @@
   html {
     @apply scroll-smooth;
   }
+  html::-webkit-scrollbar {
+    display: none;
+  }
+  html {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
   :root {
     --background: 275 53% 33%; /* #5d2b79 */
     --foreground: 0 0% 100%;    /* white */
