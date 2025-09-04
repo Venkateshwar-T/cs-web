@@ -48,7 +48,7 @@ export function WishlistItemCard({ product, onAddToCart, onUnlike, isInCart, isU
             />
           </div>
 
-          <div className="flex flex-col justify-between flex-grow self-stretch">
+          <div className="flex flex-col justify-between flex-grow self-stretch min-w-0">
             <div>
               <div className="flex justify-between items-start gap-2">
                   <h3 className="font-bold text-base leading-tight flex-1 truncate">{product.name}</h3>
@@ -58,13 +58,13 @@ export function WishlistItemCard({ product, onAddToCart, onUnlike, isInCart, isU
               </div>
               <p className="text-xs text-black/70 truncate">250g | Assorted | Hard-Box</p>
             </div>
-            <div className="flex justify-between items-end">
-                <p className="font-bold text-base text-custom-purple-dark mt-1">₹750</p>
+            <div className="flex justify-between items-end gap-2">
+                <p className="font-bold text-base text-custom-purple-dark mt-1 truncate">₹750</p>
                 <Button
                   size="sm"
                   onClick={handleAddToCartClick}
                   className={cn(
-                    "rounded-full uppercase border-2 border-b-[3px] h-8 px-5 text-xs transition-colors duration-300 border-custom-purple-dark",
+                    "rounded-full uppercase border-2 border-b-[3px] h-8 px-5 text-xs transition-colors duration-300 border-custom-purple-dark flex-shrink-0",
                     isInCart
                       ? 'bg-custom-purple-dark text-white hover:bg-custom-purple-dark/90'
                       : 'bg-transparent text-custom-purple-dark hover:bg-custom-purple-dark hover:text-white'
@@ -100,7 +100,7 @@ export function WishlistItemCard({ product, onAddToCart, onUnlike, isInCart, isU
           />
         </div>
 
-        <div className="flex flex-col justify-between flex-grow self-stretch">
+        <div className="flex flex-col justify-between flex-grow self-stretch min-w-0">
           <div>
             <div className="flex justify-between items-start gap-2">
                 <h3 className="font-bold text-lg leading-tight flex-1 truncate">{product.name}</h3>
@@ -108,15 +108,15 @@ export function WishlistItemCard({ product, onAddToCart, onUnlike, isInCart, isU
                   <Heart className="h-6 w-6 text-red-500 fill-red-500" />
                 </button>
             </div>
-            <p className="text-sm text-black/70">250g | Assorted | Hard-Box</p>
+            <p className="text-sm text-black/70 truncate">250g | Assorted | Hard-Box</p>
           </div>
-          <div className="flex justify-between items-end">
-            <p className="font-bold text-xl text-custom-purple-dark">₹750</p>
+          <div className="flex justify-between items-end gap-2">
+            <p className="font-bold text-xl text-custom-purple-dark truncate">₹750</p>
             <Button
               size="sm"
               onClick={handleAddToCartClick}
               className={cn(
-                "rounded-full uppercase border-2 border-b-[3px] h-9 px-6 text-sm transition-colors duration-300 border-custom-purple-dark",
+                "rounded-full uppercase border-2 border-b-[3px] h-9 px-6 text-sm transition-colors duration-300 border-custom-purple-dark flex-shrink-0",
                 isInCart
                   ? 'bg-custom-purple-dark text-white hover:bg-custom-purple-dark/90'
                   : 'bg-transparent text-custom-purple-dark hover:bg-custom-purple-dark hover:text-white'
