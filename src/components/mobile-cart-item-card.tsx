@@ -52,7 +52,7 @@ export function MobileCartItemCard({ productName, quantity, onQuantityChange, on
                         className="rounded-lg object-cover w-full aspect-square"
                         data-ai-hint="chocolate box"
                     />
-                    <div className="flex items-center justify-between w-full max-w-[100px] rounded-full text-black h-8 border border-gray-400 overflow-hidden">
+                    <div className="flex items-center justify-between w-full max-w-[100px] rounded-full text-black h-8 overflow-hidden">
                         <Button
                             size="icon"
                             variant="ghost"
@@ -62,7 +62,7 @@ export function MobileCartItemCard({ productName, quantity, onQuantityChange, on
                         >
                             <Minus className="h-4 w-4" />
                         </Button>
-                        <div className="flex-1 text-center bg-gray-200">
+                        <div className="flex-1 text-center bg-gray-200 h-full flex items-center justify-center">
                             <span className="font-bold px-1 text-sm">{quantity}</span>
                         </div>
                         <Button
