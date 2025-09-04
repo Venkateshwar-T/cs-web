@@ -106,7 +106,7 @@ export default function CartPage() {
           isMobile ? (isHeaderVisible ? 'pt-24' : 'pt-0') : "pt-36" 
         )}>
           {cartItems.length === 0 ? (
-            <div className="flex flex-col items-center justify-center h-full gap-4 text-center px-4">
+            <div className="flex flex-col items-center justify-start h-full gap-4 text-center px-4 pt-16">
               <ShoppingCart className="h-24 w-24 text-white/30" strokeWidth={1} />
               <h2 className="text-2xl font-bold text-white">Your cart is empty</h2>
               <p className="text-white/70 max-w-xs">
