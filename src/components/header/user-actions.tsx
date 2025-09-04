@@ -147,7 +147,7 @@ export function UserActions({
                             </Link>
                             <Separator className="bg-white/20"/>
                         </SheetHeader>
-                        <div className="flex flex-col flex-grow p-4">
+                        <div className="flex flex-col flex-grow px-4">
                            <nav className="flex flex-col gap-4 text-lg">
                              {navLinks.map((link) => {
                                 const isActive = activeView === link.id;
@@ -181,7 +181,7 @@ export function UserActions({
                                 Enquire Now
                             </Button>
                            </SheetClose>
-                           <div className="flex items-center gap-4 mt-auto">
+                           <div className="flex items-center gap-4 mt-auto pb-4">
                                 <Link href="#" aria-label="Instagram">
                                     <AiOutlineInstagram className="h-7 w-7 transition-colors hover:text-custom-gold" />
                                 </Link>
