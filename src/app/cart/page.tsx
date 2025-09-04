@@ -3,7 +3,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import type { ActiveView, ProfileInfo } from '@/app/page';
+import type { ActiveView } from '@/app/page';
 import { Header } from '@/components/header';
 import { BottomNavbar } from '@/components/bottom-navbar';
 import { SparkleBackground } from '@/components/sparkle-background';
@@ -12,12 +12,24 @@ import { PopupsManager } from '@/components/popups/popups-manager';
 import { ShoppingCart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import { useIsMobile } from '@/hooks/use-mobile';
+import { MobileCartItemCard } from '@/components/mobile-cart-item-card';
+
+// Mock data for products
+const mockProducts = [
+  { id: 1, name: 'Diwali Collection Box 1' },
+  { id: 2, name: 'Anniversary Special Box' },
+];
 
 export default function CartPage() {
   const [activeView, setActiveView] = useState<ActiveView>('cart');
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const router = useRouter();
-  const [cart, setCart] = useState<Record<string, number>>({});
+  const [cart, setCart] = useState<Record<string, number>>({
+    'Diwali Collection Box 1': 1,
+    'Anniversary Special Box': 2,
+  });
+  const isMobile = useIsMobile();
 
   const handleNavigation = (view: ActiveView) => {
     if (view === 'home') {
@@ -31,6 +43,24 @@ export default function CartPage() {
   const handleHeaderNavigate = (view: 'about' | 'faq') => {
     router.push(`/?view=${view}`);
   }
+
+  const handleQuantityChange = (productName: string, newQuantity: number) => {
+    setCart(prevCart => {
+      const newCart = { ...prevCart };
+      if (newQuantity <= 0) {
+        delete newCart[productName];
+      } else {
+        newCart[productName] = newQuantity;
+      }
+      return newCart;
+    });
+  };
+
+  const handleRemove = (productName: string) => {
+    handleQuantityChange(productName, 0);
+  };
+
+  const cartItems = Object.entries(cart);
 
   return (
     <>
@@ -48,7 +78,7 @@ export default function CartPage() {
           "pt-24 md:pt-36",
           "pb-16 md:pb-0"
         )}>
-          {Object.keys(cart).length === 0 ? (
+          {cartItems.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-full gap-4 text-center px-4">
               <ShoppingCart className="h-24 w-24 text-white/30" strokeWidth={1} />
               <h2 className="text-2xl font-bold text-white">Your cart is empty</h2>
@@ -61,7 +91,26 @@ export default function CartPage() {
             </div>
           ) : (
             <>
-              {/* Cart content will go here */}
+              {isMobile ? (
+                <div className="p-4 space-y-4">
+                  {cartItems.map(([productName, quantity]) => (
+                     <MobileCartItemCard
+                        key={productName}
+                        productName={productName}
+                        quantity={quantity}
+                        onQuantityChange={handleQuantityChange}
+                        onRemove={handleRemove}
+                      />
+                  ))}
+                </div>
+              ) : (
+                <div className="flex flex-col items-center justify-center h-full gap-4 text-center px-4">
+                  <h2 className="text-2xl font-bold text-white">Desktop Cart View</h2>
+                  <p className="text-white/70 max-w-xs">
+                    This is a placeholder for the desktop cart view.
+                  </p>
+                </div>
+              )}
             </>
           )}
         </main>
