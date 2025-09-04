@@ -8,7 +8,7 @@ import { Separator } from "@/components/ui/separator";
 import { Menu, Phone } from "lucide-react";
 import { AiOutlineInstagram } from "react-icons/ai";
 import { IoLogoFacebook, IoLogoWhatsapp } from "react-icons/io5";
-import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetHeader } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import type { ActiveView } from "@/app/page";
@@ -130,6 +130,7 @@ export function UserActions({
                     </SheetTrigger>
                     <SheetContent side="right" className="bg-background text-white w-[250px]">
                         <SheetHeader>
+                             <SheetTitle className="sr-only">Menu</SheetTitle>
                             <Link href="/" className="mb-4">
                                 <Image 
                                     src="/Choco Smiley Logo.png" 
