@@ -15,6 +15,7 @@ import { flavourOptions, occasionOptions, productTypeOptions, weightOptions } fr
 import type { Product, FilterState, ProfileInfo, ActiveView } from '@/app/page';
 import { FloatingCartButton } from '@/components/floating-cart-button';
 import { MobileSearchHeader } from '@/components/header/mobile-search-header';
+import { useCart } from '@/hooks/use-cart';
 
 const initialFilterState: FilterState = {
   priceRange: [0, 3000],
@@ -37,7 +38,7 @@ function SearchPageComponent() {
   
   const [isSearching, setIsSearching] = useState(true);
   const [isNewSearch, setIsNewSearch] = useState(true);
-  const [cart, setCart] = useState<Record<string, number>>({});
+  const { cart, updateCart, clearCart } = useCart();
   const [cartMessage, setCartMessage] = useState('');
   const [isCartButtonExpanded, setIsCartButtonExpanded] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
@@ -90,15 +91,9 @@ function SearchPageComponent() {
   }, [isCartOpen]);
 
   const handleAddToCart = (productName: string, quantity: number, animate: boolean = true) => {
-    const newCart = { ...cart };
-    if (quantity <= 0) {
-      delete newCart[productName];
-    } else {
-      newCart[productName] = quantity;
-    }
-    setCart(newCart);
-
     const prevQuantity = cart[productName] || 0;
+    updateCart(productName, quantity);
+
     if (animate && quantity > prevQuantity) {
       setCartMessage(`${quantity - prevQuantity} added`);
       setIsCartButtonExpanded(true);
@@ -113,8 +108,6 @@ function SearchPageComponent() {
     }
     setMobileFlavourCart(newFlavourCart);
   };
-
-  const handleClearCart = () => setCart({});
 
   const handleProductClick = (product: Product) => {
     if (isMobile) {
@@ -336,7 +329,7 @@ function SearchPageComponent() {
         cart={cart}
         onAddToCart={handleAddToCart}
         onToggleCartPopup={handleToggleCartPopup}
-        onClearCart={handleClearCart}
+        onClearCart={clearCart}
         onFinalizeOrder={handleOpenCompleteDetails}
         onProfileUpdate={handleProfileUpdate}
         profileInfo={profileInfo}

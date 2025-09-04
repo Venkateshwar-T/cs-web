@@ -15,6 +15,7 @@ import Link from 'next/link';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { MobileCartItemCard } from '@/components/mobile-cart-item-card';
 import { MobileCartSummary } from '@/components/mobile-cart-summary';
+import { useCart } from '@/hooks/use-cart';
 
 // Mock data for products
 const mockProducts = [
@@ -26,10 +27,7 @@ export default function CartPage() {
   const [activeView, setActiveView] = useState<ActiveView>('cart');
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const router = useRouter();
-  const [cart, setCart] = useState<Record<string, number>>({
-    'Diwali Collection Box 1': 1,
-    'Anniversary Special Box': 2,
-  });
+  const { cart, updateCart, clearCart } = useCart();
   const isMobile = useIsMobile();
   const [lastScrollTop, setLastScrollTop] = useState(0);
   const [isHeaderVisible, setIsHeaderVisible] = useState(true);
@@ -48,15 +46,7 @@ export default function CartPage() {
   }
 
   const handleQuantityChange = (productName: string, newQuantity: number) => {
-    setCart(prevCart => {
-      const newCart = { ...prevCart };
-      if (newQuantity <= 0) {
-        delete newCart[productName];
-      } else {
-        newCart[productName] = newQuantity;
-      }
-      return newCart;
-    });
+    updateCart(productName, newQuantity);
   };
 
   const handleRemove = (productName: string) => {
@@ -161,10 +151,10 @@ export default function CartPage() {
         onImageExpandChange={() => {}}
         likedProducts={{}}
         onLikeToggle={() => {}}
-        cart={{}}
-        onAddToCart={() => {}}
+        cart={cart}
+        onAddToCart={handleQuantityChange}
         onToggleCartPopup={() => {}}
-        onClearCart={() => {}}
+        onClearCart={clearCart}
         onFinalizeOrder={() => {}}
         onProfileUpdate={() => {}}
         profileInfo={{ name: '', phone: '', email: '' }}

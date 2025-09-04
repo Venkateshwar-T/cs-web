@@ -12,6 +12,7 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import { ExploreCategories } from '@/components/explore-categories';
 import { SearchBar } from '@/components/header/search-bar';
 import { useToast } from "@/hooks/use-toast";
+import { useCart } from '@/hooks/use-cart';
 
 
 export type Product = {
@@ -34,7 +35,7 @@ const allProducts: Product[] = Array.from({ length: 12 }).map((_, i) => ({
 
 export default function Home() {
   const [activeView, setActiveView] = useState<ActiveView>('home');
-  const [cart, setCart] = useState<Record<string, number>>({});
+  const { cart, updateCart, clearCart } = useCart();
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [isImageExpanded, setIsImageExpanded] = useState(false);
   const [likedProducts, setLikedProducts] = useState<Record<number, boolean>>({});
@@ -106,17 +107,7 @@ export default function Home() {
   };
 
   const handleAddToCart = (productName: string, quantity: number) => {
-    const newCart = { ...cart };
-    if (quantity <= 0) {
-      delete newCart[productName];
-    } else {
-      newCart[productName] = quantity;
-    }
-    setCart(newCart);
-  };
-
-  const handleClearCart = () => {
-    setCart({});
+    updateCart(productName, quantity);
   };
 
   const handleProductClick = (product: Product) => {
@@ -231,7 +222,7 @@ export default function Home() {
         cart={cart}
         onAddToCart={handleAddToCart}
         onToggleCartPopup={handleToggleCartPopup}
-        onClearCart={handleClearCart}
+        onClearCart={clearCart}
         onFinalizeOrder={handleOpenCompleteDetails}
         onProfileUpdate={handleProfileUpdate}
         profileInfo={profileInfo}
