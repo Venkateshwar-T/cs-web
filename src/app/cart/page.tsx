@@ -3,11 +3,10 @@
 
 import { useState, Fragment } from 'react';
 import { useRouter } from 'next/navigation';
-import { X } from 'lucide-react';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import { BottomNavbar } from '@/components/bottom-navbar';
-import type { ActiveView, Product } from '@/app/page';
+import type { ActiveView } from '@/app/page';
 import { SparkleBackground } from '@/components/sparkle-background';
 import { Button } from '@/components/ui/button';
 import {
@@ -23,15 +22,12 @@ import {
 } from "@/components/ui/alert-dialog";
 import { CartItemCard } from '@/components/cart-item-card';
 import { OrderSummary } from '@/components/order-summary';
-import { CartPopupFooter } from '@/components/cart-popup-footer';
-
 
 // Mock data - in a real app this would come from a shared state management solution
 const mockCart: Record<string, number> = {
   'Diwali Collection Box 1': 2,
   'Diwali Collection Box 3': 1,
 };
-
 
 export default function CartPage() {
   const router = useRouter();
@@ -74,7 +70,7 @@ export default function CartPage() {
     } else if (view === 'search') {
       router.push('/search');
     } else {
-      // Handle profile view if needed, maybe open a modal
+      // For profile, you might open a modal or navigate to a profile page
     }
   };
 
@@ -83,11 +79,7 @@ export default function CartPage() {
       <SparkleBackground />
       <div className="flex flex-col h-screen bg-background text-white pb-16 md:pb-0">
         <header className="flex-shrink-0 flex justify-between items-center p-4">
-          <div className="flex items-center bg-custom-gold text-custom-purple-dark rounded-full px-4 h-9">
-              <Image src="/icons/cart.png" alt="Cart" width={16} height={16} />
-              <h2 className="text-sm font-bold ml-2">My Cart</h2>
-          </div>
-          <AlertDialog>
+           <AlertDialog>
             <AlertDialogTrigger asChild>
               <Button
                 variant="destructive"
@@ -110,6 +102,10 @@ export default function CartPage() {
               </AlertDialogFooter>
             </AlertDialogContent>
           </AlertDialog>
+           <div className="flex items-center bg-custom-gold text-custom-purple-dark rounded-full px-4 h-9">
+              <Image src="/icons/cart.png" alt="Cart" width={16} height={16} />
+              <h2 className="text-sm font-bold ml-2">My Cart</h2>
+          </div>
         </header>
 
         <main className="flex-grow flex flex-col min-h-0">
