@@ -75,16 +75,14 @@ export function Header({
           
           <div className="hidden md:flex flex-1">
              {activeView === 'search' ? (
-                <div className="flex-1 flex justify-center items-center px-4 lg:px-8">
-                    <div className="w-full max-w-md lg:max-w-xl xl:max-w-2xl">
-                      <AnimatedSearchBar 
-                          onSearchSubmit={handleAnimatedSearchSubmit}
-                          isExpanded={true}
-                          onExpandedChange={() => {}}
-                          isSearchingOnAbout={false}
-                          activeView={activeView}
-                      />
-                    </div>
+                <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-md lg:max-w-xl xl:max-w-2xl px-4">
+                  <AnimatedSearchBar 
+                      onSearchSubmit={handleAnimatedSearchSubmit}
+                      isExpanded={true}
+                      onExpandedChange={() => {}}
+                      isSearchingOnAbout={false}
+                      activeView={activeView}
+                  />
                 </div>
             ) : (
               isNavVisible &&
