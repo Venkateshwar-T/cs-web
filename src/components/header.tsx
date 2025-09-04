@@ -1,3 +1,4 @@
+
 // @/components/header.tsx
 "use client";
 
@@ -19,6 +20,8 @@ interface HeaderProps {
   onSearchSubmit?: (query: string) => void;
   isSearchingOnAbout?: boolean;
   isUsingAnimatedSearch?: boolean;
+  searchInput?: string;
+  onSearchInputChange?: (value: string) => void;
 }
 
 export function Header({ 
@@ -30,6 +33,8 @@ export function Header({
   onSearchSubmit = () => {},
   isSearchingOnAbout = false,
   isUsingAnimatedSearch = false,
+  searchInput = '',
+  onSearchInputChange = () => {},
 }: HeaderProps) {
   const [isEnquireOpen, setIsEnquireOpen] = useState(false);
   const [isAnimatedSearchExpanded, setIsAnimatedSearchExpanded] = useState(isUsingAnimatedSearch);
@@ -86,6 +91,8 @@ export function Header({
                       onExpandedChange={() => {}}
                       isSearchingOnAbout={isSearchingOnAbout}
                       activeView={activeView}
+                      searchInput={searchInput}
+                      onSearchInputChange={onSearchInputChange}
                   />
                 </div>
             ) : (
@@ -109,6 +116,8 @@ export function Header({
                     onExpandedChange={setIsAnimatedSearchExpanded}
                     isSearchingOnAbout={isSearchingOnAbout}
                     activeView={activeView}
+                    searchInput={searchInput}
+                    onSearchInputChange={onSearchInputChange}
                 />
              </div>
           )}

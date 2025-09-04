@@ -9,7 +9,7 @@ import { SparkleBackground } from '@/components/sparkle-background';
 import { BottomNavbar } from '@/components/bottom-navbar';
 import { PopupsManager } from '@/components/popups/popups-manager';
 import { SearchView } from '@/components/views/SearchView';
-import { useIsMobile } from '@/hooks/use-mobile';
+import { useIsMobile } from '@/hooks/use-is-mobile';
 import { MobileProductDetailView } from '@/components/views/MobileProductDetailView';
 import { flavourOptions, occasionOptions, productTypeOptions, weightOptions } from '@/lib/filter-options';
 import type { Product, FilterState, ProfileInfo, ActiveView } from '@/app/page';
@@ -118,6 +118,7 @@ function SearchPageComponent() {
   };
 
   const handleSearchSubmit = (value: string) => {
+    setSearchInput(value);
     router.push(`/search?q=${encodeURIComponent(value)}`);
   };
 
@@ -250,6 +251,8 @@ function SearchPageComponent() {
             activeView={'search'}
             isSearchingOnAbout={false}
             isUsingAnimatedSearch={true}
+            searchInput={searchInput}
+            onSearchInputChange={setSearchInput}
           />
         )}
         <main className={cn(

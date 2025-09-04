@@ -3,7 +3,6 @@
 'use client';
 
 import { useState, useRef, useEffect } from "react";
-import { motion } from "framer-motion";
 import { X } from "lucide-react";
 import Image from "next/image";
 import { useToast } from "@/hooks/use-toast";
@@ -17,6 +16,8 @@ interface AnimatedSearchBarProps {
   className?: string;
   isSearchingOnAbout: boolean;
   activeView: ActiveView;
+  searchInput: string;
+  onSearchInputChange: (value: string) => void;
 }
 
 export function AnimatedSearchBar({ 
@@ -26,8 +27,9 @@ export function AnimatedSearchBar({
   className,
   isSearchingOnAbout,
   activeView,
+  searchInput,
+  onSearchInputChange
 }: AnimatedSearchBarProps) {
-  const [inputValue, setInputValue] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
 
@@ -39,7 +41,7 @@ export function AnimatedSearchBar({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!inputValue.trim()) {
+    if (!searchInput.trim()) {
         toast({
             title: "Empty Field",
             description: "Search field cannot be empty.",
@@ -47,29 +49,26 @@ export function AnimatedSearchBar({
         });
         return;
     }
-    onSearchSubmit(inputValue);
+    onSearchSubmit(searchInput);
   };
   
   const handleCloseClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (isSearchingOnAbout) {
-      setInputValue("");
+      onSearchInputChange("");
     } else {
       onExpandedChange(false);
     }
   };
 
-  const showCloseButton = inputValue && activeView !== 'search';
+  const showCloseButton = searchInput && activeView !== 'search';
 
   if (!isExpanded) return null;
 
   return (
     <form onSubmit={handleSubmit} className={cn("flex items-center w-full", className)}>
-      <motion.div
-        className="flex items-center h-9 sm:h-10 md:h-11 rounded-full bg-white text-black shadow-lg overflow-hidden w-full origin-center"
-        initial={{ scaleX: 0 }}
-        animate={{ scaleX: 1 }}
-        transition={{ duration: 0.3, ease: "easeInOut" }}
+      <div
+        className="flex items-center h-9 sm:h-10 md:h-11 rounded-full bg-white text-black shadow-lg overflow-hidden w-full origin-top animate-slide-down-fade"
       >
         <div className="flex items-center w-full h-full">
             <div className="w-11 h-11 flex-shrink-0 flex items-center justify-center">
@@ -81,8 +80,8 @@ export function AnimatedSearchBar({
                     ref={inputRef}
                     type="text"
                     placeholder="Search for gifts..."
-                    value={inputValue}
-                    onChange={(e) => setInputValue(e.target.value)}
+                    value={searchInput}
+                    onChange={(e) => onSearchInputChange(e.target.value)}
                     className="w-full bg-transparent outline-none text-black placeholder:text-gray-500 text-base md:text-lg"
                     onClick={(e) => e.stopPropagation()}
                 />
@@ -98,7 +97,7 @@ export function AnimatedSearchBar({
                 )}
             </div>
         </div>
-      </motion.div>
+      </div>
     </form>
   );
 }
