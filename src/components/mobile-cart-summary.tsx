@@ -14,6 +14,7 @@ interface MobileCartSummaryProps {
 const productPrices: Record<string, number> = {
   'Diwali Collection Box 1': 799,
   'Anniversary Special Box': 1199,
+  'Diwali Collection Box 3': 750.00,
   // Add other products as needed
 };
 
