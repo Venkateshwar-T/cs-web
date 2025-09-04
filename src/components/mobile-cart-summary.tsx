@@ -1,4 +1,3 @@
-
 // @/components/mobile-cart-summary.tsx
 'use client';
 
@@ -19,7 +18,7 @@ const productPrices: Record<string, number> = {
 };
 
 const SummaryRow = ({ label, value, isBold = false }: { label: React.ReactNode, value: string, isBold?: boolean }) => (
-    <div className={cn("flex justify-between items-center text-sm", isBold ? "font-bold text-base text-white" : "text-white/80")}>
+    <div className={cn("flex justify-between items-center text-sm", isBold ? "font-bold text-base text-black" : "text-black/80")}>
         <span>{label}</span>
         <span>{value}</span>
     </div>
@@ -44,8 +43,8 @@ export function MobileCartSummary({ cart, onCheckout }: MobileCartSummaryProps) 
   const total = subtotalAfterDiscount + gstAmount;
 
   return (
-    <div className="mt-6 bg-custom-purple-dark border-t-2 border-custom-gold rounded-2xl p-4 shadow-lg">
-        <h3 className="font-bold text-lg text-center text-white mb-4">Order Summary</h3>
+    <div className="mt-6 bg-white/80 rounded-2xl p-4 shadow-lg text-black">
+        <h3 className="font-bold text-lg text-center text-black mb-4">Order Summary</h3>
         
         <div className="space-y-2.5">
             <SummaryRow 
@@ -57,11 +56,11 @@ export function MobileCartSummary({ cart, onCheckout }: MobileCartSummaryProps) 
                 value={`₹${subtotalAfterDiscount.toFixed(2)}`}
             />
             <SummaryRow 
-                label={<>GST + Taxes <span className="font-normal text-white/60">(18%)</span></>}
+                label={<>GST + Taxes <span className="font-normal text-black/60">(18%)</span></>}
                 value={`+₹${gstAmount.toFixed(2)}`}
             />
 
-            <Separator className="my-2 bg-white/30 h-[1.5px]" />
+            <Separator className="my-2 bg-black/20 h-[1.5px]" />
             
             <SummaryRow 
                 label="Total (Amount Payable)"
