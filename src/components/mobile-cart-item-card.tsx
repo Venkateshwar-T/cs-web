@@ -26,7 +26,7 @@ export function MobileCartItemCard({ productName, quantity, onQuantityChange, on
     return (
         <div 
             className={cn(
-                "w-full bg-white/10 rounded-2xl p-3 text-white relative transition-all duration-300 overflow-hidden"
+                "w-full bg-white/80 rounded-2xl p-3 text-black relative transition-all duration-300 overflow-hidden"
             )}
         >
             <div className="flex gap-3">
@@ -43,7 +43,7 @@ export function MobileCartItemCard({ productName, quantity, onQuantityChange, on
                 <div className="w-3/4 flex flex-col justify-between">
                     <div>
                         <h3 className="font-bold text-base pr-6 truncate">{productName}</h3>
-                        <p className="text-xs text-white/80 truncate">250g | Assorted | Hard-Box</p>
+                        <p className="text-xs text-black/80 truncate">250g | Assorted | Hard-Box</p>
                         
                         <p className="font-semibold mt-2 text-sm">Selected Flavours & Fillings</p>
                         <ul className="list-disc list-inside text-xs mt-1 space-y-0.5 font-medium">
@@ -58,7 +58,7 @@ export function MobileCartItemCard({ productName, quantity, onQuantityChange, on
 
                     <div className="mt-2 flex items-center justify-between">
                         <div className="flex items-baseline gap-2">
-                           <p className="text-sm line-through text-white/70 font-semibold">₹1000</p>
+                           <p className="text-sm line-through text-black/70 font-semibold">₹1000</p>
                            <p className="text-lg font-bold">₹750</p>
                            <p className="text-xs text-custom-gold font-semibold">25% OFF</p>
                         </div>
@@ -66,7 +66,7 @@ export function MobileCartItemCard({ productName, quantity, onQuantityChange, on
                 </div>
 
                 <div className="absolute top-3 right-3">
-                     <button onClick={handleRemove} className="text-white/80 hover:text-red-500 transition-colors">
+                     <button onClick={handleRemove} className="text-black/80 hover:text-red-500 transition-colors">
                         <FaTrash size={18} />
                     </button>
                 </div>
