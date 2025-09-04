@@ -1,3 +1,4 @@
+
 // @/components/animated-search-bar.tsx
 'use client';
 
@@ -65,7 +66,7 @@ export function AnimatedSearchBar({
   return (
     <form onSubmit={handleSubmit} className={cn("flex items-center w-full", className)}>
       <motion.div
-        className="flex items-center h-10 md:h-11 rounded-full bg-white text-black shadow-lg overflow-hidden w-full origin-center"
+        className="flex items-center h-9 sm:h-10 md:h-11 rounded-full bg-white text-black shadow-lg overflow-hidden w-full origin-center"
         initial={{ scaleX: 0 }}
         animate={{ scaleX: 1 }}
         transition={{ duration: 0.3, ease: "easeInOut" }}
