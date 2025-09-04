@@ -250,15 +250,17 @@ function SearchPageComponent() {
         </main>
       </div>
 
-       <FloatingCartButton
-        activeView={'search'}
-        isSearchingOnAbout={true}
-        isCartOpen={isCartOpen}
-        onToggleCart={handleToggleCartPopup}
-        isCartButtonExpanded={isCartButtonExpanded}
-        cartMessage={cartMessage}
-        cart={cart}
-      />
+      {!isMobile && (
+        <FloatingCartButton
+          activeView={'search'}
+          isSearchingOnAbout={true}
+          isCartOpen={isCartOpen}
+          onToggleCart={handleToggleCartPopup}
+          isCartButtonExpanded={isCartButtonExpanded}
+          cartMessage={cartMessage}
+          cart={cart}
+        />
+      )}
       
       {selectedProductForMobile && (
         <>
