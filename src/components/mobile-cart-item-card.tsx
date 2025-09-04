@@ -52,7 +52,7 @@ export function MobileCartItemCard({ productName, quantity, onQuantityChange, on
                         className="rounded-lg object-cover w-full aspect-square"
                         data-ai-hint="chocolate box"
                     />
-                    <div className="flex items-center justify-between w-full max-w-[100px] rounded-full text-black h-8 overflow-hidden">
+                    <div className="flex items-center justify-between w-full max-w-[100px] rounded-full text-black h-8 bg-gray-200 overflow-hidden">
                         <Button
                             size="icon"
                             variant="ghost"
@@ -62,7 +62,7 @@ export function MobileCartItemCard({ productName, quantity, onQuantityChange, on
                         >
                             <Minus className="h-4 w-4" />
                         </Button>
-                        <div className="flex-1 text-center bg-gray-200 h-full flex items-center justify-center">
+                        <div className="flex-1 text-center h-full flex items-center justify-center">
                             <span className="font-bold px-1 text-sm">{quantity}</span>
                         </div>
                         <Button
@@ -77,7 +77,7 @@ export function MobileCartItemCard({ productName, quantity, onQuantityChange, on
                 </div>
                 <div className="w-2/3 flex flex-col justify-between self-stretch">
                     <div>
-                        <div className="flex justify-between items-start gap-2">
+                        <div className="flex justify-between items-center gap-2">
                             <h3 className="font-bold text-base truncate flex-1">{productName}</h3>
                             <button onClick={handleRemove} className="text-black/80 hover:text-red-500 transition-colors flex-shrink-0">
                                 <FaTrash size={18} />
