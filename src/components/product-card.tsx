@@ -7,7 +7,6 @@ import { Heart, Plus, Minus } from 'lucide-react';
 import { useState } from 'react';
 import { cn } from '@/lib/utils';
 import type { Product } from '@/app/page';
-import { SparkleIcon } from './sparkle-icon';
 
 interface ProductCardProps {
   product: Product;
@@ -19,7 +18,6 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product, onAddToCart, quantity, onProductClick, isLiked, onLikeToggle }: ProductCardProps) {
-  const [isAnimating, setIsAnimating] = useState(false);
   const [likeClickCount, setLikeClickCount] = useState(0);
 
   const handleAddToCartClick = (e: React.MouseEvent) => {
@@ -41,9 +39,6 @@ export function ProductCard({ product, onAddToCart, quantity, onProductClick, is
     e.stopPropagation();
     setLikeClickCount(prev => prev + 1);
     onLikeToggle();
-    if (!isLiked) {
-        setIsAnimating(true);
-    }
   }
 
   return (
@@ -75,26 +70,6 @@ export function ProductCard({ product, onAddToCart, quantity, onProductClick, is
                   )} 
                 />
               </button>
-              {isAnimating && (
-                  <div 
-                      className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none"
-                      onAnimationEnd={() => setIsAnimating(false)}
-                  >
-                      {Array.from({ length: 6 }).map((_, i) => (
-                          <div 
-                              key={i}
-                              className="absolute"
-                              style={{
-                                  transform: `rotate(${i * 60}deg) translateY(-25px)`,
-                              }}
-                          >
-                              <div className="animate-sparkle-pulse">
-                                  <SparkleIcon className="text-red-500 animate-sparkle-fade-out" />
-                              </div>
-                          </div>
-                      ))}
-                  </div>
-              )}
             </div>
           </div>
           <p className="text-xs md:text-sm text-[#9A7DAB] mt-1 whitespace-nowrap truncate">250g | Assorted | Hard Box</p>
