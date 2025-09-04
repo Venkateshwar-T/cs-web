@@ -1,3 +1,4 @@
+
 // @/components/header/user-actions.tsx
 'use client';
 
@@ -142,7 +143,7 @@ export function UserActions({
                             <Separator className="bg-white/20"/>
                         </SheetHeader>
                         <div className="flex flex-col h-full py-4">
-                           <nav className="flex flex-col gap-4 text-lg flex-grow">
+                           <nav className="flex flex-col gap-4 text-lg">
                              {navLinks.map((link) => {
                                 const isActive = activeView === link.id;
                                 return (
@@ -159,6 +160,8 @@ export function UserActions({
                                     </SheetClose>
                                 )
                             })}
+                           </nav>
+                           <div className="mt-auto flex flex-col gap-4">
                              <SheetClose asChild>
                                 <Button 
                                     onClick={() => onEnquireOpenChange(true)}
@@ -168,8 +171,7 @@ export function UserActions({
                                     Enquire Now
                                 </Button>
                              </SheetClose>
-                           </nav>
-                            <div className="flex items-center gap-4 mt-auto">
+                            <div className="flex items-center gap-4 mt-2">
                                 <Link href="#" aria-label="Instagram">
                                     <AiOutlineInstagram className="h-7 w-7 transition-colors hover:text-custom-gold" />
                                 </Link>
@@ -177,6 +179,7 @@ export function UserActions({
                                     <IoLogoFacebook className="h-7 w-7 transition-colors hover:text-custom-gold" />
                                 </Link>
                             </div>
+                           </div>
                         </div>
                     </SheetContent>
                 </Sheet>
