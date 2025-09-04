@@ -129,7 +129,7 @@ export function UserActions({
                             <span className="sr-only">Open menu</span>
                         </Button>
                     </SheetTrigger>
-                    <SheetContent side="right" className="bg-background text-white w-[250px]">
+                    <SheetContent side="right" className="bg-background text-white w-[250px] flex flex-col">
                         <SheetHeader>
                             <SheetTitle className="sr-only">Menu</SheetTitle>
                             <Link href="/" className="mb-4">
