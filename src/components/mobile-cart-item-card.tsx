@@ -30,7 +30,7 @@ export function MobileCartItemCard({ productName, quantity, onQuantityChange, on
             )}
         >
             <div className="flex gap-3">
-                <div className="w-1/4 flex-shrink-0">
+                <div className="w-1/3 flex-shrink-0">
                     <Image
                         src="/choco img.png"
                         alt={productName}
@@ -40,10 +40,10 @@ export function MobileCartItemCard({ productName, quantity, onQuantityChange, on
                         data-ai-hint="chocolate box"
                     />
                 </div>
-                <div className="w-3/4 flex flex-col justify-between">
+                <div className="w-2/3 flex flex-col justify-between">
                     <div>
                         <h3 className="font-bold text-base pr-6 truncate">{productName}</h3>
-                        <p className="text-xs text-black/80 truncate">250g | Assorted | Hard-Box</p>
+                        <p className="text-xs text-black/80 truncate mt-0">250g | Assorted | Hard-Box</p>
                         
                         <p className="font-semibold text-xs text-black/60 mt-2">Selected Flavours & Fillings</p>
                         <ul className="list-disc list-inside text-xs mt-1 space-y-0.5 font-medium">
