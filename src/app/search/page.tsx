@@ -249,7 +249,7 @@ function SearchPageComponent() {
         )}
         <main className={cn(
           "flex-grow flex flex-col transition-all duration-300 relative min-h-0",
-          "pb-16 md:pb-0",
+          "pb-16 mt-3 md:pb-0",
           isMobile ? (isMobileHeaderVisible ? 'pt-16' : 'pt-0') : "pt-36"
         )}>
            <SearchView
