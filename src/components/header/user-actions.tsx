@@ -201,13 +201,13 @@ export function UserActions({
                             </SheetDescription>
                         </SheetHeader>
                         <div className="flex flex-col gap-3 mt-6">
-                            <Button asChild className="h-auto py-2 bg-white hover:bg-white/90 text-black rounded-full text-base font-plex-sans px-12 self-center">
+                            <Button asChild className="h-auto py-2 bg-white hover:bg-white/90 text-black rounded-full text-base font-plex-sans self-center w-48">
                                 <a href="tel:+1234567890">
                                     <Phone className="mr-2 h-5 w-5" /> Call Us
                                 </a>
                             </Button>
                             <p className="text-sm font-medium self-center text-white/80">-OR-</p>
-                            <Button asChild className="h-auto py-2 bg-white hover:bg-white/90 text-black rounded-full text-base font-plex-sans px-12 self-center">
+                            <Button asChild className="h-auto py-2 bg-white hover:bg-white/90 text-black rounded-full text-base font-plex-sans self-center w-48">
                                 <a href="https://wa.me/1234567890" target="_blank" rel="noopener noreferrer">
                                     <IoLogoWhatsapp className="mr-2 h-6 w-6" /> Whatsapp Us
                                 </a>
