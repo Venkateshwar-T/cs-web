@@ -1,4 +1,3 @@
-
 // @/components/mobile-cart-item-card.tsx
 'use client';
 
@@ -6,7 +5,14 @@ import Image from 'next/image';
 import { FaTrash } from 'react-icons/fa';
 import { cn } from '@/lib/utils';
 import { Button } from './ui/button';
-import { Minus, Plus, ArrowDown } from 'lucide-react';
+import { Minus, Plus, ArrowDown, ChevronDown } from 'lucide-react';
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 
 interface MobileCartItemCardProps {
     productName: string;
@@ -86,15 +92,27 @@ export function MobileCartItemCard({ productName, quantity, onQuantityChange, on
                         </div>
                         <p className="text-xs text-black/80 truncate mt-0">250g | Assorted | Hard-Box</p>
                         
-                        <p className="font-semibold text-xs text-black/60 mt-2">Selected Flavours & Fillings</p>
-                        <ul className="list-disc list-inside text-xs mt-1 space-y-0.5 font-medium">
-                           {selectedFlavours.map((flavour, index) => (
-                                <li key={index}>
-                                    <span className="w-24 inline-block">{flavour.name}</span>
-                                    <span className='ml-1'>+₹{flavour.price}</span>
-                                </li>
-                            ))}
-                        </ul>
+                        <Sheet>
+                          <SheetTrigger asChild>
+                            <button className="flex items-center gap-1 text-xs text-black/60 mt-2 hover:text-black transition-colors">
+                              <span>Click to see your selected flavours & fillings</span>
+                              <ChevronDown className="h-4 w-4" />
+                            </button>
+                          </SheetTrigger>
+                          <SheetContent side="bottom" className="bg-custom-purple-dark text-white border-t-2 border-custom-gold rounded-t-3xl h-auto p-4">
+                            <SheetHeader className="text-center mb-4">
+                              <SheetTitle className="text-white">Selected Flavours & Fillings</SheetTitle>
+                            </SheetHeader>
+                            <ul className="list-disc list-inside text-sm mt-1 space-y-2 font-medium bg-white/10 rounded-lg p-4">
+                              {selectedFlavours.map((flavour, index) => (
+                                  <li key={index}>
+                                      <span className="w-36 inline-block">{flavour.name}</span>
+                                      <span className='ml-1'>+₹{flavour.price}</span>
+                                  </li>
+                              ))}
+                            </ul>
+                          </SheetContent>
+                        </Sheet>
                     </div>
 
                     <div className="mt-2 flex items-center justify-between">
