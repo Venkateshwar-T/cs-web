@@ -111,13 +111,12 @@ export function UserActions({
                     <Separator orientation="vertical" className="h-6 bg-foreground/50 mx-1 lg:mx-2" />
                      <div className="flex items-center gap-1 lg:gap-2">
                         <Link href="#" aria-label="Instagram">
-                            <AiOutlineInstagram className="h-6 w-6 lg:h-7 lg:w-7 transition-colors hover:text-custom-gold" />
+                            <AiOutlineInstagram className="h-7 w-7 lg:h-8 lg:w-8 transition-colors hover:text-custom-gold" />
                         </Link>
                         <Link href="#" aria-label="Facebook">
-                            <IoLogoFacebook className="h-6 w-6 lg:h-7 lg:w-7 transition-colors hover:text-custom-gold" />
+                            <IoLogoFacebook className="h-7 w-7 lg:h-8 lg:w-8 transition-colors hover:text-custom-gold" />
                         </Link>
                     </div>
-                    <Separator orientation="vertical" className="h-6 bg-foreground/50 mx-1 lg:mx-2" />
                     <div className="flex items-center gap-1 lg:gap-2">
                         <button onClick={() => onProfileOpenChange(true)} aria-label="Profile" className="ml-1 lg:ml-2">
                             <Image src="/icons/profile_icon.png" alt="Profile" width={36} height={36} className="h-8 w-8 lg:h-9 lg:w-9 transition-colors hover:opacity-80" onDragStart={(e) => e.preventDefault()} />
@@ -148,7 +147,7 @@ export function UserActions({
                             </Link>
                             <Separator className="bg-white/20"/>
                         </SheetHeader>
-                        <div className="flex flex-col flex-grow px-4 pb-4">
+                        <div className="flex flex-col flex-grow p-4">
                            <nav className="flex flex-col gap-4 text-lg">
                              {navLinks.map((link) => {
                                 const isActive = activeView === link.id;
