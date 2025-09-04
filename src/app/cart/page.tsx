@@ -38,9 +38,6 @@ export default function CartPage() {
           onReset={() => router.push('/')}
           onNavigate={handleHeaderNavigate}
           activeView={'cart'}
-          onSearchSubmit={(query) => router.push(`/search?q=${query}`)}
-          isSearchingOnAbout={false}
-          isUsingAnimatedSearch={false}
         />
         <main className={cn(
           "flex-grow flex flex-col transition-all duration-300 relative min-h-0",

@@ -16,9 +16,9 @@ interface HeaderProps {
   onReset: () => void;
   onNavigate: (view: 'about' | 'faq') => void;
   activeView: ActiveView;
-  onSearchSubmit: (query: string) => void;
-  isSearchingOnAbout: boolean;
-  isUsingAnimatedSearch: boolean;
+  onSearchSubmit?: (query: string) => void;
+  isSearchingOnAbout?: boolean;
+  isUsingAnimatedSearch?: boolean;
 }
 
 export function Header({ 
@@ -27,9 +27,9 @@ export function Header({
   onReset, 
   onNavigate, 
   activeView,
-  onSearchSubmit,
-  isSearchingOnAbout,
-  isUsingAnimatedSearch,
+  onSearchSubmit = () => {},
+  isSearchingOnAbout = false,
+  isUsingAnimatedSearch = false,
 }: HeaderProps) {
   const [isEnquireOpen, setIsEnquireOpen] = useState(false);
   const [isAnimatedSearchExpanded, setIsAnimatedSearchExpanded] = useState(isUsingAnimatedSearch);
@@ -68,6 +68,7 @@ export function Header({
       <header className={cn(
         "fixed top-0 z-50 w-full bg-transparent pt-4 md:pt-6 pb-4 md:pb-4 transition-all duration-100", 
         isContentScrolled && 'bg-background border-b-2',
+        activeView === 'cart' && 'border-b border-white/20',
         (isEnquireOpen && isContentScrolled) && 'bg-[#2e1440] border-b-2 border-custom-purple-dark',
       )}>
         <div className="container relative flex h-16 md:h-16 max-w-screen-2xl items-center justify-between px-4 sm:px-6 lg:px-8 xl:px-24">
