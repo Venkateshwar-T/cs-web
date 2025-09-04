@@ -47,6 +47,18 @@ export function MobileCartSummary({ cart, onCheckout }: MobileCartSummaryProps) 
         <h3 className="font-bold text-lg text-center text-black mb-4">Order Summary</h3>
         
         <div className="space-y-2.5">
+            <div className="space-y-2">
+                {cartItems.map(([name, quantity]) => (
+                    <div key={name} className="flex justify-between items-center text-sm">
+                        <span className="font-medium w-2/3 truncate pr-2">{name}</span>
+                        <span className="text-black/60">x{quantity}</span>
+                        <span className="font-semibold w-1/4 text-right">₹{(productPrices[name] || 0).toFixed(2)}</span>
+                    </div>
+                ))}
+            </div>
+            
+            <Separator className="my-3 bg-black/20" />
+
             <SummaryRow 
                 label="Discount Applied"
                 value={`-₹${discount.toFixed(2)}`}
