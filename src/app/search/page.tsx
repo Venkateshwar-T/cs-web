@@ -228,7 +228,7 @@ function SearchPageComponent() {
           />
         )}
         <main className={cn(
-          "flex-grow flex flex-col transition-all duration-500 relative",
+          "flex-grow flex transition-all duration-500 relative min-h-0",
           "pb-16 md:pb-0",
           isMobile ? "pt-16" : "pt-24 md:pt-36"
         )}>
