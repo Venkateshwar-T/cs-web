@@ -31,7 +31,7 @@ export function Header({
   const [isEnquireOpen, setIsEnquireOpen] = useState(false);
   const [isAnimatedSearchExpanded, setIsAnimatedSearchExpanded] = useState(false);
   const [isNavVisible, setIsNavVisible] = useState(true);
-  const [isMobileSearchExpanded, setIsMobileSearchExpanded] = useState(false);
+  const [isMobileSearchExpanded, setIsMobileSearchExpanded] = useState(activeView === 'search');
   const router = useRouter();
   
   useEffect(() => {
@@ -70,7 +70,7 @@ export function Header({
       )}>
         <div className="container relative flex h-16 md:h-16 max-w-screen-2xl items-center justify-between px-4 sm:px-6 lg:px-8 xl:px-24">
           
-          {!isMobileSearchExpanded && <Logo onLogoClick={handleLogoClick} isEnquireOpen={isEnquireOpen} />}
+          {!(isMobileSearchExpanded && activeView !== 'search') && <Logo onLogoClick={handleLogoClick} isEnquireOpen={isEnquireOpen} />}
           
           <div className="hidden md:flex flex-1">
              {activeView === 'search' ? (
