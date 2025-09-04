@@ -52,7 +52,7 @@ export function MobileCartItemCard({ productName, quantity, onQuantityChange, on
             <div className="flex gap-3 items-center">
                 <div className="w-1/3 flex-shrink-0 flex flex-col items-center gap-2">
                     <Image
-                        src="/choco img.png"
+                        src="https://picsum.photos/100/100"
                         alt={productName}
                         width={100}
                         height={100}
