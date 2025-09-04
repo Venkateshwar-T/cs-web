@@ -12,10 +12,19 @@ import { SearchView } from '@/components/views/SearchView';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { MobileProductDetailView } from '@/components/views/MobileProductDetailView';
 import { flavourOptions, occasionOptions, productTypeOptions, weightOptions } from '@/lib/filter-options';
-import type { Product, FilterState, ProfileInfo, ActiveView } from '@/app/page';
+import type { Product, ActiveView } from '@/app/page';
 import { FloatingCartButton } from '@/components/floating-cart-button';
 import { MobileSearchHeader } from '@/components/header/mobile-search-header';
 import { useCart } from '@/hooks/use-cart';
+
+type FilterState = {
+  priceRange: [number, number];
+  selectedPriceOptions: string[];
+  selectedFlavours: string[];
+  selectedOccasions: string[];
+  selectedProductTypes: string[];
+  selectedWeights: string[];
+};
 
 const initialFilterState: FilterState = {
   priceRange: [0, 3000],
@@ -25,6 +34,12 @@ const initialFilterState: FilterState = {
   selectedProductTypes: [],
   selectedWeights: [],
 };
+
+type ProfileInfo = {
+  name: string;
+  phone: string;
+  email: string;
+}
 
 const allProducts: Product[] = Array.from({ length: 12 }).map((_, i) => ({
   id: i,
