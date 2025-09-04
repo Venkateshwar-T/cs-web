@@ -8,7 +8,6 @@ import { Header } from "@/components/header";
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { flavourOptions, occasionOptions, productTypeOptions, weightOptions } from '@/lib/filter-options';
-import { LoaderBar } from '@/components/loader-bar';
 import { SparkleBackground } from '@/components/sparkle-background';
 import { X } from 'lucide-react';
 import { OrderConfirmedView } from '@/components/order-confirmed-view';
@@ -391,7 +390,6 @@ export default function Home() {
   return (
     <>
       <SparkleBackground />
-      <LoaderBar isLoading={isPageLoading || isSearching} onAnimationComplete={() => setIsSearching(false)} />
       <div className={cn("flex flex-col h-screen", (isPopupOpen && !isCartVisible) ? 'opacity-50' : '')}>
         <Header 
           onSearchSubmit={handleSearchSubmit} 
