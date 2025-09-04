@@ -16,6 +16,9 @@ interface HeaderProps {
   onReset: () => void;
   onNavigate: (view: 'about' | 'faq') => void;
   activeView: ActiveView;
+  onSearchSubmit: (query: string) => void;
+  isSearchingOnAbout: boolean;
+  isUsingAnimatedSearch: boolean;
 }
 
 export function Header({ 
@@ -23,10 +26,13 @@ export function Header({
   isContentScrolled, 
   onReset, 
   onNavigate, 
-  activeView, 
+  activeView,
+  onSearchSubmit,
+  isSearchingOnAbout,
+  isUsingAnimatedSearch,
 }: HeaderProps) {
   const [isEnquireOpen, setIsEnquireOpen] = useState(false);
-  const [isAnimatedSearchExpanded, setIsAnimatedSearchExpanded] = useState(false);
+  const [isAnimatedSearchExpanded, setIsAnimatedSearchExpanded] = useState(isUsingAnimatedSearch);
   const [isNavVisible, setIsNavVisible] = useState(true);
   const router = useRouter();
   
@@ -42,7 +48,7 @@ export function Header({
   }, [isAnimatedSearchExpanded]);
 
   const handleAnimatedSearchSubmit = (query: string) => {
-    router.push(`/search?q=${encodeURIComponent(query)}`);
+    onSearchSubmit(query);
   };
   
   const handleAnimatedSearchToggle = () => {
@@ -77,7 +83,7 @@ export function Header({
                       onSearchSubmit={handleAnimatedSearchSubmit}
                       isExpanded={true}
                       onExpandedChange={() => {}}
-                      isSearchingOnAbout={false}
+                      isSearchingOnAbout={isSearchingOnAbout}
                       activeView={activeView}
                   />
                 </div>
@@ -100,7 +106,7 @@ export function Header({
                     onSearchSubmit={handleAnimatedSearchSubmit}
                     isExpanded={isAnimatedSearchExpanded}
                     onExpandedChange={setIsAnimatedSearchExpanded}
-                    isSearchingOnAbout={false}
+                    isSearchingOnAbout={isSearchingOnAbout}
                     activeView={activeView}
                 />
              </div>
@@ -115,7 +121,7 @@ export function Header({
               activeView={activeView}
               onAnimatedSearchToggle={handleAnimatedSearchToggle}
               isAnimatedSearchExpanded={isAnimatedSearchExpanded}
-              isSearchingOnAbout={false}
+              isSearchingOnAbout={isSearchingOnAbout}
             />
           </div>
         </div>

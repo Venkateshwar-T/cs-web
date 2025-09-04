@@ -14,6 +14,7 @@ import { MobileProductDetailView } from '@/components/views/MobileProductDetailV
 import { flavourOptions, occasionOptions, productTypeOptions, weightOptions } from '@/lib/filter-options';
 import type { Product, FilterState, ProfileInfo, ActiveView } from '@/app/page';
 import { FloatingCartButton } from '@/components/floating-cart-button';
+import { MobileSearchHeader } from '@/components/header/mobile-search-header';
 
 const initialFilterState: FilterState = {
   priceRange: [0, 3000],
@@ -60,6 +61,8 @@ function SearchPageComponent() {
   const [selectedProductForMobile, setSelectedProductForMobile] = useState<Product | null>(null);
   const [mobileFlavourCart, setMobileFlavourCart] = useState<Record<string, number>>({});
   const isMobile = useIsMobile();
+  const [searchInput, setSearchInput] = useState(query);
+
 
   useEffect(() => {
     setIsSearching(true);
@@ -108,6 +111,10 @@ function SearchPageComponent() {
     } else {
       setSelectedProduct(product);
     }
+  };
+
+  const handleSearchSubmit = (value: string) => {
+    router.push(`/search?q=${encodeURIComponent(value)}`);
   };
 
   const handleClosePopup = () => setSelectedProduct(null);
@@ -190,19 +197,31 @@ function SearchPageComponent() {
     <>
       <SparkleBackground />
       <div className={cn("flex flex-col h-screen", isPopupOpen ? 'opacity-50' : '')}>
-        <Header 
-          onSearchSubmit={(q) => router.push(`/search?q=${encodeURIComponent(q)}`)}
-          onProfileOpenChange={setIsProfileOpen}
-          isContentScrolled={isContentScrolled}
-          onReset={() => router.push('/')}
-          onNavigate={(view) => router.push(`/${view}`)}
-          activeView={'search'}
-          isSearchingOnAbout={false}
-          isUsingAnimatedSearch={false}
-        />
+        {isMobile ? (
+          <MobileSearchHeader 
+            value={searchInput}
+            onChange={(e) => setSearchInput(e.target.value)}
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleSearchSubmit(searchInput);
+            }}
+          />
+        ) : (
+          <Header 
+            onSearchSubmit={handleSearchSubmit}
+            onProfileOpenChange={setIsProfileOpen}
+            isContentScrolled={isContentScrolled}
+            onReset={() => router.push('/')}
+            onNavigate={(view) => router.push(`/${view}`)}
+            activeView={'search'}
+            isSearchingOnAbout={false}
+            isUsingAnimatedSearch={false}
+          />
+        )}
         <main className={cn(
           "flex-grow flex flex-col transition-all duration-500 relative",
-          "pb-16 md:pb-0 pt-24 md:pt-36",
+          "pb-16 md:pb-0",
+          isMobile ? "pt-16" : "pt-24 md:pt-36",
           'overflow-y-auto'
         )}>
            <SearchView
