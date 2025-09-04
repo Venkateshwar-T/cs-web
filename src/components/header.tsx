@@ -1,4 +1,3 @@
-
 // @/components/header.tsx
 "use client";
 
@@ -10,9 +9,6 @@ import { Navigation } from "./header/navigation";
 import { UserActions } from "./header/user-actions";
 import type { ActiveView } from "@/app/page";
 import { AnimatedSearchBar } from "./animated-search-bar";
-import Image from "next/image";
-import { MobileSearchBar } from "./mobile-search-bar";
-import { SearchBar } from "./header/search-bar";
 
 interface HeaderProps {
   onProfileOpenChange: (isOpen: boolean) => void;
@@ -32,7 +28,6 @@ export function Header({
   const [isEnquireOpen, setIsEnquireOpen] = useState(false);
   const [isAnimatedSearchExpanded, setIsAnimatedSearchExpanded] = useState(false);
   const [isNavVisible, setIsNavVisible] = useState(true);
-  const [isMobileSearchExpanded, setIsMobileSearchExpanded] = useState(activeView === 'search');
   const router = useRouter();
   
   useEffect(() => {
@@ -111,7 +106,7 @@ export function Header({
              </div>
           )}
           
-          <div className="hidden md:flex justify-end">
+          <div className="flex justify-end">
             <UserActions 
               isEnquireOpen={isEnquireOpen}
               onEnquireOpenChange={setIsEnquireOpen}
@@ -122,21 +117,6 @@ export function Header({
               isAnimatedSearchExpanded={isAnimatedSearchExpanded}
               isSearchingOnAbout={false}
             />
-          </div>
-
-          <div className="md:hidden flex-1 flex justify-end items-center">
-            {isMobileSearchExpanded || activeView === 'search' ? (
-              <MobileSearchBar
-                onSearchSubmit={(query) => router.push(`/search?q=${encodeURIComponent(query)}`)}
-                onCollapse={() => setIsMobileSearchExpanded(false)}
-              />
-            ) : (
-              <button onClick={() => setIsMobileSearchExpanded(true)} className="h-10 w-10 flex items-center justify-center" aria-label="Open search">
-                  <div className="h-10 w-10 bg-white rounded-full flex items-center justify-center">
-                      <Image src="/icons/search_icon.png" alt="Search" width={24} height={24} onDragStart={(e) => e.preventDefault()}/>
-                  </div>
-              </button>
-            )}
           </div>
         </div>
       </header>

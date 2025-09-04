@@ -1,4 +1,3 @@
-
 // @/components/header/user-actions.tsx
 'use client';
 
@@ -118,6 +117,68 @@ export function UserActions({
                         </button>
                     </div>
                 </div>
+            </div>
+
+            {/* Mobile Menu */}
+             <div className="md:hidden">
+                <Sheet>
+                    <SheetTrigger asChild>
+                        <Button variant="ghost" size="icon">
+                            <Menu className="h-6 w-6" />
+                            <span className="sr-only">Open menu</span>
+                        </Button>
+                    </SheetTrigger>
+                    <SheetContent side="right" className="bg-background text-white w-[250px]">
+                        <SheetHeader>
+                            <Link href="/" className="mb-4">
+                                <Image 
+                                    src="/Choco Smiley Logo.png" 
+                                    alt="Choco Smiley Logo" 
+                                    width={150} 
+                                    height={60}
+                                />
+                            </Link>
+                            <Separator className="bg-white/20"/>
+                        </SheetHeader>
+                        <div className="flex flex-col h-full py-4">
+                           <nav className="flex flex-col gap-4 text-lg flex-grow">
+                             {navLinks.map((link) => {
+                                const isActive = activeView === link.id;
+                                return (
+                                    <SheetClose asChild key={link.id}>
+                                        <button
+                                            onClick={() => onNavigate(link.id)}
+                                            className={cn(
+                                                "transition-colors hover:text-custom-gold text-left", 
+                                                isActive ? "text-custom-gold font-semibold" : "text-foreground/80"
+                                            )}
+                                        >
+                                            {link.label}
+                                        </button>
+                                    </SheetClose>
+                                )
+                            })}
+                             <SheetClose asChild>
+                                <Button 
+                                    onClick={() => onEnquireOpenChange(true)}
+                                    variant="outline"
+                                    className="w-full justify-center text-custom-gold border-custom-gold hover:bg-custom-gold hover:text-custom-purple-dark"
+                                >
+                                    Enquire Now
+                                </Button>
+                             </SheetClose>
+                           </nav>
+                            <div className="flex items-center gap-4 mt-auto">
+                                <Link href="#" aria-label="Instagram">
+                                    <AiOutlineInstagram className="h-7 w-7 transition-colors hover:text-custom-gold" />
+                                </Link>
+                                <Link href="#" aria-label="Facebook">
+                                    <IoLogoFacebook className="h-7 w-7 transition-colors hover:text-custom-gold" />
+                                </Link>
+                            </div>
+                        </div>
+                    </SheetContent>
+                </Sheet>
             </div>
         </div>
     );
