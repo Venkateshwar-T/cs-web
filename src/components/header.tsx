@@ -71,11 +71,13 @@ export function Header({
       )}>
         <div className="container relative flex h-16 md:h-16 max-w-screen-2xl items-center justify-between px-4 sm:px-6 lg:px-8 xl:px-24">
           
-          {!(isMobileSearchExpanded && activeView !== 'search') && <Logo onLogoClick={handleLogoClick} isEnquireOpen={isEnquireOpen} />}
+          <div className="flex justify-start">
+            <Logo onLogoClick={handleLogoClick} isEnquireOpen={isEnquireOpen} />
+          </div>
           
-          <div className="hidden md:flex flex-1">
+          <div className="hidden md:flex flex-1 justify-center px-4">
              {activeView === 'search' ? (
-                <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-sm md:max-w-md lg:max-w-lg px-4">
+                <div className="w-full max-w-sm md:max-w-md lg:max-w-lg xl:max-w-2xl">
                   <AnimatedSearchBar 
                       onSearchSubmit={handleAnimatedSearchSubmit}
                       isExpanded={true}
@@ -109,7 +111,7 @@ export function Header({
              </div>
           )}
           
-          <div className="hidden md:flex flex-1 justify-end">
+          <div className="hidden md:flex justify-end">
             <UserActions 
               isEnquireOpen={isEnquireOpen}
               onEnquireOpenChange={setIsEnquireOpen}

@@ -20,7 +20,7 @@ const navLinks = [
 export function Navigation({ isEnquireOpen, onNavigate, activeView }: NavigationProps) {
     return (
         <nav className={cn(
-            "hidden md:flex flex-1 justify-center items-center gap-4 lg:gap-8 text-base lg:text-lg animate-slide-down"
+            "hidden md:flex justify-center items-center gap-4 lg:gap-8 text-base lg:text-lg animate-slide-down"
         )} style={{ animationDuration: '0.3s' }}>
             {navLinks.map((link) => {
                 const isActive = activeView === link.id;
