@@ -302,7 +302,7 @@ function SearchPageComponent() {
         likedProducts={likedProducts}
         onLikeToggle={handleLikeToggle}
         cart={cart}
-        onAddToCart={onAddToCart}
+        onAddToCart={handleAddToCart}
         onToggleCartPopup={handleToggleCartPopup}
         onClearCart={handleClearCart}
         onFinalizeOrder={handleOpenCompleteDetails}
