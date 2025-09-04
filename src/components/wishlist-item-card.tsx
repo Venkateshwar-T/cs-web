@@ -49,15 +49,16 @@ export function WishlistItemCard({ product, onAddToCart, onUnlike, isInCart, isU
           </div>
 
           <div className="flex flex-col justify-between flex-grow self-stretch min-w-0">
-            <div className="flex justify-between items-start gap-2">
-                <h3 className="font-bold text-sm leading-tight flex-1 truncate">{product.name}</h3>
-                <button onClick={onUnlike} className="p-1 flex-shrink-0">
-                  <Heart className="h-5 w-5 text-red-500 fill-red-500" />
-                </button>
-            </div>
             <div>
-              <p className="text-xs text-black/70 truncate">250g | Assorted | Hard-Box</p>
+              <div className="flex justify-between items-start gap-2">
+                  <h3 className="font-bold text-sm leading-tight flex-1 truncate">{product.name}</h3>
+                  <button onClick={onUnlike} className="p-1 flex-shrink-0">
+                    <Heart className="h-5 w-5 text-red-500 fill-red-500" />
+                  </button>
+              </div>
+              <p className="text-xs text-black/70 truncate mt-0">250g | Assorted | Hard-Box</p>
             </div>
+            
             <div className="flex justify-between items-end gap-2">
                 <p className="font-bold text-base text-custom-purple-dark mt-1 truncate">₹750</p>
                 <Button
