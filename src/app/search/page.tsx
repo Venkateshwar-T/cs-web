@@ -9,7 +9,7 @@ import { SparkleBackground } from '@/components/sparkle-background';
 import { BottomNavbar } from '@/components/bottom-navbar';
 import { PopupsManager } from '@/components/popups/popups-manager';
 import { SearchView } from '@/components/views/SearchView';
-import { useIsMobile } from '@/hooks/use-mobile';
+import { useIsMobile } from '@/hooks/use-is-mobile';
 import { MobileProductDetailView } from '@/components/views/MobileProductDetailView';
 import { flavourOptions, occasionOptions, productTypeOptions, weightOptions } from '@/lib/filter-options';
 import type { Product, FilterState, ProfileInfo, ActiveView } from '@/app/page';
@@ -77,6 +77,15 @@ function SearchPageComponent() {
       return () => clearTimeout(timer);
     }
   }, [isNewSearch]);
+
+  useEffect(() => {
+    if (isCartOpen) {
+      setIsCartVisible(true);
+    } else {
+      const timer = setTimeout(() => setIsCartVisible(false), 300); // Match animation duration
+      return () => clearTimeout(timer);
+    }
+  }, [isCartOpen]);
 
   const handleAddToCart = (productName: string, quantity: number, animate: boolean = true) => {
     const newCart = { ...cart };
