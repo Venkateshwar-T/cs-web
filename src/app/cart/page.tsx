@@ -103,7 +103,7 @@ export default function CartPage() {
         />
         <main onScroll={handleScroll} className={cn(
           "flex-grow flex flex-col transition-all duration-300 relative min-h-0 md:pb-0",
-          isMobile ? (isHeaderVisible ? 'pt-24' : 'pt-0') : "pt-36" 
+          isMobile ? 'pt-0' : "pt-36" 
         )}>
           {cartItems.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-full gap-4 text-center px-4">
@@ -123,7 +123,7 @@ export default function CartPage() {
                   <div className="p-4 flex flex-col flex-grow">
                     <div className="bg-white/80 rounded-2xl flex flex-col max-h-[70vh]">
                       <div className="flex justify-between items-center p-4 border-b border-black/10 flex-shrink-0">
-                        <p className="text-sm font-bold text-black">Total Products: {cartItems.length}</p>
+                        <p className="text-base font-bold text-black">Total Products: {cartItems.length}</p>
                          <AlertDialog>
                           <AlertDialogTrigger asChild>
                             <Button

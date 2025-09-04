@@ -48,7 +48,7 @@ export function MobileCartItemCard({ productName, quantity, onQuantityChange, on
     return (
         <div 
             className={cn(
-                "w-full bg-transparent pl-3 py-3 pr-6 text-black relative transition-all duration-300 overflow-hidden",
+                "w-full bg-transparent pl-3 py-3 pr-4 text-black relative transition-all duration-300 overflow-hidden",
                 !isLastItem && "border-b border-black/10"
             )}
         >

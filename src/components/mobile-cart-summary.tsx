@@ -80,8 +80,8 @@ export function MobileCartSummary({ cart, onCheckout }: MobileCartSummaryProps) 
                 isBold={true}
             />
         </div>
-        <Button onClick={onCheckout} className="w-full mt-4 bg-custom-gold text-custom-purple-dark font-bold hover:bg-custom-gold/90 h-12 text-base rounded-full">
-            Proceed to Checkout
+        <Button onClick={onCheckout} className="w-full mt-4 bg-custom-gold text-custom-purple-dark font-bold hover:bg-custom-gold/90 h-10 text-base rounded-full">
+            Finalize Order
         </Button>
     </div>
   );
