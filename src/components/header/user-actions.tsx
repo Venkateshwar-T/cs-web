@@ -146,7 +146,7 @@ export function UserActions({
                             </Link>
                             <Separator className="bg-white/20"/>
                         </SheetHeader>
-                        <div className="flex flex-col flex-grow pt-4 px-4">
+                        <div className="flex flex-col flex-grow px-4 pb-4">
                            <nav className="flex flex-col gap-4 text-lg">
                              {navLinks.map((link) => {
                                 const isActive = activeView === link.id;
