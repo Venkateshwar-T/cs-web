@@ -44,36 +44,35 @@ export function WishlistItemCard({ product, onAddToCart, onUnlike, isInCart, isU
               objectFit="cover"
               className="rounded-lg"
               onDragStart={(e) => e.preventDefault()}
+              data-ai-hint="chocolate box"
             />
           </div>
 
           <div className="flex flex-col justify-between flex-grow self-stretch">
             <div>
-              <h3 className="font-bold text-base leading-tight pr-8 truncate">{product.name}</h3>
+              <div className="flex justify-between items-start gap-2">
+                  <h3 className="font-bold text-base leading-tight flex-1 truncate">{product.name}</h3>
+                  <button onClick={onUnlike} className="p-1 flex-shrink-0">
+                    <Heart className="h-5 w-5 text-red-500 fill-red-500" />
+                  </button>
+              </div>
               <p className="text-xs text-black/70 truncate">250g | Assorted | Hard-Box</p>
             </div>
-            <p className="font-bold text-base text-custom-purple-dark mt-1">₹750</p>
-          </div>
-
-          <div className="absolute top-2 right-3">
-            <button onClick={onUnlike} className="p-1">
-              <Heart className="h-5 w-5 text-red-500 fill-red-500" />
-            </button>
-          </div>
-
-          <div className="absolute bottom-3 right-3">
-            <Button
-              size="sm"
-              onClick={handleAddToCartClick}
-              className={cn(
-                "rounded-full uppercase border-2 border-b-[3px] h-8 px-5 text-xs transition-colors duration-300 border-custom-purple-dark",
-                isInCart
-                  ? 'bg-custom-purple-dark text-white hover:bg-custom-purple-dark/90'
-                  : 'bg-transparent text-custom-purple-dark hover:bg-custom-purple-dark hover:text-white'
-              )}
-            >
-              {isInCart ? 'ADDED' : 'ADD'}
-            </Button>
+            <div className="flex justify-between items-end">
+                <p className="font-bold text-base text-custom-purple-dark mt-1">₹750</p>
+                <Button
+                  size="sm"
+                  onClick={handleAddToCartClick}
+                  className={cn(
+                    "rounded-full uppercase border-2 border-b-[3px] h-8 px-5 text-xs transition-colors duration-300 border-custom-purple-dark",
+                    isInCart
+                      ? 'bg-custom-purple-dark text-white hover:bg-custom-purple-dark/90'
+                      : 'bg-transparent text-custom-purple-dark hover:bg-custom-purple-dark hover:text-white'
+                  )}
+                >
+                  {isInCart ? 'ADDED' : 'ADD'}
+                </Button>
+            </div>
           </div>
         </div>
       </div>
@@ -97,36 +96,35 @@ export function WishlistItemCard({ product, onAddToCart, onUnlike, isInCart, isU
             height={100}
             className="rounded-lg object-cover w-full h-full"
             onDragStart={(e) => e.preventDefault()}
+            data-ai-hint="chocolate box"
           />
         </div>
 
         <div className="flex flex-col justify-between flex-grow self-stretch">
           <div>
-            <h3 className="font-bold text-lg leading-tight pr-8 truncate">{product.name}</h3>
+            <div className="flex justify-between items-start gap-2">
+                <h3 className="font-bold text-lg leading-tight flex-1 truncate">{product.name}</h3>
+                <button onClick={onUnlike} className="p-1 flex-shrink-0">
+                  <Heart className="h-6 w-6 text-red-500 fill-red-500" />
+                </button>
+            </div>
             <p className="text-sm text-black/70">250g | Assorted | Hard-Box</p>
           </div>
-          <p className="font-bold text-xl text-custom-purple-dark">₹750</p>
-        </div>
-
-        <div className="absolute top-2 right-3">
-          <button onClick={onUnlike} className="p-1">
-            <Heart className="h-6 w-6 text-red-500 fill-red-500" />
-          </button>
-        </div>
-
-        <div className="absolute bottom-3 right-3">
-          <Button
-            size="sm"
-            onClick={handleAddToCartClick}
-            className={cn(
-              "rounded-full uppercase border-2 border-b-[3px] h-9 px-6 text-sm transition-colors duration-300 border-custom-purple-dark",
-              isInCart
-                ? 'bg-custom-purple-dark text-white hover:bg-custom-purple-dark/90'
-                : 'bg-transparent text-custom-purple-dark hover:bg-custom-purple-dark hover:text-white'
-            )}
-          >
-            {isInCart ? 'ADDED' : 'ADD'}
-          </Button>
+          <div className="flex justify-between items-end">
+            <p className="font-bold text-xl text-custom-purple-dark">₹750</p>
+            <Button
+              size="sm"
+              onClick={handleAddToCartClick}
+              className={cn(
+                "rounded-full uppercase border-2 border-b-[3px] h-9 px-6 text-sm transition-colors duration-300 border-custom-purple-dark",
+                isInCart
+                  ? 'bg-custom-purple-dark text-white hover:bg-custom-purple-dark/90'
+                  : 'bg-transparent text-custom-purple-dark hover:bg-custom-purple-dark hover:text-white'
+              )}
+            >
+              {isInCart ? 'ADDED' : 'ADD'}
+            </Button>
+          </div>
         </div>
       </div>
     </div>
