@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { FaTrash } from 'react-icons/fa';
 import { cn } from '@/lib/utils';
 import { Button } from './ui/button';
-import { Minus, Plus, ArrowDown, ChevronDown } from 'lucide-react';
+import { Minus, Plus, ChevronDown } from 'lucide-react';
 import {
   Sheet,
   SheetContent,
@@ -20,6 +20,7 @@ interface MobileCartItemCardProps {
     quantity: number;
     onQuantityChange: (productName: string, newQuantity: number) => void;
     onRemove: (productName: string) => void;
+    isLastItem: boolean;
 }
 
 const selectedFlavours = [
@@ -28,7 +29,7 @@ const selectedFlavours = [
     { name: 'Dark Chocolate', price: 75 },
 ];
 
-export function MobileCartItemCard({ productName, quantity, onQuantityChange, onRemove }: MobileCartItemCardProps) {
+export function MobileCartItemCard({ productName, quantity, onQuantityChange, onRemove, isLastItem }: MobileCartItemCardProps) {
     const handleRemove = () => {
         onRemove(productName);
     }
@@ -47,11 +48,12 @@ export function MobileCartItemCard({ productName, quantity, onQuantityChange, on
     return (
         <div 
             className={cn(
-                "w-full bg-white/80 rounded-2xl p-3 text-black relative transition-all duration-300 overflow-hidden"
+                "w-full bg-transparent p-3 text-black relative transition-all duration-300 overflow-hidden",
+                !isLastItem && "border-b border-black/10"
             )}
         >
             <div className="flex gap-3 items-center">
-                <div className="w-1/3 flex-shrink-0 flex flex-col items-center gap-2">
+                <div className="w-1/4 flex-shrink-0 flex flex-col items-center gap-2">
                     <Image
                         src="/choco img.png"
                         alt={productName}
@@ -65,7 +67,7 @@ export function MobileCartItemCard({ productName, quantity, onQuantityChange, on
                             size="icon"
                             variant="ghost"
                             onClick={handleDecrement}
-                            className="h-full rounded-none bg-gray-200 hover:bg-gray-300 text-black flex-shrink-0 px-2"
+                            className="h-full rounded-none bg-gray-200 hover:bg-gray-300 text-black flex-1 flex items-center justify-center"
                             disabled={quantity <= 1}
                         >
                             <Minus className="h-4 w-4" />
@@ -77,13 +79,13 @@ export function MobileCartItemCard({ productName, quantity, onQuantityChange, on
                             size="icon"
                             variant="ghost"
                             onClick={handleIncrement}
-                            className="h-full rounded-none bg-gray-200 hover:bg-gray-300 text-black flex-shrink-0 px-2"
+                            className="h-full rounded-none bg-gray-200 hover:bg-gray-300 text-black flex-1 flex items-center justify-center"
                         >
                             <Plus className="h-4 w-4" />
                         </Button>
                     </div>
                 </div>
-                <div className="w-2/3 flex flex-col justify-between self-stretch pr-2">
+                <div className="w-3/4 flex flex-col justify-between self-stretch pr-2">
                     <div className="flex flex-col items-start">
                         <div className="flex justify-between items-center w-full gap-2">
                             <h3 className="font-bold text-base truncate flex-1">{productName}</h3>
@@ -122,7 +124,7 @@ export function MobileCartItemCard({ productName, quantity, onQuantityChange, on
                          <div className="flex items-baseline gap-2">
                            <p className="text-sm line-through text-black/70 font-semibold">₹1000</p>
                            <div className="flex items-center gap-1 text-custom-purple-dark bg-custom-gold px-1.5 py-0.5 rounded-md">
-                            <ArrowDown className="h-3 w-3" />
+                            <svg className="h-3 w-3" viewBox="0 0 24 24" fill="currentColor"><path d="M12 16l-6-6h12z"/></svg>
                             <span className="text-xs font-semibold">25%</span>
                            </div>
                         </div>

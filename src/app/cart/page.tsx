@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, type UIEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import type { ActiveView } from '@/app/page';
 import { Header } from '@/components/header';
@@ -31,6 +31,8 @@ export default function CartPage() {
     'Anniversary Special Box': 2,
   });
   const isMobile = useIsMobile();
+  const [lastScrollTop, setLastScrollTop] = useState(0);
+  const [isHeaderVisible, setIsHeaderVisible] = useState(true);
 
   const handleNavigation = (view: ActiveView) => {
     if (view === 'home') {
@@ -65,6 +67,23 @@ export default function CartPage() {
     // Handle checkout logic here
     console.log('Proceeding to checkout');
   };
+  
+  const handleScroll = (event: UIEvent<HTMLDivElement>) => {
+    if (!isMobile) return;
+
+    const currentScrollTop = event.currentTarget.scrollTop;
+    if (Math.abs(currentScrollTop - lastScrollTop) <= 10) {
+      return;
+    }
+
+    if (currentScrollTop > lastScrollTop && currentScrollTop > 56) {
+      setIsHeaderVisible(false);
+    } else {
+      setIsHeaderVisible(true);
+    }
+    setLastScrollTop(currentScrollTop <= 0 ? 0 : currentScrollTop);
+  };
+
 
   const cartItems = Object.entries(cart);
 
@@ -78,10 +97,11 @@ export default function CartPage() {
           onReset={() => router.push('/')}
           onNavigate={handleHeaderNavigate}
           activeView={'cart'}
+          isVisible={isHeaderVisible}
         />
-        <main className={cn(
-          "flex-grow flex flex-col transition-all duration-300 relative min-h-0",
-          "pt-24 md:pt-36 md:pb-0" 
+        <main onScroll={handleScroll} className={cn(
+          "flex-grow flex flex-col transition-all duration-300 relative min-h-0 md:pb-0",
+          isMobile ? (isHeaderVisible ? 'pt-24' : 'pt-0') : "pt-36" 
         )}>
           {cartItems.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-full gap-4 text-center px-4">
@@ -99,14 +119,15 @@ export default function CartPage() {
               {isMobile ? (
                 <div className="flex-grow overflow-y-auto no-scrollbar">
                   <div className="p-4">
-                    <div className="space-y-4">
-                      {cartItems.map(([productName, quantity]) => (
+                    <div className="bg-white/80 rounded-2xl max-h-[45vh] overflow-y-auto no-scrollbar">
+                      {cartItems.map(([productName, quantity], index) => (
                          <MobileCartItemCard
                             key={productName}
                             productName={productName}
                             quantity={quantity}
                             onQuantityChange={handleQuantityChange}
                             onRemove={handleRemove}
+                            isLastItem={index === cartItems.length - 1}
                           />
                       ))}
                     </div>
