@@ -135,7 +135,7 @@ export function UserActions({
                     </SheetTrigger>
                     <SheetContent side="right" className="bg-background text-white w-[250px] flex flex-col p-0">
                         <SheetHeader className="p-4">
-                            <SheetTitle className="sr-only">Menu</SheetTitle>
+                           <SheetTitle className="sr-only">Menu</SheetTitle>
                             <Link href="/" className="mb-4">
                                 <Image 
                                     src="/Choco Smiley Logo.png" 
@@ -192,7 +192,7 @@ export function UserActions({
                     </SheetContent>
                 </Sheet>
                  <Sheet open={isEnquireSheetOpen} onOpenChange={setIsEnquireSheetOpen}>
-                    <SheetContent side="bottom" className="bg-black text-white rounded-t-3xl border-t-2 border-custom-gold p-6">
+                    <SheetContent side="bottom" className="bg-custom-purple-dark/90 text-white rounded-t-3xl border-t-2 border-custom-gold p-6">
                         <SheetHeader className="text-center">
                             <SheetTitle className="text-xl font-bold text-white font-plex-sans">Looking for a Perfect Gift?</SheetTitle>
                             <SheetDescription className="text-white/80 font-plex-sans-condensed text-base">
