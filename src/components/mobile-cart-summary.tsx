@@ -2,7 +2,6 @@
 'use client';
 
 import { Button } from './ui/button';
-import { Separator } from './ui/separator';
 import { cn } from '@/lib/utils';
 
 interface MobileCartSummaryProps {
@@ -47,7 +46,7 @@ export function MobileCartSummary({ cart, onCheckout }: MobileCartSummaryProps) 
     <div className="mt-6 bg-white/80 rounded-2xl p-4 shadow-lg text-black">
         <h3 className="font-bold text-lg text-center text-black mb-4">Order Summary</h3>
         
-        <div className="space-y-2.5">
+        <div className="space-y-2">
             <div className="space-y-2">
                 {cartItems.map(([name, quantity]) => (
                     <div key={name} className="flex justify-between items-center text-sm">
@@ -58,7 +57,7 @@ export function MobileCartSummary({ cart, onCheckout }: MobileCartSummaryProps) 
                 ))}
             </div>
             
-            <Separator className="my-3 bg-black/20" />
+            <div className="border-t border-dashed border-black/20 my-3"></div>
 
             <SummaryRow 
                 label="Discount Applied"
@@ -73,7 +72,7 @@ export function MobileCartSummary({ cart, onCheckout }: MobileCartSummaryProps) 
                 value={`+₹${gstAmount.toFixed(2)}`}
             />
 
-            <Separator className="my-2 bg-black/20 h-[1.5px]" />
+            <div className="border-t border-black/20 my-2 h-[1.5px]" ></div>
             
             <SummaryRow 
                 label="Total (Amount Payable)"
