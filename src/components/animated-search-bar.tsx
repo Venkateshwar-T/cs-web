@@ -1,4 +1,3 @@
-
 // @/components/animated-search-bar.tsx
 'use client';
 
@@ -83,7 +82,7 @@ export function AnimatedSearchBar({
                     placeholder="Search for gifts..."
                     value={inputValue}
                     onChange={(e) => setInputValue(e.target.value)}
-                    className="w-full bg-transparent outline-none text-black placeholder:text-gray-500 text-lg md:text-xl"
+                    className="w-full bg-transparent outline-none text-black placeholder:text-gray-500 text-base md:text-lg"
                     onClick={(e) => e.stopPropagation()}
                 />
                 {showCloseButton && (
