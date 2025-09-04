@@ -84,8 +84,8 @@ export function MobileCartItemCard({ productName, quantity, onQuantityChange, on
                     </div>
                 </div>
                 <div className="w-2/3 flex flex-col justify-between self-stretch pr-2">
-                    <div className="items-start">
-                        <div className="flex justify-between items-center gap-2">
+                    <div className="flex flex-col items-start">
+                        <div className="flex justify-between items-center w-full gap-2">
                             <h3 className="font-bold text-base truncate flex-1">{productName}</h3>
                             <button onClick={handleRemove} className="text-black/80 hover:text-red-500 transition-colors flex-shrink-0">
                                 <FaTrash size={18} />
@@ -95,16 +95,16 @@ export function MobileCartItemCard({ productName, quantity, onQuantityChange, on
                         
                         <Sheet>
                           <SheetTrigger asChild>
-                            <button className="flex w-full justify-start items-center gap-1 text-xs text-black/60 mt-2 hover:text-black transition-colors">
-                              <span>Click to see your selected flavours & fillings</span>
+                            <Button variant="ghost" className="h-auto p-2 mt-2 text-xs rounded-lg hover:bg-black/10">
+                              <span>Selected Flavours</span>
                               <ChevronDown className="h-4 w-4" />
-                            </button>
+                            </Button>
                           </SheetTrigger>
-                          <SheetContent side="bottom" className="bg-custom-purple-dark text-white border-t-2 border-custom-gold rounded-t-3xl h-auto p-4">
-                            <SheetHeader className="text-left mb-4">
+                          <SheetContent side="bottom" className="bg-custom-purple-dark text-white border-t-2 border-custom-gold rounded-t-3xl h-auto p-0">
+                            <SheetHeader className="p-4 border-b border-white/20">
                               <SheetTitle className="text-white">Selected Flavours & Fillings</SheetTitle>
                             </SheetHeader>
-                            <div className="bg-white/10 rounded-lg p-4">
+                            <div className="bg-white/10 rounded-lg p-4 m-4">
                                 <ul className="list-disc list-inside text-sm mt-1 space-y-2 font-medium">
                                   {selectedFlavours.map((flavour, index) => (
                                       <li key={index}>
