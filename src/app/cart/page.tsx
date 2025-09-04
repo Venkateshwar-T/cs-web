@@ -110,7 +110,7 @@ export default function CartPage() {
               {isMobile ? (
                 <div className="flex-grow overflow-y-auto no-scrollbar">
                   <div className="p-4 flex flex-col flex-grow">
-                    <div className="bg-white/80 rounded-2xl overflow-y-auto no-scrollbar flex-grow">
+                    <div className="bg-white/80 rounded-2xl overflow-y-auto no-scrollbar max-h-[70vh]">
                       {cartItems.map(([productName, quantity], index) => (
                          <MobileCartItemCard
                             key={productName}
