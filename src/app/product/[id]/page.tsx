@@ -143,7 +143,7 @@ export default function ProductPage() {
           searchInput={searchInput}
           onSearchInputChange={setSearchInput}
         />
-        <main onScroll={handleScroll} className="flex-grow pt-32 md:px-32 flex flex-col gap-8 pb-8 overflow-y-auto custom-scrollbar">
+        <main onScroll={handleScroll} className="flex-grow pt-32 md:px-32 flex flex-col gap-8 pb-8 overflow-y-auto no-scrollbar">
           <div className="h-full px-4 sm:px-6 lg:px-8 flex flex-col">
             <div className="relative w-full flex-grow flex flex-col">
               <div className={cn("bg-[#9A7DAB] rounded-[40px] pt-6 md:px-4 lg:px-5 xl:px-8 text-white overflow-hidden relative flex flex-col ring-4 ring-custom-purple-dark flex-grow")}>
