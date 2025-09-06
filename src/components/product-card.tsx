@@ -7,6 +7,7 @@ import { Heart, Plus, Minus } from 'lucide-react';
 import { useState } from 'react';
 import { cn } from '@/lib/utils';
 import type { Product } from '@/app/page';
+import { productImages } from '@/lib/images';
 
 interface ProductCardProps {
   product: Product;
@@ -19,6 +20,7 @@ interface ProductCardProps {
 
 export function ProductCard({ product, onAddToCart, quantity, onProductClick, isLiked, onLikeToggle }: ProductCardProps) {
   const [likeClickCount, setLikeClickCount] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
 
   const handleAddToCartClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -44,15 +46,17 @@ export function ProductCard({ product, onAddToCart, quantity, onProductClick, is
   return (
     <div
       onClick={() => onProductClick(product)}
-      className="bg-white text-black rounded-lg md:rounded-2xl overflow-hidden flex flex-col h-full shadow-custom-dark cursor-pointer transition-transform duration-200 md:hover:-translate-y-1"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      className="bg-white text-black rounded-lg md:rounded-2xl overflow-hidden flex flex-col h-full shadow-custom-dark cursor-pointer group"
     >
-      <div className="relative w-full pt-[80%] rounded-t-lg md:rounded-t-2xl">
+      <div className="relative w-full pt-[80%] rounded-t-lg md:rounded-t-2xl overflow-hidden">
         <Image
-          src="/choco img.png"
+          src={isHovered ? productImages[1].src : productImages[0].src}
           alt={product.name}
           layout="fill"
           objectFit="cover"
-          className="rounded-t-lg md:rounded-t-2xl"
+          className="rounded-t-lg md:rounded-t-2xl transition-transform duration-300 ease-in-out group-hover:scale-110"
         />
       </div>
       <div className="p-2 md:p-3 flex flex-col flex-grow">
