@@ -123,10 +123,10 @@ export default function ProductPage() {
           onNavigate={(view) => router.push(`/?view=${view}`)}
           activeView={'search'}
         />
-        <main className="flex-grow pt-32">
+        <main className="flex-grow pt-32 pb-4">
           <div className="container mx-auto h-full px-4 sm:px-6 lg:px-8">
-            <div className="relative h-[calc(100vh-14rem)] w-full">
-              <div className={cn("bg-[#9A7DAB] rounded-t-[40px] pt-6 md:px-4 lg:px-5 xl:px-8 text-white h-full overflow-hidden relative flex flex-col ring-4 ring-custom-purple-dark")}>
+            <div className="relative h-full w-full">
+              <div className={cn("bg-[#9A7DAB] rounded-[40px] pt-6 md:px-4 lg:px-5 xl:px-8 text-white h-full overflow-hidden relative flex flex-col ring-4 ring-custom-purple-dark")}>
                 <button 
                   onClick={() => router.back()} 
                   className="absolute top-4 right-4 text-white bg-black/30 p-1.5 rounded-full hover:bg-black/50 transition-colors z-20"
