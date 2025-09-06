@@ -28,7 +28,7 @@ export function FeaturedProducts({
       <SectionTitle className="text-xl md:text-2xl mb-4 px-4 md:px-0 text-white">
         You might also like
       </SectionTitle>
-      <div className="flex overflow-x-auto no-scrollbar gap-4 md:gap-6 px-4 md:px-0">
+      <div className="flex overflow-x-auto no-scrollbar gap-4 md:gap-6 px-4 md:px-0 pb-4">
         {products.map(product => (
           <div key={product.id} className="w-48 md:w-64 flex-shrink-0">
             <ProductCard
