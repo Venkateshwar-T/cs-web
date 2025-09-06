@@ -44,12 +44,12 @@ export function ProductCard({ product, onAddToCart, quantity, onProductClick, is
   useEffect(() => {
     let interval: NodeJS.Timeout;
     if (isHovered) {
+      // Start the interval after an initial delay to show the second image
       interval = setInterval(() => {
         setCurrentImageIndex((prevIndex) => (prevIndex + 1) % productImages.length);
       }, 2000);
-    } else {
-      setCurrentImageIndex(0);
     }
+    // Cleanup function to clear the interval
     return () => clearInterval(interval);
   }, [isHovered]);
 
@@ -75,11 +75,23 @@ export function ProductCard({ product, onAddToCart, quantity, onProductClick, is
     onLikeToggle();
   }
 
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+    // Instantly switch to the second image on hover
+    setCurrentImageIndex(1);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+    // Reset to the first image when mouse leaves
+    setCurrentImageIndex(0);
+  };
+
   return (
     <div
       onClick={() => onProductClick(product)}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
       className="bg-white text-black rounded-lg md:rounded-2xl overflow-hidden flex flex-col h-full shadow-custom-dark cursor-pointer group"
     >
       <div className="relative w-full pt-[80%] rounded-t-lg md:rounded-t-2xl overflow-hidden">
