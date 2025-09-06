@@ -144,17 +144,17 @@ export default function ProductPage() {
           onSearchInputChange={setSearchInput}
         />
         <main onScroll={handleScroll} className="flex-grow pt-28 md:px-32 flex flex-col gap-8 pb-8 overflow-y-auto no-scrollbar">
-          <div className="h-full px-4 sm:px-6 lg:px-8 flex flex-col">
+          <div className="px-4 sm:px-6 lg:px-8 flex flex-col">
             <div className="relative w-full flex-grow flex flex-col">
               <div className={cn("bg-[#9A7DAB] rounded-[40px] pt-6 md:px-4 lg:px-5 xl:px-8 text-white overflow-hidden relative flex flex-col")}>
                                
-                <div className="flex flex-row flex-grow h-full md:gap-4 lg:gap-4 xl:gap-8">
+                <div className="flex flex-row flex-grow md:gap-4 lg:gap-4 xl:gap-8">
                   {/* Left Section */}
-                  <div className="w-[48%] flex flex-col gap-4 h-full items-center">
-                    <div className="flex md:h-full xl:h-[45%] rounded-lg w-full justify-center">
+                  <div className="w-[48%] flex flex-col gap-4 items-center">
+                    <div className="flex rounded-lg w-full justify-center">
                       <ImageGallery product={product} onImageExpandChange={setIsImageExpanded} />
                     </div>
-                    <div className="pb-6 rounded-lg w-full h-[55%]">
+                    <div className="pb-6 rounded-lg w-full">
                       <FlavoursSection onAddToCart={handleFlavourAddToCart} cart={flavourCart} />
                     </div>
                   </div>
