@@ -1,3 +1,4 @@
+
 // @/components/featured-products.tsx
 'use client';
 
@@ -23,7 +24,7 @@ export function FeaturedProducts({
   onLikeToggle,
 }: FeaturedProductsProps) {
   return (
-    <div className="py-8">
+    <div className="py-8 bg-transparent">
       <SectionTitle className="text-xl md:text-2xl mb-4 px-4 md:px-0">
         You might also like
       </SectionTitle>
