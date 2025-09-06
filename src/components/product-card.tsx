@@ -4,10 +4,11 @@
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Heart, Plus, Minus } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import type { Product } from '@/app/page';
 import { productImages } from '@/lib/images';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface ProductCardProps {
   product: Product;
@@ -18,9 +19,40 @@ interface ProductCardProps {
   onLikeToggle: () => void;
 }
 
+const variants = {
+  enter: {
+    x: '100%',
+    opacity: 0,
+  },
+  center: {
+    zIndex: 1,
+    x: 0,
+    opacity: 1,
+  },
+  exit: {
+    zIndex: 0,
+    x: '-100%',
+    opacity: 0,
+  },
+};
+
 export function ProductCard({ product, onAddToCart, quantity, onProductClick, isLiked, onLikeToggle }: ProductCardProps) {
   const [likeClickCount, setLikeClickCount] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    if (isHovered) {
+      interval = setInterval(() => {
+        setCurrentImageIndex((prevIndex) => (prevIndex + 1) % productImages.length);
+      }, 2000);
+    } else {
+      setCurrentImageIndex(0);
+    }
+    return () => clearInterval(interval);
+  }, [isHovered]);
+
 
   const handleAddToCartClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -51,13 +83,28 @@ export function ProductCard({ product, onAddToCart, quantity, onProductClick, is
       className="bg-white text-black rounded-lg md:rounded-2xl overflow-hidden flex flex-col h-full shadow-custom-dark cursor-pointer group"
     >
       <div className="relative w-full pt-[80%] rounded-t-lg md:rounded-t-2xl overflow-hidden">
-        <Image
-          src={isHovered ? productImages[1].src : productImages[0].src}
-          alt={product.name}
-          layout="fill"
-          objectFit="cover"
-          className="rounded-t-lg md:rounded-t-2xl transition-transform duration-300 ease-in-out group-hover:scale-110"
-        />
+        <AnimatePresence initial={false}>
+            <motion.div
+              key={currentImageIndex}
+              className="absolute inset-0"
+              variants={variants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              transition={{
+                x: { type: 'spring', stiffness: 300, damping: 30 },
+                opacity: { duration: 0.2 },
+              }}
+            >
+              <Image
+                src={productImages[currentImageIndex].src}
+                alt={product.name}
+                layout="fill"
+                objectFit="cover"
+                className="rounded-t-lg md:rounded-t-2xl transition-transform duration-300 ease-in-out group-hover:scale-110"
+              />
+            </motion.div>
+        </AnimatePresence>
       </div>
       <div className="p-2 md:p-3 flex flex-col flex-grow">
         <div className="flex-grow md:flex-grow-0">
