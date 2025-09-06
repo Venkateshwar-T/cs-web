@@ -143,7 +143,7 @@ export default function ProductPage() {
           searchInput={searchInput}
           onSearchInputChange={setSearchInput}
         />
-        <main onScroll={handleScroll} className="flex-grow pt-32 md:px-32 flex flex-col gap-20 pb-8 overflow-y-auto no-scrollbar">
+        <main onScroll={handleScroll} className="flex-grow pt-28 md:px-32 flex flex-col gap-8 pb-8 overflow-y-auto no-scrollbar">
           <div className="h-full px-4 sm:px-6 lg:px-8 flex flex-col">
             <div className="relative w-full flex-grow flex flex-col">
               <div className={cn("bg-[#9A7DAB] rounded-[40px] pt-6 md:px-4 lg:px-5 xl:px-8 text-white overflow-hidden relative flex flex-col")}>
@@ -163,7 +163,7 @@ export default function ProductPage() {
 
                   {/* Right Section */}
                   <div className="flex-grow h-full xl:relative lg:relative">
-                      <div className="h-full py-0 pr-6 overflow-y-auto custom-scrollbar pb-28">
+                      <div className="h-full py-0 pr-6 overflow-y-auto no-scrollbar pb-28">
                           <ProductDetails product={product} isLiked={!!likedProducts[product.id]} onLikeToggle={() => handleLikeToggle(product.id)} isMobile={false} />
                       </div>
                       <ProductPopupFooter product={product} onAddToCart={handleAddToCart} quantity={productQuantity} onToggleCartPopup={handleToggleCartPopup} />
