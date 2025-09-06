@@ -88,7 +88,7 @@ export function PopupsManager({
       
       {isCartVisible && (
           <div className={cn("fixed inset-x-0 bottom-0 z-50 h-[82vh]", isCartOpen ? 'animate-slide-up-in' : 'animate-slide-down-out' )}>
-              <div className="h-full relative w-[70vw] ml-[calc(17%+2rem)] mr-8">
+              <div className="h-full relative w-[80vw] left-1/2 -translate-x-1/2">
                   <CartPopup
                     onClose={onToggleCartPopup}
                     cart={cart}
