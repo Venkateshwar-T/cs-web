@@ -125,11 +125,7 @@ function SearchPageComponent() {
   };
 
   const handleProductClick = (product: Product) => {
-    if (isMobile) {
-      setSelectedProductForMobile(product);
-    } else {
-      setSelectedProduct(product);
-    }
+    router.push(`/product/${product.id}`);
   };
 
   const handleSearchSubmit = (value: string) => {
@@ -334,7 +330,7 @@ function SearchPageComponent() {
       )}
 
       <PopupsManager
-        selectedProduct={selectedProduct}
+        selectedProduct={null}
         isCartVisible={isCartVisible}
         isCartOpen={isCartOpen}
         isProfileOpen={isProfileOpen}

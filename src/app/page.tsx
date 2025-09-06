@@ -111,11 +111,7 @@ export default function Home() {
   };
 
   const handleProductClick = (product: Product) => {
-     if (isMobile) {
-      setSelectedProductForMobile(product);
-    } else {
-      setSelectedProduct(product);
-    }
+    router.push(`/product/${product.id}`);
   };
 
   const handleClosePopup = () => {

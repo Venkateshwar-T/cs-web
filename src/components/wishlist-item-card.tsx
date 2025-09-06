@@ -56,7 +56,7 @@ export function WishlistItemCard({ product, onAddToCart, onUnlike, isInCart, isU
                     <Heart className="h-5 w-5 text-red-500 fill-red-500" />
                   </button>
               </div>
-              <p className="text-xs text-black/70 truncate mt-0">250g | Assorted | Hard-Box</p>
+              <p className="text-xs text-black/70 truncate">250g | Assorted | Hard-Box</p>
             </div>
             
             <div className="flex justify-between items-end gap-2">

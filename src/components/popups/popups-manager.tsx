@@ -1,7 +1,6 @@
 
 'use client';
 
-import { ProductPopup } from '@/components/product-popup';
 import { CartPopup } from '@/components/cart-popup';
 import { ProfilePopup } from '@/components/profile-popup';
 import { SignUpPopup } from '@/components/signup-popup';
@@ -87,24 +86,6 @@ export function PopupsManager({
     <>
       {isAnyPopupVisible && <div className="fixed inset-0 z-10 bg-black/50" />}
       
-      {selectedProduct && (
-        <div className="fixed inset-0 z-20 flex items-start justify-center pt-36">
-          <div className="h-full flex-grow ml-[calc(17%+2rem)] mr-8 relative w-[calc(83%-4rem)]">
-              <ProductPopup 
-                product={selectedProduct} 
-                onClose={onClosePopup}
-                onImageExpandChange={onImageExpandChange}
-                isLiked={!!likedProducts[selectedProduct.id]}
-                onLikeToggle={() => onLikeToggle(selectedProduct.id)}
-                cart={cart}
-                onAddToCart={onAddToCart}
-                onToggleCartPopup={onToggleCartPopup}
-              />
-              {isCartVisible && <div className="absolute inset-0 z-30 bg-black/50 rounded-t-[40px]" />}
-          </div>
-        </div>
-      )}
-
       {isCartVisible && (
           <div className={cn("fixed inset-0 z-30 flex items-start justify-center pt-36", isCartOpen ? 'animate-slide-up-in' : 'animate-slide-down-out' )}>
               <div className="h-full flex-grow ml-[calc(17%+2rem)] mr-8 relative w-[calc(83%-4rem)]">
