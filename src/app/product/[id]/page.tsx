@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, type UIEvent } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { useCart } from '@/hooks/use-cart';
 import type { Product, ProfileInfo, ActiveView } from '@/app/page';
@@ -45,6 +45,7 @@ export default function ProductPage() {
     email: 'john.doe@example.com',
   });
   const [searchInput, setSearchInput] = useState('');
+  const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
     if (params.id) {
@@ -62,6 +63,11 @@ export default function ProductPage() {
       return () => clearTimeout(timer);
     }
   }, [isCartOpen]);
+  
+  const handleScroll = (event: UIEvent<HTMLDivElement>) => {
+    const { scrollTop } = event.currentTarget;
+    setIsScrolled(scrollTop > 0);
+  };
   
   const handleSearchSubmit = (query: string) => {
     router.push(`/search?q=${encodeURIComponent(query)}`);
@@ -128,7 +134,7 @@ export default function ProductPage() {
       <div className="flex flex-col h-screen">
         <Header 
           onProfileOpenChange={setIsProfileOpen}
-          isContentScrolled={true}
+          isContentScrolled={isScrolled}
           onReset={() => router.push('/')}
           onNavigate={(view) => router.push(`/?view=${view}`)}
           activeView={'search'}
@@ -137,7 +143,7 @@ export default function ProductPage() {
           searchInput={searchInput}
           onSearchInputChange={setSearchInput}
         />
-        <main className="flex-grow pt-32 md:px-32 flex flex-col gap-8 pb-8">
+        <main onScroll={handleScroll} className="flex-grow pt-32 md:px-32 flex flex-col gap-8 pb-8 overflow-y-auto custom-scrollbar">
           <div className="h-full px-4 sm:px-6 lg:px-8 flex flex-col">
             <div className="relative w-full flex-grow flex flex-col">
               <div className={cn("bg-[#9A7DAB] rounded-[40px] pt-6 md:px-4 lg:px-5 xl:px-8 text-white overflow-hidden relative flex flex-col ring-4 ring-custom-purple-dark flex-grow")}>
@@ -167,7 +173,7 @@ export default function ProductPage() {
                       <div className="h-full py-0 pr-6 overflow-y-auto custom-scrollbar pb-28">
                           <ProductDetails product={product} isLiked={!!likedProducts[product.id]} onLikeToggle={() => handleLikeToggle(product.id)} isMobile={false} />
                       </div>
-                      <ProductPopupFooter product={product} onAddToCart={handleAddToCart} quantity={productQuantity} onToggleCartPopup={handleToggleCartPopup} />
+                      <ProductPopupFooter product={product} onAddToCart={onAddToCart} quantity={productQuantity} onToggleCartPopup={onToggleCartPopup} />
                   </div>
                 </div>
               </div>
@@ -176,7 +182,7 @@ export default function ProductPage() {
            <FeaturedProducts 
               products={allProducts}
               onProductClick={handleProductClick}
-              onAddToCart={handleAddToCart}
+              onAddToCart={onAddToCart}
               cart={cart}
               likedProducts={likedProducts}
               onLikeToggle={handleLikeToggle}
