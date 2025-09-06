@@ -24,8 +24,8 @@ export function FeaturedProducts({
   onLikeToggle,
 }: FeaturedProductsProps) {
   return (
-    <div className="py-8 bg-transparent">
-      <SectionTitle className="text-xl md:text-2xl mb-4 px-4 md:px-0">
+    <div className="py-8 bg-[#9A7DAB] rounded-[40px] ring-4 ring-custom-purple-dark px-4 sm:px-6 lg:px-8">
+      <SectionTitle className="text-xl md:text-2xl mb-4 px-4 md:px-0 text-white">
         You might also like
       </SectionTitle>
       <div className="flex overflow-x-auto no-scrollbar gap-4 md:gap-6 px-4 md:px-0">
