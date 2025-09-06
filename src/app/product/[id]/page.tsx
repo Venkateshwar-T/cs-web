@@ -44,6 +44,7 @@ export default function ProductPage() {
     phone: '+1 234 567 890',
     email: 'john.doe@example.com',
   });
+  const [searchInput, setSearchInput] = useState('');
 
   useEffect(() => {
     if (params.id) {
@@ -61,6 +62,10 @@ export default function ProductPage() {
       return () => clearTimeout(timer);
     }
   }, [isCartOpen]);
+  
+  const handleSearchSubmit = (query: string) => {
+    router.push(`/search?q=${encodeURIComponent(query)}`);
+  };
 
   const handleLikeToggle = (productId: number) => {
     setLikedProducts(prev => ({ ...prev, [productId]: !prev[productId] }));
@@ -127,6 +132,10 @@ export default function ProductPage() {
           onReset={() => router.push('/')}
           onNavigate={(view) => router.push(`/?view=${view}`)}
           activeView={'search'}
+          isUsingAnimatedSearch={true}
+          onSearchSubmit={handleSearchSubmit}
+          searchInput={searchInput}
+          onSearchInputChange={setSearchInput}
         />
         <main className="flex-grow pt-32 md:px-32 flex flex-col gap-8 pb-8">
           <div className="h-full px-4 sm:px-6 lg:px-8 flex flex-col">
