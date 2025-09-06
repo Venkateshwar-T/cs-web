@@ -61,7 +61,7 @@ export function ProductCard({ product, onAddToCart, quantity, onProductClick, is
       clearTimeout(timeoutId);
       clearInterval(intervalId);
     };
-  }, [isHovered]);
+  }, [isHovered, currentImageIndex]);
 
 
   const handleAddToCartClick = (e: React.MouseEvent) => {
@@ -102,7 +102,7 @@ export function ProductCard({ product, onAddToCart, quantity, onProductClick, is
       onClick={() => onProductClick(product)}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      className="bg-white text-black rounded-lg md:rounded-2xl overflow-hidden flex flex-col h-full shadow-custom-dark cursor-pointer group"
+      className="bg-white text-black rounded-lg md:rounded-2xl overflow-hidden flex flex-col h-full shadow-custom-dark cursor-pointer group transition-transform duration-200 hover:scale-105"
     >
       <div className="relative w-full pt-[80%] rounded-t-lg md:rounded-t-2xl overflow-hidden">
         <AnimatePresence initial={false}>
