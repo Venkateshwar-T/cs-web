@@ -42,21 +42,26 @@ export function ProductCard({ product, onAddToCart, quantity, onProductClick, is
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   useEffect(() => {
-    if (!isHovered) return;
+    if (!isHovered) {
+      return;
+    }
+
+    let timeoutId: NodeJS.Timeout;
+    let intervalId: NodeJS.Timeout;
 
     // After the initial instant switch, wait 2 seconds then start the interval
-    const timeout = setTimeout(() => {
-        const interval = setInterval(() => {
-            setCurrentImageIndex((prevIndex) => (prevIndex + 1) % productImages.length);
-        }, 2000);
-
-        // Cleanup the interval when the component unmounts or isHovered becomes false
-        return () => clearInterval(interval);
+    timeoutId = setTimeout(() => {
+      intervalId = setInterval(() => {
+        setCurrentImageIndex((prevIndex) => (prevIndex + 1) % productImages.length);
+      }, 2000);
     }, 2000);
 
-    // Cleanup the timeout if the component unmounts or isHovered becomes false
-    return () => clearTimeout(timeout);
-  }, [isHovered, currentImageIndex]);
+    // Cleanup function to clear the timers
+    return () => {
+      clearTimeout(timeoutId);
+      clearInterval(intervalId);
+    };
+  }, [isHovered]);
 
 
   const handleAddToCartClick = (e: React.MouseEvent) => {
