@@ -13,6 +13,7 @@ import { ExploreCategories } from '@/components/explore-categories';
 import { SearchBar } from '@/components/header/search-bar';
 import { useToast } from "@/hooks/use-toast";
 import { useCart } from '@/hooks/use-cart';
+import { RecommendedProducts } from '@/components/recommended-products';
 
 
 export type Product = {
@@ -201,6 +202,14 @@ export default function Home() {
           <div className="mt-8 w-full flex-grow min-h-0">
             <ExploreCategories />
           </div>
+           <RecommendedProducts 
+            products={allProducts}
+            onProductClick={handleProductClick}
+            onAddToCart={handleAddToCart}
+            cart={cart}
+            likedProducts={likedProducts}
+            onLikeToggle={handleLikeToggle}
+          />
         </main>
       </div>
 
