@@ -173,7 +173,7 @@ export default function ProductPage() {
                       <div className="h-full py-0 pr-6 overflow-y-auto custom-scrollbar pb-28">
                           <ProductDetails product={product} isLiked={!!likedProducts[product.id]} onLikeToggle={() => handleLikeToggle(product.id)} isMobile={false} />
                       </div>
-                      <ProductPopupFooter product={product} onAddToCart={onAddToCart} quantity={productQuantity} onToggleCartPopup={onToggleCartPopup} />
+                      <ProductPopupFooter product={product} onAddToCart={handleAddToCart} quantity={productQuantity} onToggleCartPopup={onToggleCartPopup} />
                   </div>
                 </div>
               </div>
@@ -182,7 +182,7 @@ export default function ProductPage() {
            <FeaturedProducts 
               products={allProducts}
               onProductClick={handleProductClick}
-              onAddToCart={onAddToCart}
+              onAddToCart={handleAddToCart}
               cart={cart}
               likedProducts={likedProducts}
               onLikeToggle={handleLikeToggle}
