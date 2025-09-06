@@ -10,6 +10,7 @@ import { Header } from '@/components/header';
 import { SparkleBackground } from '@/components/sparkle-background';
 import { BottomNavbar } from '@/components/bottom-navbar';
 import { PopupsManager } from '@/components/popups/popups-manager';
+import { FloatingCartButton } from '@/components/floating-cart-button';
 
 import { ImageGallery } from '@/components/image-gallery';
 import { FlavoursSection } from '@/components/flavours-section';
@@ -46,6 +47,8 @@ export default function ProductPage() {
   });
   const [searchInput, setSearchInput] = useState('');
   const [isScrolled, setIsScrolled] = useState(false);
+  const [cartMessage, setCartMessage] = useState('');
+  const [isCartButtonExpanded, setIsCartButtonExpanded] = useState(false);
 
   useEffect(() => {
     if (params.id) {
@@ -77,8 +80,15 @@ export default function ProductPage() {
     setLikedProducts(prev => ({ ...prev, [productId]: !prev[productId] }));
   };
   
-  const handleAddToCart = (productName: string, quantity: number) => {
+  const handleAddToCart = (productName: string, quantity: number, animate: boolean = true) => {
+    const prevQuantity = cart[productName] || 0;
     updateCart(productName, quantity);
+    
+    if (animate && quantity > prevQuantity) {
+      setCartMessage(`${quantity - prevQuantity} added`);
+      setIsCartButtonExpanded(true);
+      setTimeout(() => setIsCartButtonExpanded(false), 1500);
+    }
   };
   
   const handleFlavourAddToCart = (flavourId: number, quantity: number) => {
@@ -182,6 +192,16 @@ export default function ProductPage() {
             />
         </main>
       </div>
+      
+      <FloatingCartButton
+        activeView={'search'}
+        isSearchingOnAbout={true}
+        isCartOpen={isCartOpen}
+        onToggleCart={handleToggleCartPopup}
+        isCartButtonExpanded={isCartButtonExpanded}
+        cartMessage={cartMessage}
+        cart={cart}
+      />
 
       <PopupsManager
         selectedProduct={null}
