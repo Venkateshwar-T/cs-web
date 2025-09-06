@@ -123,7 +123,7 @@ export default function ProductPage() {
           onNavigate={(view) => router.push(`/?view=${view}`)}
           activeView={'search'}
         />
-        <main className="flex-grow pt-32 pb-4 md:px-32">
+        <main className="flex-grow pt-32 md:px-32">
           <div className="h-full px-4 sm:px-6 lg:px-8">
             <div className="relative h-full w-full">
               <div className={cn("bg-[#9A7DAB] rounded-[40px] pt-6 md:px-4 lg:px-5 xl:px-8 text-white h-full overflow-hidden relative flex flex-col ring-4 ring-custom-purple-dark")}>
