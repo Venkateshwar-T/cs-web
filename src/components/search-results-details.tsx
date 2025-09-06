@@ -198,7 +198,7 @@ export function SearchResultsDetails({
               <div 
                   ref={scrollContainerRef}
                   onScroll={onScroll}
-                  className="flex-grow h-full overflow-y-auto custom-scrollbar pb-8 min-h-0 px-4 md:px-8"
+                  className="flex-grow h-full overflow-y-auto custom-scrollbar pt-4 pb-8 min-h-0 px-4 md:px-8"
               >
                 {/* Unified Product Grid for all screen sizes */}
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
