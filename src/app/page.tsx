@@ -13,7 +13,6 @@ import { ExploreCategories } from '@/components/explore-categories';
 import { SearchBar } from '@/components/header/search-bar';
 import { useToast } from "@/hooks/use-toast";
 import { useCart } from '@/hooks/use-cart';
-import { FaqView } from '@/components/faq-view';
 import { Footer } from '@/components/footer';
 import { OrderConfirmedView } from '@/components/order-confirmed-view';
 
@@ -172,6 +171,8 @@ export default function Home() {
       router.push('/profile');
     } else if (view === 'about') {
       router.push('/about');
+    } else if (view === 'faq') {
+      router.push('/faq');
     } 
     else {
        router.push('/');
@@ -180,12 +181,7 @@ export default function Home() {
   };
   
   const handleHeaderNavigate = (view: 'about' | 'faq') => {
-    if (view === 'about') {
-        router.push('/about');
-    } else {
-        setActiveView(view);
-        setIsSearchingOnAbout(true);
-    }
+    router.push(`/${view}`);
   };
 
   const cartItemCount = Object.values(cart).reduce((acc, quantity) => acc + quantity, 0);
@@ -196,8 +192,6 @@ export default function Home() {
     );
 
     switch (activeView) {
-      case 'faq':
-        return paddedView(<FaqView />);
       case 'order-confirmed':
         return paddedView(<div className="md:px-32 flex-grow flex flex-col gap-8 pb-8"><OrderConfirmedView cart={cart} /></div>);
       case 'home':

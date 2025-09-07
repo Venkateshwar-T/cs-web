@@ -79,6 +79,7 @@ export default function AboutPage() {
         if (view === 'home') router.push('/');
         else if (view === 'cart') router.push('/cart');
         else if (view === 'profile') router.push('/profile');
+        else if (view === 'faq') router.push('/faq');
     };
 
     const handleHeaderNavigate = (view: 'about' | 'faq') => {
@@ -90,7 +91,7 @@ export default function AboutPage() {
     return (
         <>
             <SparkleBackground />
-            <div className="flex flex-col min-h-screen">
+            <div className="flex flex-col h-screen">
                 <Header
                   onProfileOpenChange={setIsProfileOpen}
                   isContentScrolled={isContentScrolled}
@@ -103,7 +104,7 @@ export default function AboutPage() {
                   isSearchingOnAbout={true}
                 />
                 <main onScroll={handleScroll} className="flex-grow pt-36 flex flex-col overflow-y-auto no-scrollbar">
-                    <div className="bg-[#5D2B79] rounded-[40px] mx-8 md:mx-32 animate-fade-in flex flex-col" style={{ animationDuration: '0.5s', animationDelay: '0.2s', animationFillMode: 'both' }}>
+                    <div className="bg-[#5D2B79] rounded-[40px] mb-8 mx-8 md:mx-32 animate-fade-in flex flex-col" style={{ animationDuration: '0.5s', animationDelay: '0.2s', animationFillMode: 'both' }}>
                         <div className="bg-white/10 rounded-[40px] py-10 px-12 md:px-24 flex-grow">
                             <SectionTitle className="text-4xl text-center mb-12 font-poppins">
                                 Our Philosophy

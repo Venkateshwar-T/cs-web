@@ -5,16 +5,17 @@
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { useRouter } from 'next/navigation';
+import type { ActiveView } from '@/app/page';
 
 interface NavigationProps {
   isEnquireOpen: boolean;
   onNavigate: (view: 'about' | 'faq') => void;
-  activeView: string;
+  activeView: ActiveView;
 }
 
 const navLinks = [
     { id: "about", label: "About", href: "/about" },
-    { id: "faq", label: "FAQ" },
+    { id: "faq", label: "FAQ", href: "/faq" },
 ] as const;
 
 

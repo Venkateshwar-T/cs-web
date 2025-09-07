@@ -31,7 +31,7 @@ interface UserActionsProps {
 
 const navLinks = [
     { id: "about", label: "About", href: "/about" },
-    { id: "faq", label: "FAQ" },
+    { id: "faq", label: "FAQ", href: "/faq" },
 ] as const;
 
 export function UserActions({ 
@@ -51,8 +51,6 @@ export function UserActions({
     const handleMobileNav = (link: typeof navLinks[number]) => {
         if (link.href) {
             router.push(link.href);
-        } else {
-            onNavigate(link.id as 'faq');
         }
     };
     
