@@ -54,13 +54,13 @@ const FloatingPriceBox = ({ product, productQuantity, onAddToCart, onToggleCartP
                     ) : (
                         <div className="flex items-center justify-center w-20 rounded-full h-7 bg-custom-gold overflow-hidden border-2 border-white">
                             <Button size="icon" variant="ghost" onClick={handleDecrement} className="h-full rounded-none bg-white hover:bg-white/90 text-custom-purple-dark hover:text-custom-purple-dark flex-1">
-                                <Minus className="h-3 w-3" />
+                                <Minus className="h-3 w-3 text-custom-purple-dark" />
                             </Button>
                             <div className="flex-1 text-center bg-custom-purple-dark text-white h-full flex items-center justify-center">
                                 <span className="font-bold px-1 text-xs">{productQuantity}</span>
                             </div>
                             <Button size="icon" variant="ghost" onClick={handleIncrement} className="h-full rounded-none bg-white hover:bg-white/90 text-custom-purple-dark hover:text-custom-purple-dark flex-1">
-                                <Plus className="h-3 w-3" />
+                                <Plus className="h-3 w-3 text-custom-purple-dark" />
                             </Button>
                         </div>
                     )}
@@ -101,16 +101,16 @@ const InlinePriceBox = ({ product, productQuantity, onAddToCart, onToggleCartPop
         <div className={cn("px-4", className)}>
             <div className="bg-custom-purple-dark/80 p-3 backdrop-blur-sm rounded-t-xl">
                  <div className="flex justify-center items-center mb-3 gap-2">
-                    <p className="text-base line-through opacity-70 text-white">₹1000</p>
+                    <p className="text-sm line-through opacity-70 text-white">₹1000</p>
                     <div className="flex bg-custom-gold text-custom-purple-dark px-1 py-0.5 rounded-md">
                         <span className="text-[10px] font-bold">25% OFF</span>
                     </div>
-                    <p className="text-2xl font-bold text-white">₹750</p>
+                    <p className="text-xl font-bold text-white">₹750</p>
                 </div>
                 <div className="flex flex-wrap items-center gap-2 mx-auto max-w-xs">
                     {productQuantity === 0 ? (
                         <Button
-                            className="w-full rounded-full font-semibold text-sm border-2 border-custom-gold bg-custom-gold text-custom-purple-dark py-1.5 h-8 hover:bg-custom-gold/90"
+                            className="w-full rounded-full font-semibold text-xs border-2 border-custom-gold bg-custom-gold text-custom-purple-dark py-1 h-8 hover:bg-custom-gold/90"
                             onClick={handleAddToCartClick}
                         >
                             Add to Cart
@@ -118,19 +118,19 @@ const InlinePriceBox = ({ product, productQuantity, onAddToCart, onToggleCartPop
                     ) : (
                         <div className="flex items-center justify-center w-full rounded-full h-8 bg-custom-gold overflow-hidden border-2 border-white">
                             <Button size="icon" variant="ghost" onClick={handleDecrement} className="h-full rounded-none bg-white hover:bg-white/90 text-custom-purple-dark hover:text-custom-purple-dark flex-1">
-                                <Minus className="h-4 w-4" />
+                                <Minus className="h-4 w-4 text-custom-purple-dark" />
                             </Button>
                             <div className="flex-1 text-center bg-custom-purple-dark text-white h-full flex items-center justify-center">
                                 <span className="font-bold px-1 text-base">{productQuantity}</span>
                             </div>
                             <Button size="icon" variant="ghost" onClick={handleIncrement} className="h-full rounded-none bg-white hover:bg-white/90 text-custom-purple-dark hover:text-custom-purple-dark flex-1">
-                                <Plus className="h-4 w-4" />
+                                <Plus className="h-4 w-4 text-custom-purple-dark" />
                             </Button>
                         </div>
                     )}
                     <Button
                         onClick={handleBuyNow}
-                        className="w-full rounded-full font-semibold text-sm border border-white bg-white text-custom-purple-dark py-1.5 h-8 hover:bg-gray-200"
+                        className="w-full rounded-full font-semibold text-xs border border-white bg-white text-custom-purple-dark py-1.5 h-8 hover:bg-gray-200"
                     >
                         Buy Now
                     </Button>
@@ -205,7 +205,6 @@ export function MobileProductDetailView({
         <div className="px-4">
             <FlavoursSection onAddToCart={onFlavourAddToCart} cart={flavourCart} isMobile={true} />
         </div>
-        <Separator className="my-4 bg-white/30" />
         
         <div ref={inlinePriceBoxRef} className="pb-0">
             <InlinePriceBox

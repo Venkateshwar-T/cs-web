@@ -173,18 +173,33 @@ export default function ProductPage() {
               }}
               isVisible={isMobileHeaderVisible}
             />
-          <main onScroll={handleMobileScroll} className={cn("flex-grow flex flex-col transition-all duration-300 relative min-h-0 pb-16 px-4", isMobileHeaderVisible ? 'pt-16' : 'pt-0')}>
-            <MobileProductDetailView
-              product={product}
-              onClose={() => router.back()}
-              onAddToCart={handleAddToCart}
-              cart={cart}
-              onToggleCartPopup={handleToggleCartPopup}
-              isLiked={!!likedProducts[product.id]}
-              onLikeToggle={() => handleLikeToggle(product.id)}
-              flavourCart={flavourCart}
-              onFlavourAddToCart={handleFlavourAddToCart}
-            />
+          <main onScroll={handleMobileScroll} className={cn("flex-grow flex flex-col transition-all duration-300 relative min-h-0 pb-16", isMobileHeaderVisible ? 'pt-16' : 'pt-0')}>
+            <div className="flex-grow overflow-y-auto no-scrollbar">
+              <div className="px-4">
+                <MobileProductDetailView
+                  product={product}
+                  onClose={() => router.back()}
+                  onAddToCart={handleAddToCart}
+                  cart={cart}
+                  onToggleCartPopup={handleToggleCartPopup}
+                  isLiked={!!likedProducts[product.id]}
+                  onLikeToggle={() => handleLikeToggle(product.id)}
+                  flavourCart={flavourCart}
+                  onFlavourAddToCart={handleFlavourAddToCart}
+                />
+              </div>
+              <div className="mt-8 px-4">
+                <FeaturedProducts 
+                  products={allProducts}
+                  onProductClick={handleProductClick}
+                  onAddToCart={handleAddToCart}
+                  cart={cart}
+                  likedProducts={likedProducts}
+                  onLikeToggle={handleLikeToggle}
+                />
+              </div>
+               <div className="h-4" />
+            </div>
           </main>
         </div>
         <BottomNavbar activeView={'search'} onNavigate={handleNavigation} cartItemCount={cartItemCount} />
