@@ -192,7 +192,7 @@ export default function ProductPage() {
               <div className="mt-8">
                 <div className="bg-white/10 rounded-2xl p-4">
                     <SectionTitle className="text-base mb-3 p-0 text-center">You might also like</SectionTitle>
-                    <div className="flex items-center overflow-x-auto no-scrollbar gap-4">
+                    <div className="flex items-center overflow-x-auto no-scrollbar gap-4 pb-2">
                         {allProducts.slice(0, 6).map(p => (
                              <div key={p.id} className="flex-shrink-0 w-40">
                                 <ProductCard
@@ -264,7 +264,7 @@ export default function ProductPage() {
                       <div className="h-full py-0 pr-6 overflow-y-auto custom-scrollbar pb-28">
                           <ProductDetails product={product} isLiked={!!likedProducts[product.id]} onLikeToggle={() => handleLikeToggle(product.id)} isMobile={false} />
                       </div>
-                      <ProductPopupFooter product={product} onAddToCart={onAddToCart} quantity={cart[product.name] || 0} onToggleCartPopup={onToggleCartPopup} />
+                      <ProductPopupFooter product={product} onAddToCart={handleAddToCart} quantity={cart[product.name] || 0} onToggleCartPopup={onToggleCartPopup} />
                   </div>
                 </div>
               </div>
@@ -273,7 +273,7 @@ export default function ProductPage() {
            <FeaturedProducts 
               products={allProducts}
               onProductClick={handleProductClick}
-              onAddToCart={onAddToCart}
+              onAddToCart={handleAddToCart}
               cart={cart}
               likedProducts={likedProducts}
               onLikeToggle={handleLikeToggle}
