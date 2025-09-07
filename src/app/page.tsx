@@ -177,19 +177,23 @@ export default function Home() {
   const cartItemCount = Object.values(cart).reduce((acc, quantity) => acc + quantity, 0);
 
   const renderContent = () => {
+    const paddedView = (component: React.ReactNode) => (
+      <div className="pt-36 flex-grow flex flex-col w-full">{component}</div>
+    );
+
     switch (activeView) {
       case 'about':
-        return <AboutView />;
+        return paddedView(<AboutView />);
       case 'faq':
-        return <FaqView />;
+        return paddedView(<FaqView />);
       case 'order-confirmed':
-        return <OrderConfirmedView cart={cart} />;
+        return paddedView(<div className="md:px-32 flex-grow flex flex-col gap-8 pb-8"><OrderConfirmedView cart={cart} /></div>);
       case 'home':
       default:
         return (
           <>
             {activeView === 'home' && (
-              <div className='w-full'>
+              <div className='w-full pt-16'>
                 <SearchBar
                   formRef={formRef}
                   activeView={activeView}
@@ -209,7 +213,7 @@ export default function Home() {
   };
   
   const mainContentClass = cn(
-    "flex flex-col items-center justify-start transition-all duration-500 relative flex-grow min-h-0 pt-36",
+    "flex flex-col items-center justify-start transition-all duration-500 relative flex-grow min-h-0",
     isPageLoading && 'opacity-0'
   );
 
