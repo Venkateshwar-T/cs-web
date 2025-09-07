@@ -137,11 +137,12 @@ export default function ProductPage() {
   }
   
   const productQuantity = cart[product.name] || 0;
+  const isPopupOpen = isCartVisible || isProfileOpen || isSignUpOpen || isCompleteDetailsOpen || isImageExpanded;
 
   return (
     <>
       <SparkleBackground />
-      <div className="flex flex-col h-screen">
+      <div className={cn("flex flex-col h-screen", isPopupOpen && 'opacity-50')}>
         <Header 
           onProfileOpenChange={setIsProfileOpen}
           isContentScrolled={isScrolled}
