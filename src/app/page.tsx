@@ -13,6 +13,10 @@ import { ExploreCategories } from '@/components/explore-categories';
 import { SearchBar } from '@/components/header/search-bar';
 import { useToast } from "@/hooks/use-toast";
 import { useCart } from '@/hooks/use-cart';
+import { AboutView } from '@/components/about-view';
+import { FaqView } from '@/components/faq-view';
+import { Footer } from '@/components/footer';
+import { OrderConfirmedView } from '@/components/order-confirmed-view';
 
 
 export type Product = {
@@ -149,7 +153,7 @@ export default function Home() {
 
   const handleConfirmOrder = (name: string, phone: string) => {
     setProfileInfo(prev => ({...prev, name, phone }));
-    setActiveView('order-confirmed');
+    router.push('/order-confirmed');
     setIsCartOpen(false);
   };
 
@@ -172,36 +176,63 @@ export default function Home() {
 
   const cartItemCount = Object.values(cart).reduce((acc, quantity) => acc + quantity, 0);
 
+  const renderContent = () => {
+    switch (activeView) {
+      case 'about':
+        return <AboutView />;
+      case 'faq':
+        return <FaqView />;
+      case 'order-confirmed':
+        return <OrderConfirmedView cart={cart} />;
+      case 'home':
+      default:
+        return (
+          <>
+            {activeView === 'home' && (
+              <div className='w-full'>
+                <SearchBar
+                  formRef={formRef}
+                  activeView={activeView}
+                  isEnquireOpen={false}
+                  onSubmit={handleSearchSubmit}
+                  searchInput={searchInput}
+                  onSearchInputChange={setSearchInput}
+                />
+              </div>
+            )}
+            <div className="mt-8 w-full flex-grow min-h-0">
+              <ExploreCategories />
+            </div>
+          </>
+        );
+    }
+  };
+  
+  const mainContentClass = cn(
+    "flex flex-col items-center justify-start transition-all duration-500 relative flex-grow min-h-0",
+    activeView === 'home' ? 'pt-28' : 'pt-36',
+    isPageLoading && 'opacity-0'
+  );
+
   return (
     <>
       <SparkleBackground />
-      <div className={cn("flex flex-col h-screen", (isPopupOpen && !isCartVisible) ? 'opacity-50' : '')}>
+      <div className={cn("flex flex-col min-h-screen", (isPopupOpen && !isCartVisible) ? 'opacity-50' : '')}>
         <Header 
           onProfileOpenChange={setIsProfileOpen}
           isContentScrolled={isContentScrolled}
           onReset={handleResetToHome}
           onNavigate={(view) => setActiveView(view)}
           activeView={activeView}
+          onSearchSubmit={(query) => router.push(`/search?q=${encodeURIComponent(query)}`)}
+          isUsingAnimatedSearch={activeView === 'order-confirmed'}
+          searchInput={searchInput}
+          onSearchInputChange={setSearchInput}
         />
-        <main className={cn(
-          "flex flex-col items-center justify-start transition-all duration-500 relative flex-grow min-h-0",
-          "pt-28",
-          isPageLoading && 'opacity-0'
-        )}>
-          <div className='w-full'>
-            <SearchBar
-              formRef={formRef}
-              activeView={activeView}
-              isEnquireOpen={false}
-              onSubmit={handleSearchSubmit}
-              searchInput={searchInput}
-              onSearchInputChange={setSearchInput}
-            />
-          </div>
-          <div className="mt-8 w-full flex-grow min-h-0">
-            <ExploreCategories />
-          </div>
+        <main className={mainContentClass}>
+          {renderContent()}
         </main>
+        {activeView === 'order-confirmed' && <Footer />}
       </div>
 
       <PopupsManager

@@ -9,6 +9,7 @@ import { Separator } from './ui/separator';
 import { OrderSummaryItem } from './order-summary-item';
 import { motion } from 'framer-motion';
 import { Loader } from './loader';
+import { useCart } from '@/hooks/use-cart';
 
 // Mock data for product prices - in a real app this would come from a database or state management
 const productPrices: Record<string, number> = {
@@ -80,15 +81,17 @@ const ProcessingView = () => (
 export function OrderConfirmedView({ cart }: OrderConfirmedViewProps) {
     const [orderId, setOrderId] = useState('');
     const [isLoading, setIsLoading] = useState(true);
+    const { clearCart } = useCart();
     
     useEffect(() => {
         setOrderId(generateOrderId());
         const timer = setTimeout(() => {
             setIsLoading(false);
+            clearCart();
         }, 3000); // Simulate a 3-second processing time
 
         return () => clearTimeout(timer);
-    }, []);
+    }, [clearCart]);
 
     const cartItems = Object.entries(cart);
     
@@ -108,7 +111,7 @@ export function OrderConfirmedView({ cart }: OrderConfirmedViewProps) {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className="bg-[#9A7DAB] rounded-[40px] py-8 px-72 text-white h-[85vh] flex items-center justify-center"
+      className="bg-[#9A7DAB] rounded-[40px] py-8 px-16 text-white h-auto flex items-center justify-center flex-grow"
     >
         {isLoading ? (
             <ProcessingView />
