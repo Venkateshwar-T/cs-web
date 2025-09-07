@@ -18,7 +18,7 @@ import { ProductDetails } from '@/components/product-details';
 import { Separator } from '@/components/ui/separator';
 import { ProductPopupFooter } from '@/components/product-popup-footer';
 import { FeaturedProducts } from '@/components/featured-products';
-import { useIsMobile } from '@/hooks/use-mobile';
+import { useIsMobile } from '@/hooks/use-is-mobile';
 import { MobileSearchHeader } from '@/components/header/mobile-search-header';
 import { MobileProductDetailView } from '@/components/views/MobileProductDetailView';
 
@@ -173,7 +173,7 @@ export default function ProductPage() {
               }}
               isVisible={isMobileHeaderVisible}
             />
-          <main onScroll={handleMobileScroll} className={cn("flex-grow flex flex-col transition-all duration-300 relative min-h-0 pb-16 px-4", isMobileHeaderVisible ? 'pt-16' : 'pt-0')}>
+          <main onScroll={handleMobileScroll} className={cn("flex-grow flex flex-col transition-all duration-300 relative min-h-0 pb-16", isMobileHeaderVisible ? 'pt-16' : 'pt-0')}>
             <MobileProductDetailView
               product={product}
               onClose={() => router.back()}
@@ -230,7 +230,7 @@ export default function ProductPage() {
                       <div className="h-full py-0 pr-6 overflow-y-auto custom-scrollbar pb-28">
                           <ProductDetails product={product} isLiked={!!likedProducts[product.id]} onLikeToggle={() => handleLikeToggle(product.id)} isMobile={false} />
                       </div>
-                      <ProductPopupFooter product={product} onAddToCart={handleAddToCart} quantity={cart[product.name] || 0} onToggleCartPopup={onToggleCartPopup} />
+                      <ProductPopupFooter product={product} onAddToCart={handleAddToCart} quantity={cart[product.name] || 0} onToggleCartPopup={handleToggleCartPopup} />
                   </div>
                 </div>
               </div>
