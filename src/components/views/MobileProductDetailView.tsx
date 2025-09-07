@@ -116,7 +116,7 @@ const InlinePriceBox = ({ product, productQuantity, onAddToCart, onToggleCartPop
                             Add to Cart
                         </Button>
                     ) : (
-                        <div className="flex items-center justify-center w-full rounded-full h-9 bg-custom-gold overflow-hidden">
+                        <div className="flex items-center justify-center w-full rounded-full h-9 bg-custom-gold overflow-hidden border-2 border-white">
                             <Button size="icon" variant="ghost" onClick={handleDecrement} className="h-full rounded-none bg-white hover:bg-white/90 text-custom-purple-dark hover:text-custom-purple-dark flex-1">
                                 <Minus className="h-4 w-4" />
                             </Button>
