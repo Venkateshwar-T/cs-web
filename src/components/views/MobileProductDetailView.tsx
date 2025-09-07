@@ -11,7 +11,7 @@ import { ProductDetails } from '../product-details';
 import { FlavoursSection } from '../flavours-section';
 import { Separator } from '../ui/separator';
 
-const PriceBox = ({ product, productQuantity, onAddToCart, onToggleCartPopup, className }: { product: Product, productQuantity: number, onAddToCart: any, onToggleCartPopup: any, className?: string }) => {
+const FloatingPriceBox = ({ product, productQuantity, onAddToCart, onToggleCartPopup, className }: { product: Product, productQuantity: number, onAddToCart: any, onToggleCartPopup: any, className?: string }) => {
     const handleAddToCartClick = () => {
         onAddToCart(product.name, 1, false);
     };
@@ -33,6 +33,72 @@ const PriceBox = ({ product, productQuantity, onAddToCart, onToggleCartPopup, cl
 
     return (
         <div className={cn("bg-black/20 p-2 backdrop-blur-sm", className)}>
+            <div className="flex justify-between items-center">
+                <div className="flex items-center gap-2">
+                    <div className="text-white">
+                        <p className="text-[10px] line-through opacity-70">₹1000</p>
+                        <p className="text-base font-bold">₹750</p>
+                    </div>
+                     <div className="bg-custom-gold text-custom-purple-dark px-1 py-0.5 rounded-md">
+                        <span className="text-[10px] font-bold">25% OFF</span>
+                    </div>
+                </div>
+                <div className="flex items-center gap-2">
+                     {productQuantity === 0 ? (
+                        <Button
+                            className="rounded-full font-semibold text-[10px] border border-white bg-white text-custom-purple-dark py-1 h-7 px-2 hover:bg-gray-200"
+                            onClick={handleAddToCartClick}
+                        >
+                            Add to Cart
+                        </Button>
+                    ) : (
+                        <div className="flex items-center justify-center w-20 rounded-full h-7 border border-white overflow-hidden">
+                            <Button size="icon" variant="ghost" onClick={handleDecrement} className="h-full rounded-none bg-transparent hover:bg-white/20 text-white hover:text-white flex-1">
+                                <Minus className="h-3 w-3" />
+                            </Button>
+                            <div className="flex-1 text-center bg-transparent text-white h-full flex items-center justify-center">
+                                <span className="font-bold px-1 text-xs">{productQuantity}</span>
+                            </div>
+                            <Button size="icon" variant="ghost" onClick={handleIncrement} className="h-full rounded-none bg-transparent hover:bg-white/20 text-white hover:text-white flex-1">
+                                <Plus className="h-3 w-3" />
+                            </Button>
+                        </div>
+                    )}
+                    <Button
+                        onClick={handleBuyNow}
+                        className="rounded-full font-semibold text-[10px] border-2 border-custom-gold bg-custom-gold text-custom-purple-dark py-1 h-7 px-3 hover:bg-custom-gold/90"
+                    >
+                        Buy Now
+                    </Button>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+
+const InlinePriceBox = ({ product, productQuantity, onAddToCart, onToggleCartPopup, className }: { product: Product, productQuantity: number, onAddToCart: any, onToggleCartPopup: any, className?: string }) => {
+    const handleAddToCartClick = () => {
+        onAddToCart(product.name, 1, false);
+    };
+
+    const handleIncrement = () => {
+        onAddToCart(product.name, productQuantity + 1, false);
+    };
+
+    const handleDecrement = () => {
+        onAddToCart(product.name, productQuantity - 1, false);
+    };
+
+    const handleBuyNow = () => {
+        if (productQuantity === 0) {
+            onAddToCart(product.name, 1, false);
+        }
+        onToggleCartPopup();
+    };
+
+    return (
+        <div className={cn("bg-black/20 p-2 backdrop-blur-sm rounded-xl", className)}>
             <div className="flex justify-between items-center">
                 <div className="flex items-center gap-3">
                     <div className="text-white">
@@ -75,6 +141,7 @@ const PriceBox = ({ product, productQuantity, onAddToCart, onToggleCartPopup, cl
         </div>
     );
 };
+
 
 interface MobileProductDetailViewProps {
   product: Product;
@@ -143,12 +210,11 @@ export function MobileProductDetailView({
         <Separator className="my-4 bg-white/30" />
         
         <div ref={inlinePriceBoxRef} className="px-4">
-            <PriceBox
+            <InlinePriceBox
               product={product}
               productQuantity={productQuantity}
               onAddToCart={onAddToCart}
               onToggleCartPopup={onToggleCartPopup}
-              className="rounded-xl"
             />
         </div>
       </div>
@@ -160,7 +226,7 @@ export function MobileProductDetailView({
             isInlinePriceBoxVisible ? "translate-y-full opacity-0" : "translate-y-0 opacity-100"
           )}
       >
-          <PriceBox
+          <FloatingPriceBox
               product={product}
               productQuantity={productQuantity}
               onAddToCart={onAddToCart}
