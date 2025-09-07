@@ -269,9 +269,9 @@ function SearchPageComponent() {
               cart={cart}
               onProductClick={handleProductClick}
               activeFilters={activeFilters}
-              onRemoveFilter={onRemoveFilter}
+              onRemoveFilter={handleRemoveFilter}
               likedProducts={likedProducts}
-              onLikeToggle={onLikeToggle}
+              onLikeToggle={handleLikeToggle}
               sortOption={sortOption}
               onSortChange={handleSortChange}
               isFilterSheetOpen={isFilterSheetOpen}
