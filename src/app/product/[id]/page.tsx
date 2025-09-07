@@ -173,7 +173,7 @@ export default function ProductPage() {
               }}
               isVisible={isMobileHeaderVisible}
             />
-          <main onScroll={handleMobileScroll} className={cn("flex-grow flex flex-col transition-all duration-300 relative min-h-0 pb-16", isMobileHeaderVisible ? 'pt-16' : 'pt-0')}>
+          <main onScroll={handleMobileScroll} className={cn("flex-grow flex flex-col transition-all duration-300 relative min-h-0 pb-16 px-4", isMobileHeaderVisible ? 'pt-16' : 'pt-0')}>
             <MobileProductDetailView
               product={product}
               onClose={() => router.back()}
