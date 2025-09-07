@@ -15,6 +15,8 @@ import { useToast } from "@/hooks/use-toast";
 import { useCart } from '@/hooks/use-cart';
 import { Footer } from '@/components/footer';
 import { OrderConfirmedView } from '@/components/order-confirmed-view';
+import { AboutView } from '@/components/about-view';
+import { FaqView } from '@/components/faq-view';
 
 
 export type Product = {
@@ -219,7 +221,7 @@ export default function Home() {
   };
   
   const mainContentClass = cn(
-    "flex flex-col items-center justify-start transition-all duration-500 relative flex-grow min-h-0",
+    "flex flex-col items-center justify-start transition-all duration-500 relative flex-grow min-h-0 pb-16 md:pb-0",
     isPageLoading && 'opacity-0'
   );
 
