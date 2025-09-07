@@ -37,27 +37,27 @@ const PriceBox = ({ product, productQuantity, onAddToCart, onToggleCartPopup, cl
                 <div className="flex items-center gap-3">
                     <div className="text-white">
                         <p className="text-xs line-through opacity-70">₹1000</p>
-                        <p className="text-xl font-bold">₹750</p>
+                        <p className="text-lg font-bold">₹750</p>
                     </div>
                      <div className="bg-custom-gold text-custom-purple-dark px-1.5 py-0.5 rounded-md">
-                        <span className="text-xs font-bold">25% OFF</span>
+                        <span className="text-[10px] font-bold">25% OFF</span>
                     </div>
                 </div>
                 <div className="flex items-center gap-2">
                      {productQuantity === 0 ? (
                         <Button
-                            className="rounded-full font-semibold text-xs border border-white bg-white text-custom-purple-dark py-1 h-9 px-4 hover:bg-gray-200"
+                            className="rounded-full font-semibold text-[11px] border border-white bg-white text-custom-purple-dark py-1 h-8 px-3 hover:bg-gray-200"
                             onClick={handleAddToCartClick}
                         >
                             Add to Cart
                         </Button>
                     ) : (
-                        <div className="flex items-center justify-center w-24 rounded-full h-9 border border-white overflow-hidden">
+                        <div className="flex items-center justify-center w-20 rounded-full h-8 border border-white overflow-hidden">
                             <Button size="icon" variant="ghost" onClick={handleDecrement} className="h-full rounded-none bg-transparent hover:bg-white/20 text-white hover:text-white flex-1">
                                 <Minus className="h-4 w-4" />
                             </Button>
                             <div className="flex-1 text-center bg-transparent text-white h-full flex items-center justify-center">
-                                <span className="font-bold px-1 text-base">{productQuantity}</span>
+                                <span className="font-bold px-1 text-sm">{productQuantity}</span>
                             </div>
                             <Button size="icon" variant="ghost" onClick={handleIncrement} className="h-full rounded-none bg-transparent hover:bg-white/20 text-white hover:text-white flex-1">
                                 <Plus className="h-4 w-4" />
@@ -66,7 +66,7 @@ const PriceBox = ({ product, productQuantity, onAddToCart, onToggleCartPopup, cl
                     )}
                     <Button
                         onClick={handleBuyNow}
-                        className="rounded-full font-semibold text-xs border-2 border-custom-gold bg-custom-gold text-custom-purple-dark py-1 h-9 px-5 hover:bg-custom-gold/90"
+                        className="rounded-full font-semibold text-[11px] border-2 border-custom-gold bg-custom-gold text-custom-purple-dark py-1 h-8 px-4 hover:bg-custom-gold/90"
                     >
                         Buy Now
                     </Button>
@@ -75,6 +75,18 @@ const PriceBox = ({ product, productQuantity, onAddToCart, onToggleCartPopup, cl
         </div>
     );
 };
+
+interface MobileProductDetailViewProps {
+  product: Product;
+  onClose: () => void;
+  onAddToCart: (name: string, quantity: number, animate?: boolean) => void;
+  cart: Record<string, number>;
+  onToggleCartPopup: () => void;
+  isLiked: boolean;
+  onLikeToggle: () => void;
+  flavourCart: Record<string, number>;
+  onFlavourAddToCart: (flavourId: number, quantity: number) => void;
+}
 
 export function MobileProductDetailView({ 
   product, 
@@ -96,7 +108,7 @@ export function MobileProductDetailView({
       ([entry]) => {
         setIsInlinePriceBoxVisible(entry.isIntersecting);
       },
-      { threshold: 0.1 } // Inline box is considered "visible" when 10% is showing
+      { threshold: 0.1 }
     );
 
     const currentRef = inlinePriceBoxRef.current;
@@ -153,7 +165,6 @@ export function MobileProductDetailView({
               productQuantity={productQuantity}
               onAddToCart={onAddToCart}
               onToggleCartPopup={onToggleCartPopup}
-              className="mx-0" // No margin for the floating bar
           />
       </div>
     </div>
