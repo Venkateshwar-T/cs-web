@@ -18,7 +18,7 @@ import { ProductDetails } from '@/components/product-details';
 import { Separator } from '@/components/ui/separator';
 import { ProductPopupFooter } from '@/components/product-popup-footer';
 import { FeaturedProducts } from '@/components/featured-products';
-import { useIsMobile } from '@/hooks/use-is-mobile';
+import { useIsMobile } from '@/hooks/use-mobile';
 import { MobileSearchHeader } from '@/components/header/mobile-search-header';
 import { MobileProductDetailView } from '@/components/views/MobileProductDetailView';
 

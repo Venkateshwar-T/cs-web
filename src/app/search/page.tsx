@@ -265,13 +265,13 @@ function SearchPageComponent() {
               isNewSearch={isNewSearch}
               products={allProducts}
               query={query}
-              onAddToCart={handleAddToCart}
+              onAddToCart={onAddToCart}
               cart={cart}
               onProductClick={handleProductClick}
               activeFilters={activeFilters}
-              onRemoveFilter={handleRemoveFilter}
+              onRemoveFilter={onRemoveFilter}
               likedProducts={likedProducts}
-              onLikeToggle={handleLikeToggle}
+              onLikeToggle={onLikeToggle}
               sortOption={sortOption}
               onSortChange={handleSortChange}
               isFilterSheetOpen={isFilterSheetOpen}
