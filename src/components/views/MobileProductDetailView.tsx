@@ -102,21 +102,21 @@ const InlinePriceBox = ({ product, productQuantity, onAddToCart, onToggleCartPop
             <div className="bg-custom-purple-dark/80 p-3 backdrop-blur-sm rounded-t-xl">
                  <div className="flex justify-center items-center mb-3 gap-2">
                     <p className="text-base line-through opacity-70 text-white">₹1000</p>
-                    <div className="flex bg-custom-gold text-custom-purple-dark px-1.5 py-1 rounded-md">
-                        <span className="text-xs font-bold">25% OFF</span>
+                    <div className="flex bg-custom-gold text-custom-purple-dark px-1 py-0.5 rounded-md">
+                        <span className="text-[10px] font-bold">25% OFF</span>
                     </div>
                     <p className="text-2xl font-bold text-white">₹750</p>
                 </div>
                 <div className="flex flex-wrap items-center gap-2 mx-auto max-w-xs">
                     {productQuantity === 0 ? (
                         <Button
-                            className="w-full rounded-full font-semibold text-sm border-2 border-custom-gold bg-custom-gold text-custom-purple-dark py-2 h-9 hover:bg-custom-gold/90"
+                            className="w-full rounded-full font-semibold text-sm border-2 border-custom-gold bg-custom-gold text-custom-purple-dark py-1.5 h-8 hover:bg-custom-gold/90"
                             onClick={handleAddToCartClick}
                         >
                             Add to Cart
                         </Button>
                     ) : (
-                        <div className="flex items-center justify-center w-full rounded-full h-9 bg-custom-gold overflow-hidden border-2 border-white">
+                        <div className="flex items-center justify-center w-full rounded-full h-8 bg-custom-gold overflow-hidden border-2 border-white">
                             <Button size="icon" variant="ghost" onClick={handleDecrement} className="h-full rounded-none bg-white hover:bg-white/90 text-custom-purple-dark hover:text-custom-purple-dark flex-1">
                                 <Minus className="h-4 w-4" />
                             </Button>
@@ -130,7 +130,7 @@ const InlinePriceBox = ({ product, productQuantity, onAddToCart, onToggleCartPop
                     )}
                     <Button
                         onClick={handleBuyNow}
-                        className="w-full rounded-full font-semibold text-sm border border-white bg-white text-custom-purple-dark py-2 h-9 hover:bg-gray-200"
+                        className="w-full rounded-full font-semibold text-sm border border-white bg-white text-custom-purple-dark py-1.5 h-8 hover:bg-gray-200"
                     >
                         Buy Now
                     </Button>
