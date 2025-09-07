@@ -46,13 +46,13 @@ const FloatingPriceBox = ({ product, productQuantity, onAddToCart, onToggleCartP
                 <div className="flex items-center gap-2">
                      {productQuantity === 0 ? (
                         <Button
-                            className="rounded-full font-semibold text-[10px] bg-custom-gold text-custom-purple-dark py-1 h-7 px-3 hover:bg-gray-200"
+                            className="rounded-full font-semibold text-[10px] bg-custom-gold text-custom-purple-dark py-1 h-7 px-3 hover:bg-custom-gold/90"
                             onClick={handleAddToCartClick}
                         >
                             Add to Cart
                         </Button>
                     ) : (
-                        <div className="flex items-center justify-center w-20 rounded-full h-7 bg-custom-gold overflow-hidden">
+                        <div className="flex items-center justify-center w-20 rounded-full h-7 bg-custom-gold overflow-hidden border-2 border-white">
                             <Button size="icon" variant="ghost" onClick={handleDecrement} className="h-full rounded-none bg-white hover:bg-white/90 text-custom-purple-dark hover:text-custom-purple-dark flex-1">
                                 <Minus className="h-3 w-3" />
                             </Button>
@@ -66,7 +66,7 @@ const FloatingPriceBox = ({ product, productQuantity, onAddToCart, onToggleCartP
                     )}
                     <Button
                         onClick={handleBuyNow}
-                        className="rounded-full font-semibold text-[10px] border border-white bg-white text-custom-purple-dark py-1 h-7 px-4 hover:bg-custom-gold/90"
+                        className="rounded-full font-semibold text-[10px] border border-white bg-white text-custom-purple-dark py-1 h-7 px-4 hover:bg-gray-200"
                     >
                         Buy Now
                     </Button>
