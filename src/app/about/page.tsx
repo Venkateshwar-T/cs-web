@@ -2,7 +2,7 @@
 // @/app/about/page.tsx
 'use client';
 
-import { useState } from 'react';
+import { useState, UIEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { Header } from "@/components/header";
@@ -68,7 +68,12 @@ export default function AboutPage() {
         phone: '+1 234 567 890',
         email: 'john.doe@example.com',
     });
+    const [isContentScrolled, setIsContentScrolled] = useState(false);
 
+    const handleScroll = (event: UIEvent<HTMLDivElement>) => {
+      const { scrollTop } = event.currentTarget;
+      setIsContentScrolled(scrollTop > 0);
+    };
 
     const handleNavigation = (view: ActiveView) => {
         if (view === 'home') router.push('/');
@@ -88,7 +93,7 @@ export default function AboutPage() {
             <div className="flex flex-col min-h-screen">
                 <Header
                   onProfileOpenChange={setIsProfileOpen}
-                  isContentScrolled={false} // Static page, no scroll effect needed for header
+                  isContentScrolled={isContentScrolled}
                   onReset={() => router.push('/')}
                   onNavigate={handleHeaderNavigate}
                   activeView={'about'}
@@ -97,9 +102,9 @@ export default function AboutPage() {
                   onSearchInputChange={setSearchInput}
                   isSearchingOnAbout={true}
                 />
-                <main className="flex-grow pt-36">
+                <main onScroll={handleScroll} className="flex-grow pt-36 flex flex-col overflow-y-auto no-scrollbar">
                     <div className="bg-[#5D2B79] rounded-[40px] mx-8 md:mx-32 animate-fade-in flex flex-col" style={{ animationDuration: '0.5s', animationDelay: '0.2s', animationFillMode: 'both' }}>
-                        <div className="bg-white/10 rounded-[40px] py-10 px-12 md:px-24 flex-grow overflow-y-auto no-scrollbar">
+                        <div className="bg-white/10 rounded-[40px] py-10 px-12 md:px-24 flex-grow">
                             <SectionTitle className="text-4xl text-center mb-12 font-poppins">
                                 Our Philosophy
                             </SectionTitle>
@@ -128,8 +133,8 @@ export default function AboutPage() {
                             </motion.div>
                         </div>
                     </div>
+                    <Footer />
                 </main>
-                <Footer />
             </div>
 
              <PopupsManager
