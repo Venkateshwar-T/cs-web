@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState, type UIEvent } from 'react';
+import { useState, useEffect, type UIEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import { useCart } from '@/hooks/use-cart';
 import type { Product, ProfileInfo, ActiveView } from '@/app/page';
@@ -12,15 +12,43 @@ import { BottomNavbar } from '@/components/bottom-navbar';
 import { PopupsManager } from '@/components/popups/popups-manager';
 import { OrderConfirmedView } from '@/components/order-confirmed-view';
 import { Footer } from '@/components/footer';
+import { useOrders } from '@/hooks/use-orders';
 
 const allProducts: Product[] = Array.from({ length: 12 }).map((_, i) => ({
   id: i,
   name: `Diwali Collection Box ${i + 1}`,
 }));
 
+// Mock data for product prices - in a real app this would come from a database or state management
+const productPrices: Record<string, number> = {
+  'Diwali Collection Box 1': 799,
+  'Diwali Collection Box 2': 1199,
+  'Diwali Collection Box 3': 999,
+  'Diwali Collection Box 4': 899,
+  'Diwali Collection Box 5': 750,
+  'Diwali Collection Box 6': 1250,
+  'Diwali Collection Box 7': 600,
+  'Diwali Collection Box 8': 1500,
+  'Diwali Collection Box 9': 850,
+  'Diwali Collection Box 10': 950,
+  'Diwali Collection Box 11': 1100,
+  'Diwali Collection Box 12': 1300,
+};
+
+
+function generateOrderId() {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let result = 'CS';
+    for (let i = 0; i < 10; i++) {
+        result += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return result;
+}
+
 export default function OrderConfirmedPage() {
   const router = useRouter();
   const { cart, updateCart, clearCart } = useCart();
+  const { addOrder } = useOrders();
   
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isCartVisible, setIsCartVisible] = useState(false);
@@ -34,6 +62,33 @@ export default function OrderConfirmedPage() {
   });
   const [searchInput, setSearchInput] = useState('');
   const [isScrolled, setIsScrolled] = useState(false);
+  const [orderId, setOrderId] = useState('');
+    
+  useEffect(() => {
+    if (Object.keys(cart).length > 0) {
+        const newOrderId = generateOrderId();
+        setOrderId(newOrderId);
+
+        const subtotal = Object.entries(cart).reduce((acc, [name, quantity]) => {
+            const price = productPrices[name] || 0;
+            return acc + (price * quantity);
+        }, 0);
+        
+        const discount = 500.00;
+        const subtotalAfterDiscount = subtotal - discount;
+        const gstRate = 0.18;
+        const gstAmount = subtotalAfterDiscount * gstRate;
+        const total = subtotalAfterDiscount + gstAmount;
+
+        addOrder({
+            id: newOrderId,
+            date: new Date().toISOString(),
+            items: Object.entries(cart).map(([name, quantity]) => ({ name, quantity })),
+            status: 'Order Requested',
+            total: total > 0 ? total : 0,
+        });
+    }
+  }, [cart, addOrder]);
   
   const handleScroll = (event: UIEvent<HTMLDivElement>) => {
     const { scrollTop } = event.currentTarget;
@@ -65,7 +120,7 @@ export default function OrderConfirmedPage() {
           onProfileOpenChange={setIsProfileOpen}
           isContentScrolled={isScrolled}
           onReset={() => router.push('/')}
-          onNavigate={(view) => router.push(`/?view=${view}`)}
+          onNavigate={(view) => router.push(`/${view}`)}
           activeView={'search'}
           isUsingAnimatedSearch={true}
           onSearchSubmit={handleSearchSubmit}
@@ -74,7 +129,7 @@ export default function OrderConfirmedPage() {
         />
         <main onScroll={handleScroll} className="flex-grow pt-36 flex flex-col gap-8 overflow-y-auto no-scrollbar">
             <div className="md:px-32 flex-grow flex flex-col">
-              <OrderConfirmedView cart={cart} />
+              <OrderConfirmedView cart={cart} orderId={orderId} />
             </div>
             <Footer />
         </main>

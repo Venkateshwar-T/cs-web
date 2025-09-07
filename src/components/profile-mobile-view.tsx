@@ -7,6 +7,7 @@ import type { Product, ProfileInfo } from '@/app/page';
 import { cn } from '@/lib/utils';
 import { MyProfileTab } from './my-profile-tab';
 import { WishlistView } from './wishlist-view';
+import { MyOrdersTab } from './my-orders-tab';
 
 interface ProfileMobileViewProps {
   profile: ProfileInfo;
@@ -69,9 +70,7 @@ export function ProfileMobileView({
           />
         )}
         {activeTab === 'My Orders' && (
-          <div className="text-center p-8">
-            <p>Order history will be shown here.</p>
-          </div>
+          <MyOrdersTab isMobile={true} />
         )}
       </div>
     </div>

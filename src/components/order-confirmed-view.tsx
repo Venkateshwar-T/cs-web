@@ -29,15 +29,7 @@ const productPrices: Record<string, number> = {
 
 interface OrderConfirmedViewProps {
     cart: Record<string, number>;
-}
-
-function generateOrderId() {
-    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    let result = 'CS';
-    for (let i = 0; i < 10; i++) {
-        result += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
-    return result;
+    orderId: string;
 }
 
 const containerVariants = {
@@ -78,13 +70,11 @@ const ProcessingView = () => (
 );
 
 
-export function OrderConfirmedView({ cart }: OrderConfirmedViewProps) {
-    const [orderId, setOrderId] = useState('');
+export function OrderConfirmedView({ cart, orderId }: OrderConfirmedViewProps) {
     const [isLoading, setIsLoading] = useState(true);
     const { clearCart } = useCart();
     
     useEffect(() => {
-        setOrderId(generateOrderId());
         const timer = setTimeout(() => {
             setIsLoading(false);
             clearCart();

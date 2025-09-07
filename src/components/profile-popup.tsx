@@ -8,6 +8,7 @@ import { ProfileSidebar } from './profile-sidebar';
 import { ProfileDetailsView } from './profile-details-view';
 import type { ProfileInfo, Product } from '@/app/page';
 import { WishlistView } from './wishlist-view';
+import { MyOrdersTab } from './my-orders-tab';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -109,7 +110,9 @@ export function ProfilePopup({
                       onClearWishlist={onClearWishlist}
                     />
                   )}
-                  {/* Add other views here based on activeTab */}
+                  {activeTab === 'My Orders' && (
+                    <MyOrdersTab />
+                  )}
               </div>
           </div>
       </div>
