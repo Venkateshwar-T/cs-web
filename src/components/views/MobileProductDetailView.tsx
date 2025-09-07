@@ -44,24 +44,24 @@ const PriceBox = ({ product, productQuantity, onAddToCart, onToggleCartPopup, cl
     };
 
     return (
-        <div className={cn("bg-custom-purple-dark pt-4 rounded-t-2xl pb-4 px-4", className)}>
+        <div className={cn("bg-custom-purple-dark p-3 rounded-t-2xl", className)}>
             <div className="flex justify-between items-center mb-4">
                 <div className="flex flex-col items-start">
-                    <p className="text-sm line-through opacity-70">₹1000</p>
-                    <p className="text-sm text-custom-gold font-semibold">25% OFF</p>
+                    <p className="text-xs line-through opacity-70">₹1000</p>
+                    <p className="text-xs text-custom-gold font-semibold">25% OFF</p>
                 </div>
-                <p className="text-3xl font-bold">₹750</p>
+                <p className="text-xl font-bold">₹750</p>
             </div>
             <div className="flex items-center gap-4">
                 {productQuantity === 0 ? (
                     <Button
-                        className="w-1/2 rounded-full font-semibold text-sm border-2 border-custom-gold bg-custom-gold text-custom-purple-dark py-1 h-auto hover:bg-custom-gold/90"
+                        className="w-1/2 rounded-full font-semibold text-xs border-2 border-custom-gold bg-custom-gold text-custom-purple-dark py-1 h-auto hover:bg-custom-gold/90"
                         onClick={handleAddToCartClick}
                     >
                         Add to Cart
                     </Button>
                 ) : (
-                    <div className="flex items-center justify-center w-1/2 rounded-full h-10 border-2 border-white overflow-hidden">
+                    <div className="flex items-center justify-center w-1/2 rounded-full h-6 border-2 border-white overflow-hidden">
                         <Button size="icon" variant="ghost" onClick={handleDecrement} className="h-full rounded-none bg-white hover:bg-white/90 text-custom-purple-dark hover:text-custom-purple-dark flex-1">
                             <Minus className="h-5 w-5" />
                         </Button>
@@ -75,7 +75,7 @@ const PriceBox = ({ product, productQuantity, onAddToCart, onToggleCartPopup, cl
                 )}
                 <Button
                     onClick={handleBuyNow}
-                    className="w-1/2 rounded-full font-semibold text-sm border border-white bg-white text-custom-purple-dark py-1 h-auto hover:bg-custom-purple-dark hover:text-white"
+                    className="w-1/2 rounded-full font-semibold text-xs border border-white bg-white text-custom-purple-dark py-1 h-auto hover:bg-custom-purple-dark hover:text-white"
                 >
                     Buy Now
                 </Button>
@@ -123,7 +123,7 @@ export function MobileProductDetailView({
     <div className={cn(
       "bg-[#9A7DAB] h-full w-full rounded-t-[20px] relative flex flex-col pt-2 px-4 mt-4 overflow-hidden"
     )}>
-      <div className="flex-grow overflow-y-auto no-scrollbar pb-8">
+      <div className="flex-grow overflow-y-auto no-scrollbar">
         <div className="-mt-2">
           <MobileImageGallery product={product} onImageExpandChange={() => {}} />
         </div>
@@ -156,7 +156,7 @@ export function MobileProductDetailView({
               productQuantity={productQuantity}
               onAddToCart={onAddToCart}
               onToggleCartPopup={onToggleCartPopup}
-              className="rounded-t-none"
+              className="rounded-t-2xl mx-8 p-3"
           />
       </div>
     </div>
