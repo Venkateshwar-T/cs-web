@@ -100,17 +100,37 @@ export function ProductCard({ product, onAddToCart, quantity, onProductClick, is
     setCurrentImageIndex(0);
   };
 
+  const HeartButton = () => (
+    <button 
+      onClick={handleLikeClick} 
+      className={cn(
+        "p-1",
+        isMobile && "absolute top-1.5 right-1.5 z-10 bg-black/20 rounded-full",
+      )}
+    >
+      <Heart 
+        key={likeClickCount}
+        className={cn(
+          "h-5 w-5 md:h-6 md:w-6 stroke-current transition-colors duration-300", 
+          isLiked ? 'text-red-500 fill-red-500' : (isMobile ? 'text-white' : 'text-black'),
+          'animate-heart-pop'
+        )} 
+      />
+    </button>
+  );
+
   return (
     <div
       onClick={() => onProductClick(product)}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       className={cn(
-        "bg-white text-black rounded-lg md:rounded-2xl overflow-hidden flex flex-col h-full shadow-custom-dark cursor-pointer group transition-transform duration-200",
-        !isMobile && "hover:scale-105"
+        "bg-white text-black rounded-lg md:rounded-2xl overflow-hidden flex flex-col h-full shadow-custom-dark cursor-pointer group",
+        !isMobile && "transition-transform duration-200 hover:scale-105"
       )}
     >
       <div className="relative w-full pt-[80%] rounded-t-lg md:rounded-t-2xl overflow-hidden">
+        {isMobile && <HeartButton />}
         <AnimatePresence initial={false}>
             <motion.div
               key={currentImageIndex}
@@ -129,7 +149,10 @@ export function ProductCard({ product, onAddToCart, quantity, onProductClick, is
                 alt={product.name}
                 layout="fill"
                 objectFit="cover"
-                className={cn("rounded-t-lg md:rounded-t-2xl transition-transform duration-300 ease-in-out", !isMobile && "group-hover:scale-110")}
+                className={cn(
+                  "rounded-t-lg md:rounded-t-2xl",
+                  !isMobile && "transition-transform duration-300 ease-in-out group-hover:scale-110"
+                )}
               />
             </motion.div>
         </AnimatePresence>
@@ -138,18 +161,11 @@ export function ProductCard({ product, onAddToCart, quantity, onProductClick, is
         <div className="flex-grow md:flex-grow-0">
           <div className="flex justify-between items-center">
             <h3 className="font-bold text-sm md:text-base leading-tight flex-1 pr-2 whitespace-nowrap truncate">{product.name}</h3>
-            <div className="relative">
-              <button onClick={handleLikeClick} className="pl-1">
-                <Heart 
-                  key={likeClickCount}
-                  className={cn(
-                    "h-5 w-5 md:h-6 md:w-6 stroke-current transition-colors duration-300", 
-                    isLiked ? 'text-red-500 fill-red-500' : 'text-black',
-                    'animate-heart-pop'
-                  )} 
-                />
-              </button>
-            </div>
+            {!isMobile && (
+              <div className="relative">
+                <HeartButton />
+              </div>
+            )}
           </div>
           <p className="text-xs md:text-sm text-[#9A7DAB] mt-1 whitespace-nowrap truncate">250g | Assorted | Hard Box</p>
         </div>
