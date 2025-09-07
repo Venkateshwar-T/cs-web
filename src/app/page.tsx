@@ -209,15 +209,18 @@ export default function Home() {
   };
   
   const mainContentClass = cn(
-    "flex flex-col items-center justify-start transition-all duration-500 relative flex-grow min-h-0",
-    activeView === 'home' ? 'pt-28' : 'pt-36',
+    "flex flex-col items-center justify-start transition-all duration-500 relative flex-grow min-h-0 pt-36",
     isPageLoading && 'opacity-0'
   );
 
   return (
     <>
       <SparkleBackground />
-      <div className={cn("flex flex-col min-h-screen", (isPopupOpen && !isCartVisible) ? 'opacity-50' : '')}>
+      <div className={cn(
+        "flex flex-col",
+        activeView === 'order-confirmed' ? "min-h-screen" : "h-screen",
+        (isPopupOpen && !isCartVisible) ? 'opacity-50' : ''
+      )}>
         <Header 
           onProfileOpenChange={setIsProfileOpen}
           isContentScrolled={isContentScrolled}
