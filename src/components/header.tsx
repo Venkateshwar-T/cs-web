@@ -83,8 +83,8 @@ export function Header({
           </div>
           
           <div className="hidden md:flex flex-1 justify-center px-4">
-             {activeView === 'search' ? (
-                <div className="w-full max-w-sm md:max-w-md lg:max-w-lg xl:max-w-2xl">
+             {(activeView === 'search' || activeView === 'order-confirmed') ? (
+                <div className={cn("w-full max-w-sm md:max-w-md lg:max-w-lg xl:max-w-2xl", isEnquireOpen && 'opacity-50 pointer-events-none')}>
                   <AnimatedSearchBar 
                       onSearchSubmit={onSearchSubmit}
                       isExpanded={true}
