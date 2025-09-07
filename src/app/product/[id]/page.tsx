@@ -173,22 +173,20 @@ export default function ProductPage() {
               }}
               isVisible={isMobileHeaderVisible}
             />
-          <main onScroll={handleMobileScroll} className={cn("flex-grow flex flex-col transition-all duration-300 relative min-h-0 pb-16", isMobileHeaderVisible ? 'pt-16' : 'pt-0')}>
+          <main onScroll={handleMobileScroll} className={cn("flex-grow flex flex-col transition-all duration-300 relative min-h-0 pb-16 px-4", isMobileHeaderVisible ? 'pt-16' : 'pt-0')}>
             <div className="flex-grow overflow-y-auto no-scrollbar">
-              <div className="px-4">
-                <MobileProductDetailView
-                  product={product}
-                  onClose={() => router.back()}
-                  onAddToCart={handleAddToCart}
-                  cart={cart}
-                  onToggleCartPopup={handleToggleCartPopup}
-                  isLiked={!!likedProducts[product.id]}
-                  onLikeToggle={() => handleLikeToggle(product.id)}
-                  flavourCart={flavourCart}
-                  onFlavourAddToCart={handleFlavourAddToCart}
-                />
-              </div>
-              <div className="mt-8 px-4">
+              <MobileProductDetailView
+                product={product}
+                onClose={() => router.back()}
+                onAddToCart={handleAddToCart}
+                cart={cart}
+                onToggleCartPopup={handleToggleCartPopup}
+                isLiked={!!likedProducts[product.id]}
+                onLikeToggle={() => handleLikeToggle(product.id)}
+                flavourCart={flavourCart}
+                onFlavourAddToCart={handleFlavourAddToCart}
+              />
+              <div className="mt-8">
                 <FeaturedProducts 
                   products={allProducts}
                   onProductClick={handleProductClick}
@@ -196,6 +194,7 @@ export default function ProductPage() {
                   cart={cart}
                   likedProducts={likedProducts}
                   onLikeToggle={handleLikeToggle}
+                  isMobile={true}
                 />
               </div>
                <div className="h-4" />
@@ -245,7 +244,7 @@ export default function ProductPage() {
                       <div className="h-full py-0 pr-6 overflow-y-auto custom-scrollbar pb-28">
                           <ProductDetails product={product} isLiked={!!likedProducts[product.id]} onLikeToggle={() => handleLikeToggle(product.id)} isMobile={false} />
                       </div>
-                      <ProductPopupFooter product={product} onAddToCart={handleAddToCart} quantity={cart[product.name] || 0} onToggleCartPopup={handleToggleCartPopup} />
+                      <ProductPopupFooter product={product} onAddToCart={handleAddToCart} quantity={cart[product.name] || 0} onToggleCartPopup={onToggleCartPopup} />
                   </div>
                 </div>
               </div>
