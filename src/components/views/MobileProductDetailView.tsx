@@ -57,18 +57,8 @@ export function MobileProductDetailView({
 
   return (
     <div className={cn(
-      "bg-[#9A7DAB] h-full w-full rounded-t-[20px] relative flex flex-col overflow-hidden"
+      "bg-[#9A7DAB] h-full w-full rounded-t-[20px] relative flex flex-col pt-2 mt-4 overflow-hidden"
     )}>
-      <div className="absolute top-0 right-0 z-20 p-2">
-          <Button 
-            variant="ghost" 
-            size="icon" 
-            onClick={onClose}
-            className="h-8 w-8 text-white rounded-full hover:bg-custom-gold hover:text-custom-purple-dark"
-          >
-            <X className="h-6 w-6" />
-          </Button>
-      </div>
       <div className="flex-grow overflow-y-auto no-scrollbar">
         <div className="-mt-2">
           <MobileImageGallery product={product} onImageExpandChange={() => {}} />
@@ -81,7 +71,7 @@ export function MobileProductDetailView({
           <FlavoursSection onAddToCart={onFlavourAddToCart} cart={flavourCart} isMobile={true} />
           <Separator className="my-4 bg-white/30" />
         </div>
-        <div className="bg-custom-purple-dark pt-4 rounded-t-2xl px-4 pb-4">
+        <div className="bg-custom-purple-dark pt-4 rounded-t-2xl mx-4 px-4 pb-4">
           <div className="flex justify-between items-center mb-4">
               <div className="flex flex-col items-start">
                   <p className="text-sm line-through opacity-70">₹1000</p>
@@ -90,10 +80,10 @@ export function MobileProductDetailView({
               <p className="text-3xl font-bold">₹750</p>
           </div>
           
-          <div className="flex items-center gap-4 mt-4">
+          <div className="flex items-center gap-4">
             {productQuantity === 0 ? (
                 <Button
-                    className="w-1/2 rounded-full font-semibold text-sm border-2 border-custom-gold bg-custom-gold text-custom-purple-dark py-2 h-auto hover:bg-custom-gold/90"
+                    className="w-1/2 rounded-full font-semibold text-sm border-2 border-custom-gold bg-custom-gold text-custom-purple-dark py-1 h-auto hover:bg-custom-gold/90"
                     onClick={handleAddToCartClick}
                 >
                     Add to Cart
@@ -113,7 +103,7 @@ export function MobileProductDetailView({
             )}
              <Button
                 onClick={handleBuyNow}
-                className="w-1/2 rounded-full font-semibold text-sm border border-white bg-white text-custom-purple-dark py-2 h-auto hover:bg-custom-purple-dark hover:text-white"
+                className="w-1/2 rounded-full font-semibold text-sm border border-white bg-white text-custom-purple-dark py-1 h-auto hover:bg-custom-purple-dark hover:text-white"
             >
                 Buy Now
             </Button>

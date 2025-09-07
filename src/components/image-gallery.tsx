@@ -64,7 +64,7 @@ export function ImageGallery({ product, onImageExpandChange }: ImageGalleryProps
                                 onClick={() => setActiveIndex(index)}
                                 className={cn(
                                     "relative w-full aspect-square animate-fade-in transition-all duration-200 rounded-md overflow-hidden ring-2 ring-offset-2 ring-offset-[#9A7DAB]",
-                                    activeIndex === index ? 'ring-white' : 'ring-transparent hover:ring-white/50'
+                                    activeIndex === index ? 'ring-custom-gold' : 'ring-transparent hover:ring-white/50'
                                 )}
                                 style={{ animationDelay: `${0.3 + index * 0.1}s`, animationFillMode: 'both' }}
                             >

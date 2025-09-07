@@ -49,7 +49,7 @@ export function MobileImageGallery({ product, onImageExpandChange }: MobileImage
                             className="text-white p-2 rounded-full hover:bg-black/30 transition-colors"
                             aria-label="Expand image"
                         >
-                            <Expand size={32} />
+                            <Expand size={28} />
                         </button>
                     </div>
                 </div>
@@ -62,7 +62,7 @@ export function MobileImageGallery({ product, onImageExpandChange }: MobileImage
                             onClick={() => setActiveIndex(index)}
                             className={cn(
                                 "relative w-full aspect-square transition-all duration-200 rounded-md overflow-hidden ring-2 ring-offset-2 ring-offset-[#9A7DAB]",
-                                activeIndex === index ? 'ring-white' : 'ring-transparent hover:ring-white/50'
+                                activeIndex === index ? 'ring-custom-gold' : 'ring-transparent hover:ring-white/50'
                             )}
                         >
                             <Image
@@ -95,7 +95,7 @@ export function MobileImageGallery({ product, onImageExpandChange }: MobileImage
                             className="absolute -top-2 -right-2 text-white bg-black/50 p-1.5 rounded-full hover:bg-black/70 transition-colors"
                             aria-label="Close expanded image"
                         >
-                            <X size={24} />
+                            <X size={18} />
                         </button>
                     </div>
                 </div>
