@@ -72,7 +72,7 @@ export default function OrderConfirmedPage() {
           searchInput={searchInput}
           onSearchInputChange={setSearchInput}
         />
-        <main onScroll={handleScroll} className="flex-grow pt-36 flex flex-col gap-8 pb-8 overflow-y-auto no-scrollbar">
+        <main onScroll={handleScroll} className="flex-grow pt-36 flex flex-col gap-8 overflow-y-auto no-scrollbar">
             <div className="md:px-32 flex-grow flex flex-col">
               <OrderConfirmedView cart={cart} />
             </div>
