@@ -78,11 +78,11 @@ export function ExploreCategories() {
                     ))}
                 </motion.div>
 
-                <SectionTitle className="flex justify-center md:justify-start pl-2 text-lg md:text-2xl md:pl-8 mb-2 md:mb-4">
+                <SectionTitle className="flex justify-center md:justify-start pl-2 text-lg md:text-2xl md:pl-8 mb-2 md:mb-4 lg:mb-6">
                     Explore Flavours
                 </SectionTitle>
                 <motion.div 
-                    className="flex flex-row md:flex-wrap overflow-x-auto no-scrollbar md:overflow-visible flex-1 md:justify-around items-center gap-4 md:gap-8 pb-20"
+                    className="flex flex-row md:flex-wrap overflow-x-auto no-scrollbar md:overflow-visible flex-1 md:justify-around items-center gap-4 md:gap-8"
                     variants={containerVariants}
                     initial="hidden"
                     animate="visible"

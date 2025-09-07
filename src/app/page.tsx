@@ -193,7 +193,7 @@ export default function Home() {
         return (
           <>
             {activeView === 'home' && (
-              <div className='w-full pt-16'>
+              <div className='w-full pt-32'>
                 <SearchBar
                   formRef={formRef}
                   activeView={activeView}
