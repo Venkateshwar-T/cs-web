@@ -57,7 +57,7 @@ export function MobileProductDetailView({
 
   return (
     <div className={cn(
-      "bg-[#9A7DAB] h-full w-full rounded-t-[20px] relative flex flex-col pt-2 mt-4 overflow-hidden px-4"
+      "bg-[#9A7DAB] h-full w-full rounded-t-[20px] relative flex flex-col pt-2 mt-4 overflow-hidden"
     )}>
       <div className="flex-grow overflow-y-auto no-scrollbar">
         <div className="-mt-2">
