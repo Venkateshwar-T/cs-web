@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState, type UIEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import { useCart } from '@/hooks/use-cart';
 import type { Product, ProfileInfo, ActiveView } from '@/app/page';
@@ -33,6 +33,12 @@ export default function OrderConfirmedPage() {
     email: 'john.doe@example.com',
   });
   const [searchInput, setSearchInput] = useState('');
+  const [isScrolled, setIsScrolled] = useState(false);
+  
+  const handleScroll = (event: UIEvent<HTMLDivElement>) => {
+    const { scrollTop } = event.currentTarget;
+    setIsScrolled(scrollTop > 0);
+  };
   
   const handleSearchSubmit = (query: string) => {
     router.push(`/search?q=${encodeURIComponent(query)}`);
@@ -57,15 +63,16 @@ export default function OrderConfirmedPage() {
       <div className={cn("flex flex-col min-h-screen", isPopupOpen && 'opacity-50')}>
         <Header 
           onProfileOpenChange={setIsProfileOpen}
-          isContentScrolled={true}
+          isContentScrolled={isScrolled}
           onReset={() => router.push('/')}
           onNavigate={(view) => router.push(`/?view=${view}`)}
-          activeView={'order-confirmed'}
+          activeView={'search'}
+          isUsingAnimatedSearch={true}
           onSearchSubmit={handleSearchSubmit}
           searchInput={searchInput}
           onSearchInputChange={setSearchInput}
         />
-        <main className="flex-grow pt-36 md:px-32 flex flex-col gap-8 pb-8">
+        <main onScroll={handleScroll} className="flex-grow pt-36 md:px-32 flex flex-col gap-8 pb-8 overflow-y-auto no-scrollbar">
             <OrderConfirmedView cart={cart} />
         </main>
         <Footer />
