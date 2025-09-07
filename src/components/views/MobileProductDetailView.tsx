@@ -69,7 +69,7 @@ export function MobileProductDetailView({
             <X className="h-6 w-6" />
           </Button>
       </div>
-      <div className="flex-grow overflow-y-auto no-scrollbar pb-32">
+      <div className="flex-grow overflow-y-auto no-scrollbar">
         <div className="-mt-2">
           <MobileImageGallery product={product} onImageExpandChange={() => {}} />
         </div>
@@ -81,10 +81,8 @@ export function MobileProductDetailView({
           <FlavoursSection onAddToCart={onFlavourAddToCart} cart={flavourCart} isMobile={true} />
           <Separator className="my-4 bg-white/30" />
         </div>
-      </div>
-      <div className="absolute bottom-0 left-0 right-0 z-10">
-        <div className="bg-custom-purple-dark pt-4 rounded-t-2xl">
-          <div className="flex justify-between items-center mb-4 px-4">
+        <div className="bg-custom-purple-dark pt-4 rounded-t-2xl px-4 pb-4">
+          <div className="flex justify-between items-center mb-4">
               <div className="flex flex-col items-start">
                   <p className="text-sm line-through opacity-70">₹1000</p>
                   <p className="text-sm text-custom-gold font-semibold">25% OFF</p>
@@ -92,7 +90,7 @@ export function MobileProductDetailView({
               <p className="text-3xl font-bold">₹750</p>
           </div>
           
-          <div className="flex items-center gap-4 mt-4 px-4 pb-4">
+          <div className="flex items-center gap-4 mt-4">
             {productQuantity === 0 ? (
                 <Button
                     className="w-1/2 rounded-full font-semibold text-sm border-2 border-custom-gold bg-custom-gold text-custom-purple-dark py-2 h-auto hover:bg-custom-gold/90"
