@@ -32,7 +32,7 @@ const FloatingPriceBox = ({ product, productQuantity, onAddToCart, onToggleCartP
     };
 
     return (
-        <div className={cn("border border-t-custom-purple-dark bg-custom-purple-dark/60 p-2 px-3 backdrop-blur-md", className)}>
+        <div className={cn("border-t border-white/20 bg-custom-purple-dark/60 p-2 px-3 backdrop-blur-md", className)}>
             <div className="flex justify-between items-center">
                 <div className="flex items-center gap-2">
                     <div className="text-white">
@@ -52,14 +52,14 @@ const FloatingPriceBox = ({ product, productQuantity, onAddToCart, onToggleCartP
                             Add to Cart
                         </Button>
                     ) : (
-                        <div className="flex items-center justify-center w-20 rounded-full h-7 border border-white overflow-hidden">
-                            <Button size="icon" variant="ghost" onClick={handleDecrement} className="h-full rounded-none bg-custom-purple-dark hover:bg-white/20 text-white hover:text-white flex-1">
+                        <div className="flex items-center justify-center w-20 rounded-full h-7 bg-custom-gold overflow-hidden">
+                            <Button size="icon" variant="ghost" onClick={handleDecrement} className="h-full rounded-none bg-white hover:bg-white/90 text-custom-purple-dark hover:text-custom-purple-dark flex-1">
                                 <Minus className="h-3 w-3" />
                             </Button>
-                            <div className="flex-1 text-center bg-white text-custom-purple-dark h-full flex items-center justify-center">
+                            <div className="flex-1 text-center bg-custom-purple-dark text-white h-full flex items-center justify-center">
                                 <span className="font-bold px-1 text-xs">{productQuantity}</span>
                             </div>
-                            <Button size="icon" variant="ghost" onClick={handleIncrement} className="h-full rounded-none bg-custom-purple-dark hover:bg-white/20 text-white hover:text-white flex-1">
+                            <Button size="icon" variant="ghost" onClick={handleIncrement} className="h-full rounded-none bg-white hover:bg-white/90 text-custom-purple-dark hover:text-custom-purple-dark flex-1">
                                 <Plus className="h-3 w-3" />
                             </Button>
                         </div>
@@ -116,7 +116,7 @@ const InlinePriceBox = ({ product, productQuantity, onAddToCart, onToggleCartPop
                             Add to Cart
                         </Button>
                     ) : (
-                        <div className="flex items-center justify-center w-full rounded-full h-9 border-2 border-white bg-custom-gold overflow-hidden">
+                        <div className="flex items-center justify-center w-full rounded-full h-9 bg-custom-gold overflow-hidden">
                             <Button size="icon" variant="ghost" onClick={handleDecrement} className="h-full rounded-none bg-white hover:bg-white/90 text-custom-purple-dark hover:text-custom-purple-dark flex-1">
                                 <Minus className="h-4 w-4" />
                             </Button>
