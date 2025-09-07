@@ -29,6 +29,7 @@ interface SearchViewProps {
   isSortSheetOpen: boolean;
   onSortSheetOpenChange: (open: boolean) => void;
   onScroll: (event: UIEvent<HTMLDivElement>) => void;
+  isMobile: boolean;
 }
 
 export function SearchView({
@@ -52,6 +53,7 @@ export function SearchView({
   isSortSheetOpen,
   onSortSheetOpenChange,
   onScroll,
+  isMobile,
 }: SearchViewProps) {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   
@@ -91,6 +93,7 @@ export function SearchView({
           isSortSheetOpen={isSortSheetOpen}
           onSortSheetOpenChange={onSortSheetOpenChange}
           onScroll={onScroll}
+          isMobile={isMobile}
         />
       </div>
     </div>

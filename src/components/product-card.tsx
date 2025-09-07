@@ -17,6 +17,7 @@ interface ProductCardProps {
   onProductClick: (product: Product) => void;
   isLiked: boolean;
   onLikeToggle: () => void;
+  isMobile?: boolean;
 }
 
 const variants = {
@@ -36,13 +37,13 @@ const variants = {
   },
 };
 
-export function ProductCard({ product, onAddToCart, quantity, onProductClick, isLiked, onLikeToggle }: ProductCardProps) {
+export function ProductCard({ product, onAddToCart, quantity, onProductClick, isLiked, onLikeToggle, isMobile = false }: ProductCardProps) {
   const [likeClickCount, setLikeClickCount] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   useEffect(() => {
-    if (!isHovered) {
+    if (!isHovered || isMobile) {
       return;
     }
 
@@ -61,7 +62,7 @@ export function ProductCard({ product, onAddToCart, quantity, onProductClick, is
       clearTimeout(timeoutId);
       clearInterval(intervalId);
     };
-  }, [isHovered, currentImageIndex]);
+  }, [isHovered, currentImageIndex, isMobile]);
 
 
   const handleAddToCartClick = (e: React.MouseEvent) => {
@@ -86,12 +87,14 @@ export function ProductCard({ product, onAddToCart, quantity, onProductClick, is
   }
 
   const handleMouseEnter = () => {
+    if (isMobile) return;
     setIsHovered(true);
     // Instantly switch to the second image on hover
     setCurrentImageIndex(1);
   };
 
   const handleMouseLeave = () => {
+    if (isMobile) return;
     setIsHovered(false);
     // Reset to the first image when mouse leaves
     setCurrentImageIndex(0);
@@ -102,7 +105,10 @@ export function ProductCard({ product, onAddToCart, quantity, onProductClick, is
       onClick={() => onProductClick(product)}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      className="bg-white text-black rounded-lg md:rounded-2xl overflow-hidden flex flex-col h-full shadow-custom-dark cursor-pointer group transition-transform duration-200 hover:scale-105"
+      className={cn(
+        "bg-white text-black rounded-lg md:rounded-2xl overflow-hidden flex flex-col h-full shadow-custom-dark cursor-pointer group transition-transform duration-200",
+        !isMobile && "hover:scale-105"
+      )}
     >
       <div className="relative w-full pt-[80%] rounded-t-lg md:rounded-t-2xl overflow-hidden">
         <AnimatePresence initial={false}>
@@ -123,7 +129,7 @@ export function ProductCard({ product, onAddToCart, quantity, onProductClick, is
                 alt={product.name}
                 layout="fill"
                 objectFit="cover"
-                className="rounded-t-lg md:rounded-t-2xl transition-transform duration-300 ease-in-out group-hover:scale-110"
+                className={cn("rounded-t-lg md:rounded-t-2xl transition-transform duration-300 ease-in-out", !isMobile && "group-hover:scale-110")}
               />
             </motion.div>
         </AnimatePresence>

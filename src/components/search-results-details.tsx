@@ -38,6 +38,7 @@ interface SearchResultsDetailsProps {
   isSortSheetOpen: boolean;
   onSortSheetOpenChange: (open: boolean) => void;
   onScroll: (event: UIEvent<HTMLDivElement>) => void;
+  isMobile: boolean;
 }
 
 const sortOptions = [
@@ -68,6 +69,7 @@ export function SearchResultsDetails({
   isSortSheetOpen,
   onSortSheetOpenChange,
   onScroll,
+  isMobile,
 }: SearchResultsDetailsProps) {
 
   const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -213,6 +215,7 @@ export function SearchResultsDetails({
                           onProductClick={onProductClick}
                           isLiked={!!likedProducts[product.id]}
                           onLikeToggle={() => onLikeToggle(product.id)}
+                          isMobile={isMobile}
                         />
                     ))
                   }

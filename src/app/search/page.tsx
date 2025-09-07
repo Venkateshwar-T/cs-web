@@ -279,6 +279,7 @@ function SearchPageComponent() {
               isSortSheetOpen={isSortSheetOpen}
               onSortSheetOpenChange={setIsSortSheetOpen}
               onScroll={handleScroll}
+              isMobile={isMobile}
             />
         </main>
       </div>

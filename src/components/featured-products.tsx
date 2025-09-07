@@ -1,3 +1,4 @@
+
 // @/components/featured-products.tsx
 'use client';
 
@@ -55,6 +56,7 @@ export function FeaturedProducts({
               quantity={cart[product.name] || 0}
               isLiked={!!likedProducts[product.id]}
               onLikeToggle={() => onLikeToggle(product.id)}
+              isMobile={isMobile}
             />
           </div>
         ))}
