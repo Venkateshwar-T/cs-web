@@ -98,40 +98,40 @@ const InlinePriceBox = ({ product, productQuantity, onAddToCart, onToggleCartPop
     };
 
     return (
-        <div className={cn("bg-custom-purple-dark/80 p-3 backdrop-blur-sm rounded-xl", className)}>
-             <div className="flex justify-between items-center mb-2">
-                <div className="text-white">
+        <div className={cn("bg-custom-purple-dark/80 p-3 backdrop-blur-sm rounded-t-xl", className)}>
+             <div className="flex justify-between items-center mb-3">
+                <div className="flex items-baseline gap-2 text-white">
                     <p className="text-sm line-through opacity-70">₹1000</p>
+                    <div className="bg-custom-gold text-custom-purple-dark px-1.5 py-0.5 rounded-md">
+                      <span className="text-xs font-bold">25% OFF</span>
+                    </div>
                     <p className="text-xl font-bold">₹750</p>
-                </div>
-                <div className="bg-custom-gold text-custom-purple-dark px-2 py-1 rounded-md">
-                    <span className="text-xs font-bold">25% OFF</span>
                 </div>
             </div>
             <div className="flex items-center gap-2">
                 {productQuantity === 0 ? (
                     <Button
-                        className="w-full rounded-full font-semibold text-sm border border-white bg-white text-custom-purple-dark py-2 h-9 hover:bg-gray-200"
+                        className="w-full rounded-full font-semibold text-sm border-2 border-custom-gold bg-custom-gold text-custom-purple-dark py-2 h-9 hover:bg-custom-gold/90"
                         onClick={handleAddToCartClick}
                     >
                         Add to Cart
                     </Button>
                 ) : (
-                    <div className="flex items-center justify-center w-full rounded-full h-9 border border-white overflow-hidden">
-                        <Button size="icon" variant="ghost" onClick={handleDecrement} className="h-full rounded-none bg-transparent hover:bg-white/20 text-white hover:text-white flex-1">
+                    <div className="flex items-center justify-center w-full rounded-full h-9 border-2 border-custom-gold bg-custom-gold overflow-hidden">
+                        <Button size="icon" variant="ghost" onClick={handleDecrement} className="h-full rounded-none bg-transparent hover:bg-custom-gold/90 text-custom-purple-dark hover:text-custom-purple-dark flex-1">
                             <Minus className="h-4 w-4" />
                         </Button>
-                        <div className="flex-1 text-center bg-transparent text-white h-full flex items-center justify-center">
+                        <div className="flex-1 text-center bg-transparent text-custom-purple-dark h-full flex items-center justify-center">
                             <span className="font-bold px-1 text-base">{productQuantity}</span>
                         </div>
-                        <Button size="icon" variant="ghost" onClick={handleIncrement} className="h-full rounded-none bg-transparent hover:bg-white/20 text-white hover:text-white flex-1">
+                        <Button size="icon" variant="ghost" onClick={handleIncrement} className="h-full rounded-none bg-transparent hover:bg-custom-gold/90 text-custom-purple-dark hover:text-custom-purple-dark flex-1">
                             <Plus className="h-4 w-4" />
                         </Button>
                     </div>
                 )}
                 <Button
                     onClick={handleBuyNow}
-                    className="w-full rounded-full font-semibold text-sm border-2 border-custom-gold bg-custom-gold text-custom-purple-dark py-2 h-9 hover:bg-custom-gold/90"
+                    className="w-full rounded-full font-semibold text-sm border border-white bg-white text-custom-purple-dark py-2 h-9 hover:bg-gray-200"
                 >
                     Buy Now
                 </Button>
@@ -207,7 +207,7 @@ export function MobileProductDetailView({
         </div>
         <Separator className="my-4 bg-white/30" />
         
-        <div ref={inlinePriceBoxRef} className="px-4">
+        <div ref={inlinePriceBoxRef} className="px-0">
             <InlinePriceBox
               product={product}
               productQuantity={productQuantity}
