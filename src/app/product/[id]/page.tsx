@@ -173,20 +173,18 @@ export default function ProductPage() {
               }}
               isVisible={isMobileHeaderVisible}
             />
-          <main onScroll={handleMobileScroll} className={cn("flex-grow flex flex-col transition-all duration-300 relative min-h-0", isMobileHeaderVisible ? 'pt-16' : 'pt-0')}>
-              <div className="relative bg-[#9A7DAB] rounded-t-[20px] h-full ring-4 ring-custom-purple-dark flex-grow">
-                <MobileProductDetailView
-                  product={product}
-                  onClose={() => router.back()}
-                  onAddToCart={handleAddToCart}
-                  cart={cart}
-                  onToggleCartPopup={handleToggleCartPopup}
-                  isLiked={!!likedProducts[product.id]}
-                  onLikeToggle={() => handleLikeToggle(product.id)}
-                  flavourCart={flavourCart}
-                  onFlavourAddToCart={handleFlavourAddToCart}
-                />
-              </div>
+          <main onScroll={handleMobileScroll} className={cn("flex-grow flex flex-col transition-all duration-300 relative min-h-0 pb-16", isMobileHeaderVisible ? 'pt-16' : 'pt-0')}>
+            <MobileProductDetailView
+              product={product}
+              onClose={() => router.back()}
+              onAddToCart={handleAddToCart}
+              cart={cart}
+              onToggleCartPopup={handleToggleCartPopup}
+              isLiked={!!likedProducts[product.id]}
+              onLikeToggle={() => handleLikeToggle(product.id)}
+              flavourCart={flavourCart}
+              onFlavourAddToCart={handleFlavourAddToCart}
+            />
           </main>
         </div>
         <BottomNavbar activeView={'search'} onNavigate={handleNavigation} cartItemCount={cartItemCount} />
@@ -289,5 +287,3 @@ export default function ProductPage() {
     </>
   );
 }
-
-    

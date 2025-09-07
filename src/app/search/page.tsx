@@ -10,7 +10,6 @@ import { BottomNavbar } from '@/components/bottom-navbar';
 import { PopupsManager } from '@/components/popups/popups-manager';
 import { SearchView } from '@/components/views/SearchView';
 import { useIsMobile } from '@/hooks/use-mobile';
-import { MobileProductDetailView } from '@/components/views/MobileProductDetailView';
 import { flavourOptions, occasionOptions, productTypeOptions, weightOptions } from '@/lib/filter-options';
 import type { Product, ActiveView } from '@/app/page';
 import { FloatingCartButton } from '@/components/floating-cart-button';
@@ -74,8 +73,6 @@ function SearchPageComponent() {
   const [isContentScrolled, setIsContentScrolled] = useState(false);
   const [isFilterSheetOpen, setIsFilterSheetOpen] = useState(false);
   const [isSortSheetOpen, setIsSortSheetOpen] = useState(false);
-  const [selectedProductForMobile, setSelectedProductForMobile] = useState<Product | null>(null);
-  const [mobileFlavourCart, setMobileFlavourCart] = useState<Record<string, number>>({});
   const isMobile = useIsMobile();
   const [searchInput, setSearchInput] = useState(query);
   const [lastScrollTop, setLastScrollTop] = useState(0);
@@ -115,21 +112,9 @@ function SearchPageComponent() {
       setTimeout(() => setIsCartButtonExpanded(false), 1500);
     }
   };
-  
-    const handleMobileFlavourAddToCart = (flavourId: number, quantity: number) => {
-    const newFlavourCart = { ...mobileFlavourCart, [flavourId.toString()]: quantity };
-    if (quantity <= 0) {
-      delete newFlavourCart[flavourId.toString()];
-    }
-    setMobileFlavourCart(newFlavourCart);
-  };
 
   const handleProductClick = (product: Product) => {
-    if (isMobile) {
-      setSelectedProductForMobile(product);
-    } else {
-      router.push(`/product/${product.id}`);
-    }
+    router.push(`/product/${product.id}`);
   };
 
   const handleSearchSubmit = (value: string) => {
@@ -138,8 +123,6 @@ function SearchPageComponent() {
   };
 
   const handleClosePopup = () => setSelectedProduct(null);
-  
-  const handleCloseMobileProductDetail = () => setSelectedProductForMobile(null);
 
   const handleFilterChange = (newFilters: Partial<FilterState>) => {
     setIsSearching(true);
@@ -245,7 +228,7 @@ function SearchPageComponent() {
   return (
     <>
       <SparkleBackground />
-      <div className={cn("flex flex-col h-screen", (isPopupOpen || selectedProductForMobile) ? 'opacity-50' : '')}>
+      <div className={cn("flex flex-col h-screen", isPopupOpen ? 'opacity-50' : '')}>
         {isMobile ? (
           <MobileSearchHeader 
             value={searchInput}
@@ -295,8 +278,6 @@ function SearchPageComponent() {
               onFilterSheetOpenChange={setIsFilterSheetOpen}
               isSortSheetOpen={isSortSheetOpen}
               onSortSheetOpenChange={setIsSortSheetOpen}
-              selectedProductForMobile={selectedProductForMobile}
-              onCloseMobileProductDetail={handleCloseMobileProductDetail}
               onScroll={handleScroll}
             />
         </main>
@@ -312,25 +293,6 @@ function SearchPageComponent() {
           cartMessage={cartMessage}
           cart={cart}
         />
-      )}
-      
-      {selectedProductForMobile && (
-        <>
-          <div className="fixed inset-0 z-50 bg-black/50" />
-          <div className="fixed inset-x-0 bottom-0 top-12 z-[60] md:hidden">
-            <MobileProductDetailView 
-              product={selectedProductForMobile} 
-              onClose={handleCloseMobileProductDetail} 
-              onAddToCart={handleAddToCart}
-              cart={cart}
-              onToggleCartPopup={handleToggleCartPopup}
-              isLiked={!!likedProducts[selectedProductForMobile.id]}
-              onLikeToggle={() => handleLikeToggle(selectedProductForMobile.id)}
-              onFlavourAddToCart={handleMobileFlavourAddToCart}
-              flavourCart={mobileFlavourCart}
-            />
-          </div>
-        </>
       )}
 
       <PopupsManager
@@ -371,5 +333,3 @@ export default function SearchPage() {
     </Suspense>
   )
 }
-
-    

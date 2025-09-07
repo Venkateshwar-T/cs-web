@@ -28,8 +28,6 @@ interface SearchViewProps {
   onFilterSheetOpenChange: (open: boolean) => void;
   isSortSheetOpen: boolean;
   onSortSheetOpenChange: (open: boolean) => void;
-  selectedProductForMobile: Product | null;
-  onCloseMobileProductDetail: () => void;
   onScroll: (event: UIEvent<HTMLDivElement>) => void;
 }
 

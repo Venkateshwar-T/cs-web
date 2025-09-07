@@ -57,7 +57,7 @@ export function MobileProductDetailView({
 
   return (
     <div className={cn(
-      "bg-white/20 h-full w-full rounded-t-[20px] relative flex flex-col overflow-hidden"
+      "bg-[#9A7DAB] h-full w-full rounded-t-[20px] relative flex flex-col overflow-hidden"
     )}>
       <div className="absolute top-0 right-0 z-20 p-2">
           <Button 
@@ -73,14 +73,14 @@ export function MobileProductDetailView({
         <div className="-mt-2">
           <MobileImageGallery product={product} onImageExpandChange={() => {}} />
         </div>
-        <div className="p-4">
+        <div className="px-4">
           <ProductDetails product={product} isLiked={isLiked} onLikeToggle={onLikeToggle} isMobile={true} />
         </div>
-        <Separator className="my-4 bg-white/30" />
         <div className="px-4">
+          <Separator className="my-4 bg-white/30" />
           <FlavoursSection onAddToCart={onFlavourAddToCart} cart={flavourCart} isMobile={true} />
+          <Separator className="my-4 bg-white/30" />
         </div>
-        <Separator className="my-4 bg-white/30" />
       </div>
       <div className="absolute bottom-0 left-0 right-0 z-10">
         <div className="bg-custom-purple-dark pt-4 rounded-t-2xl">
@@ -125,5 +125,3 @@ export function MobileProductDetailView({
     </div>
   );
 }
-
-    
