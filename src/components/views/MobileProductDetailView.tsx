@@ -102,8 +102,8 @@ const InlinePriceBox = ({ product, productQuantity, onAddToCart, onToggleCartPop
             <div className="bg-custom-purple-dark/80 p-3 backdrop-blur-sm rounded-t-xl">
                  <div className="flex justify-center items-center mb-3 gap-2">
                     <p className="text-sm line-through opacity-70 text-white">₹1000</p>
-                    <div className="flex bg-custom-gold text-custom-purple-dark px-1.5 py-0.5 rounded-md">
-                        <span className="text-[10px] font-bold">25% OFF</span>
+                    <div className="flex bg-custom-gold text-custom-purple-dark px-1 py-0.5 rounded-md text-[10px] font-bold">
+                        <span>25% OFF</span>
                     </div>
                     <p className="text-xl font-bold text-white">₹750</p>
                 </div>
@@ -190,7 +190,7 @@ export function MobileProductDetailView({
 
   return (
     <div className={cn(
-      "bg-[#9A7DAB] h-full w-full rounded-t-[20px] relative flex flex-col pt-2 mt-4 overflow-hidden"
+      "bg-[#9A7DAB] h-full w-full rounded-[20px] relative flex flex-col pt-2 mt-4 overflow-hidden"
     )}>
       <div className="flex-grow overflow-y-auto no-scrollbar">
         <div className="-mt-2">
