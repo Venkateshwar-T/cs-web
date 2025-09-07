@@ -23,6 +23,7 @@ import { MobileSearchHeader } from '@/components/header/mobile-search-header';
 import { MobileProductDetailView } from '@/components/views/MobileProductDetailView';
 import { ProductCard } from '@/components/product-card';
 import { SectionTitle } from '@/components/section-title';
+import { ChevronRight } from 'lucide-react';
 
 const allProducts: Product[] = Array.from({ length: 12 }).map((_, i) => ({
   id: i,
@@ -175,8 +176,8 @@ export default function ProductPage() {
               }}
               isVisible={isMobileHeaderVisible}
             />
-          <main onScroll={handleMobileScroll} className={cn("flex-grow flex flex-col transition-all duration-300 relative min-h-0 pb-16", isMobileHeaderVisible ? 'pt-16' : 'pt-0')}>
-            <div className="flex-grow overflow-y-auto no-scrollbar px-4">
+          <main onScroll={handleMobileScroll} className={cn("flex-grow flex flex-col transition-all duration-300 relative min-h-0 pb-16 px-4", isMobileHeaderVisible ? 'pt-16' : 'pt-0')}>
+            <div className="flex-grow overflow-y-auto no-scrollbar">
               <MobileProductDetailView
                 product={product}
                 onClose={() => router.back()}
@@ -191,7 +192,7 @@ export default function ProductPage() {
               <div className="mt-8">
                 <div className="bg-white/10 rounded-2xl p-4">
                     <SectionTitle className="text-base mb-3 p-0 text-center">You might also like</SectionTitle>
-                    <div className="flex items-stretch overflow-x-auto no-scrollbar gap-4">
+                    <div className="flex items-center overflow-x-auto no-scrollbar gap-4">
                         {allProducts.slice(0, 6).map(p => (
                              <div key={p.id} className="flex-shrink-0 w-40">
                                 <ProductCard
@@ -204,6 +205,14 @@ export default function ProductPage() {
                                 />
                             </div>
                         ))}
+                         <div 
+                           onClick={() => router.push('/search?q=')}
+                           className="flex-shrink-0 w-12 h-40 flex items-center justify-center cursor-pointer"
+                          >
+                           <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
+                              <ChevronRight className="w-8 h-8 text-white" />
+                           </div>
+                         </div>
                     </div>
                 </div>
               </div>
