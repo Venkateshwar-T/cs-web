@@ -61,7 +61,6 @@ export default function OrderConfirmedPage() {
           onReset={() => router.push('/')}
           onNavigate={(view) => router.push(`/?view=${view}`)}
           activeView={'order-confirmed'}
-          isUsingAnimatedSearch={true}
           onSearchSubmit={handleSearchSubmit}
           searchInput={searchInput}
           onSearchInputChange={setSearchInput}

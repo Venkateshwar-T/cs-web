@@ -232,7 +232,6 @@ export default function Home() {
           onNavigate={(view) => setActiveView(view)}
           activeView={activeView}
           onSearchSubmit={(query) => router.push(`/search?q=${encodeURIComponent(query)}`)}
-          isUsingAnimatedSearch={activeView === 'order-confirmed'}
           searchInput={searchInput}
           onSearchInputChange={setSearchInput}
         />
