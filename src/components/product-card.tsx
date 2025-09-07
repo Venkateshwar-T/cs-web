@@ -167,7 +167,7 @@ export function ProductCard({ product, onAddToCart, quantity, onProductClick, is
               </div>
             )}
           </div>
-          <p className="text-xs md:text-sm text-[#9A7DAB] mt-1 whitespace-nowrap truncate">250g | Assorted | Hard Box</p>
+          <p className="text-[11px] md:text-xs text-[#9A7DAB] mt-1 whitespace-nowrap truncate">250g | Assorted | Hard Box</p>
         </div>
         <div className="mt-2 md:mt-4 flex flex-col items-start gap-2 md:flex-row md:items-center md:gap-0">
           <div>
