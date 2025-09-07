@@ -111,13 +111,13 @@ export function OrderConfirmedView({ cart }: OrderConfirmedViewProps) {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className="bg-[#9A7DAB] rounded-[40px] py-8 px-16 text-white h-auto flex items-center justify-center flex-grow"
+      className="bg-[#9A7DAB] rounded-[40px] py-8 px-4 md:px-16 text-white h-auto flex items-center justify-center flex-grow"
     >
         {isLoading ? (
             <ProcessingView />
         ) : (
             <motion.div 
-              className="flex flex-col items-center gap-5 text-center w-full"
+              className="flex flex-col items-center gap-5 text-center w-full max-w-4xl"
               variants={containerVariants}
               initial="hidden"
               animate="visible"
