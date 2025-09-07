@@ -60,7 +60,7 @@ export default function OrderConfirmedPage() {
   return (
     <>
       <SparkleBackground />
-      <div className={cn("flex flex-col min-h-screen", isPopupOpen && 'opacity-50')}>
+      <div className={cn("flex flex-col h-screen", isPopupOpen && 'opacity-50')}>
         <Header 
           onProfileOpenChange={setIsProfileOpen}
           isContentScrolled={isScrolled}
@@ -72,10 +72,12 @@ export default function OrderConfirmedPage() {
           searchInput={searchInput}
           onSearchInputChange={setSearchInput}
         />
-        <main onScroll={handleScroll} className="flex-grow pt-36 md:px-32 flex flex-col gap-8 pb-8 overflow-y-auto no-scrollbar">
-            <OrderConfirmedView cart={cart} />
+        <main onScroll={handleScroll} className="flex-grow pt-36 flex flex-col gap-8 pb-8 overflow-y-auto no-scrollbar">
+            <div className="md:px-32 flex-grow flex flex-col">
+              <OrderConfirmedView cart={cart} />
+            </div>
+            <Footer />
         </main>
-        <Footer />
       </div>
       
       <PopupsManager
