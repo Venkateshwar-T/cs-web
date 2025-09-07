@@ -61,6 +61,7 @@ export default function Home() {
   const [searchInput, setSearchInput] = useState("");
   const formRef = useRef<HTMLFormElement>(null);
   const { toast } = useToast();
+  const [isSearchingOnAbout, setIsSearchingOnAbout] = useState(false);
 
 
   useEffect(() => {
@@ -108,6 +109,7 @@ export default function Home() {
 
   const handleResetToHome = () => {
     setActiveView('home');
+    setIsSearchingOnAbout(false);
   };
 
   const handleAddToCart = (productName: string, quantity: number) => {
@@ -173,6 +175,11 @@ export default function Home() {
       setActiveView(view);
     }
   };
+  
+  const handleHeaderNavigate = (view: 'about' | 'faq') => {
+    setActiveView(view);
+    setIsSearchingOnAbout(true);
+  };
 
   const cartItemCount = Object.values(cart).reduce((acc, quantity) => acc + quantity, 0);
 
@@ -229,11 +236,12 @@ export default function Home() {
           onProfileOpenChange={setIsProfileOpen}
           isContentScrolled={isContentScrolled}
           onReset={handleResetToHome}
-          onNavigate={(view) => setActiveView(view)}
+          onNavigate={handleHeaderNavigate}
           activeView={activeView}
           onSearchSubmit={(query) => router.push(`/search?q=${encodeURIComponent(query)}`)}
           searchInput={searchInput}
           onSearchInputChange={setSearchInput}
+          isSearchingOnAbout={isSearchingOnAbout}
         />
         <main className={mainContentClass}>
           {renderContent()}

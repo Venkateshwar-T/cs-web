@@ -1,4 +1,3 @@
-
 // @/components/header/user-actions.tsx
 'use client';
 
@@ -6,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { Menu, Phone } from "lucide-react";
+import { Menu, Phone, Search } from "lucide-react";
 import { AiOutlineInstagram } from "react-icons/ai";
 import { IoLogoFacebook, IoLogoWhatsapp } from "react-icons/io5";
 import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet";
@@ -50,7 +49,7 @@ export function UserActions({
         <div className="flex items-center animate-slide-in-from-right" style={{ animationDuration: '0.5s' }}>
             {/* Desktop Actions */}
             <div className="hidden md:flex items-center gap-1">
-                {(activeView === 'about' || activeView === 'faq') && !isAnimatedSearchExpanded && !isSearchingOnAbout && (
+                {(activeView === 'about' || activeView === 'faq') && !isAnimatedSearchExpanded && (
                      <div className={cn(
                         "flex items-center gap-1",
                         isEnquireOpen && "opacity-50"
