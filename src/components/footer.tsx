@@ -16,7 +16,7 @@ const FooterSection = ({ title, children }: { title: string; children: React.Rea
 
 export function Footer() {
     return (
-        <footer className="bg-footer-gray text-white font-poppins py-10 px-4 md:px-16 rounded-t-[40px] mx-8 md:mx-32 mb-16 md:mb-0">
+        <footer className="bg-footer-gray text-white font-poppins py-10 px-4 md:px-16 rounded-t-[40px] mx-8 md:mx-24 mb-16 md:mb-0">
             <div className="container mx-auto flex flex-col md:flex-row justify-between items-start gap-10 md:gap-8">
                 {/* Logo */}
                 <div className="flex items-start">
