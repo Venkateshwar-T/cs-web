@@ -90,3 +90,5 @@ export function ProductDetails({ product, isLiked, onLikeToggle, isMobile = fals
         </div>
     );
 }
+
+    

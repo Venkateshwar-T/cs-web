@@ -125,7 +125,11 @@ function SearchPageComponent() {
   };
 
   const handleProductClick = (product: Product) => {
-    router.push(`/product/${product.id}`);
+    if (isMobile) {
+      setSelectedProductForMobile(product);
+    } else {
+      router.push(`/product/${product.id}`);
+    }
   };
 
   const handleSearchSubmit = (value: string) => {
@@ -241,7 +245,7 @@ function SearchPageComponent() {
   return (
     <>
       <SparkleBackground />
-      <div className={cn("flex flex-col h-screen", isPopupOpen ? 'opacity-50' : '')}>
+      <div className={cn("flex flex-col h-screen", (isPopupOpen || selectedProductForMobile) ? 'opacity-50' : '')}>
         {isMobile ? (
           <MobileSearchHeader 
             value={searchInput}
@@ -313,7 +317,7 @@ function SearchPageComponent() {
       {selectedProductForMobile && (
         <>
           <div className="fixed inset-0 z-50 bg-black/50" />
-          <div className="fixed inset-x-4 bottom-16 top-24 z-[60] md:hidden">
+          <div className="fixed inset-x-0 bottom-0 top-12 z-[60] md:hidden">
             <MobileProductDetailView 
               product={selectedProductForMobile} 
               onClose={handleCloseMobileProductDetail} 
@@ -367,3 +371,5 @@ export default function SearchPage() {
     </Suspense>
   )
 }
+
+    

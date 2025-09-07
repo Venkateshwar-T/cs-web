@@ -17,8 +17,10 @@ import { FlavoursSection } from '@/components/flavours-section';
 import { ProductDetails } from '@/components/product-details';
 import { Separator } from '@/components/ui/separator';
 import { ProductPopupFooter } from '@/components/product-popup-footer';
-import { X } from 'lucide-react';
 import { FeaturedProducts } from '@/components/featured-products';
+import { useIsMobile } from '@/hooks/use-mobile';
+import { MobileSearchHeader } from '@/components/header/mobile-search-header';
+import { MobileProductDetailView } from '@/components/views/MobileProductDetailView';
 
 const allProducts: Product[] = Array.from({ length: 12 }).map((_, i) => ({
   id: i,
@@ -29,6 +31,7 @@ export default function ProductPage() {
   const router = useRouter();
   const params = useParams();
   const { cart, updateCart, clearCart } = useCart();
+  const isMobile = useIsMobile();
   
   const [product, setProduct] = useState<Product | null>(null);
   const [likedProducts, setLikedProducts] = useState<Record<number, boolean>>({});
@@ -49,6 +52,8 @@ export default function ProductPage() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [cartMessage, setCartMessage] = useState('');
   const [isCartButtonExpanded, setIsCartButtonExpanded] = useState(false);
+  const [lastScrollTop, setLastScrollTop] = useState(0);
+  const [isMobileHeaderVisible, setIsMobileHeaderVisible] = useState(true);
 
   useEffect(() => {
     if (params.id) {
@@ -70,6 +75,22 @@ export default function ProductPage() {
   const handleScroll = (event: UIEvent<HTMLDivElement>) => {
     const { scrollTop } = event.currentTarget;
     setIsScrolled(scrollTop > 0);
+  };
+
+  const handleMobileScroll = (event: UIEvent<HTMLDivElement>) => {
+    if (!isMobile) return;
+
+    const currentScrollTop = event.currentTarget.scrollTop;
+    if (Math.abs(currentScrollTop - lastScrollTop) <= 10) {
+      return;
+    }
+
+    if (currentScrollTop > lastScrollTop && currentScrollTop > 56) {
+      setIsMobileHeaderVisible(false);
+    } else {
+      setIsMobileHeaderVisible(true);
+    }
+    setLastScrollTop(currentScrollTop <= 0 ? 0 : currentScrollTop);
   };
   
   const handleSearchSubmit = (query: string) => {
@@ -129,15 +150,49 @@ export default function ProductPage() {
 
   if (!product) {
     return (
-      <div className="flex h-screen items-center justify-center">
+      <div className="flex h-screen items-center justify-center bg-background">
         <SparkleBackground />
         <p className="text-white">Product not found.</p>
       </div>
     );
   }
   
-  const productQuantity = cart[product.name] || 0;
   const isPopupOpen = isCartVisible || isProfileOpen || isSignUpOpen || isCompleteDetailsOpen || isImageExpanded;
+
+  if (isMobile) {
+    return (
+      <>
+        <SparkleBackground />
+        <div className="flex flex-col h-screen">
+          <MobileSearchHeader 
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleSearchSubmit(searchInput);
+              }}
+              isVisible={isMobileHeaderVisible}
+            />
+          <main onScroll={handleMobileScroll} className={cn("flex-grow flex flex-col transition-all duration-300 relative min-h-0", isMobileHeaderVisible ? 'pt-16' : 'pt-0')}>
+              <div className="relative bg-[#9A7DAB] rounded-t-[20px] h-full ring-4 ring-custom-purple-dark flex-grow">
+                <MobileProductDetailView
+                  product={product}
+                  onClose={() => router.back()}
+                  onAddToCart={handleAddToCart}
+                  cart={cart}
+                  onToggleCartPopup={handleToggleCartPopup}
+                  isLiked={!!likedProducts[product.id]}
+                  onLikeToggle={() => handleLikeToggle(product.id)}
+                  flavourCart={flavourCart}
+                  onFlavourAddToCart={handleFlavourAddToCart}
+                />
+              </div>
+          </main>
+        </div>
+        <BottomNavbar activeView={'search'} onNavigate={handleNavigation} cartItemCount={cartItemCount} />
+      </>
+    );
+  }
 
   return (
     <>
@@ -147,7 +202,7 @@ export default function ProductPage() {
           onProfileOpenChange={setIsProfileOpen}
           isContentScrolled={isScrolled}
           onReset={() => router.push('/')}
-          onNavigate={(view) => router.push(`/?view=${view}`)}
+          onNavigate={(view) => router.push(`/${view}`)}
           activeView={'search'}
           isUsingAnimatedSearch={true}
           onSearchSubmit={handleSearchSubmit}
@@ -177,7 +232,7 @@ export default function ProductPage() {
                       <div className="h-full py-0 pr-6 overflow-y-auto custom-scrollbar pb-28">
                           <ProductDetails product={product} isLiked={!!likedProducts[product.id]} onLikeToggle={() => handleLikeToggle(product.id)} isMobile={false} />
                       </div>
-                      <ProductPopupFooter product={product} onAddToCart={handleAddToCart} quantity={productQuantity} onToggleCartPopup={handleToggleCartPopup} />
+                      <ProductPopupFooter product={product} onAddToCart={handleAddToCart} quantity={cart[product.name] || 0} onToggleCartPopup={handleToggleCartPopup} />
                   </div>
                 </div>
               </div>
@@ -234,3 +289,5 @@ export default function ProductPage() {
     </>
   );
 }
+
+    

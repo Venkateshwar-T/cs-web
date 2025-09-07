@@ -103,3 +103,5 @@ export function MobileImageGallery({ product, onImageExpandChange }: MobileImage
         </>
     );
 }
+
+    
