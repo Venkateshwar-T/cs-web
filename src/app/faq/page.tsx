@@ -60,7 +60,7 @@ export default function FaqPage() {
                   isSearchingOnAbout={true}
                 />
                 <main onScroll={handleScroll} className="flex-grow pt-36 flex flex-col overflow-y-auto no-scrollbar">
-                    <FaqView />
+                    <div className='mb-8'><FaqView /></div>
                     <Footer />
                 </main>
             </div>
