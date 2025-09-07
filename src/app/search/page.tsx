@@ -265,7 +265,7 @@ function SearchPageComponent() {
               isNewSearch={isNewSearch}
               products={allProducts}
               query={query}
-              onAddToCart={onAddToCart}
+              onAddToCart={handleAddToCart}
               cart={cart}
               onProductClick={handleProductClick}
               activeFilters={activeFilters}
