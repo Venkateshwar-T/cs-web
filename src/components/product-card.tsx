@@ -111,7 +111,8 @@ export function ProductCard({ product, onAddToCart, quantity, onProductClick, is
       <Heart 
         key={likeClickCount}
         className={cn(
-          "h-5 w-5 md:h-6 md:w-6 stroke-current transition-colors duration-300", 
+          "stroke-current transition-colors duration-300", 
+          isMobile ? "h-5 w-5" : "h-6 w-6",
           isLiked ? 'text-red-500 fill-red-500' : (isMobile ? 'text-white' : 'text-black'),
           'animate-heart-pop'
         )} 
@@ -167,7 +168,10 @@ export function ProductCard({ product, onAddToCart, quantity, onProductClick, is
               </div>
             )}
           </div>
-          <p className="text-[11px] md:text-xs text-[#9A7DAB] mt-1 whitespace-nowrap truncate">250g | Assorted | Hard Box</p>
+          <p className={cn(
+            "text-[#9A7DAB] mt-1 whitespace-nowrap truncate",
+            isMobile ? "text-[11px]" : "text-xs"
+          )}>250g | Assorted | Hard Box</p>
         </div>
         <div className="mt-2 md:mt-4 flex flex-col items-start gap-2 md:flex-row md:items-center md:gap-0">
           <div>
@@ -182,12 +186,18 @@ export function ProductCard({ product, onAddToCart, quantity, onProductClick, is
               <Button
                 size="sm"
                 onClick={handleAddToCartClick}
-                className="w-full rounded-full uppercase bg-transparent border-2 border-b-[3px] border-custom-purple-dark text-custom-purple-dark hover:bg-custom-purple-dark hover:text-white h-7 text-xs"
+                className={cn(
+                  "w-full rounded-full uppercase bg-transparent border-2 border-b-[3px] border-custom-purple-dark text-custom-purple-dark hover:bg-custom-purple-dark hover:text-white text-xs",
+                  isMobile ? "h-7" : "h-8"
+                )}
               >
                 Add
               </Button>
             ) : (
-              <div className="flex items-center justify-between w-full rounded-full text-white h-7 border-2 border-custom-purple-dark overflow-hidden">
+              <div className={cn(
+                "flex items-center justify-between w-full rounded-full text-white border-2 border-custom-purple-dark overflow-hidden",
+                isMobile ? "h-7" : "h-8"
+              )}>
                 <Button
                   size="icon"
                   variant="ghost"
