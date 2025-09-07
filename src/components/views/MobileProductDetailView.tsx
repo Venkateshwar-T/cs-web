@@ -1,4 +1,3 @@
-
 // @/components/views/MobileProductDetailView.tsx
 'use client';
 
@@ -57,7 +56,7 @@ export function MobileProductDetailView({
 
   return (
     <div className={cn(
-      "bg-[#9A7DAB] h-full w-full rounded-t-[20px] relative flex flex-col pt-2 px-2 mt-4 overflow-hidden"
+      "bg-[#9A7DAB] h-full w-full rounded-t-[20px] relative flex flex-col pt-2 px-4 mt-4 overflow-hidden"
     )}>
       <div className="flex-grow overflow-y-auto no-scrollbar">
         <div className="-mt-2">
