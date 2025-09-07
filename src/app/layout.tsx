@@ -1,7 +1,9 @@
+
 import type {Metadata} from 'next';
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
 import { ProgressBarComponent } from '@/components/progress-bar';
+import { Suspense } from 'react';
 
 export const metadata: Metadata = {
   title: 'BizHome',
@@ -22,8 +24,10 @@ export default function RootLayout({
         <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@400;700&family=IBM+Plex+Sans:wght@400;700&family=Inter:wght@400;700&family=Poppins:wght@400;700&family=Montserrat:wght@400;700&display=swap" rel="stylesheet" />
       </head>
       <body className="font-body antialiased">
-        <ProgressBarComponent />
-        {children}
+        <Suspense fallback={null}>
+          <ProgressBarComponent />
+          {children}
+        </Suspense>
         <Toaster />
       </body>
     </html>
