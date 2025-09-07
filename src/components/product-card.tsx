@@ -182,12 +182,12 @@ export function ProductCard({ product, onAddToCart, quantity, onProductClick, is
               <Button
                 size="sm"
                 onClick={handleAddToCartClick}
-                className="w-full rounded-full uppercase bg-transparent border-2 border-b-[3px] border-custom-purple-dark text-custom-purple-dark hover:bg-custom-purple-dark hover:text-white h-8 text-xs"
+                className="w-full rounded-full uppercase bg-transparent border-2 border-b-[3px] border-custom-purple-dark text-custom-purple-dark hover:bg-custom-purple-dark hover:text-white h-7 text-xs"
               >
                 Add
               </Button>
             ) : (
-              <div className="flex items-center justify-between w-full rounded-full text-white h-8 border-2 border-custom-purple-dark overflow-hidden">
+              <div className="flex items-center justify-between w-full rounded-full text-white h-7 border-2 border-custom-purple-dark overflow-hidden">
                 <Button
                   size="icon"
                   variant="ghost"
