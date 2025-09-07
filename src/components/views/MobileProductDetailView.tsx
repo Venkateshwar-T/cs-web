@@ -59,19 +59,18 @@ export function MobileProductDetailView({
     <div className={cn(
       "bg-[#9A7DAB] h-full w-full rounded-t-[20px] relative flex flex-col pt-2 mt-4 overflow-hidden"
     )}>
-      <div className="flex-grow overflow-y-auto no-scrollbar">
-        <div className="-mt-2">
+      <div className="flex-grow overflow-y-auto no-scrollbar px-4">
+        <div className="-mt-2 -mx-4">
           <MobileImageGallery product={product} onImageExpandChange={() => {}} />
         </div>
-        <div className="px-4">
-          <ProductDetails product={product} isLiked={isLiked} onLikeToggle={onLikeToggle} isMobile={true} />
-        </div>
-        <div className="px-4">
-          <Separator className="my-4 bg-white/30" />
-          <FlavoursSection onAddToCart={onFlavourAddToCart} cart={flavourCart} isMobile={true} />
-          <Separator className="my-4 bg-white/30" />
-        </div>
-        <div className="bg-custom-purple-dark pt-4 rounded-t-2xl mx-4 px-4 pb-4">
+        
+        <ProductDetails product={product} isLiked={isLiked} onLikeToggle={onLikeToggle} isMobile={true} />
+        
+        <Separator className="my-4 bg-white/30" />
+        <FlavoursSection onAddToCart={onFlavourAddToCart} cart={flavourCart} isMobile={true} />
+        <Separator className="my-4 bg-white/30" />
+        
+        <div className="bg-custom-purple-dark pt-4 rounded-t-2xl -mx-4 px-4 pb-4">
           <div className="flex justify-between items-center mb-4">
               <div className="flex flex-col items-start">
                   <p className="text-sm line-through opacity-70">₹1000</p>
