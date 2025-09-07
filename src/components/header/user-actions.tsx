@@ -1,3 +1,4 @@
+
 // @/components/header/user-actions.tsx
 'use client';
 
@@ -14,6 +15,7 @@ import { cn } from "@/lib/utils";
 import type { ActiveView } from "@/app/page";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 
 interface UserActionsProps {
@@ -28,7 +30,7 @@ interface UserActionsProps {
 }
 
 const navLinks = [
-    { id: "about", label: "About" },
+    { id: "about", label: "About", href: "/about" },
     { id: "faq", label: "FAQ" },
 ] as const;
 
@@ -44,6 +46,15 @@ export function UserActions({
 }: UserActionsProps) {
     const isMobile = useIsMobile();
     const [isEnquireSheetOpen, setIsEnquireSheetOpen] = useState(false);
+    const router = useRouter();
+
+    const handleMobileNav = (link: typeof navLinks[number]) => {
+        if (link.href) {
+            router.push(link.href);
+        } else {
+            onNavigate(link.id as 'faq');
+        }
+    };
     
     return (
         <div className="flex items-center animate-slide-in-from-right" style={{ animationDuration: '0.5s' }}>
@@ -153,7 +164,7 @@ export function UserActions({
                                 return (
                                     <SheetClose asChild key={link.id}>
                                         <button
-                                            onClick={() => onNavigate(link.id)}
+                                            onClick={() => handleMobileNav(link)}
                                             className={cn(
                                                 "transition-colors hover:text-custom-gold text-left", 
                                                 isActive ? "text-custom-gold font-semibold" : "text-foreground/80"

@@ -4,6 +4,7 @@
 
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { useRouter } from 'next/navigation';
 
 interface NavigationProps {
   isEnquireOpen: boolean;
@@ -12,12 +13,22 @@ interface NavigationProps {
 }
 
 const navLinks = [
-    { id: "about", label: "About" },
+    { id: "about", label: "About", href: "/about" },
     { id: "faq", label: "FAQ" },
 ] as const;
 
 
 export function Navigation({ isEnquireOpen, onNavigate, activeView }: NavigationProps) {
+    const router = useRouter();
+
+    const handleClick = (link: typeof navLinks[number]) => {
+        if (link.href) {
+            router.push(link.href);
+        } else {
+            onNavigate(link.id as 'about' | 'faq');
+        }
+    };
+
     return (
         <nav className={cn(
             "hidden md:flex justify-center items-center gap-4 lg:gap-8 text-base lg:text-lg animate-slide-down"
@@ -27,7 +38,7 @@ export function Navigation({ isEnquireOpen, onNavigate, activeView }: Navigation
                 return (
                     <button
                         key={link.id}
-                        onClick={() => onNavigate(link.id)}
+                        onClick={() => handleClick(link)}
                         className={cn(
                             "transition-colors hover:text-custom-gold", 
                             isEnquireOpen && "opacity-50",

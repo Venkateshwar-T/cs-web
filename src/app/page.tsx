@@ -13,7 +13,6 @@ import { ExploreCategories } from '@/components/explore-categories';
 import { SearchBar } from '@/components/header/search-bar';
 import { useToast } from "@/hooks/use-toast";
 import { useCart } from '@/hooks/use-cart';
-import { AboutView } from '@/components/about-view';
 import { FaqView } from '@/components/faq-view';
 import { Footer } from '@/components/footer';
 import { OrderConfirmedView } from '@/components/order-confirmed-view';
@@ -30,7 +29,7 @@ export type ProfileInfo = {
   email: string;
 }
 
-export type ActiveView = 'home' | 'search' | 'about' | 'faq' | 'order-confirmed' | 'cart' | 'profile';
+export type ActiveView = 'home' | 'search' | 'faq' | 'order-confirmed' | 'cart' | 'profile' | 'about';
 
 const allProducts: Product[] = Array.from({ length: 12 }).map((_, i) => ({
   id: i,
@@ -110,6 +109,7 @@ export default function Home() {
   const handleResetToHome = () => {
     setActiveView('home');
     setIsSearchingOnAbout(false);
+    router.push('/');
   };
 
   const handleAddToCart = (productName: string, quantity: number) => {
@@ -170,15 +170,22 @@ export default function Home() {
       router.push('/cart');
     } else if (view === 'profile') {
       router.push('/profile');
-    } else {
+    } else if (view === 'about') {
+      router.push('/about');
+    } 
+    else {
        router.push('/');
       setActiveView(view);
     }
   };
   
   const handleHeaderNavigate = (view: 'about' | 'faq') => {
-    setActiveView(view);
-    setIsSearchingOnAbout(true);
+    if (view === 'about') {
+        router.push('/about');
+    } else {
+        setActiveView(view);
+        setIsSearchingOnAbout(true);
+    }
   };
 
   const cartItemCount = Object.values(cart).reduce((acc, quantity) => acc + quantity, 0);
@@ -189,8 +196,6 @@ export default function Home() {
     );
 
     switch (activeView) {
-      case 'about':
-        return paddedView(<AboutView />);
       case 'faq':
         return paddedView(<FaqView />);
       case 'order-confirmed':
