@@ -98,45 +98,43 @@ const InlinePriceBox = ({ product, productQuantity, onAddToCart, onToggleCartPop
     };
 
     return (
-        <div className={cn("bg-black/20 p-2 backdrop-blur-sm rounded-xl", className)}>
-            <div className="flex justify-between items-center">
-                <div className="flex items-center gap-3">
-                    <div className="text-white">
-                        <p className="text-xs line-through opacity-70">₹1000</p>
-                        <p className="text-lg font-bold">₹750</p>
-                    </div>
-                     <div className="bg-custom-gold text-custom-purple-dark px-1.5 py-0.5 rounded-md">
-                        <span className="text-[10px] font-bold">25% OFF</span>
-                    </div>
+        <div className={cn("bg-custom-purple-dark/80 p-3 backdrop-blur-sm rounded-xl", className)}>
+             <div className="flex justify-between items-center mb-2">
+                <div className="text-white">
+                    <p className="text-sm line-through opacity-70">₹1000</p>
+                    <p className="text-xl font-bold">₹750</p>
                 </div>
-                <div className="flex items-center gap-2">
-                     {productQuantity === 0 ? (
-                        <Button
-                            className="rounded-full font-semibold text-[11px] border border-white bg-white text-custom-purple-dark py-1 h-8 px-3 hover:bg-gray-200"
-                            onClick={handleAddToCartClick}
-                        >
-                            Add to Cart
-                        </Button>
-                    ) : (
-                        <div className="flex items-center justify-center w-20 rounded-full h-8 border border-white overflow-hidden">
-                            <Button size="icon" variant="ghost" onClick={handleDecrement} className="h-full rounded-none bg-transparent hover:bg-white/20 text-white hover:text-white flex-1">
-                                <Minus className="h-4 w-4" />
-                            </Button>
-                            <div className="flex-1 text-center bg-transparent text-white h-full flex items-center justify-center">
-                                <span className="font-bold px-1 text-sm">{productQuantity}</span>
-                            </div>
-                            <Button size="icon" variant="ghost" onClick={handleIncrement} className="h-full rounded-none bg-transparent hover:bg-white/20 text-white hover:text-white flex-1">
-                                <Plus className="h-4 w-4" />
-                            </Button>
-                        </div>
-                    )}
+                <div className="bg-custom-gold text-custom-purple-dark px-2 py-1 rounded-md">
+                    <span className="text-xs font-bold">25% OFF</span>
+                </div>
+            </div>
+            <div className="flex items-center gap-2">
+                {productQuantity === 0 ? (
                     <Button
-                        onClick={handleBuyNow}
-                        className="rounded-full font-semibold text-[11px] border-2 border-custom-gold bg-custom-gold text-custom-purple-dark py-1 h-8 px-4 hover:bg-custom-gold/90"
+                        className="w-full rounded-full font-semibold text-sm border border-white bg-white text-custom-purple-dark py-2 h-9 hover:bg-gray-200"
+                        onClick={handleAddToCartClick}
                     >
-                        Buy Now
+                        Add to Cart
                     </Button>
-                </div>
+                ) : (
+                    <div className="flex items-center justify-center w-full rounded-full h-9 border border-white overflow-hidden">
+                        <Button size="icon" variant="ghost" onClick={handleDecrement} className="h-full rounded-none bg-transparent hover:bg-white/20 text-white hover:text-white flex-1">
+                            <Minus className="h-4 w-4" />
+                        </Button>
+                        <div className="flex-1 text-center bg-transparent text-white h-full flex items-center justify-center">
+                            <span className="font-bold px-1 text-base">{productQuantity}</span>
+                        </div>
+                        <Button size="icon" variant="ghost" onClick={handleIncrement} className="h-full rounded-none bg-transparent hover:bg-white/20 text-white hover:text-white flex-1">
+                            <Plus className="h-4 w-4" />
+                        </Button>
+                    </div>
+                )}
+                <Button
+                    onClick={handleBuyNow}
+                    className="w-full rounded-full font-semibold text-sm border-2 border-custom-gold bg-custom-gold text-custom-purple-dark py-2 h-9 hover:bg-custom-gold/90"
+                >
+                    Buy Now
+                </Button>
             </div>
         </div>
     );
