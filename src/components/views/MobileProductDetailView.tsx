@@ -32,41 +32,41 @@ const FloatingPriceBox = ({ product, productQuantity, onAddToCart, onToggleCartP
     };
 
     return (
-        <div className={cn("bg-black/20 p-2 backdrop-blur-sm", className)}>
+        <div className={cn("border border-t-custom-purple-dark bg-custom-purple-dark/60 p-2 px-3 backdrop-blur-md", className)}>
             <div className="flex justify-between items-center">
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-3">
                     <div className="text-white">
-                        <p className="text-[10px] line-through opacity-70">₹1000</p>
-                        <p className="text-base font-bold">₹750</p>
+                        <p className="pl-2 text-[10px] line-through opacity-70">₹1000</p>
+                        <p className="text-lg font-bold">₹750</p>
                     </div>
-                     <div className="bg-custom-gold text-custom-purple-dark px-1 py-0.5 rounded-md">
+                     <div className="flex bg-custom-gold text-custom-purple-dark px-1 py-1 rounded-md">
                         <span className="text-[10px] font-bold">25% OFF</span>
                     </div>
                 </div>
                 <div className="flex items-center gap-2">
                      {productQuantity === 0 ? (
                         <Button
-                            className="rounded-full font-semibold text-[10px] border border-white bg-white text-custom-purple-dark py-1 h-7 px-2 hover:bg-gray-200"
+                            className="rounded-full font-semibold text-[12px] bg-custom-gold text-custom-purple-dark py-1 h-8 px-4 hover:bg-gray-200"
                             onClick={handleAddToCartClick}
                         >
                             Add to Cart
                         </Button>
                     ) : (
-                        <div className="flex items-center justify-center w-20 rounded-full h-7 border border-white overflow-hidden">
-                            <Button size="icon" variant="ghost" onClick={handleDecrement} className="h-full rounded-none bg-transparent hover:bg-white/20 text-white hover:text-white flex-1">
+                        <div className="flex items-center justify-center w-24 rounded-full h-8 border border-white overflow-hidden">
+                            <Button size="icon" variant="ghost" onClick={handleDecrement} className="h-full rounded-none bg-custom-purple-dark hover:bg-white/20 text-white hover:text-white flex-1">
                                 <Minus className="h-3 w-3" />
                             </Button>
-                            <div className="flex-1 text-center bg-transparent text-white h-full flex items-center justify-center">
+                            <div className="flex-1 text-center bg-white text-custom-purple-dark h-full flex items-center justify-center">
                                 <span className="font-bold px-1 text-xs">{productQuantity}</span>
                             </div>
-                            <Button size="icon" variant="ghost" onClick={handleIncrement} className="h-full rounded-none bg-transparent hover:bg-white/20 text-white hover:text-white flex-1">
+                            <Button size="icon" variant="ghost" onClick={handleIncrement} className="h-full rounded-none bg-custom-purple-dark hover:bg-white/20 text-white hover:text-white flex-1">
                                 <Plus className="h-3 w-3" />
                             </Button>
                         </div>
                     )}
                     <Button
                         onClick={handleBuyNow}
-                        className="rounded-full font-semibold text-[10px] border-2 border-custom-gold bg-custom-gold text-custom-purple-dark py-1 h-7 px-3 hover:bg-custom-gold/90"
+                        className="rounded-full font-semibold text-[12px] border-2 border-white bg-white text-custom-purple-dark py-1 h-8 px-6 hover:bg-custom-gold/90"
                     >
                         Buy Now
                     </Button>
@@ -100,14 +100,14 @@ const InlinePriceBox = ({ product, productQuantity, onAddToCart, onToggleCartPop
     return (
         <div className={cn("px-4", className)}>
             <div className="bg-custom-purple-dark/80 p-3 backdrop-blur-sm rounded-t-xl">
-                 <div className="flex justify-center items-baseline mb-3 gap-2">
-                    <p className="text-sm line-through opacity-70 text-white">₹1000</p>
-                    <div className="bg-custom-gold text-custom-purple-dark px-1.5 py-0.5 rounded-md">
+                 <div className="flex justify-center items-center mb-3 gap-6">
+                    <p className="text-base line-through opacity-70 text-white">₹1000</p>
+                    <div className="flex bg-custom-gold text-custom-purple-dark px-1.5 py-1 rounded-md">
                         <span className="text-xs font-bold">25% OFF</span>
                     </div>
-                    <p className="text-xl font-bold text-white">₹750</p>
+                    <p className="text-2xl font-bold text-white">₹750</p>
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 mx-6">
                     {productQuantity === 0 ? (
                         <Button
                             className="w-full rounded-full font-semibold text-sm border-2 border-custom-gold bg-custom-gold text-custom-purple-dark py-2 h-9 hover:bg-custom-gold/90"
@@ -192,12 +192,12 @@ export function MobileProductDetailView({
     <div className={cn(
       "bg-[#9A7DAB] h-full w-full rounded-t-[20px] relative flex flex-col pt-2 mt-4 overflow-hidden"
     )}>
-      <div className="flex-grow overflow-y-auto no-scrollbar pb-24">
+      <div className="flex-grow overflow-y-auto no-scrollbar">
         <div className="-mt-2">
           <MobileImageGallery product={product} onImageExpandChange={() => {}} />
         </div>
         
-        <div className="px-4">
+        <div className="px-4 pt-6">
             <ProductDetails product={product} isLiked={isLiked} onLikeToggle={onLikeToggle} isMobile={true} />
         </div>
         
