@@ -51,6 +51,7 @@ export function MyOrdersTab({ isMobile = false }: MyOrdersTabProps) {
                         />
                     </div>
                 )}
+                 {orders.length > 0 && <div className="h-16 flex-shrink-0" />}
             </div>
         )
     }
