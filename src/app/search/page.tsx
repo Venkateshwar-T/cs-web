@@ -9,9 +9,9 @@ import { SparkleBackground } from '@/components/sparkle-background';
 import { BottomNavbar } from '@/components/bottom-navbar';
 import { PopupsManager } from '@/components/popups/popups-manager';
 import { SearchView } from '@/components/views/SearchView';
-import { useIsMobile } from '@/hooks/use-is-mobile';
+import { useIsMobile } from '@/hooks/use-mobile';
 import { flavourOptions, occasionOptions, productTypeOptions, weightOptions } from '@/lib/filter-options';
-import type { Product, ActiveView } from '@/app/page';
+import type { Product } from '@/app/page';
 import { FloatingCartButton } from '@/components/floating-cart-button';
 import { MobileSearchHeader } from '@/components/header/mobile-search-header';
 import { useCart } from '@/hooks/use-cart';
@@ -57,14 +57,10 @@ function SearchPageComponent() {
   const { cart, updateCart, clearCart } = useCart();
   const [cartMessage, setCartMessage] = useState('');
   const [isCartButtonExpanded, setIsCartButtonExpanded] = useState(false);
-  const [isImageExpanded, setIsImageExpanded] = useState(false);
   const [likedProducts, setLikedProducts] = useState<Record<number, boolean>>({});
   const [sortOption, setSortOption] = useState("featured");
   const [isCartOpen, setIsCartOpen] = useState(false);
-  const [isCartVisible, setIsCartVisible] = useState(false);
   const [filters, setFilters] = useState<FilterState>(initialFilterState);
-  const [isSignUpOpen, setIsSignUpOpen] = useState(false);
-  const [isCompleteDetailsOpen, setIsCompleteDetailsOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [profileInfo, setProfileInfo] = useState<ProfileInfo>({
     name: 'John Doe',
@@ -93,15 +89,6 @@ function SearchPageComponent() {
       return () => clearTimeout(timer);
     }
   }, [isNewSearch]);
-
-  useEffect(() => {
-    if (isCartOpen) {
-      setIsCartVisible(true);
-    } else {
-      const timer = setTimeout(() => setIsCartVisible(false), 300); // Match animation duration
-      return () => clearTimeout(timer);
-    }
-  }, [isCartOpen]);
 
   const handleAddToCart = (productName: string, quantity: number, animate: boolean = true) => {
     const prevQuantity = cart[productName] || 0;
@@ -155,20 +142,7 @@ function SearchPageComponent() {
 
   const handleClearWishlist = () => setLikedProducts({});
 
-  const handleToggleCartPopup = () => setIsCartOpen(prev => !prev);
-  
-  const handleOpenSignUp = () => setIsSignUpOpen(true);
-  
-  const handleOpenCompleteDetails = () => {
-    setIsCompleteDetailsOpen(true);
-  };
-  
-  const handleConfirmOrder = (name: string, phone: string) => {
-    setProfileInfo(prev => ({ ...prev, name, phone }));
-    // Navigate to order confirmed page or show a confirmation view
-    router.push('/order-confirmed'); 
-    setIsCartOpen(false);
-  };
+  const handleToggleCartPopup = () => setIsCartOpen(p => !p);
   
   const handleProfileUpdate = (updatedProfile: Partial<ProfileInfo>) => {
     setProfileInfo(prev => ({ ...prev, ...updatedProfile }));
@@ -209,9 +183,7 @@ function SearchPageComponent() {
     ...filters.selectedWeights.map(id => ({ type: 'selectedWeights', value: id, label: getLabelById(id, weightOptions) })),
   ] as { type: keyof FilterState; value: string; label: string }[];
   
-  const isPopupOpen = isImageExpanded || isCartVisible || isSignUpOpen || isCompleteDetailsOpen || isProfileOpen;
-
-  const handleNavigation = (view: ActiveView) => {
+  const handleNavigation = (view: 'home' | 'cart' | 'profile') => {
     if (view === 'cart') {
       router.push('/cart');
     } else if (view === 'home') {
@@ -226,7 +198,7 @@ function SearchPageComponent() {
   return (
     <>
       {isMobile ? <StaticSparkleBackground /> : <SparkleBackground />}
-      <div className={cn("flex flex-col h-screen", isPopupOpen ? 'opacity-50' : '')}>
+      <div className={cn("flex flex-col h-screen", isProfileOpen ? 'opacity-50' : '')}>
         {isMobile ? (
           <MobileSearchHeader 
             value={searchInput}
@@ -296,30 +268,15 @@ function SearchPageComponent() {
       )}
 
       <PopupsManager
-        selectedProduct={null}
-        isCartVisible={isCartVisible}
-        isCartOpen={isCartOpen}
         isProfileOpen={isProfileOpen}
-        isSignUpOpen={isSignUpOpen}
-        isCompleteDetailsOpen={isCompleteDetailsOpen}
-        onClosePopup={() => {}}
-        onImageExpandChange={setIsImageExpanded}
+        setIsProfileOpen={setIsProfileOpen}
+        profileInfo={profileInfo}
+        onProfileUpdate={handleProfileUpdate}
         likedProducts={likedProducts}
         onLikeToggle={handleLikeToggle}
         cart={cart}
-        onAddToCart={handleAddToCart}
-        onToggleCartPopup={handleToggleCartPopup}
-        onClearCart={clearCart}
-        onFinalizeOrder={handleOpenCompleteDetails}
-        onProfileUpdate={handleProfileUpdate}
-        profileInfo={profileInfo}
         allProducts={allProducts}
         onClearWishlist={handleClearWishlist}
-        setIsProfileOpen={setIsProfileOpen}
-        setIsSignUpOpen={setIsSignUpOpen}
-        onLoginClick={handleOpenSignUp}
-        setIsCompleteDetailsOpen={setIsCompleteDetailsOpen}
-        onConfirmOrder={handleConfirmOrder}
       />
       <BottomNavbar activeView={'search'} onNavigate={handleNavigation} cartItemCount={cartItemCount} />
     </>
