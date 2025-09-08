@@ -16,8 +16,8 @@ const FooterSection = ({ title, children }: { title: string; children: React.Rea
 
 export function Footer() {
     return (
-        <footer className="bg-footer-gray text-white font-poppins py-10 px-8 md:px-16 rounded-t-[40px] mx-0 md:mx-24 mb-16 md:mb-0">
-            <div className="container mx-auto flex flex-col md:flex-row justify-between items-start gap-10 md:gap-8">
+        <footer className="bg-footer-gray text-white font-poppins py-10 px-8 md:px-16 md:rounded-t-[40px] mx-0 md:mx-24 mb-16 md:mb-0">
+            <div className="container mx-auto flex flex-col md:flex-row justify-between items-start gap-6 md:gap-8">
                 {/* Logo */}
                 <div className="flex items-start">
                     <Image
@@ -73,9 +73,9 @@ export function Footer() {
                 </FooterSection>
             </div>
 
-            <Separator className="my-8 bg-white/50" />
+            <Separator className="my-4 md:my-8 bg-white/50" />
 
-            <div className="text-center text-white/80 text-sm">
+            <div className="text-center text-white/80 text-xs md:text-sm">
                 <p>© 2025 Choco Smiley. All rights reserved.</p>
             </div>
         </footer>
