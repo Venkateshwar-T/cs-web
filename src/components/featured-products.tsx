@@ -1,4 +1,3 @@
-
 // @/components/featured-products.tsx
 'use client';
 
@@ -48,7 +47,7 @@ export function FeaturedProducts({
       </SectionTitle>
       <div className="flex items-stretch overflow-x-auto no-scrollbar gap-4 md:gap-6 px-4 pt-2 pb-2">
         {products.map(product => (
-          <div key={product.id} className={cn("flex-shrink-0", isMobile ? "w-40" : "w-48 md:w-64")}>
+          <div key={product.id} className={cn("flex-shrink-0", isMobile ? "w-40" : "w-48 md:w-56")}>
             <ProductCard
               product={product}
               onProductClick={onProductClick}
@@ -60,7 +59,7 @@ export function FeaturedProducts({
             />
           </div>
         ))}
-        <div className={cn("flex-shrink-0 flex", isMobile ? "w-40" : "w-48 md:w-64")}>
+        <div className={cn("flex-shrink-0 flex", isMobile ? "w-40" : "w-48 md:w-56")}>
            <Button
             variant="outline"
             onClick={handleViewMore}
