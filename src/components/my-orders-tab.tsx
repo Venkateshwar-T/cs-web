@@ -6,6 +6,8 @@ import { useOrders, type Order } from '@/hooks/use-orders';
 import { ListOrdered } from 'lucide-react';
 import { EmptyState } from './empty-state';
 import { useRouter } from 'next/navigation';
+import { SectionTitle } from './section-title';
+import { Separator } from './ui/separator';
 
 interface MyOrdersTabProps {
   isMobile?: boolean;
@@ -23,20 +25,38 @@ export function MyOrdersTab({ isMobile = false }: MyOrdersTabProps) {
     const handleExplore = () => {
       router.push('/');
     }
+    
+    const latestOrder = orders.length > 0 ? orders[0] : null;
+    const pastOrders = orders.length > 1 ? orders.slice(1) : [];
 
     if (isMobile) {
         return (
             <div className="flex flex-col h-full text-white">
-                 {orders.length > 0 ? (
+                 {orders.length > 0 && latestOrder ? (
                     <div className="bg-white/80 rounded-2xl flex flex-col">
-                        <div className="overflow-y-auto no-scrollbar space-y-4 p-2">
-                           {orders.map((order, index) => (
-                             <OrderItemCard 
-                                key={order.id} 
-                                order={order} 
-                                isMobile={true} 
-                              />
-                           ))}
+                        <div className="overflow-y-auto no-scrollbar p-2">
+                           <SectionTitle className="text-base text-black p-2 mb-2">Latest Order</SectionTitle>
+                           <OrderItemCard 
+                              key={latestOrder.id} 
+                              order={latestOrder} 
+                              isMobile={true} 
+                            />
+                            
+                            {pastOrders.length > 0 && (
+                              <>
+                                <Separator className="my-4 bg-black/10" />
+                                <SectionTitle className="text-base text-black p-2 mb-2">Past Orders</SectionTitle>
+                                <div className="space-y-4">
+                                  {pastOrders.map((order) => (
+                                    <OrderItemCard 
+                                      key={order.id} 
+                                      order={order} 
+                                      isMobile={true} 
+                                    />
+                                  ))}
+                                </div>
+                              </>
+                            )}
                         </div>
                     </div>
                 ) : (
@@ -58,11 +78,22 @@ export function MyOrdersTab({ isMobile = false }: MyOrdersTabProps) {
     return (
         <div className="p-8 text-white h-full flex flex-col relative">
             <h2 className="text-3xl font-normal font-poppins self-start mb-6">My Orders</h2>
-             {orders.length > 0 ? (
-                <div className="flex-grow overflow-y-auto pr-4 space-y-4 custom-scrollbar">
-                    {orders.map(order => (
-                        <OrderItemCard key={order.id} order={order} />
-                    ))}
+             {orders.length > 0 && latestOrder ? (
+                <div className="flex-grow overflow-y-auto pr-4 custom-scrollbar">
+                    <SectionTitle className="text-xl text-white/90 p-0 mb-4">Latest Order</SectionTitle>
+                    <OrderItemCard key={latestOrder.id} order={latestOrder} />
+
+                    {pastOrders.length > 0 && (
+                      <>
+                        <Separator className="my-6 bg-white/20" />
+                        <SectionTitle className="text-xl text-white/90 p-0 mb-4">Past Orders</SectionTitle>
+                        <div className="space-y-4">
+                          {pastOrders.map(order => (
+                              <OrderItemCard key={order.id} order={order} />
+                          ))}
+                        </div>
+                      </>
+                    )}
                 </div>
             ) : (
                 <div className="flex-grow flex flex-col items-center justify-center h-full text-center gap-4">
