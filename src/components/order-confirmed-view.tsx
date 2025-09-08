@@ -147,10 +147,11 @@ export function OrderConfirmedView({ cart, orderId }: OrderConfirmedViewProps) {
                 </motion.div>
 
                 <motion.div variants={itemVariants} className="bg-white w-full rounded-2xl md:rounded-3xl mt-2 text-black p-4 md:p-6 flex flex-col">
-                    <div className="flex justify-between items-center mb-4 flex-shrink-0">
+                    <div className="flex justify-between items-center flex-shrink-0">
                         <h3 className="font-bold text-sm md:text-xl">Order Summary</h3>
                         <p className="font-bold text-sm md:text-xl">Total: ₹{total > 0 ? total.toFixed(2) : '0.00'}</p>
                     </div>
+                    <Separator className="bg-gray-200 my-2" />
                     <div className={cn(
                       "flex-grow overflow-y-auto min-h-0 pr-2 always-visible-scrollbar",
                       isMobile ? "max-h-full" : "max-h-[25vh]"
