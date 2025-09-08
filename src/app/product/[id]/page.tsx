@@ -130,6 +130,13 @@ export default function ProductPage() {
 
   const handleToggleCartPopup = () => setIsCartOpen(p => !p);
 
+  const handleBuyNow = () => {
+    if (product && (cart[product.name] || 0) === 0) {
+      handleAddToCart(product.name, 1, false);
+    }
+    router.push('/cart');
+  };
+
   const handleNavigation = (view: ActiveView) => {
     if (view === 'cart') router.push('/cart');
     else if (view === 'profile') router.push('/profile');
@@ -183,7 +190,7 @@ export default function ProductPage() {
                 onClose={() => router.back()}
                 onAddToCart={handleAddToCart}
                 cart={cart}
-                onToggleCartPopup={handleToggleCartPopup}
+                onBuyNow={handleBuyNow}
                 isLiked={!!likedProducts[product.id]}
                 onLikeToggle={() => handleLikeToggle(product.id)}
                 flavourCart={flavourCart}
@@ -264,7 +271,7 @@ export default function ProductPage() {
                       <div className="h-full py-0 pr-6 overflow-y-auto custom-scrollbar pb-28">
                           <ProductDetails product={product} isLiked={!!likedProducts[product.id]} onLikeToggle={() => handleLikeToggle(product.id)} isMobile={false} />
                       </div>
-                      <ProductPopupFooter product={product} onAddToCart={handleAddToCart} quantity={cart[product.name] || 0} onToggleCartPopup={handleToggleCartPopup} />
+                      <ProductPopupFooter product={product} onAddToCart={handleAddToCart} quantity={cart[product.name] || 0} onToggleCartPopup={onToggleCartPopup} />
                   </div>
                 </div>
               </div>

@@ -11,7 +11,7 @@ import { ProductDetails } from '../product-details';
 import { FlavoursSection } from '../flavours-section';
 import { Separator } from '../ui/separator';
 
-const FloatingPriceBox = ({ product, productQuantity, onAddToCart, onToggleCartPopup, className }: { product: Product, productQuantity: number, onAddToCart: any, onToggleCartPopup: any, className?: string }) => {
+const FloatingPriceBox = ({ product, productQuantity, onAddToCart, onBuyNow, className }: { product: Product, productQuantity: number, onAddToCart: any, onBuyNow: any, className?: string }) => {
     const handleAddToCartClick = () => {
         onAddToCart(product.name, 1, false);
     };
@@ -22,13 +22,6 @@ const FloatingPriceBox = ({ product, productQuantity, onAddToCart, onToggleCartP
 
     const handleDecrement = () => {
         onAddToCart(product.name, productQuantity - 1, false);
-    };
-
-    const handleBuyNow = () => {
-        if (productQuantity === 0) {
-            onAddToCart(product.name, 1, false);
-        }
-        onToggleCartPopup();
     };
 
     return (
@@ -65,7 +58,7 @@ const FloatingPriceBox = ({ product, productQuantity, onAddToCart, onToggleCartP
                         </div>
                     )}
                     <Button
-                        onClick={handleBuyNow}
+                        onClick={onBuyNow}
                         className="rounded-full font-semibold text-[10px] border border-white bg-white text-custom-purple-dark py-1 h-7 px-4 hover:bg-gray-200"
                     >
                         Buy Now
@@ -77,7 +70,7 @@ const FloatingPriceBox = ({ product, productQuantity, onAddToCart, onToggleCartP
 };
 
 
-const InlinePriceBox = ({ product, productQuantity, onAddToCart, onToggleCartPopup, className }: { product: Product, productQuantity: number, onAddToCart: any, onToggleCartPopup: any, className?: string }) => {
+const InlinePriceBox = ({ product, productQuantity, onAddToCart, onBuyNow, className }: { product: Product, productQuantity: number, onAddToCart: any, onBuyNow: any, className?: string }) => {
     const handleAddToCartClick = () => {
         onAddToCart(product.name, 1, false);
     };
@@ -88,13 +81,6 @@ const InlinePriceBox = ({ product, productQuantity, onAddToCart, onToggleCartPop
 
     const handleDecrement = () => {
         onAddToCart(product.name, productQuantity - 1, false);
-    };
-
-    const handleBuyNow = () => {
-        if (productQuantity === 0) {
-            onAddToCart(product.name, 1, false);
-        }
-        onToggleCartPopup();
     };
 
     return (
@@ -129,7 +115,7 @@ const InlinePriceBox = ({ product, productQuantity, onAddToCart, onToggleCartPop
                         </div>
                     )}
                     <Button
-                        onClick={handleBuyNow}
+                        onClick={onBuyNow}
                         className="w-full rounded-full font-semibold text-xs border border-white bg-white text-custom-purple-dark py-1.5 h-8 hover:bg-gray-200"
                     >
                         Buy Now
@@ -146,7 +132,7 @@ interface MobileProductDetailViewProps {
   onClose: () => void;
   onAddToCart: (name: string, quantity: number, animate?: boolean) => void;
   cart: Record<string, number>;
-  onToggleCartPopup: () => void;
+  onBuyNow: () => void;
   isLiked: boolean;
   onLikeToggle: () => void;
   flavourCart: Record<string, number>;
@@ -158,7 +144,7 @@ export function MobileProductDetailView({
   onClose, 
   onAddToCart, 
   cart, 
-  onToggleCartPopup, 
+  onBuyNow, 
   isLiked,
   onLikeToggle,
   flavourCart,
@@ -211,7 +197,7 @@ export function MobileProductDetailView({
               product={product}
               productQuantity={productQuantity}
               onAddToCart={onAddToCart}
-              onToggleCartPopup={onToggleCartPopup}
+              onBuyNow={onBuyNow}
             />
         </div>
       </div>
@@ -227,7 +213,7 @@ export function MobileProductDetailView({
               product={product}
               productQuantity={productQuantity}
               onAddToCart={onAddToCart}
-              onToggleCartPopup={onToggleCartPopup}
+              onBuyNow={onBuyNow}
           />
       </div>
     </div>
