@@ -1,7 +1,7 @@
 
 'use client';
 
-import { Suspense, useState, useEffect, type UIEvent } from 'react';
+import { Suspense, useState, useEffect, type UIEvent } from 'next';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { Header } from '@/components/header';
@@ -9,7 +9,7 @@ import { SparkleBackground } from '@/components/sparkle-background';
 import { BottomNavbar } from '@/components/bottom-navbar';
 import { PopupsManager } from '@/components/popups/popups-manager';
 import { SearchView } from '@/components/views/SearchView';
-import { useIsMobile } from '@/hooks/use-mobile';
+import { useIsMobile } from '@/hooks/use-is-mobile';
 import { flavourOptions, occasionOptions, productTypeOptions, weightOptions } from '@/lib/filter-options';
 import type { Product, ActiveView } from '@/app/page';
 import { FloatingCartButton } from '@/components/floating-cart-button';
@@ -268,11 +268,11 @@ function SearchPageComponent() {
               query={query}
               onAddToCart={handleAddToCart}
               cart={cart}
-              onProductClick={onProductClick}
+              onProductClick={handleProductClick}
               activeFilters={activeFilters}
               onRemoveFilter={onRemoveFilter}
               likedProducts={likedProducts}
-              onLikeToggle={onLikeToggle}
+              onLikeToggle={handleLikeToggle}
               sortOption={sortOption}
               onSortChange={handleSortChange}
               isFilterSheetOpen={isFilterSheetOpen}
