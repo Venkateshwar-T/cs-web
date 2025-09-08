@@ -13,7 +13,6 @@ import { ExploreCategories } from '@/components/explore-categories';
 import { SearchBar } from '@/components/header/search-bar';
 import { useToast } from "@/hooks/use-toast";
 import { useCart } from '@/hooks/use-cart';
-import { Footer } from '@/components/footer';
 import { StaticSparkleBackground } from '@/components/static-sparkle-background';
 
 
@@ -36,19 +35,8 @@ const allProducts: Product[] = Array.from({ length: 12 }).map((_, i) => ({
 }));
 
 export default function Home() {
-  const { cart, updateCart, clearCart } = useCart();
-  const [isImageExpanded, setIsImageExpanded] = useState(false);
-  const [likedProducts, setLikedProducts] = useState<Record<number, boolean>>({});
-  const [isCartOpen, setIsCartOpen] = useState(false);
-  const [isCartVisible, setIsCartVisible] = useState(false);
-  const [isSignUpOpen, setIsSignUpOpen] = useState(false);
-  const [isCompleteDetailsOpen, setIsCompleteDetailsOpen] = useState(false);
+  const { cart } = useCart();
   const [isProfileOpen, setIsProfileOpen] = useState(false);
-  const [profileInfo, setProfileInfo] = useState<ProfileInfo>({
-    name: 'John Doe',
-    phone: '+1 234 567 890',
-    email: 'john.doe@example.com',
-  });
   const [isPageLoading, setIsPageLoading] = useState(true);
   const isMobile = useIsMobile();
   const router = useRouter();
@@ -62,27 +50,6 @@ export default function Home() {
     }, 800);
     return () => clearTimeout(timer);
   }, []);
-
-  useEffect(() => {
-    if (isImageExpanded || isCartVisible || isSignUpOpen || isCompleteDetailsOpen || isProfileOpen) {
-      document.body.classList.add('overflow-hidden');
-    } else {
-      document.body.classList.remove('overflow-hidden');
-    }
-    return () => {
-      document.body.classList.remove('overflow-hidden');
-    };
-  }, [isImageExpanded, isCartVisible, isSignUpOpen, isCompleteDetailsOpen, isProfileOpen]);
-
-
-  useEffect(() => {
-    if (isCartOpen) {
-      setIsCartVisible(true);
-    } else {
-      const timer = setTimeout(() => setIsCartVisible(false), 300); // Match animation duration
-      return () => clearTimeout(timer);
-    }
-  }, [isCartOpen]);
 
   const handleSearchSubmit = (e: React.FormEvent<HTMLFormElement>, currentSearchInput: string) => {
     e.preventDefault();
@@ -102,50 +69,6 @@ export default function Home() {
   const handleResetToHome = () => {
     router.push('/');
   };
-
-  const handleAddToCart = (productName: string, quantity: number) => {
-    updateCart(productName, quantity);
-  };
-
-  const handleLikeToggle = (productId: number) => {
-    setLikedProducts(prev => {
-      const newLiked = { ...prev };
-      if (newLiked[productId]) {
-        delete newLiked[productId];
-      } else {
-        newLiked[productId] = true;
-      }
-      return newLiked;
-    });
-  };
-  
-  const handleClearWishlist = () => {
-    setLikedProducts({});
-  };
-
-  const handleToggleCartPopup = () => {
-    setIsCartOpen(prev => !prev);
-  }
-
-  const handleOpenSignUp = () => {
-    setIsSignUpOpen(true);
-  };
-
-  const handleOpenCompleteDetails = () => {
-    setIsCompleteDetailsOpen(true);
-  }
-
-  const handleConfirmOrder = (name: string, phone: string) => {
-    setProfileInfo(prev => ({...prev, name, phone }));
-    router.push('/order-confirmed');
-    setIsCartOpen(false);
-  };
-
-  const handleProfileUpdate = (updatedProfile: Partial<ProfileInfo>) => {
-    setProfileInfo(prev => ({...prev, ...updatedProfile}));
-  };
-
-  const isPopupOpen = isImageExpanded || isCartVisible || isSignUpOpen || isCompleteDetailsOpen || isProfileOpen;
 
   const handleNavigation = (view: ActiveView) => {
     if (view === 'cart') {
@@ -173,7 +96,7 @@ export default function Home() {
       {isMobile ? <StaticSparkleBackground /> : <SparkleBackground />}
       <div className={cn(
         "flex flex-col h-screen",
-        (isPopupOpen && !isCartVisible) ? 'opacity-50' : ''
+        isProfileOpen ? 'opacity-50' : ''
       )}>
         <Header 
           onProfileOpenChange={setIsProfileOpen}
@@ -199,33 +122,12 @@ export default function Home() {
           <div className="mt-8 w-full flex-grow min-h-0">
             <ExploreCategories />
           </div>
-          <Footer />
         </main>
       </div>
 
       <PopupsManager
-        isCartVisible={isCartVisible}
-        isCartOpen={isCartOpen}
         isProfileOpen={isProfileOpen}
-        isSignUpOpen={isSignUpOpen}
-        isCompleteDetailsOpen={isCompleteDetailsOpen}
-        onImageExpandChange={setIsImageExpanded}
-        likedProducts={likedProducts}
-        onLikeToggle={handleLikeToggle}
-        cart={cart}
-        onAddToCart={handleAddToCart}
-        onToggleCartPopup={handleToggleCartPopup}
-        onClearCart={clearCart}
-        onFinalizeOrder={handleOpenCompleteDetails}
-        onProfileUpdate={handleProfileUpdate}
-        profileInfo={profileInfo}
-        allProducts={allProducts}
-        onClearWishlist={handleClearWishlist}
         setIsProfileOpen={setIsProfileOpen}
-        setIsSignUpOpen={setIsSignUpOpen}
-        onLoginClick={handleOpenSignUp}
-        setIsCompleteDetailsOpen={setIsCompleteDetailsOpen}
-        onConfirmOrder={handleConfirmOrder}
       />
       <BottomNavbar activeView={'home'} onNavigate={handleNavigation} cartItemCount={cartItemCount} />
     </>

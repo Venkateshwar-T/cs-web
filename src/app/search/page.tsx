@@ -16,7 +16,6 @@ import { FloatingCartButton } from '@/components/floating-cart-button';
 import { MobileSearchHeader } from '@/components/header/mobile-search-header';
 import { useCart } from '@/hooks/use-cart';
 import { StaticSparkleBackground } from '@/components/static-sparkle-background';
-import { Footer } from '@/components/footer';
 
 type FilterState = {
   priceRange: [number, number];
@@ -60,6 +59,7 @@ function SearchPageComponent() {
   const [likedProducts, setLikedProducts] = useState<Record<number, boolean>>({});
   const [sortOption, setSortOption] = useState("featured");
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isCartVisible, setIsCartVisible] = useState(false);
   const [filters, setFilters] = useState<FilterState>(initialFilterState);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [profileInfo, setProfileInfo] = useState<ProfileInfo>({
@@ -89,6 +89,15 @@ function SearchPageComponent() {
       return () => clearTimeout(timer);
     }
   }, [isNewSearch]);
+
+  useEffect(() => {
+    if (isCartOpen) {
+      setIsCartVisible(true);
+    } else {
+      const timer = setTimeout(() => setIsCartVisible(false), 300); // Match animation duration
+      return () => clearTimeout(timer);
+    }
+  }, [isCartOpen]);
 
   const handleAddToCart = (productName: string, quantity: number, animate: boolean = true) => {
     const prevQuantity = cart[productName] || 0;
@@ -239,7 +248,7 @@ function SearchPageComponent() {
               cart={cart}
               onProductClick={handleProductClick}
               activeFilters={activeFilters}
-              onRemoveFilter={handleRemoveFilter}
+              onRemoveFilter={onRemoveFilter}
               likedProducts={likedProducts}
               onLikeToggle={handleLikeToggle}
               sortOption={sortOption}
@@ -251,7 +260,6 @@ function SearchPageComponent() {
               onScroll={handleScroll}
               isMobile={isMobile}
             />
-            {!isMobile && <Footer />}
         </main>
       </div>
 
@@ -275,8 +283,17 @@ function SearchPageComponent() {
         likedProducts={likedProducts}
         onLikeToggle={handleLikeToggle}
         cart={cart}
+        onAddToCart={updateCart}
+        onClearCart={clearCart}
+        onToggleCartPopup={handleToggleCartPopup}
         allProducts={allProducts}
         onClearWishlist={handleClearWishlist}
+        isCartVisible={isCartVisible}
+        isCartOpen={isCartOpen}
+        onFinalizeOrder={() => {
+          setIsCartOpen(false);
+          router.push('/order-confirmed');
+        }}
       />
       <BottomNavbar activeView={'search'} onNavigate={handleNavigation} cartItemCount={cartItemCount} />
     </>
