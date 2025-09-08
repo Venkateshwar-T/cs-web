@@ -46,7 +46,7 @@ const itemVariants = {
 const AboutSection = ({ title, children, icon, isMobile }: { title: string, children: React.ReactNode, icon?: React.ReactNode, isMobile: boolean }) => (
     <motion.div
       variants={itemVariants}
-      whileHover={{ scale: 1.05, y: -5 }}
+      whileHover={isMobile ? undefined : { scale: 1.05, y: -5 }}
       className="bg-black/20 p-6 md:p-8 rounded-2xl h-full flex flex-col"
     >
         <div className="flex items-center gap-4 mb-4">
