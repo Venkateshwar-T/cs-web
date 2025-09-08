@@ -117,6 +117,7 @@ export function MyProfileTab({ profile, onProfileUpdate }: MyProfileTabProps) {
                 Save
             </Button>
         </div>
+        <div className="h-16" />
       </div>
     </div>
   );
