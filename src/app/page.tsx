@@ -27,22 +27,25 @@ export type ProfileInfo = {
   email: string;
 }
 
-export type ActiveView = 'home' | 'search' | 'faq' | 'order-confirmed' | 'cart' | 'profile' | 'about';
-
 const allProducts: Product[] = Array.from({ length: 12 }).map((_, i) => ({
   id: i,
   name: `Diwali Collection Box ${i + 1}`,
 }));
 
 export default function Home() {
-  const { cart } = useCart();
+  const { cart, updateCart } = useCart();
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isPageLoading, setIsPageLoading] = useState(true);
   const isMobile = useIsMobile();
   const router = useRouter();
   const [searchInput, setSearchInput] = useState("");
   const { toast } = useToast();
-
+  const [profileInfo, setProfileInfo] = useState<ProfileInfo>({
+    name: 'John Doe',
+    phone: '+1 234 567 890',
+    email: 'john.doe@example.com',
+  });
+  const [likedProducts, setLikedProducts] = useState<Record<number, boolean>>({});
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -70,7 +73,7 @@ export default function Home() {
     router.push('/');
   };
 
-  const handleNavigation = (view: ActiveView) => {
+  const handleNavigation = (view: 'home' | 'cart' | 'profile') => {
     if (view === 'cart') {
       router.push('/cart');
     } else if (view === 'profile') {
@@ -82,6 +85,14 @@ export default function Home() {
   
   const handleHeaderNavigate = (view: 'about' | 'faq') => {
     router.push(`/${view}`);
+  };
+
+  const handleProfileUpdate = (updatedProfile: Partial<ProfileInfo>) => {
+    setProfileInfo(prev => ({ ...prev, ...updatedProfile }));
+  };
+
+  const handleLikeToggle = (productId: number) => {
+    setLikedProducts(prev => ({ ...prev, [productId]: !prev[productId] }));
   };
 
   const cartItemCount = Object.values(cart).reduce((acc, quantity) => acc + quantity, 0);
@@ -123,13 +134,21 @@ export default function Home() {
             <ExploreCategories />
           </div>
         </main>
+        <BottomNavbar activeView={'home'} onNavigate={handleNavigation} cartItemCount={cartItemCount} />
       </div>
 
       <PopupsManager
         isProfileOpen={isProfileOpen}
         setIsProfileOpen={setIsProfileOpen}
+        profileInfo={profileInfo}
+        onProfileUpdate={handleProfileUpdate}
+        allProducts={allProducts}
+        likedProducts={likedProducts}
+        onLikeToggle={handleLikeToggle}
+        cart={cart}
+        onAddToCart={updateCart}
+        onClearWishlist={() => setLikedProducts({})}
       />
-      <BottomNavbar activeView={'home'} onNavigate={handleNavigation} cartItemCount={cartItemCount} />
     </>
   );
 }

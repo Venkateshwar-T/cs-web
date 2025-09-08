@@ -261,27 +261,29 @@ function SearchPageComponent() {
               isMobile={isMobile}
             />
         </main>
-        <PopupsManager
-            isProfileOpen={isProfileOpen}
-            setIsProfileOpen={setIsProfileOpen}
-            profileInfo={profileInfo}
-            onProfileUpdate={handleProfileUpdate}
-            likedProducts={likedProducts}
-            onLikeToggle={handleLikeToggle}
-            cart={cart}
-            onAddToCart={updateCart}
-            onClearCart={clearCart}
-            onToggleCartPopup={handleToggleCartPopup}
-            allProducts={allProducts}
-            onClearWishlist={handleClearWishlist}
-            isCartVisible={isCartVisible}
-            isCartOpen={isCartOpen}
-            onFinalizeOrder={() => {
-              setIsCartOpen(false);
-              router.push('/order-confirmed');
-            }}
-          />
+        <BottomNavbar activeView={'search'} onNavigate={handleNavigation} cartItemCount={cartItemCount} />
       </div>
+
+      <PopupsManager
+          isProfileOpen={isProfileOpen}
+          setIsProfileOpen={setIsProfileOpen}
+          profileInfo={profileInfo}
+          onProfileUpdate={handleProfileUpdate}
+          likedProducts={likedProducts}
+          onLikeToggle={handleLikeToggle}
+          cart={cart}
+          onAddToCart={updateCart}
+          onClearCart={clearCart}
+          onToggleCartPopup={handleToggleCartPopup}
+          allProducts={allProducts}
+          onClearWishlist={handleClearWishlist}
+          isCartVisible={isCartVisible}
+          isCartOpen={isCartOpen}
+          onFinalizeOrder={() => {
+            setIsCartOpen(false);
+            router.push('/order-confirmed');
+          }}
+        />
 
       {!isMobile && (
         <FloatingCartButton
@@ -294,9 +296,6 @@ function SearchPageComponent() {
           cart={cart}
         />
       )}
-
-      
-      <BottomNavbar activeView={'search'} onNavigate={handleNavigation} cartItemCount={cartItemCount} />
     </>
   );
 }

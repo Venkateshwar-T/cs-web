@@ -4,7 +4,7 @@
 import { useState, useEffect, type UIEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import { useCart } from '@/hooks/use-cart';
-import type { ProfileInfo, ActiveView } from '@/app/page';
+import type { ProfileInfo, Product } from '@/app/page';
 import { cn } from '@/lib/utils';
 import { Header } from '@/components/header';
 import { SparkleBackground } from '@/components/sparkle-background';
@@ -34,6 +34,11 @@ const productPrices: Record<string, number> = {
   'Diwali Collection Box 12': 1300,
 };
 
+const allProducts: Product[] = Array.from({ length: 12 }).map((_, i) => ({
+  id: i,
+  name: `Diwali Collection Box ${i + 1}`,
+}));
+
 
 function generateOrderId() {
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
@@ -62,7 +67,7 @@ const ProcessingView = () => (
 
 export default function OrderConfirmedPage() {
   const router = useRouter();
-  const { cart, clearCart } = useCart();
+  const { cart, clearCart, updateCart } = useCart();
   const { addOrder } = useOrders();
   
   const [isProfileOpen, setIsProfileOpen] = useState(false);
@@ -77,6 +82,7 @@ export default function OrderConfirmedPage() {
   const [processedCart, setProcessedCart] = useState<Record<string, number>>({});
   const isMobile = useIsMobile();
   const [isContentScrolled, setIsContentScrolled] = useState(false);
+  const [likedProducts, setLikedProducts] = useState<Record<number, boolean>>({});
     
   useEffect(() => {
     if (Object.keys(cart).length > 0) {
@@ -124,7 +130,7 @@ export default function OrderConfirmedPage() {
     router.push(`/search?q=${encodeURIComponent(query)}`);
   };
 
-  const handleNavigation = (view: ActiveView) => {
+  const handleNavigation = (view: 'home' | 'cart' | 'profile') => {
     if (view === 'cart') router.push('/cart');
     else if (view === 'profile') router.push('/profile');
     else router.push('/');
@@ -132,6 +138,10 @@ export default function OrderConfirmedPage() {
 
   const handleProfileUpdate = (updatedProfile: Partial<ProfileInfo>) => {
     setProfileInfo(prev => ({ ...prev, ...updatedProfile }));
+  };
+
+  const handleLikeToggle = (productId: number) => {
+    setLikedProducts(prev => ({ ...prev, [productId]: !prev[productId] }));
   };
   
   const cartItemCount = Object.values(cart).reduce((acc, quantity) => acc + quantity, 0);
@@ -166,15 +176,21 @@ export default function OrderConfirmedPage() {
             </>
           )}
         </main>
+        <BottomNavbar activeView={'order-confirmed'} onNavigate={handleNavigation} cartItemCount={cartItemCount} />
       </div>
       
       <PopupsManager
         isProfileOpen={isProfileOpen}
         setIsProfileOpen={setIsProfileOpen}
-        onProfileUpdate={handleProfileUpdate}
         profileInfo={profileInfo}
+        onProfileUpdate={handleProfileUpdate}
+        allProducts={allProducts}
+        likedProducts={likedProducts}
+        onLikeToggle={handleLikeToggle}
+        cart={cart}
+        onAddToCart={updateCart}
+        onClearWishlist={() => setLikedProducts({})}
       />
-      <BottomNavbar activeView={'order-confirmed'} onNavigate={handleNavigation} cartItemCount={cartItemCount} />
     </>
   );
 }
