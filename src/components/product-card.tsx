@@ -130,7 +130,10 @@ export function ProductCard({ product, onAddToCart, quantity, onProductClick, is
         !isMobile && "transition-transform duration-200 hover:scale-105"
       )}
     >
-      <div className="relative w-full pt-[80%] rounded-t-lg md:rounded-t-2xl overflow-hidden">
+      <div className={cn(
+        "relative w-full rounded-t-lg md:rounded-t-2xl overflow-hidden",
+        isMobile ? "pt-[80%]" : "pt-[70%]"
+      )}>
         {isMobile && <HeartButton />}
         <AnimatePresence initial={false}>
             <motion.div

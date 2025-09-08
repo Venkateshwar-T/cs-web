@@ -93,6 +93,9 @@ export default {
         sm: 'calc(var(--radius) - 4px)',
         '2xl': 'calc(var(--radius) + 8px)',
       },
+      width: {
+        '60': '15rem',
+      },
       keyframes: {
         'accordion-down': {
           from: {
@@ -189,8 +192,7 @@ export default {
           },
         },
         'sparkle-glow': {
-          '0%, 100%': { opacity: '0.5' },
-          '50%': { opacity: '1' },
+          'sparkle-glow': 'sparkle-glow 3s ease-in-out infinite',
         },
         'slide-up-in': {
           from: { transform: 'translateY(100%)', opacity: '0' },
