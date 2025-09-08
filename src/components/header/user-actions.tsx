@@ -191,7 +191,7 @@ export function UserActions({
                                 )
                             })}
                            </nav>
-                            <Separator className="bg-white/20 my-4"/>
+                            <Separator className="bg-white/20 my-2"/>
                             <AlertDialog>
                               <AlertDialogTrigger asChild>
                                 <button className="transition-colors hover:text-red-500 text-left flex items-center gap-3 text-lg text-foreground/80">
