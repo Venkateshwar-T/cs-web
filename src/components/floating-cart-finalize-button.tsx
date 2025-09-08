@@ -38,8 +38,7 @@ export function FloatingCartFinalizeButton({ cart, onCheckout, isVisible }: Floa
     const subtotalAfterDiscount = subtotal - discount;
     const gstRate = 0.18;
     const gstAmount = subtotalAfterDiscount * gstRate;
-    const calculatedTotal = subtotalAfterDiscount + gstAmount;
-    const total = calculatedTotal > 0 ? calculatedTotal : 0;
+    const total = subtotalAfterDiscount + gstAmount;
 
     return (
         <div
@@ -51,10 +50,10 @@ export function FloatingCartFinalizeButton({ cart, onCheckout, isVisible }: Floa
             <div className="border-t border-white/20 bg-custom-purple-dark/80 p-2 px-4 backdrop-blur-md">
                 <div className="flex justify-between items-center">
                     <div className="text-white">
-                        <p className="text-sm">Total Payable:</p>
-                        <p className="text-lg font-bold">₹{total > 0 ? total.toFixed(2) : '0.00'}</p>
+                        <p className="text-xs">Total Payable</p>
+                        <p className="text-base font-bold">₹{total > 0 ? total.toFixed(2) : '0.00'}</p>
                     </div>
-                    <Button onClick={onCheckout} className="bg-custom-gold text-custom-purple-dark font-bold hover:bg-custom-gold/90 h-10 text-base rounded-full px-6">
+                    <Button onClick={onCheckout} className="bg-custom-gold text-custom-purple-dark font-bold hover:bg-custom-gold/90 h-9 text-base rounded-full px-6">
                         Finalize Order
                     </Button>
                 </div>

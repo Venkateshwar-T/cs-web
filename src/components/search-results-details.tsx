@@ -83,7 +83,7 @@ export function SearchResultsDetails({
   return (
     <>
       <div className="bg-[#5D2B79] h-full rounded-t-[20px] md:rounded-t-[40px] relative mt-0 min-h-0 flex flex-col">
-          <div className="bg-white/20 h-full w-full rounded-t-[20px] md:rounded-t-[40px] pt-4 mt-3 md:mt-0 md:pt-6 flex flex-col">
+          <div className="bg-white/20 h-full w-full rounded-t-[20px] md:rounded-t-[40px] pt-3 mt-3 md:mt-0 md:pt-6 flex flex-col">
               {/* Header section - now separate and non-scrolling */}
               <div className="flex-shrink-0 px-4 md:pb-4 md:px-8">
                 {/* Mobile Header and Filters */}
@@ -200,7 +200,7 @@ export function SearchResultsDetails({
               <div 
                   ref={scrollContainerRef}
                   onScroll={onScroll}
-                  className="flex-grow h-full overflow-y-auto custom-scrollbar pt-4 pb-8 min-h-0 px-4 md:px-8"
+                  className="flex-grow h-full overflow-y-auto custom-scrollbar pt-0 md:pt-4 pb-8 min-h-0 px-4 md:px-8"
               >
                 {/* Unified Product Grid for all screen sizes */}
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">

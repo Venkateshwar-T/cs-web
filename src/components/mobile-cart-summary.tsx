@@ -14,6 +14,7 @@ interface MobileCartSummaryProps {
 // Mock data for product prices - in a real app this would come from a database or state management
 const productPrices: Record<string, number> = {
   'Diwali Collection Box 1': 799,
+  'Anniversary Special Box': 1199,
   'Diwali Collection Box 2': 1199,
   'Diwali Collection Box 3': 999,
   'Diwali Collection Box 4': 899,
@@ -51,8 +52,7 @@ export const MobileCartSummary = React.forwardRef<HTMLDivElement, MobileCartSumm
     const subtotalAfterDiscount = subtotal - discount;
     const gstRate = 0.18;
     const gstAmount = subtotalAfterDiscount * gstRate;
-    const calculatedTotal = subtotalAfterDiscount + gstAmount;
-    const total = calculatedTotal > 0 ? calculatedTotal : 0;
+    const total = subtotalAfterDiscount + gstAmount;
 
     return (
       <div ref={ref} className="mt-6 bg-white/80 rounded-2xl p-4 shadow-lg text-black">
@@ -100,3 +100,5 @@ export const MobileCartSummary = React.forwardRef<HTMLDivElement, MobileCartSumm
   }
 );
 MobileCartSummary.displayName = 'MobileCartSummary';
+
+    

@@ -22,7 +22,7 @@ const navItems = [
 
 export function BottomNavbar({ activeView, onNavigate, cartItemCount = 0 }: BottomNavbarProps) {
   return (
-    <div className="fixed bottom-0 left-0 right-0 h-16 bg-background/80 backdrop-blur-sm border-t border-white/20 md:hidden z-50">
+    <div className="fixed bottom-0 left-0 right-0 h-16 bg-background border-t border-white/20 md:hidden z-50">
       <div className="flex justify-around items-center h-full">
         {navItems.map((item) => {
           const isActive = activeView === item.view;
