@@ -1,7 +1,7 @@
 
 'use client';
 
-import { Suspense, useState, useEffect, type UIEvent } from 'next';
+import { Suspense, useState, useEffect, type UIEvent } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { Header } from '@/components/header';
