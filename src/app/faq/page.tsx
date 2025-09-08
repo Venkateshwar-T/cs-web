@@ -16,13 +16,18 @@ import {
   AccordionItem as AccordionItemPrimitive,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import type { ActiveView } from '@/app/page';
 import { useCart } from '@/hooks/use-cart';
 import { PopupsManager } from '@/components/popups/popups-manager';
 import { BottomNavbar } from '@/components/bottom-navbar';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { StaticSparkleBackground } from '@/components/static-sparkle-background';
 import { cn } from '@/lib/utils';
+import type { Product, ProfileInfo } from '@/app/page';
+
+const allProducts: Product[] = Array.from({ length: 12 }).map((_, i) => ({
+  id: i,
+  name: `Diwali Collection Box ${i + 1}`,
+}));
 
 const faqData = [
     {
@@ -113,19 +118,20 @@ const FaqAccordionItem = ({ item, value }: { item: { question: string; answer: s
 
 export default function FaqPage() {
     const router = useRouter();
-    const { cart } = useCart();
+    const { cart, updateCart } = useCart();
     const [isProfileOpen, setIsProfileOpen] = useState(false);
     const [searchInput, setSearchInput] = useState('');
     const [isContentScrolled, setIsContentScrolled] = useState(false);
     const isMobile = useIsMobile();
     const [accordionValue, setAccordionValue] = React.useState('');
+    const [likedProducts, setLikedProducts] = useState<Record<number, boolean>>({});
 
     const handleScroll = (event: UIEvent<HTMLDivElement>) => {
       const { scrollTop } = event.currentTarget;
       setIsContentScrolled(scrollTop > 0);
     };
 
-    const handleNavigation = (view: ActiveView) => {
+    const handleNavigation = (view: 'home' | 'cart' | 'profile' | 'about') => {
         if (view === 'home') router.push('/');
         else if (view === 'cart') router.push('/cart');
         else if (view === 'profile') router.push('/profile');
@@ -136,56 +142,74 @@ export default function FaqPage() {
         router.push(`/${view}`);
     }
 
+    const handleLikeToggle = (productId: number) => {
+      setLikedProducts(prev => ({ ...prev, [productId]: !prev[productId] }));
+    };
+
     const cartItemCount = Object.values(cart).reduce((acc, quantity) => acc + quantity, 0);
 
     return (
         <>
             {isMobile ? <StaticSparkleBackground /> : <SparkleBackground />}
-            <div className="flex flex-col h-screen">
-                <Header
-                  onProfileOpenChange={setIsProfileOpen}
-                  isContentScrolled={isMobile ? true : isContentScrolled}
-                  onReset={() => router.push('/')}
-                  onNavigate={handleHeaderNavigate}
-                  activeView={'faq'}
-                  onSearchSubmit={(query) => router.push(`/search?q=${encodeURIComponent(query)}`)}
-                  searchInput={searchInput}
-                  onSearchInputChange={setSearchInput}
-                  isSearchingOnAbout={true}
-                />
-                <main onScroll={handleScroll} className={cn(
-                  "flex-grow flex flex-col overflow-y-auto no-scrollbar transition-all duration-300",
-                  isMobile ? "pt-24" : "pt-36"
-                )}>
-                    <div className="bg-[#5D2B79] rounded-[20px] md:rounded-[40px] mt-8 mb-8 mx-4 md:mx-32 animate-fade-in flex flex-col flex-grow" style={{ animationDuration: '0.5s', animationDelay: '0.2s', animationFillMode: 'both' }}>
-                        <div className="bg-white/10 rounded-[20px] md:rounded-[40px] py-8 px-4 md:py-10 md:px-24 flex-grow">
-                            <SectionTitle className="text-3xl md:text-4xl text-center mb-8 md:mb-12 font-poppins">
-                                Frequently Asked Questions
-                            </SectionTitle>
-                            
-                            <motion.div
-                              className="max-w-4xl mx-auto"
-                              variants={containerVariants}
-                              initial="hidden"
-                              animate="visible"
-                            >
-                              <AccordionContext.Provider value={{ value: accordionValue, setValue: setAccordionValue }}>
-                                  <Accordion type="single" collapsible value={accordionValue} onValueChange={setAccordionValue} className="w-full space-y-4">
-                                      {faqData.map((item, index) => (
-                                        <FaqAccordionItem key={index} item={item} value={`item-${index}`} />
-                                      ))}
-                                  </Accordion>
-                              </AccordionContext.Provider>
-                            </motion.div>
+            <div className={cn(isProfileOpen && "opacity-50")}>
+                <div className="flex flex-col h-screen">
+                    <Header
+                      onProfileOpenChange={setIsProfileOpen}
+                      isContentScrolled={isMobile ? true : isContentScrolled}
+                      onReset={() => router.push('/')}
+                      onNavigate={handleHeaderNavigate}
+                      activeView={'faq'}
+                      onSearchSubmit={(query) => router.push(`/search?q=${encodeURIComponent(query)}`)}
+                      searchInput={searchInput}
+                      onSearchInputChange={setSearchInput}
+                      isSearchingOnAbout={true}
+                    />
+                    <main onScroll={handleScroll} className={cn(
+                      "flex-grow flex flex-col overflow-y-auto no-scrollbar transition-all duration-300",
+                      isMobile ? "pt-24" : "pt-36"
+                    )}>
+                        <div className="bg-[#5D2B79] rounded-[20px] md:rounded-[40px] mt-8 mb-8 mx-4 md:mx-32 animate-fade-in flex flex-col flex-grow" style={{ animationDuration: '0.5s', animationDelay: '0.2s', animationFillMode: 'both' }}>
+                            <div className="bg-white/10 rounded-[20px] md:rounded-[40px] py-8 px-4 md:py-10 md:px-24 flex-grow">
+                                <SectionTitle className="text-3xl md:text-4xl text-center mb-8 md:mb-12 font-poppins">
+                                    Frequently Asked Questions
+                                </SectionTitle>
+                                
+                                <motion.div
+                                  className="max-w-4xl mx-auto"
+                                  variants={containerVariants}
+                                  initial="hidden"
+                                  animate="visible"
+                                >
+                                  <AccordionContext.Provider value={{ value: accordionValue, setValue: setAccordionValue }}>
+                                      <Accordion type="single" collapsible value={accordionValue} onValueChange={setAccordionValue} className="w-full space-y-4">
+                                          {faqData.map((item, index) => (
+                                            <FaqAccordionItem key={index} item={item} value={`item-${index}`} />
+                                          ))}
+                                      </Accordion>
+                                  </AccordionContext.Provider>
+                                </motion.div>
+                            </div>
                         </div>
-                    </div>
-                    <Footer />
-                </main>
+                        <Footer />
+                    </main>
+                </div>
             </div>
 
              <PopupsManager
                 isProfileOpen={isProfileOpen}
                 setIsProfileOpen={setIsProfileOpen}
+                 profileInfo={{
+                    name: 'John Doe',
+                    phone: '+1 234 567 890',
+                    email: 'john.doe@example.com',
+                }}
+                onProfileUpdate={(updatedProfile: Partial<ProfileInfo>) => console.log("Profile updated", updatedProfile)}
+                allProducts={allProducts}
+                likedProducts={likedProducts}
+                onLikeToggle={handleLikeToggle}
+                cart={cart}
+                onAddToCart={updateCart}
+                onClearWishlist={() => setLikedProducts({})}
             />
             <BottomNavbar activeView={'faq'} onNavigate={handleNavigation} cartItemCount={cartItemCount} />
         </>
