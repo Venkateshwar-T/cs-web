@@ -49,7 +49,6 @@ export default function ProductPage() {
   const [lastScrollTop, setLastScrollTop] = useState(0);
   const [isMobileHeaderVisible, setIsMobileHeaderVisible] = useState(true);
   const [isCartOpen, setIsCartOpen] = useState(false);
-  const [isCartVisible, setIsCartVisible] = useState(false);
 
 
   useEffect(() => {
@@ -59,15 +58,6 @@ export default function ProductPage() {
       setProduct(foundProduct || null);
     }
   }, [params.id]);
-
-  useEffect(() => {
-    if (isCartOpen) {
-      setIsCartVisible(true);
-    } else {
-      const timer = setTimeout(() => setIsCartVisible(false), 300); // Match animation duration
-      return () => clearTimeout(timer);
-    }
-  }, [isCartOpen]);
   
   const handleScroll = (event: UIEvent<HTMLDivElement>) => {
     const { scrollTop } = event.currentTarget;
@@ -221,7 +211,7 @@ export default function ProductPage() {
   return (
     <>
       {isMobile ? <StaticSparkleBackground /> : <SparkleBackground />}
-      <div className={cn("flex flex-col h-screen", (isProfileOpen || isCartVisible) && 'opacity-50')}>
+      <div className={cn("flex flex-col h-screen", (isProfileOpen || isCartOpen) && 'opacity-50')}>
         <Header 
           onProfileOpenChange={setIsProfileOpen}
           isContentScrolled={isScrolled}
@@ -301,7 +291,6 @@ export default function ProductPage() {
         onToggleCartPopup={handleToggleCartPopup}
         allProducts={allProducts}
         onClearWishlist={() => setLikedProducts({})}
-        isCartVisible={isCartVisible}
         isCartOpen={isCartOpen}
         onFinalizeOrder={() => {
           setIsCartOpen(false);

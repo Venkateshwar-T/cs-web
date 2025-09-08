@@ -3,18 +3,13 @@
 
 import { CartPopup } from '@/components/cart-popup';
 import { ProfilePopup } from '@/components/profile-popup';
-import { SignUpPopup } from '@/components/signup-popup';
-import { CompleteDetailsPopup } from '@/components/complete-details-popup';
 import type { Product, ProfileInfo } from '@/app/page';
 import { cn } from '@/lib/utils';
-import { LoginPopup } from '../login-popup';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 interface PopupsManagerProps {
-  isCartVisible?: boolean;
   isCartOpen?: boolean;
   isProfileOpen: boolean;
-  onImageExpandChange?: (isExpanded: boolean) => void;
   likedProducts?: Record<number, boolean>;
   onLikeToggle?: (productId: number) => void;
   cart?: Record<string, number>;
@@ -30,7 +25,6 @@ interface PopupsManagerProps {
 }
 
 export function PopupsManager({
-  isCartVisible,
   isCartOpen,
   isProfileOpen,
   likedProducts,
@@ -46,32 +40,24 @@ export function PopupsManager({
   onClearWishlist,
   setIsProfileOpen,
 }: PopupsManagerProps) {
-  
-  const [isLoginOpen, setIsLoginOpen] = useState(false);
-  const [isSignUpOpen, setIsSignUpOpen] = useState(false);
-  const [isCompleteDetailsOpen, setIsCompleteDetailsOpen] = useState(false);
-  
-  const isAnyPopupVisible = isCartVisible || isProfileOpen || isSignUpOpen || isCompleteDetailsOpen || isLoginOpen;
+  const [isCartVisible, setIsCartVisible] = useState(false);
 
-  const handleOpenLogin = () => {
-    setIsSignUpOpen(false);
-    setIsLoginOpen(true);
-  };
+  useEffect(() => {
+    if (isCartOpen) {
+      setIsCartVisible(true);
+    } else {
+      const timer = setTimeout(() => setIsCartVisible(false), 300); // Match animation duration
+      return () => clearTimeout(timer);
+    }
+  }, [isCartOpen]);
 
-  const handleOpenSignUp = () => {
-    setIsLoginOpen(false);
-    setIsSignUpOpen(true);
-  };
-
-  const handleConfirmOrder = (name: string, phone: string) => {
-    console.log("Order confirmed with:", name, phone);
-  };
+  const isAnyPopupVisible = isCartVisible || isProfileOpen;
 
   return (
     <>
       {isAnyPopupVisible && <div className="fixed inset-0 z-40 bg-black/50" />}
       
-      {isCartVisible && isCartOpen && cart && onClearCart && onFinalizeOrder && onAddToCart && onToggleCartPopup && (
+      {isCartVisible && cart && onClearCart && onFinalizeOrder && onAddToCart && onToggleCartPopup && (
           <div className={cn("fixed inset-x-0 bottom-0 z-50 h-[82vh]", isCartOpen ? 'animate-slide-up-in' : 'animate-slide-down-out' )}>
               <div className="h-full relative w-[80vw] left-1/2 -translate-x-1/2">
                   <CartPopup
@@ -100,24 +86,6 @@ export function PopupsManager({
             />
           </div>
       )}
-
-      <SignUpPopup 
-        open={isSignUpOpen}
-        onOpenChange={setIsSignUpOpen}
-        onLoginClick={handleOpenLogin}
-      />
-      
-      <LoginPopup
-        open={isLoginOpen}
-        onOpenChange={setIsLoginOpen}
-        onSignUpClick={handleOpenSignUp}
-      />
-
-      <CompleteDetailsPopup
-        open={isCompleteDetailsOpen}
-        onOpenChange={setIsCompleteDetailsOpen}
-        onConfirm={handleConfirmOrder}
-      />
     </>
   );
 }

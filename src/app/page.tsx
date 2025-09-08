@@ -14,6 +14,7 @@ import { SearchBar } from '@/components/header/search-bar';
 import { useToast } from "@/hooks/use-toast";
 import { useCart } from '@/hooks/use-cart';
 import { StaticSparkleBackground } from '@/components/static-sparkle-background';
+import { Footer } from '@/components/footer';
 
 
 export type Product = {
@@ -35,7 +36,6 @@ const allProducts: Product[] = Array.from({ length: 12 }).map((_, i) => ({
 export default function Home() {
   const { cart, updateCart } = useCart();
   const [isProfileOpen, setIsProfileOpen] = useState(false);
-  const [isPageLoading, setIsPageLoading] = useState(true);
   const isMobile = useIsMobile();
   const router = useRouter();
   const [searchInput, setSearchInput] = useState("");
@@ -43,13 +43,6 @@ export default function Home() {
   
   const [likedProducts, setLikedProducts] = useState<Record<number, boolean>>({});
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsPageLoading(false);
-    }, 800);
-    return () => clearTimeout(timer);
-  }, []);
-  
   useEffect(() => {
     if (isProfileOpen) {
       document.body.classList.add('overflow-hidden');
@@ -107,8 +100,7 @@ export default function Home() {
   const cartItemCount = Object.values(cart).reduce((acc, quantity) => acc + quantity, 0);
   
   const mainContentClass = cn(
-    "flex flex-col items-center justify-start transition-all duration-500 relative flex-grow min-h-0 pb-16 md:pb-0",
-    isPageLoading && 'opacity-0'
+    "flex flex-col items-center justify-start transition-all duration-500 relative flex-grow min-h-0 pb-16 md:pb-0"
   );
 
   return (
