@@ -118,7 +118,7 @@ export function OrderConfirmedView({ cart, orderId }: OrderConfirmedViewProps) {
             >
                 <motion.div variants={itemVariants} className="flex items-center">
                   <div className="relative z-10 flex h-12 w-12 md:h-14 md:w-14 items-center justify-center rounded-full bg-custom-purple-dark border-4 border-custom-gold">
-                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="md:w-8 md:h-8">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-7 h-7 md:w-8 md:h-8">
                         <path d="M4 12L9 17L20 6" stroke="#FFD139" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="animate-tick"/>
                     </svg>
                   </div>
