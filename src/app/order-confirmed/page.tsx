@@ -15,6 +15,8 @@ import { Footer } from '@/components/footer';
 import { useOrders } from '@/hooks/use-orders';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { StaticSparkleBackground } from '@/components/static-sparkle-background';
+import { Loader } from '@/components/loader';
+import { motion } from 'framer-motion';
 
 const allProducts: Product[] = Array.from({ length: 12 }).map((_, i) => ({
   id: i,
@@ -47,6 +49,22 @@ function generateOrderId() {
     return result;
 }
 
+const ProcessingView = () => (
+    <div className="flex flex-col items-center justify-center h-full text-center gap-6">
+        <Loader className="w-24 h-24 text-custom-gold" />
+        <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2 }}
+            className="flex flex-col gap-2"
+        >
+          <h1 className="font-base font-poppins text-lg md:text-3xl text-white">Processing your order</h1>
+          <p className="text-sm md:text-base text-white/80">Please do not refresh the page</p>
+        </motion.div>
+    </div>
+);
+
+
 export default function OrderConfirmedPage() {
   const router = useRouter();
   const { cart, updateCart, clearCart } = useCart();
@@ -65,6 +83,7 @@ export default function OrderConfirmedPage() {
   const [searchInput, setSearchInput] = useState('');
   const [isScrolled, setIsScrolled] = useState(false);
   const [orderId, setOrderId] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
   const isMobile = useIsMobile();
     
   useEffect(() => {
@@ -90,8 +109,17 @@ export default function OrderConfirmedPage() {
             status: 'Order Requested',
             total: total > 0 ? total : 0,
         });
+
+        const timer = setTimeout(() => {
+            setIsLoading(false);
+            clearCart();
+        }, 3000); // Simulate a 3-second processing time
+
+        return () => clearTimeout(timer);
+    } else {
+        setIsLoading(false);
     }
-  }, [cart, addOrder]);
+  }, [cart, addOrder, clearCart]);
   
   const handleScroll = (event: UIEvent<HTMLDivElement>) => {
     setIsScrolled(event.currentTarget.scrollTop > 0);
@@ -133,10 +161,16 @@ export default function OrderConfirmedPage() {
           "flex-grow flex flex-col gap-8 overflow-y-auto no-scrollbar",
            isMobile ? 'pt-24' : "pt-36"
         )}>
-            <div className={cn("flex-grow flex flex-col", isMobile ? "px-4" : "md:px-32")}>
-              <OrderConfirmedView cart={cart} orderId={orderId} />
-            </div>
-            <Footer />
+          {isLoading ? (
+            <ProcessingView />
+          ) : (
+            <>
+              <div className={cn("flex-grow flex flex-col", isMobile ? "px-4" : "md:px-32")}>
+                <OrderConfirmedView cart={cart} orderId={orderId} />
+              </div>
+              <Footer />
+            </>
+          )}
         </main>
       </div>
       
