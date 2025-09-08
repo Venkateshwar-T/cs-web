@@ -4,6 +4,8 @@
 import { OrderItemCard } from './order-item-card';
 import { useOrders, type Order } from '@/hooks/use-orders';
 import { ListOrdered } from 'lucide-react';
+import { EmptyState } from './empty-state';
+import { useRouter } from 'next/navigation';
 
 interface MyOrdersTabProps {
   isMobile?: boolean;
@@ -11,10 +13,15 @@ interface MyOrdersTabProps {
 
 export function MyOrdersTab({ isMobile = false }: MyOrdersTabProps) {
     const { orders, isLoaded } = useOrders();
+    const router = useRouter();
 
     if (!isLoaded) {
         // You can return a loader here if you want
         return null;
+    }
+    
+    const handleExplore = () => {
+      router.push('/');
     }
 
     if (isMobile) {
@@ -35,11 +42,13 @@ export function MyOrdersTab({ isMobile = false }: MyOrdersTabProps) {
                     </div>
                 ) : (
                     <div className="flex-grow flex flex-col items-center justify-center h-full text-center gap-4 px-4">
-                        <ListOrdered className="h-24 w-24 text-white/30" strokeWidth={1} />
-                        <h2 className="text-2xl font-bold text-white">No Orders Yet</h2>
-                        <p className="text-white/70 max-w-xs">
-                            You haven't placed any orders yet. Your past orders will appear here.
-                        </p>
+                        <EmptyState
+                          imageUrl="/icons/empty.png"
+                          title="You Haven't Ordered Yet"
+                          description="Looks like you haven't placed an order. Your past orders will appear here."
+                          buttonText="Explore Now"
+                          onButtonClick={handleExplore}
+                        />
                     </div>
                 )}
             </div>
@@ -57,11 +66,13 @@ export function MyOrdersTab({ isMobile = false }: MyOrdersTabProps) {
                 </div>
             ) : (
                 <div className="flex-grow flex flex-col items-center justify-center h-full text-center gap-4">
-                    <ListOrdered className="h-24 w-24 text-white/30" strokeWidth={1} />
-                    <h2 className="text-2xl font-bold text-white">No Orders Yet</h2>
-                    <p className="text-white/70 max-w-xs">
-                        You haven't placed any orders yet. Your past orders will appear here.
-                    </p>
+                   <EmptyState
+                      imageUrl="/icons/empty.png"
+                      title="You Haven't Ordered Yet"
+                      description="Looks like you haven't placed an order. Your past orders will appear here."
+                      buttonText="Explore Now"
+                      onButtonClick={handleExplore}
+                    />
                 </div>
              )}
         </div>

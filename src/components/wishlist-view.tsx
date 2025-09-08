@@ -18,6 +18,8 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
+import { EmptyState } from './empty-state';
+import { useRouter } from 'next/navigation';
 
 interface WishlistViewProps {
   products: Product[];
@@ -40,6 +42,7 @@ export function WishlistView({
 }: WishlistViewProps) {
   const wishlistedProducts = products.filter(p => likedProducts[p.id]);
   const [unlikingItems, setUnlikingItems] = useState<number[]>([]);
+  const router = useRouter();
 
   const handleUnlike = (productId: number) => {
     setUnlikingItems(prev => [...prev, productId]);
@@ -49,6 +52,10 @@ export function WishlistView({
     onLikeToggle(productId);
     setUnlikingItems(prev => prev.filter(id => id !== productId));
   };
+  
+  const handleExplore = () => {
+    router.push('/');
+  }
 
   if (isMobile) {
     return (
@@ -100,9 +107,13 @@ export function WishlistView({
           </div>
         ) : (
           <div className="flex-grow flex items-center justify-center h-full">
-              <p className="text-center text-lg text-white/70">
-                  Your wishlist is empty. Start adding some products you love!
-              </p>
+            <EmptyState
+              imageUrl="/icons/empty.png"
+              title="Find a Sweet Treat to Save!"
+              description="Your wishlist is where you can store all your favorite chocolates and come back to them later."
+              buttonText="Explore Now"
+              onButtonClick={handleExplore}
+            />
           </div>
         )}
       </div>
@@ -158,10 +169,14 @@ export function WishlistView({
           </div>
         </>
       ) : (
-        <div className="flex-grow flex items-center justify-center">
-            <p className="text-center text-lg text-white/70">
-                Your wishlist is empty. Start adding some products you love!
-            </p>
+        <div className="flex-grow flex flex-col items-center justify-center">
+            <EmptyState
+              imageUrl="/icons/empty.png"
+              title="Find a Sweet Treat to Save!"
+              description="Your wishlist is where you can store all your favorite chocolates and come back to them later."
+              buttonText="Explore Now"
+              onButtonClick={handleExplore}
+            />
         </div>
       )}
     </div>

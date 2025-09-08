@@ -29,6 +29,7 @@ import {
 } from "@/components/ui/alert-dialog"
 import { StaticSparkleBackground } from '@/components/static-sparkle-background';
 import { FloatingCartFinalizeButton } from '@/components/floating-cart-finalize-button';
+import { EmptyState } from '@/components/empty-state';
 
 export default function CartPage() {
   const [activeView, setActiveView] = useState<ActiveView>('cart');
@@ -128,15 +129,14 @@ export default function CartPage() {
           isMobile ? (isHeaderVisible ? 'pt-24' : 'pt-0') : "pt-36" 
         )}>
           {cartItems.length === 0 ? (
-            <div className="flex flex-col items-center justify-start h-full gap-4 text-center px-4 pt-16">
-              <ShoppingCart className="h-24 w-24 text-white/30" strokeWidth={1} />
-              <h2 className="text-2xl font-bold text-white">Your cart is empty</h2>
-              <p className="text-white/70 max-w-xs">
-                Looks like you haven&apos;t added anything to your cart yet. Start exploring to find the perfect gift!
-              </p>
-              <Button asChild className="mt-4 bg-custom-gold text-custom-purple-dark hover:bg-custom-gold/90 rounded-full px-8">
-                <Link href="/">Continue Shopping</Link>
-              </Button>
+            <div className="flex flex-col items-center justify-center h-full px-4">
+              <EmptyState
+                imageUrl="/icons/empty.png"
+                title="Your Cart is Empty"
+                description="Looks like you haven't added anything to your cart yet. Start exploring to find the perfect gift!"
+                buttonText="Continue Shopping"
+                onButtonClick={() => router.push('/')}
+              />
             </div>
           ) : (
             <>
