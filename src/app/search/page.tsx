@@ -207,7 +207,7 @@ function SearchPageComponent() {
   return (
     <>
       {isMobile ? <StaticSparkleBackground /> : <SparkleBackground />}
-      <div className={cn("flex flex-col h-screen", isProfileOpen ? 'opacity-50' : '')}>
+      <div className={cn("flex flex-col h-screen", (isProfileOpen || isCartVisible) ? 'opacity-50' : '')}>
         {isMobile ? (
           <MobileSearchHeader 
             value={searchInput}
@@ -261,6 +261,26 @@ function SearchPageComponent() {
               isMobile={isMobile}
             />
         </main>
+        <PopupsManager
+            isProfileOpen={isProfileOpen}
+            setIsProfileOpen={setIsProfileOpen}
+            profileInfo={profileInfo}
+            onProfileUpdate={handleProfileUpdate}
+            likedProducts={likedProducts}
+            onLikeToggle={handleLikeToggle}
+            cart={cart}
+            onAddToCart={updateCart}
+            onClearCart={clearCart}
+            onToggleCartPopup={handleToggleCartPopup}
+            allProducts={allProducts}
+            onClearWishlist={handleClearWishlist}
+            isCartVisible={isCartVisible}
+            isCartOpen={isCartOpen}
+            onFinalizeOrder={() => {
+              setIsCartOpen(false);
+              router.push('/order-confirmed');
+            }}
+          />
       </div>
 
       {!isMobile && (
@@ -275,26 +295,7 @@ function SearchPageComponent() {
         />
       )}
 
-      <PopupsManager
-        isProfileOpen={isProfileOpen}
-        setIsProfileOpen={setIsProfileOpen}
-        profileInfo={profileInfo}
-        onProfileUpdate={handleProfileUpdate}
-        likedProducts={likedProducts}
-        onLikeToggle={handleLikeToggle}
-        cart={cart}
-        onAddToCart={updateCart}
-        onClearCart={clearCart}
-        onToggleCartPopup={handleToggleCartPopup}
-        allProducts={allProducts}
-        onClearWishlist={handleClearWishlist}
-        isCartVisible={isCartVisible}
-        isCartOpen={isCartOpen}
-        onFinalizeOrder={() => {
-          setIsCartOpen(false);
-          router.push('/order-confirmed');
-        }}
-      />
+      
       <BottomNavbar activeView={'search'} onNavigate={handleNavigation} cartItemCount={cartItemCount} />
     </>
   );

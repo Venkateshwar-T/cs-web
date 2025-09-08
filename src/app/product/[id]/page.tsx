@@ -25,7 +25,6 @@ import { ProductCard } from '@/components/product-card';
 import { SectionTitle } from '@/components/section-title';
 import { ChevronRight } from 'lucide-react';
 import { StaticSparkleBackground } from '@/components/static-sparkle-background';
-import { Footer } from '@/components/footer';
 
 const allProducts: Product[] = Array.from({ length: 12 }).map((_, i) => ({
   id: i,
@@ -35,7 +34,7 @@ const allProducts: Product[] = Array.from({ length: 12 }).map((_, i) => ({
 export default function ProductPage() {
   const router = useRouter();
   const params = useParams();
-  const { cart, updateCart } = useCart();
+  const { cart, updateCart, clearCart } = useCart();
   const isMobile = useIsMobile();
   
   const [product, setProduct] = useState<Product | null>(null);
@@ -54,6 +53,9 @@ export default function ProductPage() {
   const [isCartButtonExpanded, setIsCartButtonExpanded] = useState(false);
   const [lastScrollTop, setLastScrollTop] = useState(0);
   const [isMobileHeaderVisible, setIsMobileHeaderVisible] = useState(true);
+  const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isCartVisible, setIsCartVisible] = useState(false);
+
 
   useEffect(() => {
     if (params.id) {
@@ -62,6 +64,15 @@ export default function ProductPage() {
       setProduct(foundProduct || null);
     }
   }, [params.id]);
+
+  useEffect(() => {
+    if (isCartOpen) {
+      setIsCartVisible(true);
+    } else {
+      const timer = setTimeout(() => setIsCartVisible(false), 300); // Match animation duration
+      return () => clearTimeout(timer);
+    }
+  }, [isCartOpen]);
   
   const handleScroll = (event: UIEvent<HTMLDivElement>) => {
     const { scrollTop } = event.currentTarget;
@@ -135,6 +146,8 @@ export default function ProductPage() {
   const handleProductClick = (product: Product) => {
     router.push(`/product/${product.id}`);
   };
+
+  const handleToggleCartPopup = () => setIsCartOpen(p => !p);
   
   const cartItemCount = Object.values(cart).reduce((acc, quantity) => acc + quantity, 0);
 
@@ -213,7 +226,7 @@ export default function ProductPage() {
   return (
     <>
       {isMobile ? <StaticSparkleBackground /> : <SparkleBackground />}
-      <div className={cn("flex flex-col h-screen", isProfileOpen && 'opacity-50')}>
+      <div className={cn("flex flex-col h-screen", (isProfileOpen || isCartVisible) && 'opacity-50')}>
         <Header 
           onProfileOpenChange={setIsProfileOpen}
           isContentScrolled={isScrolled}
@@ -248,7 +261,7 @@ export default function ProductPage() {
                       <div className="h-full py-0 pr-6 overflow-y-auto custom-scrollbar pb-28">
                           <ProductDetails product={product} isLiked={!!likedProducts[product.id]} onLikeToggle={() => handleLikeToggle(product.id)} isMobile={false} />
                       </div>
-                      <ProductPopupFooter product={product} onAddToCart={handleAddToCart} quantity={cart[product.name] || 0} onToggleCartPopup={() => {}} />
+                      <ProductPopupFooter product={product} onAddToCart={handleAddToCart} quantity={cart[product.name] || 0} onToggleCartPopup={handleToggleCartPopup} />
                   </div>
                 </div>
               </div>
@@ -263,15 +276,14 @@ export default function ProductPage() {
               onLikeToggle={handleLikeToggle}
               isMobile={isMobile}
             />
-            <Footer />
         </main>
       </div>
       
       <FloatingCartButton
         activeView={'search'}
         isSearchingOnAbout={true}
-        isCartOpen={false}
-        onToggleCart={() => {}}
+        isCartOpen={isCartOpen}
+        onToggleCart={handleToggleCartPopup}
         isCartButtonExpanded={isCartButtonExpanded}
         cartMessage={cartMessage}
         cart={cart}
@@ -280,13 +292,22 @@ export default function ProductPage() {
       <PopupsManager
         isProfileOpen={isProfileOpen}
         setIsProfileOpen={setIsProfileOpen}
-        onProfileUpdate={handleProfileUpdate}
         profileInfo={profileInfo}
+        onProfileUpdate={handleProfileUpdate}
         likedProducts={likedProducts}
         onLikeToggle={handleLikeToggle}
         cart={cart}
+        onAddToCart={updateCart}
+        onClearCart={clearCart}
+        onToggleCartPopup={handleToggleCartPopup}
         allProducts={allProducts}
         onClearWishlist={() => setLikedProducts({})}
+        isCartVisible={isCartVisible}
+        isCartOpen={isCartOpen}
+        onFinalizeOrder={() => {
+          setIsCartOpen(false);
+          router.push('/order-confirmed');
+        }}
       />
       <BottomNavbar activeView={'search'} onNavigate={handleNavigation} cartItemCount={cartItemCount} />
     </>
