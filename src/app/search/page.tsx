@@ -53,8 +53,6 @@ function SearchPageComponent() {
   const [likedProducts, setLikedProducts] = useState<Record<number, boolean>>({});
   const [sortOption, setSortOption] = useState("featured");
   const [isCartOpen, setIsCartOpen] = useState(false);
-  const [isCartVisible, setIsCartVisible] = useState(false);
-  const [filters, setFilters] = useState<FilterState>(initialFilterState);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isFilterSheetOpen, setIsFilterSheetOpen] = useState(false);
   const [isSortSheetOpen, setIsSortSheetOpen] = useState(false);
@@ -63,6 +61,7 @@ function SearchPageComponent() {
   const [lastScrollTop, setLastScrollTop] = useState(0);
   const [isMobileHeaderVisible, setIsMobileHeaderVisible] = useState(true);
 
+  const isCartVisible = isCartOpen;
 
   useEffect(() => {
     setIsSearching(true);
@@ -77,15 +76,6 @@ function SearchPageComponent() {
       return () => clearTimeout(timer);
     }
   }, [isNewSearch]);
-
-  useEffect(() => {
-    if (isCartOpen) {
-      setIsCartVisible(true);
-    } else {
-      const timer = setTimeout(() => setIsCartVisible(false), 300); // Match animation duration
-      return () => clearTimeout(timer);
-    }
-  }, [isCartOpen]);
 
   const handleAddToCart = (productName: string, quantity: number, animate: boolean = true) => {
     const prevQuantity = cart[productName] || 0;
@@ -210,7 +200,7 @@ function SearchPageComponent() {
           <Header 
             onSearchSubmit={handleSearchSubmit}
             onProfileOpenChange={setIsProfileOpen}
-            isContentScrolled={true}
+            isContentScrolled={false}
             onReset={() => router.push('/')}
             onNavigate={(view) => router.push(`/${view}`)}
             activeView={'search'}
