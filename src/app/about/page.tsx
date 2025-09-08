@@ -2,6 +2,7 @@
 // @/app/about/page.tsx
 'use client';
 
+import * as React from 'react';
 import { useState, UIEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
