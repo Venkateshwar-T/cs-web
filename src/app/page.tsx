@@ -227,7 +227,7 @@ export default function Home() {
 
   return (
     <>
-      <SparkleBackground />
+      {!isMobile && <SparkleBackground />}
       <div className={cn(
         "flex flex-col",
         activeView === 'order-confirmed' ? "min-h-screen" : "h-screen",

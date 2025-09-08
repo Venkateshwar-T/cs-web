@@ -13,6 +13,7 @@ import { PopupsManager } from '@/components/popups/popups-manager';
 import { OrderConfirmedView } from '@/components/order-confirmed-view';
 import { Footer } from '@/components/footer';
 import { useOrders } from '@/hooks/use-orders';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const allProducts: Product[] = Array.from({ length: 12 }).map((_, i) => ({
   id: i,
@@ -63,6 +64,7 @@ export default function OrderConfirmedPage() {
   const [searchInput, setSearchInput] = useState('');
   const [isScrolled, setIsScrolled] = useState(false);
   const [orderId, setOrderId] = useState('');
+  const isMobile = useIsMobile();
     
   useEffect(() => {
     if (Object.keys(cart).length > 0) {
@@ -114,7 +116,7 @@ export default function OrderConfirmedPage() {
 
   return (
     <>
-      <SparkleBackground />
+      {!isMobile && <SparkleBackground />}
       <div className={cn("flex flex-col h-screen", isPopupOpen && 'opacity-50')}>
         <Header 
           onProfileOpenChange={setIsProfileOpen}

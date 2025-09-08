@@ -14,6 +14,7 @@ import type { ActiveView, ProfileInfo } from '@/app/page';
 import { useCart } from '@/hooks/use-cart';
 import { PopupsManager } from '@/components/popups/popups-manager';
 import { BottomNavbar } from '@/components/bottom-navbar';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -69,6 +70,7 @@ export default function AboutPage() {
         email: 'john.doe@example.com',
     });
     const [isContentScrolled, setIsContentScrolled] = useState(false);
+    const isMobile = useIsMobile();
 
     const handleScroll = (event: UIEvent<HTMLDivElement>) => {
       const { scrollTop } = event.currentTarget;
@@ -90,7 +92,7 @@ export default function AboutPage() {
 
     return (
         <>
-            <SparkleBackground />
+            {!isMobile && <SparkleBackground />}
             <div className="flex flex-col h-screen">
                 <Header
                   onProfileOpenChange={setIsProfileOpen}

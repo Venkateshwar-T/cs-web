@@ -227,7 +227,7 @@ function SearchPageComponent() {
 
   return (
     <>
-      <SparkleBackground />
+      {!isMobile && <SparkleBackground />}
       <div className={cn("flex flex-col h-screen", isPopupOpen ? 'opacity-50' : '')}>
         {isMobile ? (
           <MobileSearchHeader 
@@ -265,7 +265,7 @@ function SearchPageComponent() {
               isNewSearch={isNewSearch}
               products={allProducts}
               query={query}
-              onAddToCart={handleAddToCart}
+              onAddToCart={onAddToCart}
               cart={cart}
               onProductClick={handleProductClick}
               activeFilters={activeFilters}

@@ -91,7 +91,7 @@ export default function CartPage() {
 
   return (
     <>
-      <SparkleBackground />
+      {!isMobile && <SparkleBackground />}
       <div className="flex flex-col h-screen">
         <Header
           onProfileOpenChange={setIsProfileOpen}

@@ -154,7 +154,7 @@ export default function ProductPage() {
   if (!product) {
     return (
       <div className="flex h-screen items-center justify-center bg-background">
-        <SparkleBackground />
+        {!isMobile && <SparkleBackground />}
         <p className="text-white">Product not found.</p>
       </div>
     );
@@ -165,7 +165,6 @@ export default function ProductPage() {
   if (isMobile) {
     return (
       <>
-        <SparkleBackground />
         <div className="flex flex-col h-screen">
           <MobileSearchHeader 
               value={searchInput}
@@ -228,7 +227,7 @@ export default function ProductPage() {
 
   return (
     <>
-      <SparkleBackground />
+      {!isMobile && <SparkleBackground />}
       <div className={cn("flex flex-col h-screen", isPopupOpen && 'opacity-50')}>
         <Header 
           onProfileOpenChange={setIsProfileOpen}
