@@ -49,7 +49,6 @@ export default function CartPage() {
         setIsSummaryVisible(entry.isIntersecting);
       },
       { 
-        // Trigger when the summary is 150px from the bottom of the viewport
         rootMargin: "0px 0px -150px 0px",
         threshold: 0.01 
       } 
@@ -89,8 +88,6 @@ export default function CartPage() {
   };
 
   const handleCheckout = () => {
-    // Handle checkout logic here
-    console.log('Proceeding to checkout');
     router.push('/order-confirmed');
   };
   

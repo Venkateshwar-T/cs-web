@@ -1,3 +1,4 @@
+
 // @/components/header/mobile-search-header.tsx
 'use client';
 

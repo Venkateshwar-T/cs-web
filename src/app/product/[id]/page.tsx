@@ -273,7 +273,7 @@ export default function ProductPage() {
            <FeaturedProducts 
               products={allProducts}
               onProductClick={handleProductClick}
-              onAddToCart={handleAddToCart}
+              onAddToCart={onAddToCart}
               cart={cart}
               likedProducts={likedProducts}
               onLikeToggle={handleLikeToggle}
