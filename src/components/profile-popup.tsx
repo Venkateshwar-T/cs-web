@@ -92,7 +92,7 @@ export function ProfilePopup({
               <div className="w-[25%] h-full bg-white">
                   <ProfileSidebar activeTab={activeTab} onTabChange={handleTabChange} />
               </div>
-              <div className="w-[75%] h-full bg-custom-purple-dark overflow-y-auto custom-scrollbar">
+              <div className="w-[75%] h-full bg-custom-purple-dark overflow-y-auto no-scrollbar">
                   {activeTab === 'My Profile' && (
                     <ProfileDetailsView 
                       profile={profile} 
