@@ -40,43 +40,20 @@ export function PopupsManager({
   onClearWishlist,
   setIsProfileOpen,
 }: PopupsManagerProps) {
-  const [isCartVisible, setIsCartVisible] = useState(false);
-  const [isAnimatingOut, setIsAnimatingOut] = useState(false);
-
-  useEffect(() => {
-    if (isCartOpen) {
-      setIsCartVisible(true);
-      setIsAnimatingOut(false);
-    }
-  }, [isCartOpen]);
-
-  const handleCloseCart = () => {
-    if (onToggleCartPopup) {
-      setIsAnimatingOut(true);
-    }
-  };
-
-  const handleAnimationEnd = () => {
-    if (isAnimatingOut && onToggleCartPopup) {
-      setIsCartVisible(false);
-      onToggleCartPopup();
-    }
-  };
-
-  const isAnyPopupVisible = isCartVisible || isProfileOpen;
+  const isAnyPopupVisible = isCartOpen || isProfileOpen;
 
   return (
     <>
       {isAnyPopupVisible && <div className="fixed inset-0 z-40 bg-black/50" />}
       
-      {isCartVisible && cart && onClearCart && onFinalizeOrder && onAddToCart && onToggleCartPopup && (
+      {isCartOpen && cart && onClearCart && onFinalizeOrder && onAddToCart && onToggleCartPopup && (
           <div 
-            onAnimationEnd={handleAnimationEnd}
-            className={cn("fixed inset-x-0 bottom-0 z-50 h-[82vh]", isAnimatingOut ? 'animate-slide-down-out' : 'animate-slide-up-in' )}
+            className={cn("fixed inset-x-0 bottom-0 z-50 h-[82vh] data-[state=closed]:animate-slide-down-out data-[state=open]:animate-slide-up-in")}
+            data-state={isCartOpen ? 'open' : 'closed'}
           >
               <div className="h-full relative w-[80vw] left-1/2 -translate-x-1/2">
                   <CartPopup
-                    onClose={handleCloseCart}
+                    onClose={onToggleCartPopup}
                     cart={cart}
                     onClearCart={onClearCart}
                     onFinalizeOrder={onFinalizeOrder}

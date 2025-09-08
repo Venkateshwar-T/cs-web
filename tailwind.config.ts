@@ -192,7 +192,7 @@ export default {
           'sparkle-glow': 'sparkle-glow 3s ease-in-out infinite',
         },
         'slide-up-in': {
-          from: { transform: 'translateY(100%)', opacity: '0' },
+          from: { transform: 'translateY(100%)', opacity: '0.8' },
           to: { transform: 'translateY(0)', opacity: '1' },
         },
         'slide-down-out': {
@@ -224,8 +224,8 @@ export default {
         'shake': 'shake 4s ease-in-out infinite',
         'loader-bar': 'loader-bar 1.5s ease-in-out forwards',
         'sparkle-glow': 'sparkle-glow 3s ease-in-out infinite',
-        'slide-up-in': 'slide-up-in 0.3s ease-out forwards',
-        'slide-down-out': 'slide-down-out 0.3s ease-out forwards',
+        'slide-up-in': 'slide-up-in 0.5s ease-out',
+        'slide-down-out': 'slide-down-out 0.5s ease-out',
         'fade-out-slide-up': 'fade-out-slide-up 0.5s ease-out forwards',
       },
     },

@@ -62,8 +62,6 @@ function SearchPageComponent() {
   const [isMobileHeaderVisible, setIsMobileHeaderVisible] = useState(true);
   const [filters, setFilters] = useState<FilterState>(initialFilterState);
 
-  const isCartVisible = isCartOpen;
-
   useEffect(() => {
     setIsSearching(true);
     setIsNewSearch(true);
@@ -182,7 +180,7 @@ function SearchPageComponent() {
   return (
     <>
       {isMobile ? <StaticSparkleBackground /> : <SparkleBackground />}
-      <div className={cn("flex flex-col h-screen", isProfileOpen || isCartVisible ? 'opacity-50' : '')}>
+      <div className={cn("flex flex-col h-screen", (isProfileOpen || isCartOpen) ? 'opacity-50' : '')}>
         {isMobile ? (
           <MobileSearchHeader 
             value={searchInput}
@@ -285,5 +283,3 @@ export default function SearchPage() {
     </Suspense>
   )
 }
-
-    
