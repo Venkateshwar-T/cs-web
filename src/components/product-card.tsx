@@ -38,9 +38,9 @@ const variants = {
 };
 
 export function ProductCard({ product, onAddToCart, quantity, onProductClick, isLiked, onLikeToggle, isMobile = false }: ProductCardProps) {
-  const [likeClickCount, setLikeClickCount] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [isAnimatingLike, setIsAnimatingLike] = useState(false);
 
   useEffect(() => {
     if (!isHovered || isMobile) {
@@ -63,6 +63,15 @@ export function ProductCard({ product, onAddToCart, quantity, onProductClick, is
       clearInterval(intervalId);
     };
   }, [isHovered, currentImageIndex, isMobile]);
+  
+  useEffect(() => {
+    // This effect is purely for the animation. It doesn't need to run on initial render.
+    if (isLiked) {
+        setIsAnimatingLike(true);
+        const timer = setTimeout(() => setIsAnimatingLike(false), 300); // duration of the animation
+        return () => clearTimeout(timer);
+    }
+  }, [isLiked]);
 
 
   const handleAddToCartClick = (e: React.MouseEvent) => {
@@ -82,7 +91,6 @@ export function ProductCard({ product, onAddToCart, quantity, onProductClick, is
   
   const handleLikeClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setLikeClickCount(prev => prev + 1);
     onLikeToggle();
   }
 
@@ -109,12 +117,12 @@ export function ProductCard({ product, onAddToCart, quantity, onProductClick, is
       )}
     >
       <Heart 
-        key={likeClickCount}
+        key={String(isLiked)}
         className={cn(
           "stroke-current transition-colors duration-300", 
           isMobile ? "h-5 w-5" : "h-6 w-6",
           isLiked ? 'text-red-500 fill-red-500' : (isMobile ? 'text-white' : 'text-black'),
-          'animate-heart-pop'
+          isAnimatingLike && 'animate-heart-pop'
         )} 
       />
     </button>
