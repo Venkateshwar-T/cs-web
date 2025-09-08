@@ -35,8 +35,8 @@ export function MyOrdersTab({ isMobile = false }: MyOrdersTabProps) {
             <div className="flex flex-col h-full text-white">
                  {orders.length > 0 && latestOrder ? (
                     <div className="bg-transparent rounded-2xl flex flex-col">
-                        <div className="overflow-y-auto no-scrollbar py-2">
-                           <SectionTitle className="text-base text-white pb-2 mb-0">Latest Order</SectionTitle>
+                        <div className="overflow-y-auto no-scrollbar py-4">
+                           <SectionTitle className="text-base text-white pb-2 pl-2 mb-0">Latest Order</SectionTitle>
                            <div className='space-y-4'>
                             <OrderItemCard 
                                 key={latestOrder.id} 
@@ -48,7 +48,7 @@ export function MyOrdersTab({ isMobile = false }: MyOrdersTabProps) {
                             {pastOrders.length > 0 && (
                               <>
                                 <Separator className="my-4 bg-white/20" />
-                                <SectionTitle className="text-base text-white p-2 mb-0">Past Orders</SectionTitle>
+                                <SectionTitle className="text-base text-white pb-2 pl-2 mb-0">Past Orders</SectionTitle>
                                 <div className="space-y-4">
                                   {pastOrders.map((order) => (
                                     <OrderItemCard 

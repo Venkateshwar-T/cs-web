@@ -39,7 +39,7 @@ export function OrderItemCard({ order, isMobile = false }: OrderItemCardProps) {
                         <p className="text-xs text-black/70">Order ID: {order.id}</p>
                         <p className="text-xs text-black/70">{formattedDate}</p>
                     </div>
-                     <Badge variant={statusVariant(order.status)} className="text-xs">{order.status}</Badge>
+                     <Badge variant={statusVariant(order.status)} className="text-xs bg-custom-gold">{order.status}</Badge>
                  </div>
                  <Separator className="bg-black/10 my-2" />
                  <div className="space-y-2">
