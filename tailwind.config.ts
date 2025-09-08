@@ -93,9 +93,6 @@ export default {
         sm: 'calc(var(--radius) - 4px)',
         '2xl': 'calc(var(--radius) + 8px)',
       },
-      width: {
-        '60': '15rem',
-      },
       keyframes: {
         'accordion-down': {
           from: {
