@@ -29,13 +29,12 @@ export function MyOrdersTab({ isMobile = false }: MyOrdersTabProps) {
             <div className="flex flex-col h-full text-white">
                  {orders.length > 0 ? (
                     <div className="bg-white/80 rounded-2xl flex flex-col">
-                        <div className="overflow-y-auto no-scrollbar">
+                        <div className="overflow-y-auto no-scrollbar space-y-4 p-2">
                            {orders.map((order, index) => (
                              <OrderItemCard 
                                 key={order.id} 
                                 order={order} 
                                 isMobile={true} 
-                                isLastItem={index === orders.length - 1} 
                               />
                            ))}
                         </div>

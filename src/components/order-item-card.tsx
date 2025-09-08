@@ -11,10 +11,9 @@ import { Separator } from './ui/separator';
 interface OrderItemCardProps {
     order: Order;
     isMobile?: boolean;
-    isLastItem?: boolean;
 }
 
-export function OrderItemCard({ order, isMobile = false, isLastItem = false }: OrderItemCardProps) {
+export function OrderItemCard({ order, isMobile = false }: OrderItemCardProps) {
     const orderDate = new Date(order.date);
     const formattedDate = orderDate.toLocaleDateString('en-US', {
         year: 'numeric',
@@ -33,8 +32,7 @@ export function OrderItemCard({ order, isMobile = false, isLastItem = false }: O
     if (isMobile) {
         return (
             <div className={cn(
-                "w-full bg-transparent p-3 text-black relative overflow-hidden",
-                !isLastItem && "border-b border-black/10"
+                "w-full bg-white p-3 text-black relative overflow-hidden rounded-2xl"
             )}>
                  <div className="flex justify-between items-center mb-2">
                     <div>
