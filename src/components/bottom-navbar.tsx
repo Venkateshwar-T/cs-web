@@ -2,7 +2,7 @@
 // @/components/bottom-navbar.tsx
 'use client';
 
-import { Home, ShoppingCart, User, Info, HelpCircle } from 'lucide-react';
+import { Home, ShoppingCart, User } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { ActiveView } from '@/app/page';
 
@@ -14,8 +14,6 @@ interface BottomNavbarProps {
 
 const navItems = [
   { view: 'home', icon: Home, label: 'Home' },
-  { view: 'about', icon: Info, label: 'About' },
-  { view: 'faq', icon: HelpCircle, label: 'FAQ' },
   { view: 'cart', icon: ShoppingCart, label: 'Cart' },
   { view: 'profile', icon: User, label: 'Profile' },
 ] as const;

@@ -15,8 +15,6 @@ import { useToast } from "@/hooks/use-toast";
 import { useCart } from '@/hooks/use-cart';
 import { Footer } from '@/components/footer';
 import { OrderConfirmedView } from '@/components/order-confirmed-view';
-import { AboutView } from '@/components/about-view';
-import { FaqView } from '@/components/faq-view';
 import { StaticSparkleBackground } from '@/components/static-sparkle-background';
 
 
@@ -172,14 +170,9 @@ export default function Home() {
       router.push('/cart');
     } else if (view === 'profile') {
       router.push('/profile');
-    } else if (view === 'about') {
-      router.push('/about');
-    } else if (view === 'faq') {
-      router.push('/faq');
-    } 
-    else {
+    } else {
        router.push('/');
-      setActiveView(view);
+       setActiveView('home');
     }
   };
   
