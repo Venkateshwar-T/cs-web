@@ -52,7 +52,8 @@ export const MobileCartSummary = React.forwardRef<HTMLDivElement, MobileCartSumm
     const subtotalAfterDiscount = subtotal - discount;
     const gstRate = 0.18;
     const gstAmount = subtotalAfterDiscount * gstRate;
-    const total = subtotalAfterDiscount + gstAmount;
+    const rawTotal = subtotalAfterDiscount + gstAmount;
+    const total = rawTotal > 0 ? rawTotal : 0;
 
     return (
       <div ref={ref} className="mt-6 bg-white/80 rounded-2xl p-4 shadow-lg text-black">
@@ -100,5 +101,3 @@ export const MobileCartSummary = React.forwardRef<HTMLDivElement, MobileCartSumm
   }
 );
 MobileCartSummary.displayName = 'MobileCartSummary';
-
-    
