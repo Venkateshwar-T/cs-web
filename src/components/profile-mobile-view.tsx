@@ -54,7 +54,7 @@ export function ProfileMobileView({
           ))}
         </div>
       </div>
-      <div className="flex-grow overflow-y-auto no-scrollbar pt-6 pb-20">
+      <div className={cn("flex-grow overflow-y-auto no-scrollbar pt-2 pb-20", activeTab==='My Profile' && 'pt-6', activeTab==='My Wishlist' && 'pt-6')}>
         {activeTab === 'My Profile' && (
           <MyProfileTab profile={profile} onProfileUpdate={onProfileUpdate} />
         )}

@@ -33,9 +33,9 @@ export function MyOrdersTab({ isMobile = false }: MyOrdersTabProps) {
         return (
             <div className="flex flex-col h-full text-white">
                  {orders.length > 0 && latestOrder ? (
-                    <div className="bg-white/80 rounded-2xl flex flex-col">
-                        <div className="overflow-y-auto no-scrollbar p-2">
-                           <SectionTitle className="text-base text-black p-2 mb-2">Latest Order</SectionTitle>
+                    <div className="bg-transparent rounded-2xl flex flex-col">
+                        <div className="overflow-y-auto no-scrollbar py-2">
+                           <SectionTitle className="text-base text-white pb-2 mb-0">Latest Order</SectionTitle>
                            <OrderItemCard 
                               key={latestOrder.id} 
                               order={latestOrder} 
@@ -44,9 +44,9 @@ export function MyOrdersTab({ isMobile = false }: MyOrdersTabProps) {
                             
                             {pastOrders.length > 0 && (
                               <>
-                                <Separator className="my-4 bg-black/10" />
-                                <SectionTitle className="text-base text-black p-2 mb-2">Past Orders</SectionTitle>
-                                <div className="space-y-4">
+                                <Separator className="mt-4 bg-white/20" />
+                                <SectionTitle className="text-base text-white p-2 mb-0">Past Orders</SectionTitle>
+                                <div className="space-y-2">
                                   {pastOrders.map((order) => (
                                     <OrderItemCard 
                                       key={order.id} 
@@ -70,24 +70,24 @@ export function MyOrdersTab({ isMobile = false }: MyOrdersTabProps) {
                         />
                     </div>
                 )}
-                 {orders.length > 0 && <div className="h-16 flex-shrink-0" />}
+                 {orders.length > 0 && <div className="h-20 flex-shrink-0" />}
             </div>
         )
     }
 
     return (
-        <div className="p-8 text-white h-full flex flex-col relative">
+        <div className="p-8 text-white h-full flex flex-col relative pb-2">
             <h2 className="text-3xl font-normal font-poppins self-start mb-6">My Orders</h2>
              {orders.length > 0 && latestOrder ? (
-                <div className="flex-grow overflow-y-auto pr-4 custom-scrollbar">
-                    <SectionTitle className="text-xl text-white/90 p-0 mb-4">Latest Order</SectionTitle>
+                <div className="flex-grow overflow-y-auto custom-scrollbar">
+                    <SectionTitle className="text-xl text-white/90 pl-3 mb-2">Latest Order</SectionTitle>
                     <OrderItemCard key={latestOrder.id} order={latestOrder} />
 
                     {pastOrders.length > 0 && (
                       <>
-                        <Separator className="my-6 bg-white/20" />
-                        <SectionTitle className="text-xl text-white/90 p-0 mb-4">Past Orders</SectionTitle>
-                        <div className="space-y-4">
+                        <Separator className="my-4 bg-white/20" />
+                        <SectionTitle className="text-xl text-white/90 pl-3 mb-2">Past Orders</SectionTitle>
+                        <div className="space-y-2">
                           {pastOrders.map(order => (
                               <OrderItemCard key={order.id} order={order} />
                           ))}

@@ -50,7 +50,7 @@ export function MyProfileTab({ profile, onProfileUpdate }: MyProfileTabProps) {
   };
 
   return (
-    <div className="flex flex-col items-center space-y-6">
+    <div className="flex flex-col items-center space-y-4">
       <Avatar className="w-24 h-24">
         <AvatarImage src="https://picsum.photos/200" alt="User avatar" data-ai-hint="person portrait" />
         <AvatarFallback>{profile.name.charAt(0).toUpperCase()}</AvatarFallback>
