@@ -11,7 +11,7 @@ import { SparkleBackground } from '@/components/sparkle-background';
 import { Footer } from '@/components/footer';
 import { SectionTitle } from "@/components/section-title";
 import { Heart, Leaf, Gift, Sparkles } from "lucide-react";
-import type { ActiveView, ProfileInfo } from '@/app/page';
+import type { ActiveView } from '@/app/page';
 import { useCart } from '@/hooks/use-cart';
 import { PopupsManager } from '@/components/popups/popups-manager';
 import { BottomNavbar } from '@/components/bottom-navbar';
@@ -65,14 +65,9 @@ const AboutSection = ({ title, children, icon, isMobile }: { title: string, chil
 
 export default function AboutPage() {
     const router = useRouter();
-    const { cart, updateCart, clearCart } = useCart();
+    const { cart } = useCart();
     const [isProfileOpen, setIsProfileOpen] = useState(false);
     const [searchInput, setSearchInput] = useState('');
-    const [profileInfo, setProfileInfo] = useState<ProfileInfo>({
-        name: 'John Doe',
-        phone: '+1 234 567 890',
-        email: 'john.doe@example.com',
-    });
     const [isContentScrolled, setIsContentScrolled] = useState(false);
     const isMobile = useIsMobile();
     
@@ -147,30 +142,8 @@ export default function AboutPage() {
             </div>
 
              <PopupsManager
-                selectedProduct={null}
-                isCartVisible={false}
-                isCartOpen={false}
                 isProfileOpen={isProfileOpen}
-                isSignUpOpen={false}
-                isCompleteDetailsOpen={false}
-                onClosePopup={() => {}}
-                onImageExpandChange={() => {}}
-                likedProducts={{}}
-                onLikeToggle={() => {}}
-                cart={cart}
-                onAddToCart={updateCart}
-                onToggleCartPopup={() => {}}
-                onClearCart={clearCart}
-                onFinalizeOrder={() => {}}
-                onProfileUpdate={(info) => setProfileInfo(p => ({...p, ...info}))}
-                profileInfo={profileInfo}
-                allProducts={[]}
-                onClearWishlist={() => {}}
                 setIsProfileOpen={setIsProfileOpen}
-                setIsSignUpOpen={() => {}}
-                onLoginClick={() => {}}
-                setIsCompleteDetailsOpen={() => {}}
-                onConfirmOrder={() => {}}
             />
             <BottomNavbar activeView={'about'} onNavigate={handleNavigation} cartItemCount={cartItemCount} />
         </>

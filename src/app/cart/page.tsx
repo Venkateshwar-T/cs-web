@@ -202,30 +202,8 @@ export default function CartPage() {
       </div>
 
       <PopupsManager
-        selectedProduct={null}
-        isCartVisible={false}
-        isCartOpen={false}
         isProfileOpen={isProfileOpen}
-        isSignUpOpen={false}
-        isCompleteDetailsOpen={false}
-        onClosePopup={() => {}}
-        onImageExpandChange={() => {}}
-        likedProducts={{}}
-        onLikeToggle={() => {}}
-        cart={cart}
-        onAddToCart={handleQuantityChange}
-        onToggleCartPopup={() => {}}
-        onClearCart={clearCart}
-        onFinalizeOrder={() => {}}
-        onProfileUpdate={() => {}}
-        profileInfo={{ name: '', phone: '', email: '' }}
-        allProducts={[]}
-        onClearWishlist={() => {}}
         setIsProfileOpen={setIsProfileOpen}
-        setIsSignUpOpen={() => {}}
-        onLoginClick={() => {}}
-        setIsCompleteDetailsOpen={() => {}}
-        onConfirmOrder={() => {}}
       />
       {isMobile && cartItems.length > 0 && (
         <FloatingCartFinalizeButton

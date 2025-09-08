@@ -9,13 +9,14 @@ import { SparkleBackground } from '@/components/sparkle-background';
 import { BottomNavbar } from '@/components/bottom-navbar';
 import { PopupsManager } from '@/components/popups/popups-manager';
 import { SearchView } from '@/components/views/SearchView';
-import { useIsMobile } from '@/hooks/use-mobile';
+import { useIsMobile } from '@/hooks/use-is-mobile';
 import { flavourOptions, occasionOptions, productTypeOptions, weightOptions } from '@/lib/filter-options';
 import type { Product, ActiveView } from '@/app/page';
 import { FloatingCartButton } from '@/components/floating-cart-button';
 import { MobileSearchHeader } from '@/components/header/mobile-search-header';
 import { useCart } from '@/hooks/use-cart';
 import { StaticSparkleBackground } from '@/components/static-sparkle-background';
+import { Footer } from '@/components/footer';
 
 type FilterState = {
   priceRange: [number, number];
@@ -56,7 +57,6 @@ function SearchPageComponent() {
   const { cart, updateCart, clearCart } = useCart();
   const [cartMessage, setCartMessage] = useState('');
   const [isCartButtonExpanded, setIsCartButtonExpanded] = useState(false);
-  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [isImageExpanded, setIsImageExpanded] = useState(false);
   const [likedProducts, setLikedProducts] = useState<Record<number, boolean>>({});
   const [sortOption, setSortOption] = useState("featured");
@@ -123,8 +123,6 @@ function SearchPageComponent() {
     router.push(`/search?q=${encodeURIComponent(value)}`);
   };
 
-  const handleClosePopup = () => setSelectedProduct(null);
-
   const handleFilterChange = (newFilters: Partial<FilterState>) => {
     setIsSearching(true);
     setFilters(prev => ({ ...prev, ...newFilters }));
@@ -162,7 +160,6 @@ function SearchPageComponent() {
   const handleOpenSignUp = () => setIsSignUpOpen(true);
   
   const handleOpenCompleteDetails = () => {
-    setSelectedProduct(null);
     setIsCompleteDetailsOpen(true);
   };
   
@@ -212,7 +209,7 @@ function SearchPageComponent() {
     ...filters.selectedWeights.map(id => ({ type: 'selectedWeights', value: id, label: getLabelById(id, weightOptions) })),
   ] as { type: keyof FilterState; value: string; label: string }[];
   
-  const isPopupOpen = selectedProduct || isImageExpanded || isCartVisible || isSignUpOpen || isCompleteDetailsOpen || isProfileOpen;
+  const isPopupOpen = isImageExpanded || isCartVisible || isSignUpOpen || isCompleteDetailsOpen || isProfileOpen;
 
   const handleNavigation = (view: ActiveView) => {
     if (view === 'cart') {
@@ -255,7 +252,7 @@ function SearchPageComponent() {
           />
         )}
         <main className={cn(
-          "flex-grow flex transition-all duration-300 relative min-h-0",
+          "flex-grow flex flex-col transition-all duration-300 relative min-h-0",
           "pb-16 md:pb-0",
           isMobile ? (isMobileHeaderVisible ? 'pt-16' : 'pt-0') : "pt-36"
         )}>
@@ -282,6 +279,7 @@ function SearchPageComponent() {
               onScroll={handleScroll}
               isMobile={isMobile}
             />
+            {!isMobile && <Footer />}
         </main>
       </div>
 
@@ -304,7 +302,7 @@ function SearchPageComponent() {
         isProfileOpen={isProfileOpen}
         isSignUpOpen={isSignUpOpen}
         isCompleteDetailsOpen={isCompleteDetailsOpen}
-        onClosePopup={handleClosePopup}
+        onClosePopup={() => {}}
         onImageExpandChange={setIsImageExpanded}
         likedProducts={likedProducts}
         onLikeToggle={handleLikeToggle}

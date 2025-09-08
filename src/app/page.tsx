@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { Header } from "@/components/header";
@@ -37,7 +37,6 @@ const allProducts: Product[] = Array.from({ length: 12 }).map((_, i) => ({
 
 export default function Home() {
   const { cart, updateCart, clearCart } = useCart();
-  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [isImageExpanded, setIsImageExpanded] = useState(false);
   const [likedProducts, setLikedProducts] = useState<Record<number, boolean>>({});
   const [isCartOpen, setIsCartOpen] = useState(false);
@@ -54,19 +53,18 @@ export default function Home() {
   const isMobile = useIsMobile();
   const router = useRouter();
   const [searchInput, setSearchInput] = useState("");
-  const formRef = useRef<HTMLFormElement>(null);
   const { toast } = useToast();
 
 
-  useEffect(() => {
+  useState(() => {
     const timer = setTimeout(() => {
       setIsPageLoading(false);
     }, 800);
     return () => clearTimeout(timer);
-  }, []);
+  });
 
-  useEffect(() => {
-    if (selectedProduct || isImageExpanded || isCartVisible || isSignUpOpen || isCompleteDetailsOpen || isProfileOpen) {
+  useState(() => {
+    if (isImageExpanded || isCartVisible || isSignUpOpen || isCompleteDetailsOpen || isProfileOpen) {
       document.body.classList.add('overflow-hidden');
     } else {
       document.body.classList.remove('overflow-hidden');
@@ -74,17 +72,17 @@ export default function Home() {
     return () => {
       document.body.classList.remove('overflow-hidden');
     };
-  }, [selectedProduct, isImageExpanded, isCartVisible, isSignUpOpen, isCompleteDetailsOpen, isProfileOpen]);
+  });
 
 
-  useEffect(() => {
+  useState(() => {
     if (isCartOpen) {
       setIsCartVisible(true);
     } else {
       const timer = setTimeout(() => setIsCartVisible(false), 300); // Match animation duration
       return () => clearTimeout(timer);
     }
-  }, [isCartOpen]);
+  });
 
   const handleSearchSubmit = (e: React.FormEvent<HTMLFormElement>, currentSearchInput: string) => {
     e.preventDefault();
@@ -107,10 +105,6 @@ export default function Home() {
 
   const handleAddToCart = (productName: string, quantity: number) => {
     updateCart(productName, quantity);
-  };
-
-  const handleClosePopup = () => {
-    setSelectedProduct(null);
   };
 
   const handleLikeToggle = (productId: number) => {
@@ -138,7 +132,6 @@ export default function Home() {
   };
 
   const handleOpenCompleteDetails = () => {
-    setSelectedProduct(null); // Close product popup before opening details popup
     setIsCompleteDetailsOpen(true);
   }
 
@@ -152,7 +145,7 @@ export default function Home() {
     setProfileInfo(prev => ({...prev, ...updatedProfile}));
   };
 
-  const isPopupOpen = selectedProduct || isImageExpanded || isCartVisible || isSignUpOpen || isCompleteDetailsOpen || isProfileOpen;
+  const isPopupOpen = isImageExpanded || isCartVisible || isSignUpOpen || isCompleteDetailsOpen || isProfileOpen;
 
   const handleNavigation = (view: ActiveView) => {
     if (view === 'cart') {
@@ -196,7 +189,6 @@ export default function Home() {
         <main className={mainContentClass}>
           <div className='w-full pt-32'>
             <SearchBar
-              formRef={formRef}
               activeView={'home'}
               isEnquireOpen={false}
               onSubmit={handleSearchSubmit}
@@ -207,17 +199,16 @@ export default function Home() {
           <div className="mt-8 w-full flex-grow min-h-0">
             <ExploreCategories />
           </div>
+          <Footer />
         </main>
       </div>
 
       <PopupsManager
-        selectedProduct={selectedProduct}
         isCartVisible={isCartVisible}
         isCartOpen={isCartOpen}
         isProfileOpen={isProfileOpen}
         isSignUpOpen={isSignUpOpen}
         isCompleteDetailsOpen={isCompleteDetailsOpen}
-        onClosePopup={handleClosePopup}
         onImageExpandChange={setIsImageExpanded}
         likedProducts={likedProducts}
         onLikeToggle={handleLikeToggle}

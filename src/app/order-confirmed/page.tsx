@@ -4,7 +4,7 @@
 import { useState, useEffect, type UIEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import { useCart } from '@/hooks/use-cart';
-import type { Product, ProfileInfo, ActiveView } from '@/app/page';
+import type { ProfileInfo, ActiveView } from '@/app/page';
 import { cn } from '@/lib/utils';
 import { Header } from '@/components/header';
 import { SparkleBackground } from '@/components/sparkle-background';
@@ -17,11 +17,6 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import { StaticSparkleBackground } from '@/components/static-sparkle-background';
 import { Loader } from '@/components/loader';
 import { motion } from 'framer-motion';
-
-const allProducts: Product[] = Array.from({ length: 12 }).map((_, i) => ({
-  id: i,
-  name: `Diwali Collection Box ${i + 1}`,
-}));
 
 // Mock data for product prices - in a real app this would come from a database or state management
 const productPrices: Record<string, number> = {
@@ -67,14 +62,10 @@ const ProcessingView = () => (
 
 export default function OrderConfirmedPage() {
   const router = useRouter();
-  const { cart, updateCart, clearCart } = useCart();
+  const { cart, clearCart } = useCart();
   const { addOrder } = useOrders();
   
-  const [isCartOpen, setIsCartOpen] = useState(false);
-  const [isCartVisible, setIsCartVisible] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
-  const [isSignUpOpen, setIsSignUpOpen] = useState(false);
-  const [isCompleteDetailsOpen, setIsCompleteDetailsOpen] = useState(false);
   const [profileInfo, setProfileInfo] = useState<ProfileInfo>({
     name: 'John Doe',
     phone: '+1 234 567 890',
@@ -144,12 +135,11 @@ export default function OrderConfirmedPage() {
   };
   
   const cartItemCount = Object.values(cart).reduce((acc, quantity) => acc + quantity, 0);
-  const isPopupOpen = isCartVisible || isProfileOpen || isSignUpOpen || isCompleteDetailsOpen;
 
   return (
     <>
       {isMobile ? <StaticSparkleBackground /> : <SparkleBackground />}
-      <div className={cn("flex flex-col h-screen", isPopupOpen && 'opacity-50')}>
+      <div className={cn("flex flex-col h-screen", isProfileOpen && 'opacity-50')}>
         <Header 
           onProfileOpenChange={setIsProfileOpen}
           isContentScrolled={isContentScrolled}
@@ -163,7 +153,7 @@ export default function OrderConfirmedPage() {
         />
         <main onScroll={handleScroll} className={cn(
           "flex-grow flex flex-col gap-8 overflow-y-auto no-scrollbar",
-          isMobile ? "pt-20" : "pt-32"
+          "pt-24 md:pt-32"
         )}>
           {isLoading ? (
             <ProcessingView />
@@ -179,30 +169,10 @@ export default function OrderConfirmedPage() {
       </div>
       
       <PopupsManager
-        selectedProduct={null}
-        isCartVisible={isCartVisible}
-        isCartOpen={isCartOpen}
         isProfileOpen={isProfileOpen}
-        isSignUpOpen={isSignUpOpen}
-        isCompleteDetailsOpen={isCompleteDetailsOpen}
-        onClosePopup={() => {}}
-        onImageExpandChange={() => {}}
-        likedProducts={{}}
-        onLikeToggle={() => {}}
-        cart={cart}
-        onAddToCart={updateCart}
-        onToggleCartPopup={() => setIsCartOpen(p => !p)}
-        onClearCart={clearCart}
-        onFinalizeOrder={() => setIsCompleteDetailsOpen(true)}
+        setIsProfileOpen={setIsProfileOpen}
         onProfileUpdate={handleProfileUpdate}
         profileInfo={profileInfo}
-        allProducts={allProducts}
-        onClearWishlist={() => {}}
-        setIsProfileOpen={setIsProfileOpen}
-        setIsSignUpOpen={setIsSignUpOpen}
-        onLoginClick={() => setIsSignUpOpen(true)}
-        setIsCompleteDetailsOpen={setIsCompleteDetailsOpen}
-        onConfirmOrder={() => {}}
       />
       <BottomNavbar activeView={'order-confirmed'} onNavigate={handleNavigation} cartItemCount={cartItemCount} />
     </>

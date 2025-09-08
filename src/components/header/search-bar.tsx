@@ -1,7 +1,7 @@
 // @/components/header/search-bar.tsx
 'use client';
 
-import { useState, useEffect, RefObject } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
@@ -9,7 +9,6 @@ import type { ActiveView } from '@/app/page';
 import { X } from 'lucide-react';
 
 interface SearchBarProps {
-    formRef: RefObject<HTMLFormElement>;
     activeView: ActiveView;
     isEnquireOpen: boolean;
     onSubmit: (e: React.FormEvent<HTMLFormElement>, searchInput: string) => void;
@@ -19,9 +18,8 @@ interface SearchBarProps {
 
 const textsToType = ["Corporate gifts", "Family presents", "Festive gifts", "Birthday surprises", "Anniversary specials"];
 
-export function SearchBar({ formRef, activeView, isEnquireOpen, onSubmit, searchInput, onSearchInputChange }: SearchBarProps) {
+export function SearchBar({ activeView, isEnquireOpen, onSubmit, searchInput, onSearchInputChange }: SearchBarProps) {
     const [placeholder, setPlaceholder] = useState("");
-    const isSearchActive = activeView === 'search' || activeView === 'order-confirmed';
 
     useEffect(() => {
         if (activeView !== 'home') return;
@@ -68,7 +66,6 @@ export function SearchBar({ formRef, activeView, isEnquireOpen, onSubmit, search
             (activeView === 'about' || activeView === 'faq') && "opacity-0 pointer-events-none"
         )}>
             <form 
-                ref={formRef}
                 onSubmit={handleSubmit} 
                 className={cn(`relative mx-auto transition-all duration-500 ease-in-out animate-slide-down max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl`
                 )}

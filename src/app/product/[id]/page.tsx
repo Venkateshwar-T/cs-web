@@ -18,13 +18,14 @@ import { ProductDetails } from '@/components/product-details';
 import { Separator } from '@/components/ui/separator';
 import { ProductPopupFooter } from '@/components/product-popup-footer';
 import { FeaturedProducts } from '@/components/featured-products';
-import { useIsMobile } from '@/hooks/use-mobile';
+import { useIsMobile } from '@/hooks/use-is-mobile';
 import { MobileSearchHeader } from '@/components/header/mobile-search-header';
 import { MobileProductDetailView } from '@/components/views/MobileProductDetailView';
 import { ProductCard } from '@/components/product-card';
 import { SectionTitle } from '@/components/section-title';
 import { ChevronRight } from 'lucide-react';
 import { StaticSparkleBackground } from '@/components/static-sparkle-background';
+import { Footer } from '@/components/footer';
 
 const allProducts: Product[] = Array.from({ length: 12 }).map((_, i) => ({
   id: i,
@@ -43,7 +44,6 @@ export default function ProductPage() {
   const [isImageExpanded, setIsImageExpanded] = useState(false);
   
   const [isCartOpen, setIsCartOpen] = useState(false);
-  const [isCartVisible, setIsCartVisible] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isSignUpOpen, setIsSignUpOpen] = useState(false);
   const [isCompleteDetailsOpen, setIsCompleteDetailsOpen] = useState(false);
@@ -66,15 +66,6 @@ export default function ProductPage() {
       setProduct(foundProduct || null);
     }
   }, [params.id]);
-
-  useEffect(() => {
-    if (isCartOpen) {
-      setIsCartVisible(true);
-    } else {
-      const timer = setTimeout(() => setIsCartVisible(false), 300); // Match animation duration
-      return () => clearTimeout(timer);
-    }
-  }, [isCartOpen]);
   
   const handleScroll = (event: UIEvent<HTMLDivElement>) => {
     const { scrollTop } = event.currentTarget;
@@ -147,12 +138,6 @@ export default function ProductPage() {
     setProfileInfo(prev => ({ ...prev, ...updatedProfile }));
   };
 
-  const handleConfirmOrder = (name: string, phone: string) => {
-    setProfileInfo(prev => ({ ...prev, name, phone }));
-    router.push('/order-confirmed');
-    setIsCartOpen(false);
-  };
-
   const handleProductClick = (product: Product) => {
     router.push(`/product/${product.id}`);
   };
@@ -168,7 +153,7 @@ export default function ProductPage() {
     );
   }
   
-  const isPopupOpen = isCartVisible || isProfileOpen || isSignUpOpen || isCompleteDetailsOpen || isImageExpanded;
+  const isPopupOpen = isCartOpen || isProfileOpen || isSignUpOpen || isCompleteDetailsOpen || isImageExpanded;
 
   if (isMobile) {
     return (
@@ -286,6 +271,7 @@ export default function ProductPage() {
               onLikeToggle={handleLikeToggle}
               isMobile={isMobile}
             />
+            <Footer />
         </main>
       </div>
       
@@ -300,13 +286,11 @@ export default function ProductPage() {
       />
 
       <PopupsManager
-        selectedProduct={null}
-        isCartVisible={isCartVisible}
+        isCartVisible={isCartOpen}
         isCartOpen={isCartOpen}
         isProfileOpen={isProfileOpen}
         isSignUpOpen={isSignUpOpen}
         isCompleteDetailsOpen={isCompleteDetailsOpen}
-        onClosePopup={() => {}}
         onImageExpandChange={setIsImageExpanded}
         likedProducts={likedProducts}
         onLikeToggle={handleLikeToggle}
@@ -323,7 +307,10 @@ export default function ProductPage() {
         setIsSignUpOpen={setIsSignUpOpen}
         onLoginClick={() => setIsSignUpOpen(true)}
         setIsCompleteDetailsOpen={setIsCompleteDetailsOpen}
-        onConfirmOrder={handleConfirmOrder}
+        onConfirmOrder={() => {
+            setIsCompleteDetailsOpen(false);
+            router.push('/order-confirmed');
+        }}
       />
       <BottomNavbar activeView={'search'} onNavigate={handleNavigation} cartItemCount={cartItemCount} />
     </>
