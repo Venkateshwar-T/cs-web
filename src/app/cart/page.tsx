@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState, useEffect, type UIEvent } from 'react';
+import { useState, useEffect, type UIEvent, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import type { ActiveView } from '@/app/page';
 import { Header } from '@/components/header';
@@ -28,12 +28,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import { StaticSparkleBackground } from '@/components/static-sparkle-background';
-
-// Mock data for products
-const mockProducts = [
-  { id: 1, name: 'Diwali Collection Box 1' },
-  { id: 2, name: 'Anniversary Special Box' },
-];
+import { FloatingCartFinalizeButton } from '@/components/floating-cart-finalize-button';
 
 export default function CartPage() {
   const [activeView, setActiveView] = useState<ActiveView>('cart');
@@ -43,6 +38,30 @@ export default function CartPage() {
   const isMobile = useIsMobile();
   const [lastScrollTop, setLastScrollTop] = useState(0);
   const [isHeaderVisible, setIsHeaderVisible] = useState(true);
+  const [isSummaryVisible, setIsSummaryVisible] = useState(true);
+  const summaryRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!isMobile) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsSummaryVisible(entry.isIntersecting);
+      },
+      { threshold: 0.1 }
+    );
+
+    const currentRef = summaryRef.current;
+    if (currentRef) {
+      observer.observe(currentRef);
+    }
+
+    return () => {
+      if (currentRef) {
+        observer.unobserve(currentRef);
+      }
+    };
+  }, [isMobile]);
 
   const handleNavigation = (view: ActiveView) => {
     if (view === 'home') {
@@ -68,6 +87,7 @@ export default function CartPage() {
   const handleCheckout = () => {
     // Handle checkout logic here
     console.log('Proceeding to checkout');
+    router.push('/order-confirmed');
   };
   
   const handleScroll = (event: UIEvent<HTMLDivElement>) => {
@@ -163,7 +183,9 @@ export default function CartPage() {
                         ))}
                       </div>
                     </div>
-                    {cartItems.length > 0 && <MobileCartSummary cart={cart} onCheckout={handleCheckout} />}
+                    {cartItems.length > 0 && (
+                      <MobileCartSummary ref={summaryRef} cart={cart} onCheckout={handleCheckout} />
+                    )}
                   </div>
                   <div className="h-16" />
                 </div>
@@ -207,6 +229,15 @@ export default function CartPage() {
         setIsCompleteDetailsOpen={() => {}}
         onConfirmOrder={() => {}}
       />
+      {isMobile && cartItems.length > 0 && (
+        <FloatingCartFinalizeButton
+          cart={cart}
+          onCheckout={handleCheckout}
+          isVisible={!isSummaryVisible}
+        />
+      )}
     </>
   );
 }
+
+    
