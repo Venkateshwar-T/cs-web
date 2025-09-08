@@ -18,7 +18,6 @@ import { BottomNavbar } from '@/components/bottom-navbar';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { StaticSparkleBackground } from '@/components/static-sparkle-background';
 import { cn } from '@/lib/utils';
-import { MobileHeader } from '@/components/header/mobile-header';
 
 
 const containerVariants = {

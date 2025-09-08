@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState, useEffect, type UIEvent, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { Header } from "@/components/header";
@@ -14,7 +14,6 @@ import { SearchBar } from '@/components/header/search-bar';
 import { useToast } from "@/hooks/use-toast";
 import { useCart } from '@/hooks/use-cart';
 import { Footer } from '@/components/footer';
-import { OrderConfirmedView } from '@/components/order-confirmed-view';
 import { StaticSparkleBackground } from '@/components/static-sparkle-background';
 
 
@@ -37,7 +36,6 @@ const allProducts: Product[] = Array.from({ length: 12 }).map((_, i) => ({
 }));
 
 export default function Home() {
-  const [activeView, setActiveView] = useState<ActiveView>('home');
   const { cart, updateCart, clearCart } = useCart();
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [isImageExpanded, setIsImageExpanded] = useState(false);
@@ -52,15 +50,12 @@ export default function Home() {
     phone: '+1 234 567 890',
     email: 'john.doe@example.com',
   });
-  const [isContentScrolled, setIsContentScrolled] = useState(false);
   const [isPageLoading, setIsPageLoading] = useState(true);
-  const [selectedProductForMobile, setSelectedProductForMobile] = useState<Product | null>(null);
   const isMobile = useIsMobile();
   const router = useRouter();
   const [searchInput, setSearchInput] = useState("");
   const formRef = useRef<HTMLFormElement>(null);
   const { toast } = useToast();
-  const [isSearchingOnAbout, setIsSearchingOnAbout] = useState(false);
 
 
   useEffect(() => {
@@ -71,7 +66,7 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    if (selectedProduct || isImageExpanded || isCartVisible || isSignUpOpen || isCompleteDetailsOpen || isProfileOpen || selectedProductForMobile) {
+    if (selectedProduct || isImageExpanded || isCartVisible || isSignUpOpen || isCompleteDetailsOpen || isProfileOpen) {
       document.body.classList.add('overflow-hidden');
     } else {
       document.body.classList.remove('overflow-hidden');
@@ -79,7 +74,7 @@ export default function Home() {
     return () => {
       document.body.classList.remove('overflow-hidden');
     };
-  }, [selectedProduct, isImageExpanded, isCartVisible, isSignUpOpen, isCompleteDetailsOpen, isProfileOpen, selectedProductForMobile]);
+  }, [selectedProduct, isImageExpanded, isCartVisible, isSignUpOpen, isCompleteDetailsOpen, isProfileOpen]);
 
 
   useEffect(() => {
@@ -107,17 +102,11 @@ export default function Home() {
   };
 
   const handleResetToHome = () => {
-    setActiveView('home');
-    setIsSearchingOnAbout(false);
     router.push('/');
   };
 
   const handleAddToCart = (productName: string, quantity: number) => {
     updateCart(productName, quantity);
-  };
-
-  const handleProductClick = (product: Product) => {
-    router.push(`/product/${product.id}`);
   };
 
   const handleClosePopup = () => {
@@ -172,7 +161,6 @@ export default function Home() {
       router.push('/profile');
     } else {
        router.push('/');
-       setActiveView('home');
     }
   };
   
@@ -181,38 +169,6 @@ export default function Home() {
   };
 
   const cartItemCount = Object.values(cart).reduce((acc, quantity) => acc + quantity, 0);
-
-  const renderContent = () => {
-    const paddedView = (component: React.ReactNode) => (
-      <div className="pt-36 flex-grow flex flex-col w-full">{component}</div>
-    );
-
-    switch (activeView) {
-      case 'order-confirmed':
-        return paddedView(<div className="md:px-32 flex-grow flex flex-col gap-8 pb-8"><OrderConfirmedView cart={cart} /></div>);
-      case 'home':
-      default:
-        return (
-          <>
-            {activeView === 'home' && (
-              <div className='w-full pt-32'>
-                <SearchBar
-                  formRef={formRef}
-                  activeView={activeView}
-                  isEnquireOpen={false}
-                  onSubmit={handleSearchSubmit}
-                  searchInput={searchInput}
-                  onSearchInputChange={setSearchInput}
-                />
-              </div>
-            )}
-            <div className="mt-8 w-full flex-grow min-h-0">
-              <ExploreCategories />
-            </div>
-          </>
-        );
-    }
-  };
   
   const mainContentClass = cn(
     "flex flex-col items-center justify-start transition-all duration-500 relative flex-grow min-h-0 pb-16 md:pb-0",
@@ -223,25 +179,35 @@ export default function Home() {
     <>
       {isMobile ? <StaticSparkleBackground /> : <SparkleBackground />}
       <div className={cn(
-        "flex flex-col",
-        activeView === 'order-confirmed' ? "min-h-screen" : "h-screen",
+        "flex flex-col h-screen",
         (isPopupOpen && !isCartVisible) ? 'opacity-50' : ''
       )}>
         <Header 
           onProfileOpenChange={setIsProfileOpen}
-          isContentScrolled={isContentScrolled}
+          isContentScrolled={false}
           onReset={handleResetToHome}
           onNavigate={handleHeaderNavigate}
-          activeView={activeView}
+          activeView={'home'}
           onSearchSubmit={(query) => router.push(`/search?q=${encodeURIComponent(query)}`)}
           searchInput={searchInput}
           onSearchInputChange={setSearchInput}
-          isSearchingOnAbout={isSearchingOnAbout}
+          isSearchingOnAbout={false}
         />
         <main className={mainContentClass}>
-          {renderContent()}
+          <div className='w-full pt-32'>
+            <SearchBar
+              formRef={formRef}
+              activeView={'home'}
+              isEnquireOpen={false}
+              onSubmit={handleSearchSubmit}
+              searchInput={searchInput}
+              onSearchInputChange={setSearchInput}
+            />
+          </div>
+          <div className="mt-8 w-full flex-grow min-h-0">
+            <ExploreCategories />
+          </div>
         </main>
-        {activeView === 'order-confirmed' && <Footer />}
       </div>
 
       <PopupsManager
@@ -270,7 +236,7 @@ export default function Home() {
         setIsCompleteDetailsOpen={setIsCompleteDetailsOpen}
         onConfirmOrder={handleConfirmOrder}
       />
-      <BottomNavbar activeView={activeView} onNavigate={handleNavigation} cartItemCount={cartItemCount} />
+      <BottomNavbar activeView={'home'} onNavigate={handleNavigation} cartItemCount={cartItemCount} />
     </>
   );
 }

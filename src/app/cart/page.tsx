@@ -9,9 +9,7 @@ import { BottomNavbar } from '@/components/bottom-navbar';
 import { SparkleBackground } from '@/components/sparkle-background';
 import { cn } from '@/lib/utils';
 import { PopupsManager } from '@/components/popups/popups-manager';
-import { ShoppingCart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import Link from 'next/link';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { MobileCartItemCard } from '@/components/mobile-cart-item-card';
 import { MobileCartSummary } from '@/components/mobile-cart-summary';
@@ -32,7 +30,6 @@ import { FloatingCartFinalizeButton } from '@/components/floating-cart-finalize-
 import { EmptyState } from '@/components/empty-state';
 
 export default function CartPage() {
-  const [activeView, setActiveView] = useState<ActiveView>('cart');
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const router = useRouter();
   const { cart, updateCart, clearCart } = useCart();
@@ -77,7 +74,7 @@ export default function CartPage() {
   };
 
   const handleHeaderNavigate = (view: 'about' | 'faq') => {
-    router.push(`/?view=${view}`);
+    router.push(`/${view}`);
   }
 
   const handleQuantityChange = (productName: string, newQuantity: number) => {
@@ -201,7 +198,7 @@ export default function CartPage() {
             </>
           )}
         </main>
-        <BottomNavbar activeView={activeView} onNavigate={handleNavigation} cartItemCount={cartItemCount} />
+        <BottomNavbar activeView={'cart'} onNavigate={handleNavigation} cartItemCount={cartItemCount} />
       </div>
 
       <PopupsManager
