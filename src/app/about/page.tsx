@@ -15,6 +15,7 @@ import { useCart } from '@/hooks/use-cart';
 import { PopupsManager } from '@/components/popups/popups-manager';
 import { BottomNavbar } from '@/components/bottom-navbar';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { StaticSparkleBackground } from '@/components/static-sparkle-background';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -92,7 +93,7 @@ export default function AboutPage() {
 
     return (
         <>
-            {!isMobile && <SparkleBackground />}
+            {isMobile ? <StaticSparkleBackground /> : <SparkleBackground />}
             <div className="flex flex-col h-screen">
                 <Header
                   onProfileOpenChange={setIsProfileOpen}

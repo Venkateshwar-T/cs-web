@@ -11,6 +11,7 @@ import { cn } from '@/lib/utils';
 import { useCart } from '@/hooks/use-cart';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { ProfileMobileView } from '@/components/profile-mobile-view';
+import { StaticSparkleBackground } from '@/components/static-sparkle-background';
 
 const allProducts: Product[] = Array.from({ length: 12 }).map((_, i) => ({
   id: i,
@@ -68,7 +69,7 @@ export default function ProfilePage() {
 
   return (
     <>
-      {!isMobile && <SparkleBackground />}
+      {isMobile ? <StaticSparkleBackground /> : <SparkleBackground />}
       <div className="flex flex-col h-screen">
         <Header
           onProfileOpenChange={setIsProfileOpen}

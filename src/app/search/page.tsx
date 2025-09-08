@@ -15,6 +15,7 @@ import type { Product, ActiveView } from '@/app/page';
 import { FloatingCartButton } from '@/components/floating-cart-button';
 import { MobileSearchHeader } from '@/components/header/mobile-search-header';
 import { useCart } from '@/hooks/use-cart';
+import { StaticSparkleBackground } from '@/components/static-sparkle-background';
 
 type FilterState = {
   priceRange: [number, number];
@@ -227,7 +228,7 @@ function SearchPageComponent() {
 
   return (
     <>
-      {!isMobile && <SparkleBackground />}
+      {isMobile ? <StaticSparkleBackground /> : <SparkleBackground />}
       <div className={cn("flex flex-col h-screen", isPopupOpen ? 'opacity-50' : '')}>
         {isMobile ? (
           <MobileSearchHeader 
@@ -267,11 +268,11 @@ function SearchPageComponent() {
               query={query}
               onAddToCart={onAddToCart}
               cart={cart}
-              onProductClick={handleProductClick}
+              onProductClick={onProductClick}
               activeFilters={activeFilters}
-              onRemoveFilter={handleRemoveFilter}
+              onRemoveFilter={onRemoveFilter}
               likedProducts={likedProducts}
-              onLikeToggle={handleLikeToggle}
+              onLikeToggle={onLikeToggle}
               sortOption={sortOption}
               onSortChange={handleSortChange}
               isFilterSheetOpen={isFilterSheetOpen}

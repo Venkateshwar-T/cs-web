@@ -27,6 +27,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
+import { StaticSparkleBackground } from '@/components/static-sparkle-background';
 
 // Mock data for products
 const mockProducts = [
@@ -91,7 +92,7 @@ export default function CartPage() {
 
   return (
     <>
-      {!isMobile && <SparkleBackground />}
+      {isMobile ? <StaticSparkleBackground /> : <SparkleBackground />}
       <div className="flex flex-col h-screen">
         <Header
           onProfileOpenChange={setIsProfileOpen}

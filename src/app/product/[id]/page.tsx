@@ -24,6 +24,7 @@ import { MobileProductDetailView } from '@/components/views/MobileProductDetailV
 import { ProductCard } from '@/components/product-card';
 import { SectionTitle } from '@/components/section-title';
 import { ChevronRight } from 'lucide-react';
+import { StaticSparkleBackground } from '@/components/static-sparkle-background';
 
 const allProducts: Product[] = Array.from({ length: 12 }).map((_, i) => ({
   id: i,
@@ -154,7 +155,7 @@ export default function ProductPage() {
   if (!product) {
     return (
       <div className="flex h-screen items-center justify-center bg-background">
-        {!isMobile && <SparkleBackground />}
+        {isMobile ? <StaticSparkleBackground /> : <SparkleBackground />}
         <p className="text-white">Product not found.</p>
       </div>
     );
@@ -227,7 +228,7 @@ export default function ProductPage() {
 
   return (
     <>
-      {!isMobile && <SparkleBackground />}
+      {isMobile ? <StaticSparkleBackground /> : <SparkleBackground />}
       <div className={cn("flex flex-col h-screen", isPopupOpen && 'opacity-50')}>
         <Header 
           onProfileOpenChange={setIsProfileOpen}

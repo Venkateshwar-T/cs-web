@@ -17,6 +17,7 @@ import { Footer } from '@/components/footer';
 import { OrderConfirmedView } from '@/components/order-confirmed-view';
 import { AboutView } from '@/components/about-view';
 import { FaqView } from '@/components/faq-view';
+import { StaticSparkleBackground } from '@/components/static-sparkle-background';
 
 
 export type Product = {
@@ -227,7 +228,7 @@ export default function Home() {
 
   return (
     <>
-      {!isMobile && <SparkleBackground />}
+      {isMobile ? <StaticSparkleBackground /> : <SparkleBackground />}
       <div className={cn(
         "flex flex-col",
         activeView === 'order-confirmed' ? "min-h-screen" : "h-screen",

@@ -14,6 +14,7 @@ import { OrderConfirmedView } from '@/components/order-confirmed-view';
 import { Footer } from '@/components/footer';
 import { useOrders } from '@/hooks/use-orders';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { StaticSparkleBackground } from '@/components/static-sparkle-background';
 
 const allProducts: Product[] = Array.from({ length: 12 }).map((_, i) => ({
   id: i,
@@ -116,7 +117,7 @@ export default function OrderConfirmedPage() {
 
   return (
     <>
-      {!isMobile && <SparkleBackground />}
+      {isMobile ? <StaticSparkleBackground /> : <SparkleBackground />}
       <div className={cn("flex flex-col h-screen", isPopupOpen && 'opacity-50')}>
         <Header 
           onProfileOpenChange={setIsProfileOpen}
