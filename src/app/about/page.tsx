@@ -18,7 +18,8 @@ import { BottomNavbar } from '@/components/bottom-navbar';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { StaticSparkleBackground } from '@/components/static-sparkle-background';
 import { cn } from '@/lib/utils';
-import { MobileSearchHeader } from '@/components/header/mobile-search-header';
+import { MobileHeader } from '@/components/header/mobile-header';
+
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -112,14 +113,11 @@ export default function AboutPage() {
             {isMobile ? <StaticSparkleBackground /> : <SparkleBackground />}
             <div className="flex flex-col h-screen">
                  {isMobile ? (
-                    <MobileSearchHeader 
-                        value={searchInput}
-                        onChange={(e) => setSearchInput(e.target.value)}
-                        onSubmit={(e) => {
-                            e.preventDefault();
-                            router.push(`/search?q=${encodeURIComponent(searchInput)}`);
-                        }}
-                        isVisible={isMobileHeaderVisible}
+                    <MobileHeader 
+                        isVisible={isMobileHeaderVisible} 
+                        onProfileOpenChange={setIsProfileOpen}
+                        onNavigate={handleHeaderNavigate}
+                        activeView='about'
                     />
                 ) : (
                     <Header
