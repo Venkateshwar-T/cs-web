@@ -60,6 +60,7 @@ function SearchPageComponent() {
   const [searchInput, setSearchInput] = useState(query);
   const [lastScrollTop, setLastScrollTop] = useState(0);
   const [isMobileHeaderVisible, setIsMobileHeaderVisible] = useState(true);
+  const [filters, setFilters] = useState<FilterState>(initialFilterState);
 
   const isCartVisible = isCartOpen;
 
@@ -130,10 +131,6 @@ function SearchPageComponent() {
   const handleClearWishlist = () => setLikedProducts({});
 
   const handleToggleCartPopup = () => setIsCartOpen(p => !p);
-  
-  const handleProfileUpdate = (updatedProfile: Partial<ProfileInfo>) => {
-    console.log("Profile updated", updatedProfile);
-  };
 
   const handleSortChange = (value: string) => {
     setIsSearching(true);
@@ -164,11 +161,11 @@ function SearchPageComponent() {
   };
 
   const activeFilters = [
-    ...filters.selectedFlavours.map(id => ({ type: 'selectedFlavours', value: id, label: getLabelById(id, flavourOptions) })),
-    ...filters.selectedOccasions.map(id => ({ type: 'selectedOccasions', value: id, label: getLabelById(id, occasionOptions) })),
-    ...filters.selectedProductTypes.map(id => ({ type: 'selectedProductTypes', value: id, label: getLabelById(id, productTypeOptions) })),
-    ...filters.selectedWeights.map(id => ({ type: 'selectedWeights', value: id, label: getLabelById(id, weightOptions) })),
-  ] as { type: keyof FilterState; value: string; label: string }[];
+    ...filters.selectedFlavours.map(id => ({ type: 'selectedFlavours' as const, value: id, label: getLabelById(id, flavourOptions) })),
+    ...filters.selectedOccasions.map(id => ({ type: 'selectedOccasions' as const, value: id, label: getLabelById(id, occasionOptions) })),
+    ...filters.selectedProductTypes.map(id => ({ type: 'selectedProductTypes' as const, value: id, label: getLabelById(id, productTypeOptions) })),
+    ...filters.selectedWeights.map(id => ({ type: 'selectedWeights' as const, value: id, label: getLabelById(id, weightOptions) })),
+  ];
   
   const handleNavigation = (view: 'home' | 'cart' | 'profile') => {
     if (view === 'cart') {
@@ -250,7 +247,7 @@ function SearchPageComponent() {
             phone: '+1 234 567 890',
             email: 'john.doe@example.com',
           }}
-          onProfileUpdate={handleProfileUpdate}
+          onProfileUpdate={(updatedProfile: Partial<ProfileInfo>) => console.log("Profile updated", updatedProfile)}
           likedProducts={likedProducts}
           onLikeToggle={handleLikeToggle}
           cart={cart}
@@ -289,3 +286,5 @@ export default function SearchPage() {
     </Suspense>
   )
 }
+
+    
