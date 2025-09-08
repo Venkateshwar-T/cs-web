@@ -48,7 +48,11 @@ export default function CartPage() {
       ([entry]) => {
         setIsSummaryVisible(entry.isIntersecting);
       },
-      { threshold: 0.1 }
+      { 
+        // Trigger when the summary is 150px from the bottom of the viewport
+        rootMargin: "0px 0px -150px 0px",
+        threshold: 0.01 
+      } 
     );
 
     const currentRef = summaryRef.current;
