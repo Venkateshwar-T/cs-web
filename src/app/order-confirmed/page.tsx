@@ -81,9 +81,9 @@ export default function OrderConfirmedPage() {
     email: 'john.doe@example.com',
   });
   const [searchInput, setSearchInput] = useState('');
-  const [isScrolled, setIsScrolled] = useState(false);
   const [orderId, setOrderId] = useState('');
   const [isLoading, setIsLoading] = useState(true);
+  const [processedCart, setProcessedCart] = useState<Record<string, number>>({});
   const isMobile = useIsMobile();
     
   useEffect(() => {
@@ -91,6 +91,7 @@ export default function OrderConfirmedPage() {
         setIsLoading(true);
         const newOrderId = generateOrderId();
         setOrderId(newOrderId);
+        setProcessedCart(cart);
 
         const subtotal = Object.entries(cart).reduce((acc, [name, quantity]) => {
             const price = productPrices[name] || 0;
@@ -122,10 +123,6 @@ export default function OrderConfirmedPage() {
     }
   }, [cart, addOrder, clearCart]);
   
-  const handleScroll = (event: UIEvent<HTMLDivElement>) => {
-    setIsScrolled(event.currentTarget.scrollTop > 0);
-  };
-  
   const handleSearchSubmit = (query: string) => {
     router.push(`/search?q=${encodeURIComponent(query)}`);
   };
@@ -149,25 +146,25 @@ export default function OrderConfirmedPage() {
       <div className={cn("flex flex-col h-screen", isPopupOpen && 'opacity-50')}>
         <Header 
           onProfileOpenChange={setIsProfileOpen}
-          isContentScrolled={isMobile ? true : isScrolled}
+          isContentScrolled={true}
           onReset={() => router.push('/')}
           onNavigate={(view) => router.push(`/${view}`)}
-          activeView={'search'}
+          activeView={'order-confirmed'}
           isUsingAnimatedSearch={!isMobile}
           onSearchSubmit={handleSearchSubmit}
           searchInput={searchInput}
           onSearchInputChange={setSearchInput}
         />
-        <main onScroll={handleScroll} className={cn(
+        <main className={cn(
           "flex-grow flex flex-col gap-8 overflow-y-auto no-scrollbar",
-           isMobile ? 'pt-24' : "pt-36"
+           "pt-24"
         )}>
           {isLoading ? (
             <ProcessingView />
           ) : (
             <>
               <div className={cn("flex-grow flex flex-col", isMobile ? "px-4" : "md:px-32")}>
-                <OrderConfirmedView cart={cart} orderId={orderId} />
+                <OrderConfirmedView cart={processedCart} orderId={orderId} />
               </div>
               <Footer />
             </>
