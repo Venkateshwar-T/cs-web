@@ -18,6 +18,7 @@ import { BottomNavbar } from '@/components/bottom-navbar';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { StaticSparkleBackground } from '@/components/static-sparkle-background';
 import { cn } from '@/lib/utils';
+import { MobileSearchHeader } from '@/components/header/mobile-search-header';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -74,10 +75,23 @@ export default function AboutPage() {
     });
     const [isContentScrolled, setIsContentScrolled] = useState(false);
     const isMobile = useIsMobile();
+    const [isMobileHeaderVisible, setIsMobileHeaderVisible] = useState(true);
+    const [lastScrollTop, setLastScrollTop] = useState(0);
 
     const handleScroll = (event: UIEvent<HTMLDivElement>) => {
-      const { scrollTop } = event.currentTarget;
-      setIsContentScrolled(scrollTop > 0);
+      if (!isMobile) {
+        setIsContentScrolled(event.currentTarget.scrollTop > 0);
+        return;
+      }
+      const currentScrollTop = event.currentTarget.scrollTop;
+      if (Math.abs(currentScrollTop - lastScrollTop) <= 10) return;
+
+      if (currentScrollTop > lastScrollTop && currentScrollTop > 56) {
+        setIsMobileHeaderVisible(false);
+      } else {
+        setIsMobileHeaderVisible(true);
+      }
+      setLastScrollTop(currentScrollTop <= 0 ? 0 : currentScrollTop);
     };
 
     const handleNavigation = (view: ActiveView) => {
@@ -97,18 +111,33 @@ export default function AboutPage() {
         <>
             {isMobile ? <StaticSparkleBackground /> : <SparkleBackground />}
             <div className="flex flex-col h-screen">
-                <Header
-                  onProfileOpenChange={setIsProfileOpen}
-                  isContentScrolled={isContentScrolled}
-                  onReset={() => router.push('/')}
-                  onNavigate={handleHeaderNavigate}
-                  activeView={'about'}
-                  onSearchSubmit={(query) => router.push(`/search?q=${encodeURIComponent(query)}`)}
-                  searchInput={searchInput}
-                  onSearchInputChange={setSearchInput}
-                  isSearchingOnAbout={true}
-                />
-                <main onScroll={handleScroll} className={cn("flex-grow pt-36 flex flex-col overflow-y-auto no-scrollbar", isMobile && "pb-16")}>
+                 {isMobile ? (
+                    <MobileSearchHeader 
+                        value={searchInput}
+                        onChange={(e) => setSearchInput(e.target.value)}
+                        onSubmit={(e) => {
+                            e.preventDefault();
+                            router.push(`/search?q=${encodeURIComponent(searchInput)}`);
+                        }}
+                        isVisible={isMobileHeaderVisible}
+                    />
+                ) : (
+                    <Header
+                      onProfileOpenChange={setIsProfileOpen}
+                      isContentScrolled={isContentScrolled}
+                      onReset={() => router.push('/')}
+                      onNavigate={handleHeaderNavigate}
+                      activeView={'about'}
+                      onSearchSubmit={(query) => router.push(`/search?q=${encodeURIComponent(query)}`)}
+                      searchInput={searchInput}
+                      onSearchInputChange={setSearchInput}
+                      isSearchingOnAbout={true}
+                    />
+                )}
+                <main onScroll={handleScroll} className={cn(
+                  "flex-grow flex flex-col overflow-y-auto no-scrollbar transition-all duration-300", 
+                  isMobile ? (isMobileHeaderVisible ? "pt-16 pb-16" : "pt-0 pb-16") : "pt-36"
+                )}>
                     <div className="bg-[#5D2B79] rounded-[20px] md:rounded-[40px] mb-8 mx-4 md:mx-32 animate-fade-in flex flex-col" style={{ animationDuration: '0.5s', animationDelay: '0.2s', animationFillMode: 'both' }}>
                         <div className="bg-white/10 rounded-[20px] md:rounded-[40px] py-8 px-6 md:py-10 md:px-24 flex-grow">
                             <SectionTitle className="text-3xl md:text-4xl text-center mb-8 md:mb-12 font-poppins">
