@@ -28,9 +28,6 @@ export function BottomNavbar({ activeView, onNavigate, cartItemCount = 0 }: Bott
           const isActive = activeView === item.view;
           const isCartItem = item.view === 'cart';
 
-          // Skip about and faq on bottom navbar for now to prevent crowding
-          if (item.view === 'about' || item.view === 'faq') return null;
-
           return (
             <button
               key={item.view}
