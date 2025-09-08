@@ -6,7 +6,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { Menu, Phone, Search, Info, HelpCircle } from "lucide-react";
+import { Menu, Phone, Search, Info, HelpCircle, LogOut } from "lucide-react";
 import { AiOutlineInstagram } from "react-icons/ai";
 import { IoLogoFacebook, IoLogoWhatsapp } from "react-icons/io5";
 import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet";
@@ -16,6 +16,17 @@ import type { ActiveView } from "@/app/page";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 
 
 interface UserActionsProps {
@@ -52,6 +63,11 @@ export function UserActions({
         if (link.href) {
             router.push(link.href);
         }
+    };
+
+    const handleLogout = () => {
+        // Implement logout logic here
+        console.log("User logged out");
     };
     
     return (
@@ -155,7 +171,7 @@ export function UserActions({
                             </Link>
                             <Separator className="bg-white/20"/>
                         </SheetHeader>
-                        <div className="flex flex-col flex-grow px-4">
+                        <div className="flex flex-col flex-grow p-4">
                            <nav className="flex flex-col gap-4 text-lg">
                              {navLinks.map((link) => {
                                 const isActive = activeView === link.id;
@@ -175,29 +191,53 @@ export function UserActions({
                                 )
                             })}
                            </nav>
-                           <SheetClose asChild>
-                            <Button 
-                                onClick={() => {
-                                    if (isMobile) {
-                                        setIsEnquireSheetOpen(true);
-                                    } else {
-                                        onEnquireOpenChange(true);
-                                    }
-                                }}
-                                variant="outline"
-                                className="w-full justify-center text-custom-gold border-custom-gold hover:bg-custom-gold hover:text-custom-purple-dark mt-4"
-                            >
-                                Enquire Now
-                            </Button>
-                           </SheetClose>
-                           <div className="flex items-center gap-4 mt-auto pb-4">
-                                <Link href="#" aria-label="Instagram">
-                                    <AiOutlineInstagram className="h-7 w-7 transition-colors hover:text-custom-gold" />
-                                </Link>
-                                <Link href="#" aria-label="Facebook">
-                                    <IoLogoFacebook className="h-7 w-7 transition-colors hover:text-custom-gold" />
-                                </Link>
-                            </div>
+                            <Separator className="bg-white/20 my-4"/>
+                            <AlertDialog>
+                              <AlertDialogTrigger asChild>
+                                <button className="transition-colors hover:text-red-500 text-left flex items-center gap-3 text-lg text-foreground/80">
+                                    <LogOut className="h-5 w-5" />
+                                    <span>Log Out</span>
+                                </button>
+                              </AlertDialogTrigger>
+                              <AlertDialogContent>
+                                <AlertDialogHeader>
+                                  <AlertDialogTitle>Are you sure you want to log out?</AlertDialogTitle>
+                                  <AlertDialogDescription>
+                                    You will be returned to the login page.
+                                  </AlertDialogDescription>
+                                </AlertDialogHeader>
+                                <AlertDialogFooter>
+                                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                  <AlertDialogAction onClick={handleLogout}>Log Out</AlertDialogAction>
+                                </AlertDialogFooter>
+                              </AlertDialogContent>
+                            </AlertDialog>
+
+                           <div className='mt-auto flex flex-col gap-4'>
+                            <SheetClose asChild>
+                                <Button 
+                                    onClick={() => {
+                                        if (isMobile) {
+                                            setIsEnquireSheetOpen(true);
+                                        } else {
+                                            onEnquireOpenChange(true);
+                                        }
+                                    }}
+                                    variant="outline"
+                                    className="w-full justify-center text-custom-gold border-custom-gold hover:bg-custom-gold hover:text-custom-purple-dark"
+                                >
+                                    Enquire Now
+                                </Button>
+                            </SheetClose>
+                            <div className="flex items-center gap-4 self-center">
+                                    <Link href="#" aria-label="Instagram">
+                                        <AiOutlineInstagram className="h-7 w-7 transition-colors hover:text-custom-gold" />
+                                    </Link>
+                                    <Link href="#" aria-label="Facebook">
+                                        <IoLogoFacebook className="h-7 w-7 transition-colors hover:text-custom-gold" />
+                                    </Link>
+                                </div>
+                           </div>
                         </div>
                     </SheetContent>
                 </Sheet>
