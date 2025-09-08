@@ -157,7 +157,7 @@ export default function OrderConfirmedPage() {
         />
         <main className={cn(
           "flex-grow flex flex-col gap-8 overflow-y-auto no-scrollbar",
-           "pt-24"
+           "pt-32"
         )}>
           {isLoading ? (
             <ProcessingView />
