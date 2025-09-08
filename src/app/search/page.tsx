@@ -11,7 +11,7 @@ import { PopupsManager } from '@/components/popups/popups-manager';
 import { SearchView } from '@/components/views/SearchView';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { flavourOptions, occasionOptions, productTypeOptions, weightOptions } from '@/lib/filter-options';
-import type { Product, ProfileInfo } from '@/app/page';
+import type { Product } from '@/app/page';
 import { FloatingCartButton } from '@/components/floating-cart-button';
 import { MobileSearchHeader } from '@/components/header/mobile-search-header';
 import { useCart } from '@/hooks/use-cart';
@@ -247,7 +247,7 @@ function SearchPageComponent() {
             phone: '+1 234 567 890',
             email: 'john.doe@example.com',
           }}
-          onProfileUpdate={(updatedProfile: Partial<ProfileInfo>) => console.log("Profile updated", updatedProfile)}
+          onProfileUpdate={(updatedProfile: Partial<any>) => console.log("Profile updated", updatedProfile)}
           likedProducts={likedProducts}
           onLikeToggle={handleLikeToggle}
           cart={cart}
@@ -256,7 +256,6 @@ function SearchPageComponent() {
           onToggleCartPopup={handleToggleCartPopup}
           allProducts={allProducts}
           onClearWishlist={handleClearWishlist}
-          isCartVisible={isCartVisible}
           isCartOpen={isCartOpen}
           onFinalizeOrder={() => {
             setIsCartOpen(false);

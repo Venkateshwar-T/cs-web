@@ -4,7 +4,7 @@
 import { useState, useEffect, type UIEvent } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { useCart } from '@/hooks/use-cart';
-import type { Product, ProfileInfo } from '@/app/page';
+import type { Product } from '@/app/page';
 import { cn } from '@/lib/utils';
 import { Header } from '@/components/header';
 import { SparkleBackground } from '@/components/sparkle-background';
@@ -122,10 +122,6 @@ export default function ProductPage() {
     if (view === 'cart') router.push('/cart');
     else if (view === 'profile') router.push('/profile');
     else router.push('/');
-  };
-
-  const handleProfileUpdate = (updatedProfile: Partial<ProfileInfo>) => {
-    console.log("Profile updated", updatedProfile);
   };
 
   const handleProductClick = (product: Product) => {
@@ -282,7 +278,7 @@ export default function ProductPage() {
             phone: '+1 234 567 890',
             email: 'john.doe@example.com',
         }}
-        onProfileUpdate={handleProfileUpdate}
+        onProfileUpdate={(updatedProfile: Partial<any>) => console.log("Profile updated", updatedProfile)}
         likedProducts={likedProducts}
         onLikeToggle={handleLikeToggle}
         cart={cart}
