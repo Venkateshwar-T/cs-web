@@ -159,9 +159,9 @@ export function UserActions({
                         </Button>
                     </SheetTrigger>
                     <SheetContent side="right" className="bg-background text-white w-[250px] flex flex-col p-0">
-                        <SheetHeader className="p-4">
+                        <SheetHeader className="p-4 pb-0">
                            <SheetTitle className="sr-only">Menu</SheetTitle>
-                            <Link href="/" className="mb-4">
+                            <Link href="/">
                                 <Image 
                                     src="/Choco Smiley Logo.png" 
                                     alt="Choco Smiley Logo" 
@@ -169,9 +169,9 @@ export function UserActions({
                                     height={60}
                                 />
                             </Link>
-                            <Separator className="bg-white/20"/>
+                            <Separator className="bg-custom-purple-light/50"/>
                         </SheetHeader>
-                        <div className="flex flex-col flex-grow p-4">
+                        <div className="flex flex-col flex-grow p-4 pt-0">
                            <nav className="flex flex-col gap-4 text-lg">
                              {navLinks.map((link) => {
                                 const isActive = activeView === link.id;
