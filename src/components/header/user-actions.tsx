@@ -6,7 +6,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { Menu, Phone, Search } from "lucide-react";
+import { Menu, Phone, Search, Info, HelpCircle } from "lucide-react";
 import { AiOutlineInstagram } from "react-icons/ai";
 import { IoLogoFacebook, IoLogoWhatsapp } from "react-icons/io5";
 import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet";
@@ -30,8 +30,8 @@ interface UserActionsProps {
 }
 
 const navLinks = [
-    { id: "about", label: "About", href: "/about" },
-    { id: "faq", label: "FAQ", href: "/faq" },
+    { id: "about", label: "About", href: "/about", icon: Info },
+    { id: "faq", label: "FAQ", href: "/faq", icon: HelpCircle },
 ] as const;
 
 export function UserActions({ 
@@ -164,11 +164,12 @@ export function UserActions({
                                         <button
                                             onClick={() => handleMobileNav(link)}
                                             className={cn(
-                                                "transition-colors hover:text-custom-gold text-left", 
+                                                "transition-colors hover:text-custom-gold text-left flex items-center gap-3", 
                                                 isActive ? "text-custom-gold font-semibold" : "text-foreground/80"
                                             )}
                                         >
-                                            {link.label}
+                                            <link.icon className="h-5 w-5" />
+                                            <span>{link.label}</span>
                                         </button>
                                     </SheetClose>
                                 )
