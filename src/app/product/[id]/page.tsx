@@ -42,11 +42,6 @@ export default function ProductPage() {
   const [flavourCart, setFlavourCart] = useState<Record<string, number>>({});
   
   const [isProfileOpen, setIsProfileOpen] = useState(false);
-  const [profileInfo, setProfileInfo] = useState<ProfileInfo>({
-    name: 'John Doe',
-    phone: '+1 234 567 890',
-    email: 'john.doe@example.com',
-  });
   const [searchInput, setSearchInput] = useState('');
   const [isScrolled, setIsScrolled] = useState(false);
   const [cartMessage, setCartMessage] = useState('');
@@ -140,7 +135,7 @@ export default function ProductPage() {
   };
 
   const handleProfileUpdate = (updatedProfile: Partial<ProfileInfo>) => {
-    setProfileInfo(prev => ({ ...prev, ...updatedProfile }));
+    console.log("Profile updated", updatedProfile);
   };
 
   const handleProductClick = (product: Product) => {
@@ -292,7 +287,11 @@ export default function ProductPage() {
       <PopupsManager
         isProfileOpen={isProfileOpen}
         setIsProfileOpen={setIsProfileOpen}
-        profileInfo={profileInfo}
+        profileInfo={{
+            name: 'John Doe',
+            phone: '+1 234 567 890',
+            email: 'john.doe@example.com',
+        }}
         onProfileUpdate={handleProfileUpdate}
         likedProducts={likedProducts}
         onLikeToggle={handleLikeToggle}

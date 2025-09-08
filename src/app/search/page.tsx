@@ -11,7 +11,7 @@ import { PopupsManager } from '@/components/popups/popups-manager';
 import { SearchView } from '@/components/views/SearchView';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { flavourOptions, occasionOptions, productTypeOptions, weightOptions } from '@/lib/filter-options';
-import type { Product } from '@/app/page';
+import type { Product, ProfileInfo } from '@/app/page';
 import { FloatingCartButton } from '@/components/floating-cart-button';
 import { MobileSearchHeader } from '@/components/header/mobile-search-header';
 import { useCart } from '@/hooks/use-cart';
@@ -35,12 +35,6 @@ const initialFilterState: FilterState = {
   selectedWeights: [],
 };
 
-type ProfileInfo = {
-  name: string;
-  phone: string;
-  email: string;
-}
-
 const allProducts: Product[] = Array.from({ length: 12 }).map((_, i) => ({
   id: i,
   name: `Diwali Collection Box ${i + 1}`,
@@ -62,12 +56,6 @@ function SearchPageComponent() {
   const [isCartVisible, setIsCartVisible] = useState(false);
   const [filters, setFilters] = useState<FilterState>(initialFilterState);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
-  const [profileInfo, setProfileInfo] = useState<ProfileInfo>({
-    name: 'John Doe',
-    phone: '+1 234 567 890',
-    email: 'john.doe@example.com',
-  });
-  const [isContentScrolled, setIsContentScrolled] = useState(false);
   const [isFilterSheetOpen, setIsFilterSheetOpen] = useState(false);
   const [isSortSheetOpen, setIsSortSheetOpen] = useState(false);
   const isMobile = useIsMobile();
@@ -154,7 +142,7 @@ function SearchPageComponent() {
   const handleToggleCartPopup = () => setIsCartOpen(p => !p);
   
   const handleProfileUpdate = (updatedProfile: Partial<ProfileInfo>) => {
-    setProfileInfo(prev => ({ ...prev, ...updatedProfile }));
+    console.log("Profile updated", updatedProfile);
   };
 
   const handleSortChange = (value: string) => {
@@ -207,7 +195,7 @@ function SearchPageComponent() {
   return (
     <>
       {isMobile ? <StaticSparkleBackground /> : <SparkleBackground />}
-      <div className={cn("flex flex-col h-screen", (isProfileOpen || isCartVisible) ? 'opacity-50' : '')}>
+      <div className={cn("flex flex-col h-screen", isProfileOpen || isCartVisible ? 'opacity-50' : '')}>
         {isMobile ? (
           <MobileSearchHeader 
             value={searchInput}
@@ -222,7 +210,7 @@ function SearchPageComponent() {
           <Header 
             onSearchSubmit={handleSearchSubmit}
             onProfileOpenChange={setIsProfileOpen}
-            isContentScrolled={isContentScrolled}
+            isContentScrolled={true}
             onReset={() => router.push('/')}
             onNavigate={(view) => router.push(`/${view}`)}
             activeView={'search'}
@@ -267,7 +255,11 @@ function SearchPageComponent() {
       <PopupsManager
           isProfileOpen={isProfileOpen}
           setIsProfileOpen={setIsProfileOpen}
-          profileInfo={profileInfo}
+          profileInfo={{
+            name: 'John Doe',
+            phone: '+1 234 567 890',
+            email: 'john.doe@example.com',
+          }}
           onProfileUpdate={handleProfileUpdate}
           likedProducts={likedProducts}
           onLikeToggle={handleLikeToggle}

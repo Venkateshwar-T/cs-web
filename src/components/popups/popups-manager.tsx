@@ -14,8 +14,6 @@ interface PopupsManagerProps {
   isCartVisible?: boolean;
   isCartOpen?: boolean;
   isProfileOpen: boolean;
-  isSignUpOpen?: boolean;
-  isCompleteDetailsOpen?: boolean;
   onImageExpandChange?: (isExpanded: boolean) => void;
   likedProducts?: Record<number, boolean>;
   onLikeToggle?: (productId: number) => void;
@@ -29,19 +27,12 @@ interface PopupsManagerProps {
   allProducts?: Product[];
   onClearWishlist?: () => void;
   setIsProfileOpen: (isOpen: boolean) => void;
-  setIsSignUpOpen?: (isOpen: boolean) => void;
-  onLoginClick?: () => void;
-  setIsCompleteDetailsOpen?: (isOpen: boolean) => void;
-  onConfirmOrder?: (name: string, phone: string) => void;
 }
 
 export function PopupsManager({
   isCartVisible,
   isCartOpen,
   isProfileOpen,
-  isSignUpOpen = false,
-  isCompleteDetailsOpen = false,
-  onImageExpandChange,
   likedProducts,
   onLikeToggle,
   cart,
@@ -54,24 +45,27 @@ export function PopupsManager({
   allProducts,
   onClearWishlist,
   setIsProfileOpen,
-  setIsSignUpOpen,
-  setIsCompleteDetailsOpen,
-  onConfirmOrder,
 }: PopupsManagerProps) {
   
   const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const [isSignUpOpen, setIsSignUpOpen] = useState(false);
+  const [isCompleteDetailsOpen, setIsCompleteDetailsOpen] = useState(false);
+  
   const isAnyPopupVisible = isCartVisible || isProfileOpen || isSignUpOpen || isCompleteDetailsOpen || isLoginOpen;
 
   const handleOpenLogin = () => {
-    if (setIsSignUpOpen) setIsSignUpOpen(false);
+    setIsSignUpOpen(false);
     setIsLoginOpen(true);
   };
 
   const handleOpenSignUp = () => {
     setIsLoginOpen(false);
-    if (setIsSignUpOpen) setIsSignUpOpen(true);
+    setIsSignUpOpen(true);
   };
 
+  const handleConfirmOrder = (name: string, phone: string) => {
+    console.log("Order confirmed with:", name, phone);
+  };
 
   return (
     <>
@@ -107,13 +101,11 @@ export function PopupsManager({
           </div>
       )}
 
-      {setIsSignUpOpen && (
-        <SignUpPopup 
-          open={isSignUpOpen}
-          onOpenChange={setIsSignUpOpen}
-          onLoginClick={handleOpenLogin}
-        />
-      )}
+      <SignUpPopup 
+        open={isSignUpOpen}
+        onOpenChange={setIsSignUpOpen}
+        onLoginClick={handleOpenLogin}
+      />
       
       <LoginPopup
         open={isLoginOpen}
@@ -121,13 +113,11 @@ export function PopupsManager({
         onSignUpClick={handleOpenSignUp}
       />
 
-      {setIsCompleteDetailsOpen && onConfirmOrder && (
-        <CompleteDetailsPopup
-          open={isCompleteDetailsOpen}
-          onOpenChange={setIsCompleteDetailsOpen}
-          onConfirm={onConfirmOrder}
-        />
-      )}
+      <CompleteDetailsPopup
+        open={isCompleteDetailsOpen}
+        onOpenChange={setIsCompleteDetailsOpen}
+        onConfirm={handleConfirmOrder}
+      />
     </>
   );
 }

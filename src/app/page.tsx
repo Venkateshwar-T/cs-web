@@ -40,11 +40,7 @@ export default function Home() {
   const router = useRouter();
   const [searchInput, setSearchInput] = useState("");
   const { toast } = useToast();
-  const [profileInfo, setProfileInfo] = useState<ProfileInfo>({
-    name: 'John Doe',
-    phone: '+1 234 567 890',
-    email: 'john.doe@example.com',
-  });
+  
   const [likedProducts, setLikedProducts] = useState<Record<number, boolean>>({});
 
   useEffect(() => {
@@ -53,6 +49,18 @@ export default function Home() {
     }, 800);
     return () => clearTimeout(timer);
   }, []);
+  
+  useEffect(() => {
+    if (isProfileOpen) {
+      document.body.classList.add('overflow-hidden');
+    } else {
+      document.body.classList.remove('overflow-hidden');
+    }
+    return () => {
+      document.body.classList.remove('overflow-hidden');
+    };
+  }, [isProfileOpen]);
+
 
   const handleSearchSubmit = (e: React.FormEvent<HTMLFormElement>, currentSearchInput: string) => {
     e.preventDefault();
@@ -88,7 +96,8 @@ export default function Home() {
   };
 
   const handleProfileUpdate = (updatedProfile: Partial<ProfileInfo>) => {
-    setProfileInfo(prev => ({ ...prev, ...updatedProfile }));
+    // In a real app, you'd likely send this to a server
+    console.log("Profile updated", updatedProfile);
   };
 
   const handleLikeToggle = (productId: number) => {
@@ -140,7 +149,11 @@ export default function Home() {
       <PopupsManager
         isProfileOpen={isProfileOpen}
         setIsProfileOpen={setIsProfileOpen}
-        profileInfo={profileInfo}
+        profileInfo={{
+            name: 'John Doe',
+            phone: '+1 234 567 890',
+            email: 'john.doe@example.com',
+        }}
         onProfileUpdate={handleProfileUpdate}
         allProducts={allProducts}
         likedProducts={likedProducts}

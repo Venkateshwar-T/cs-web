@@ -11,7 +11,6 @@ import { SparkleBackground } from '@/components/sparkle-background';
 import { Footer } from '@/components/footer';
 import { SectionTitle } from "@/components/section-title";
 import { Heart, Leaf, Gift, Sparkles } from "lucide-react";
-import type { ActiveView } from '@/app/page';
 import { useCart } from '@/hooks/use-cart';
 import { PopupsManager } from '@/components/popups/popups-manager';
 import { BottomNavbar } from '@/components/bottom-navbar';
@@ -75,7 +74,7 @@ export default function AboutPage() {
       setIsContentScrolled(event.currentTarget.scrollTop > 0);
     };
 
-    const handleNavigation = (view: ActiveView) => {
+    const handleNavigation = (view: 'home' | 'cart' | 'profile' | 'faq') => {
         if (view === 'home') router.push('/');
         else if (view === 'cart') router.push('/cart');
         else if (view === 'profile') router.push('/profile');
