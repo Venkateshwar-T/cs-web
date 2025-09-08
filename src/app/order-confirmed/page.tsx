@@ -88,6 +88,7 @@ export default function OrderConfirmedPage() {
     
   useEffect(() => {
     if (Object.keys(cart).length > 0) {
+        setIsLoading(true);
         const newOrderId = generateOrderId();
         setOrderId(newOrderId);
 
@@ -119,7 +120,7 @@ export default function OrderConfirmedPage() {
     } else {
         setIsLoading(false);
     }
-  }, []);
+  }, [cart, addOrder, clearCart]);
   
   const handleScroll = (event: UIEvent<HTMLDivElement>) => {
     setIsScrolled(event.currentTarget.scrollTop > 0);
