@@ -126,7 +126,7 @@ export function ProductCard({ product, onAddToCart, quantity, onProductClick, is
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       className={cn(
-        "bg-white text-black rounded-lg md:rounded-2xl overflow-hidden flex flex-col h-full shadow-custom-dark cursor-pointer group",
+        "bg-white text-black rounded-lg md:rounded-2xl overflow-hidden flex flex-col h-full shadow-custom-dark cursor-pointer",
         !isMobile && "transition-transform duration-200 hover:scale-105"
       )}
     >

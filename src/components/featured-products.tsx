@@ -45,7 +45,7 @@ export function FeaturedProducts({
       )}>
         You might also like
       </SectionTitle>
-      <div className="flex items-stretch overflow-x-auto no-scrollbar gap-4 md:gap-6 px-4 pt-2 pb-2">
+      <div className="flex items-stretch overflow-x-auto no-scrollbar gap-4 md:gap-6 px-4 pt-2 pb-4">
         {products.map(product => (
           <div key={product.id} className={cn("flex-shrink-0", isMobile ? "w-40" : "w-48 md:w-64")}>
             <ProductCard
