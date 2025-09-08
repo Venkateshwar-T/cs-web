@@ -15,7 +15,6 @@ import { Footer } from '@/components/footer';
 import { useOrders } from '@/hooks/use-orders';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { StaticSparkleBackground } from '@/components/static-sparkle-background';
-import { MobileSearchHeader } from '@/components/header/mobile-search-header';
 
 const allProducts: Product[] = Array.from({ length: 12 }).map((_, i) => ({
   id: i,
@@ -67,8 +66,6 @@ export default function OrderConfirmedPage() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [orderId, setOrderId] = useState('');
   const isMobile = useIsMobile();
-  const [isMobileHeaderVisible, setIsMobileHeaderVisible] = useState(true);
-  const [lastScrollTop, setLastScrollTop] = useState(0);
     
   useEffect(() => {
     if (Object.keys(cart).length > 0) {
@@ -97,22 +94,7 @@ export default function OrderConfirmedPage() {
   }, [cart, addOrder]);
   
   const handleScroll = (event: UIEvent<HTMLDivElement>) => {
-    if (!isMobile) {
-        setIsScrolled(event.currentTarget.scrollTop > 0);
-        return;
-    }
-
-    const currentScrollTop = event.currentTarget.scrollTop;
-    if (Math.abs(currentScrollTop - lastScrollTop) <= 10) {
-      return;
-    }
-
-    if (currentScrollTop > lastScrollTop && currentScrollTop > 56) {
-      setIsMobileHeaderVisible(false);
-    } else {
-      setIsMobileHeaderVisible(true);
-    }
-    setLastScrollTop(currentScrollTop <= 0 ? 0 : currentScrollTop);
+    setIsScrolled(event.currentTarget.scrollTop > 0);
   };
   
   const handleSearchSubmit = (query: string) => {
@@ -136,32 +118,20 @@ export default function OrderConfirmedPage() {
     <>
       {isMobile ? <StaticSparkleBackground /> : <SparkleBackground />}
       <div className={cn("flex flex-col h-screen", isPopupOpen && 'opacity-50')}>
-        {isMobile ? (
-            <MobileSearchHeader 
-              value={searchInput}
-              onChange={(e) => setSearchInput(e.target.value)}
-              onSubmit={(e) => {
-                e.preventDefault();
-                handleSearchSubmit(searchInput);
-              }}
-              isVisible={isMobileHeaderVisible}
-            />
-        ) : (
-            <Header 
-              onProfileOpenChange={setIsProfileOpen}
-              isContentScrolled={isScrolled}
-              onReset={() => router.push('/')}
-              onNavigate={(view) => router.push(`/${view}`)}
-              activeView={'search'}
-              isUsingAnimatedSearch={true}
-              onSearchSubmit={handleSearchSubmit}
-              searchInput={searchInput}
-              onSearchInputChange={setSearchInput}
-            />
-        )}
+        <Header 
+          onProfileOpenChange={setIsProfileOpen}
+          isContentScrolled={isMobile ? true : isScrolled}
+          onReset={() => router.push('/')}
+          onNavigate={(view) => router.push(`/${view}`)}
+          activeView={'search'}
+          isUsingAnimatedSearch={!isMobile}
+          onSearchSubmit={handleSearchSubmit}
+          searchInput={searchInput}
+          onSearchInputChange={setSearchInput}
+        />
         <main onScroll={handleScroll} className={cn(
           "flex-grow flex flex-col gap-8 overflow-y-auto no-scrollbar",
-           isMobile ? (isMobileHeaderVisible ? 'pt-16' : 'pt-0') : "pt-36"
+           isMobile ? 'pt-24' : "pt-36"
         )}>
             <div className={cn("flex-grow flex flex-col", isMobile ? "px-4" : "md:px-32")}>
               <OrderConfirmedView cart={cart} orderId={orderId} />

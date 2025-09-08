@@ -10,6 +10,7 @@ import { Navigation } from "./header/navigation";
 import { UserActions } from "./header/user-actions";
 import type { ActiveView } from "@/app/page";
 import { AnimatedSearchBar } from "./animated-search-bar";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface HeaderProps {
   onProfileOpenChange: (isOpen: boolean) => void;
@@ -40,6 +41,7 @@ export function Header({
   const [isAnimatedSearchExpanded, setIsAnimatedSearchExpanded] = useState(isUsingAnimatedSearch);
   const [isNavVisible, setIsNavVisible] = useState(true);
   const router = useRouter();
+  const isMobile = useIsMobile();
   
   useEffect(() => {
     if (isAnimatedSearchExpanded) {
@@ -64,6 +66,32 @@ export function Header({
     setIsAnimatedSearchExpanded(false);
     onReset();
   };
+
+  if (isMobile) {
+    return (
+      <header className={cn(
+        "fixed top-0 z-50 w-full pt-4 md:pt-6 pb-4 md:pb-4 transition-all duration-100 bg-background border-b border-white/20", 
+      )}>
+        <div className="container relative flex h-12 max-w-screen-2xl items-center justify-between px-4">
+          <div className="flex justify-start">
+            <Logo onLogoClick={handleLogoClick} isEnquireOpen={isEnquireOpen} />
+          </div>
+           <div className="flex justify-end">
+            <UserActions 
+              isEnquireOpen={isEnquireOpen}
+              onEnquireOpenChange={setIsEnquireOpen}
+              onProfileOpenChange={onProfileOpenChange}
+              onNavigate={onNavigate}
+              activeView={activeView}
+              onAnimatedSearchToggle={handleAnimatedSearchToggle}
+              isAnimatedSearchExpanded={isAnimatedSearchExpanded}
+              isSearchingOnAbout={isSearchingOnAbout}
+            />
+          </div>
+        </div>
+      </header>
+    )
+  }
   
   return (
     <>
