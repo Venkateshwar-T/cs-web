@@ -85,6 +85,7 @@ export default function OrderConfirmedPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [processedCart, setProcessedCart] = useState<Record<string, number>>({});
   const isMobile = useIsMobile();
+  const [isContentScrolled, setIsContentScrolled] = useState(false);
     
   useEffect(() => {
     if (Object.keys(cart).length > 0) {
@@ -123,6 +124,11 @@ export default function OrderConfirmedPage() {
     }
   }, [cart, addOrder, clearCart]);
   
+  const handleScroll = (event: UIEvent<HTMLDivElement>) => {
+    const { scrollTop } = event.currentTarget;
+    setIsContentScrolled(scrollTop > 0);
+  };
+  
   const handleSearchSubmit = (query: string) => {
     router.push(`/search?q=${encodeURIComponent(query)}`);
   };
@@ -146,7 +152,7 @@ export default function OrderConfirmedPage() {
       <div className={cn("flex flex-col h-screen", isPopupOpen && 'opacity-50')}>
         <Header 
           onProfileOpenChange={setIsProfileOpen}
-          isContentScrolled={true}
+          isContentScrolled={isContentScrolled}
           onReset={() => router.push('/')}
           onNavigate={(view) => router.push(`/${view}`)}
           activeView={'order-confirmed'}
@@ -155,7 +161,7 @@ export default function OrderConfirmedPage() {
           searchInput={searchInput}
           onSearchInputChange={setSearchInput}
         />
-        <main className={cn(
+        <main onScroll={handleScroll} className={cn(
           "flex-grow flex flex-col gap-8 overflow-y-auto no-scrollbar",
            "pt-32"
         )}>
