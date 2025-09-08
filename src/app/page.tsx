@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { Header } from "@/components/header";
@@ -56,14 +56,14 @@ export default function Home() {
   const { toast } = useToast();
 
 
-  useState(() => {
+  useEffect(() => {
     const timer = setTimeout(() => {
       setIsPageLoading(false);
     }, 800);
     return () => clearTimeout(timer);
-  });
+  }, []);
 
-  useState(() => {
+  useEffect(() => {
     if (isImageExpanded || isCartVisible || isSignUpOpen || isCompleteDetailsOpen || isProfileOpen) {
       document.body.classList.add('overflow-hidden');
     } else {
@@ -72,17 +72,17 @@ export default function Home() {
     return () => {
       document.body.classList.remove('overflow-hidden');
     };
-  });
+  }, [isImageExpanded, isCartVisible, isSignUpOpen, isCompleteDetailsOpen, isProfileOpen]);
 
 
-  useState(() => {
+  useEffect(() => {
     if (isCartOpen) {
       setIsCartVisible(true);
     } else {
       const timer = setTimeout(() => setIsCartVisible(false), 300); // Match animation duration
       return () => clearTimeout(timer);
     }
-  });
+  }, [isCartOpen]);
 
   const handleSearchSubmit = (e: React.FormEvent<HTMLFormElement>, currentSearchInput: string) => {
     e.preventDefault();
