@@ -1,4 +1,3 @@
-
 // @/components/mobile-cart-summary.tsx
 'use client';
 
@@ -51,7 +50,8 @@ export const MobileCartSummary = React.forwardRef<HTMLDivElement, MobileCartSumm
     const subtotalAfterDiscount = subtotal - discount;
     const gstRate = 0.18;
     const gstAmount = subtotalAfterDiscount * gstRate;
-    const total = total > 0 ? subtotalAfterDiscount + gstAmount : 0;
+    const calculatedTotal = subtotalAfterDiscount + gstAmount;
+    const total = calculatedTotal > 0 ? calculatedTotal : 0;
 
     return (
       <div ref={ref} className="mt-6 bg-white/80 rounded-2xl p-4 shadow-lg text-black">

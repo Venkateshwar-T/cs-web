@@ -38,7 +38,8 @@ export function FloatingCartFinalizeButton({ cart, onCheckout, isVisible }: Floa
     const subtotalAfterDiscount = subtotal - discount;
     const gstRate = 0.18;
     const gstAmount = subtotalAfterDiscount * gstRate;
-    const total = subtotalAfterDiscount + gstAmount;
+    const calculatedTotal = subtotalAfterDiscount + gstAmount;
+    const total = calculatedTotal > 0 ? calculatedTotal : 0;
 
     return (
         <div
