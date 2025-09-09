@@ -1,4 +1,3 @@
-
 // @/components/header/user-actions.tsx
 'use client';
 
@@ -26,7 +25,8 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
+} from "@/components/ui/alert-dialog";
+import { useAppContext } from "@/context/app-context";
 
 
 interface UserActionsProps {
@@ -58,6 +58,7 @@ export function UserActions({
     const isMobile = useIsMobile();
     const [isEnquireSheetOpen, setIsEnquireSheetOpen] = useState(false);
     const router = useRouter();
+    const { logout, isAuthenticated } = useAppContext();
 
     const handleMobileNav = (link: typeof navLinks[number]) => {
         if (link.href) {
@@ -66,8 +67,7 @@ export function UserActions({
     };
 
     const handleLogout = () => {
-        // Implement logout logic here
-        console.log("User logged out");
+        logout();
     };
     
     return (
@@ -191,27 +191,31 @@ export function UserActions({
                                 )
                             })}
                            </nav>
-                            <Separator className="bg-white/20 my-2"/>
-                            <AlertDialog>
-                              <AlertDialogTrigger asChild>
-                                <button className="transition-colors hover:text-red-500 text-left flex items-center gap-3 text-lg text-foreground/80">
-                                    <LogOut className="h-5 w-5" />
-                                    <span>Log Out</span>
-                                </button>
-                              </AlertDialogTrigger>
-                              <AlertDialogContent>
-                                <AlertDialogHeader>
-                                  <AlertDialogTitle>Are you sure you want to log out?</AlertDialogTitle>
-                                  <AlertDialogDescription>
-                                    You will be returned to the login page.
-                                  </AlertDialogDescription>
-                                </AlertDialogHeader>
-                                <AlertDialogFooter>
-                                  <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                  <AlertDialogAction onClick={handleLogout}>Log Out</AlertDialogAction>
-                                </AlertDialogFooter>
-                              </AlertDialogContent>
-                            </AlertDialog>
+                           {isAuthenticated && (
+                            <>
+                                <Separator className="bg-white/20 my-2"/>
+                                <AlertDialog>
+                                  <AlertDialogTrigger asChild>
+                                    <button className="transition-colors hover:text-red-500 text-left flex items-center gap-3 text-lg text-foreground/80">
+                                        <LogOut className="h-5 w-5" />
+                                        <span>Log Out</span>
+                                    </button>
+                                  </AlertDialogTrigger>
+                                  <AlertDialogContent>
+                                    <AlertDialogHeader>
+                                      <AlertDialogTitle>Are you sure you want to log out?</AlertDialogTitle>
+                                      <AlertDialogDescription>
+                                        You will be returned to the login page.
+                                      </AlertDialogDescription>
+                                    </AlertDialogHeader>
+                                    <AlertDialogFooter>
+                                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                      <AlertDialogAction onClick={handleLogout}>Log Out</AlertDialogAction>
+                                    </AlertDialogFooter>
+                                  </AlertDialogContent>
+                                </AlertDialog>
+                            </>
+                           )}
 
                            <div className='mt-auto flex flex-col gap-4'>
                             <SheetClose asChild>

@@ -16,9 +16,10 @@ interface LoginPopupProps {
     open: boolean;
     onOpenChange: (open: boolean) => void;
     onSignUpClick: () => void;
+    onLoginSuccess: () => void;
 }
 
-export function LoginPopup({ open, onOpenChange, onSignUpClick }: LoginPopupProps) {
+export function LoginPopup({ open, onOpenChange, onSignUpClick, onLoginSuccess }: LoginPopupProps) {
   
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -49,7 +50,7 @@ export function LoginPopup({ open, onOpenChange, onSignUpClick }: LoginPopupProp
 
                 <a href="#" className="text-sm text-white font-montserrat self-center hover:underline">Forgot Password?</a>
 
-                <Button className="w-full h-12 bg-custom-gold text-custom-purple-dark font-montserrat font-bold text-lg rounded-full hover:bg-custom-gold/90 mt-2">
+                <Button onClick={onLoginSuccess} className="w-full h-12 bg-custom-gold text-custom-purple-dark font-montserrat font-bold text-lg rounded-full hover:bg-custom-gold/90 mt-2">
                     Login
                 </Button>
 
@@ -59,7 +60,7 @@ export function LoginPopup({ open, onOpenChange, onSignUpClick }: LoginPopupProp
                     <div className="h-px flex-grow bg-white/50"></div>
                 </div>
 
-                <Button variant="outline" className="w-[60%] h-12 bg-white font-semibold text-black self-center rounded-full hover:bg-white/90 hover:text-black/90">
+                <Button variant="outline" onClick={onLoginSuccess} className="w-[60%] h-12 bg-white font-semibold text-black self-center rounded-full hover:bg-white/90 hover:text-black/90">
                     <Image src="/icons/google.png" alt="Google" width={25} height={25} />
                     Sign in with Google
                 </Button>

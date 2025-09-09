@@ -1,4 +1,3 @@
-
 // @/components/popups/popups-manager.tsx
 'use client';
 
@@ -6,9 +5,11 @@ import { CartPopup } from '@/components/cart-popup';
 import { ProfilePopup } from '@/components/profile-popup';
 import type { Product } from '@/app/page';
 import { cn } from '@/lib/utils';
-import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAppContext } from '@/context/app-context';
+import { LoginPopup } from '../login-popup';
+import { SignUpPopup } from '../signup-popup';
+import { CompleteDetailsPopup } from '../complete-details-popup';
 
 
 interface PopupsManagerProps {
@@ -62,11 +63,16 @@ export function PopupsManager({
   onClearWishlist,
   setIsProfileOpen,
 }: PopupsManagerProps) {
-  const isAnyPopupVisible = isCartOpen || isProfileOpen;
   const router = useRouter();
-  const { addOrder, clearCart: globalClearCart } = useAppContext();
-  
+  const { addOrder, clearCart: globalClearCart, authPopup, setAuthPopup, login, isAuthenticated, updateProfileInfo } = useAppContext();
+  const isAnyPopupVisible = isCartOpen || isProfileOpen || !!authPopup;
+
   const handleFinalizeOrder = () => {
+    if (!isAuthenticated) {
+        if(onToggleCartPopup) onToggleCartPopup();
+        setAuthPopup('login');
+        return;
+    }
     if (!cart) return;
 
     const newOrderId = generateOrderId();
@@ -91,10 +97,24 @@ export function PopupsManager({
 
     if(onToggleCartPopup) onToggleCartPopup();
     
-    // Use the clearCart function passed down, or the global one if it's not available
     const clearCartAction = onClearCart || globalClearCart;
     clearCartAction();
     router.push(`/order-confirmed?orderId=${newOrderId}`);
+  };
+
+  const handleLoginSuccess = () => {
+      login();
+      setAuthPopup(null);
+  };
+  
+  const handleSignUpSuccess = () => {
+      login();
+      setAuthPopup('completeDetails');
+  };
+
+  const handleDetailsConfirm = (name: string, phone: string) => {
+    updateProfileInfo({ name, phone });
+    setAuthPopup(null);
   };
 
 
@@ -132,6 +152,24 @@ export function PopupsManager({
             />
           </div>
       )}
+
+      <LoginPopup 
+        open={authPopup === 'login'} 
+        onOpenChange={(open) => !open && setAuthPopup(null)}
+        onSignUpClick={() => setAuthPopup('signup')}
+        onLoginSuccess={handleLoginSuccess}
+      />
+      <SignUpPopup
+        open={authPopup === 'signup'}
+        onOpenChange={(open) => !open && setAuthPopup(null)}
+        onLoginClick={() => setAuthPopup('login')}
+        onSignUpSuccess={handleSignUpSuccess}
+      />
+      <CompleteDetailsPopup
+        open={authPopup === 'completeDetails'}
+        onOpenChange={(open) => !open && setAuthPopup(null)}
+        onConfirm={handleDetailsConfirm}
+      />
     </>
   );
 }

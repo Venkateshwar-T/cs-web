@@ -1,4 +1,3 @@
-
 // @/components/profile-popup.tsx
 'use client';
 
@@ -21,6 +20,7 @@ import {
 } from "@/components/ui/alert-dialog"
 import { useAppContext } from '@/context/app-context';
 import { Loader } from './loader';
+import { LoginPopup } from './login-popup';
 
 interface ProfilePopupProps {
   onClose: () => void;
@@ -46,7 +46,18 @@ export function ProfilePopup({
   const [isDialogVisible, setIsDialogVisible] = useState(false);
   const [pendingAction, setPendingAction] = useState<(() => void) | null>(null);
   
-  const { profileInfo, updateProfileInfo, isProfileLoaded } = useAppContext();
+  const { profileInfo, updateProfileInfo, isProfileLoaded, isAuthenticated, setAuthPopup } = useAppContext();
+
+  if (!isAuthenticated) {
+    return (
+      <LoginPopup 
+        open={true}
+        onOpenChange={(open) => { if (!open) onClose(); }}
+        onSignUpClick={() => setAuthPopup('signup')}
+        onLoginSuccess={onClose}
+      />
+    )
+  }
 
   const handleActionWithCheck = (action: () => void) => {
     if (hasUnsavedChanges) {

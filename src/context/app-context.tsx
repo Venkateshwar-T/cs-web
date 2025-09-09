@@ -1,8 +1,7 @@
-
 // @/context/app-context.tsx
 'use client';
 
-import { createContext, useContext, ReactNode, useCallback } from 'react';
+import { createContext, useContext, ReactNode, useCallback, useState } from 'react';
 import type { ProfileInfo } from '@/app/page';
 import { useLocalStorage } from '@/hooks/use-local-storage';
 
@@ -10,6 +9,7 @@ const PROFILE_STORAGE_KEY = 'chocoSmileyProfile';
 const WISHLIST_STORAGE_KEY = 'chocoSmileyWishlist';
 const ORDERS_STORAGE_KEY = 'chocoSmileyOrders';
 const CART_STORAGE_KEY = 'chocoSmileyCart';
+const AUTH_STORAGE_KEY = 'chocoSmileyAuth';
 
 export type OrderItem = {
   name: string;
@@ -25,6 +25,7 @@ export type Order = {
 };
 
 type Cart = Record<string, number>;
+type AuthPopupType = 'login' | 'signup' | 'completeDetails' | null;
 
 interface AppContextType {
   profileInfo: ProfileInfo;
@@ -44,12 +45,18 @@ interface AppContextType {
   updateCart: (productName: string, quantity: number) => void;
   clearCart: () => void;
   isCartLoaded: boolean;
+
+  isAuthenticated: boolean;
+  login: () => void;
+  logout: () => void;
+  authPopup: AuthPopupType;
+  setAuthPopup: (popup: AuthPopupType) => void;
 }
 
 const defaultProfileInfo: ProfileInfo = {
-    name: 'John Doe',
-    phone: '+1 234 567 890',
-    email: 'john.doe@example.com',
+    name: 'Jane Doe',
+    phone: '',
+    email: 'jane.doe@example.com',
 };
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -74,6 +81,13 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
     CART_STORAGE_KEY,
     {}
   );
+
+  const [isAuthenticated, setIsAuthenticated, isAuthLoaded] = useLocalStorage<boolean>(
+    AUTH_STORAGE_KEY,
+    false
+  );
+
+  const [authPopup, setAuthPopup] = useState<AuthPopupType>(null);
 
   const updateProfileInfo = useCallback((newInfo: Partial<ProfileInfo>) => {
     setProfileInfo(prev => ({ ...prev, ...newInfo }));
@@ -119,11 +133,19 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
     setCart({});
   }, [setCart]);
 
+  const login = useCallback(() => {
+    setIsAuthenticated(true);
+  }, [setIsAuthenticated]);
+
+  const logout = useCallback(() => {
+    setIsAuthenticated(false);
+  }, [setIsAuthenticated]);
+
 
   const value: AppContextType = {
     profileInfo,
     updateProfileInfo,
-    isProfileLoaded,
+    isProfileLoaded: isProfileLoaded && isAuthLoaded,
     likedProducts,
     toggleLike,
     clearWishlist,
@@ -135,6 +157,11 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
     updateCart,
     clearCart,
     isCartLoaded,
+    isAuthenticated,
+    login,
+    logout,
+    authPopup,
+    setAuthPopup,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

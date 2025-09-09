@@ -16,6 +16,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
+import { useAppContext } from '@/context/app-context';
 
 interface ProfileSidebarProps {
   activeTab: string;
@@ -29,9 +30,10 @@ const mainSidebarItems = [
 ];
 
 export function ProfileSidebar({ activeTab, onTabChange }: ProfileSidebarProps) {
+  const { logout } = useAppContext();
+
   const handleLogout = () => {
-    // Implement logout logic here
-    console.log("User logged out");
+    logout();
   };
   
   return (

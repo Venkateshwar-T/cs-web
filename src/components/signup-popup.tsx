@@ -16,9 +16,10 @@ interface SignUpPopupProps {
     open: boolean;
     onOpenChange: (open: boolean) => void;
     onLoginClick: () => void;
+    onSignUpSuccess: () => void;
 }
 
-export function SignUpPopup({ open, onOpenChange, onLoginClick }: SignUpPopupProps) {
+export function SignUpPopup({ open, onOpenChange, onLoginClick, onSignUpSuccess }: SignUpPopupProps) {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -51,7 +52,7 @@ export function SignUpPopup({ open, onOpenChange, onLoginClick }: SignUpPopupPro
                     By continuing, you agree to Choco Smiley’s <a href="#" className="text-custom-gold hover:underline">Terms and Service</a> and acknowledge Choco Smiley’s <a href="#" className="text-custom-gold hover:underline">Privacy Policy</a>.
                 </p>
 
-                <Button className="w-full h-12 bg-custom-gold text-custom-purple-dark font-montserrat font-bold text-lg rounded-full hover:bg-custom-gold/90 mt-2">
+                <Button onClick={onSignUpSuccess} className="w-full h-12 bg-custom-gold text-custom-purple-dark font-montserrat font-bold text-lg rounded-full hover:bg-custom-gold/90 mt-2">
                     Create Account
                 </Button>
 
@@ -61,7 +62,7 @@ export function SignUpPopup({ open, onOpenChange, onLoginClick }: SignUpPopupPro
                     <div className="h-px flex-grow bg-white/50"></div>
                 </div>
 
-                <Button variant="outline" className="w-[60%] h-12 bg-white font-semibold text-black self-center rounded-full hover:bg-white/90 hover:text-black/90">
+                <Button variant="outline" onClick={onSignUpSuccess} className="w-[60%] h-12 bg-white font-semibold text-black self-center rounded-full hover:bg-white/90 hover:text-black/90">
                     <Image src="/icons/google.png" alt="Google" width={25} height={25} />
                     Sign up with Google
                 </Button>
