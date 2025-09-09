@@ -1,4 +1,8 @@
 // @/app/faq/page.tsx
+'use client';
+
+import { Suspense } from 'react';
+import { useRouter } from 'next/navigation';
 import { client } from '@/lib/sanity';
 import { PortableText } from '@portabletext/react';
 import {
@@ -13,7 +17,8 @@ import { Footer } from '@/components/footer';
 import { SectionTitle } from "@/components/section-title";
 import { StaticSparkleBackground } from '@/components/static-sparkle-background';
 import { cn } from '@/lib/utils';
-import { Suspense } from 'react';
+import { useIsMobile } from '@/hooks/use-mobile';
+import type { ActiveView } from '@/app/page';
 
 // Define the type for our FAQ items based on the Sanity schema
 interface FaqItem {
@@ -22,14 +27,14 @@ interface FaqItem {
   answer: any; // PortableText content
 }
 
-// Fetch the data from Sanity
+// Fetch the data from Sanity - This remains a server-side function
 async function getFaqData(): Promise<FaqItem[]> {
   const query = `*[_type == "faq"] | order(_createdAt asc)`;
   const data = await client.fetch(query);
   return data;
 }
 
-// The main component for the page
+// This is now a dedicated Server Component for fetching and rendering the content.
 async function FaqContent() {
   const faqs = await getFaqData();
 
@@ -63,11 +68,14 @@ async function FaqContent() {
   );
 }
 
-// The page wrapper to handle client components and layout
+// The page wrapper is now a Client Component to handle interactive elements.
 export default function FaqPage() {
-  // A simple way to check for mobile without hooks in a server component context
-  // For more complex logic, a client component wrapper would be needed
-  const isMobile = false; // Placeholder for now
+  const isMobile = useIsMobile();
+  const router = useRouter();
+
+  const handleHeaderNavigate = (view: 'about' | 'faq') => {
+    router.push(`/${view}`);
+  }
 
   return (
     <>
@@ -76,15 +84,15 @@ export default function FaqPage() {
         <Header
           onProfileOpenChange={() => {}}
           isContentScrolled={isMobile}
-          onReset={() => {}}
-          onNavigate={() => {}}
+          onReset={() => router.push('/')}
+          onNavigate={handleHeaderNavigate}
           activeView={'faq'}
         />
         <main className={cn(
           "flex-grow flex flex-col overflow-y-auto no-scrollbar transition-all duration-300",
           isMobile ? "pt-24" : "pt-36"
         )}>
-          <Suspense fallback={<p className="text-white text-center">Loading FAQs...</p>}>
+          <Suspense fallback={<div className="flex-grow flex items-center justify-center"><p className="text-white text-center">Loading FAQs...</p></div>}>
             <FaqContent />
           </Suspense>
           <Footer />
