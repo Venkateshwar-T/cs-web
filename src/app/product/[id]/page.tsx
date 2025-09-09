@@ -3,7 +3,6 @@
 
 import { useState, useEffect, type UIEvent } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { useCart } from '@/hooks/use-cart';
 import type { Product } from '@/app/page';
 import { cn } from '@/lib/utils';
 import { Header } from '@/components/header';
@@ -35,8 +34,7 @@ const allProducts: Product[] = Array.from({ length: 12 }).map((_, i) => ({
 export default function ProductPage() {
   const router = useRouter();
   const params = useParams();
-  const { cart, updateCart, clearCart } = useCart();
-  const { likedProducts, toggleLike, clearWishlist } = useAppContext();
+  const { cart, updateCart, clearCart, likedProducts, toggleLike, clearWishlist } = useAppContext();
   const isMobile = useIsMobile();
   
   const [product, setProduct] = useState<Product | null>(null);
@@ -248,7 +246,7 @@ export default function ProductPage() {
            <FeaturedProducts 
               products={allProducts}
               onProductClick={handleProductClick}
-              onAddToCart={handleAddToCart}
+              onAddToCart={onAddToCart}
               cart={cart}
               likedProducts={likedProducts}
               onLikeToggle={toggleLike}
@@ -279,10 +277,6 @@ export default function ProductPage() {
         allProducts={allProducts}
         onClearWishlist={clearWishlist}
         isCartOpen={isCartOpen}
-        onFinalizeOrder={() => {
-          setIsCartOpen(false);
-          router.push('/order-confirmed');
-        }}
       />
       <BottomNavbar activeView={'search'} onNavigate={handleNavigation} cartItemCount={cartItemCount} />
     </>

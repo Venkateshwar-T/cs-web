@@ -13,7 +13,6 @@ import { Button } from '@/components/ui/button';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { MobileCartItemCard } from '@/components/mobile-cart-item-card';
 import { MobileCartSummary } from '@/components/mobile-cart-summary';
-import { useCart } from '@/hooks/use-cart';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -57,8 +56,7 @@ function generateOrderId() {
 export default function CartPage() {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const router = useRouter();
-  const { cart, updateCart, clearCart } = useCart();
-  const { addOrder } = useAppContext();
+  const { cart, updateCart, clearCart, addOrder } = useAppContext();
   const isMobile = useIsMobile();
   const [lastScrollTop, setLastScrollTop] = useState(0);
   const [isHeaderVisible, setIsHeaderVisible] = useState(true);

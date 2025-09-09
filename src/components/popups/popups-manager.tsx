@@ -8,7 +8,6 @@ import type { Product } from '@/app/page';
 import { cn } from '@/lib/utils';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useCart } from '@/hooks/use-cart';
 import { useAppContext } from '@/context/app-context';
 
 
@@ -24,7 +23,6 @@ interface PopupsManagerProps {
   allProducts?: Product[];
   onClearWishlist?: () => void;
   setIsProfileOpen: (isOpen: boolean) => void;
-  onFinalizeOrder?: () => void;
 }
 
 const productPrices: Record<string, number> = {
@@ -66,8 +64,7 @@ export function PopupsManager({
 }: PopupsManagerProps) {
   const isAnyPopupVisible = isCartOpen || isProfileOpen;
   const router = useRouter();
-  const { addOrder } = useAppContext();
-  const { clearCart } = useCart();
+  const { addOrder, clearCart: globalClearCart } = useAppContext();
   
   const handleFinalizeOrder = () => {
     if (!cart) return;
@@ -93,7 +90,10 @@ export function PopupsManager({
     });
 
     if(onToggleCartPopup) onToggleCartPopup();
-    clearCart();
+    
+    // Use the clearCart function passed down, or the global one if it's not available
+    const clearCartAction = onClearCart || globalClearCart;
+    clearCartAction();
     router.push(`/order-confirmed?orderId=${newOrderId}`);
   };
 

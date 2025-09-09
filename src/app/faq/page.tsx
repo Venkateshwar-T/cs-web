@@ -16,7 +16,6 @@ import {
   AccordionItem as AccordionItemPrimitive,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { useCart } from '@/hooks/use-cart';
 import { PopupsManager } from '@/components/popups/popups-manager';
 import { BottomNavbar } from '@/components/bottom-navbar';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -119,8 +118,7 @@ const FaqAccordionItem = ({ item, value }: { item: { question: string; answer: s
 
 export default function FaqPage() {
     const router = useRouter();
-    const { cart, updateCart } = useCart();
-    const { likedProducts, toggleLike, clearWishlist } = useAppContext();
+    const { cart, updateCart, likedProducts, toggleLike, clearWishlist } = useAppContext();
     const [isProfileOpen, setIsProfileOpen] = useState(false);
     const [searchInput, setSearchInput] = useState('');
     const [isContentScrolled, setIsContentScrolled] = useState(false);

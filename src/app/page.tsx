@@ -12,7 +12,6 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import { ExploreCategories } from '@/components/explore-categories';
 import { SearchBar } from '@/components/header/search-bar';
 import { useToast } from "@/hooks/use-toast";
-import { useCart } from '@/hooks/use-cart';
 import { StaticSparkleBackground } from '@/components/static-sparkle-background';
 import { Footer } from '@/components/footer';
 import { useAppContext } from '@/context/app-context';
@@ -35,8 +34,7 @@ const allProducts: Product[] = Array.from({ length: 12 }).map((_, i) => ({
 }));
 
 export default function Home() {
-  const { cart, updateCart } = useCart();
-  const { likedProducts, toggleLike, clearWishlist } = useAppContext();
+  const { cart, updateCart, likedProducts, toggleLike, clearWishlist } = useAppContext();
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const isMobile = useIsMobile();
   const router = useRouter();

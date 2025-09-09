@@ -8,7 +8,6 @@ import { Header } from '@/components/header';
 import { BottomNavbar } from '@/components/bottom-navbar';
 import { SparkleBackground } from '@/components/sparkle-background';
 import { cn } from '@/lib/utils';
-import { useCart } from '@/hooks/use-cart';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { ProfileMobileView } from '@/components/profile-mobile-view';
 import { StaticSparkleBackground } from '@/components/static-sparkle-background';
@@ -24,9 +23,10 @@ export default function ProfilePage() {
   const [activeView, setActiveView] = useState<ActiveView>('profile');
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const router = useRouter();
-  const { cart, updateCart } = useCart();
   const isMobile = useIsMobile();
   const { 
+    cart, 
+    updateCart,
     profileInfo, 
     updateProfileInfo, 
     isProfileLoaded,

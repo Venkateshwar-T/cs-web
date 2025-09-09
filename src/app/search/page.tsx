@@ -14,7 +14,6 @@ import { flavourOptions, occasionOptions, productTypeOptions, weightOptions } fr
 import type { Product } from '@/app/page';
 import { FloatingCartButton } from '@/components/floating-cart-button';
 import { MobileSearchHeader } from '@/components/header/mobile-search-header';
-import { useCart } from '@/hooks/use-cart';
 import { StaticSparkleBackground } from '@/components/static-sparkle-background';
 import { useAppContext } from '@/context/app-context';
 
@@ -48,8 +47,7 @@ function SearchPageComponent() {
   
   const [isSearching, setIsSearching] = useState(true);
   const [isNewSearch, setIsNewSearch] = useState(true);
-  const { cart, updateCart, clearCart } = useCart();
-  const { likedProducts, toggleLike, clearWishlist } = useAppContext();
+  const { cart, updateCart, clearCart, likedProducts, toggleLike, clearWishlist } = useAppContext();
   const [cartMessage, setCartMessage] = useState('');
   const [isCartButtonExpanded, setIsCartButtonExpanded] = useState(false);
   const [sortOption, setSortOption] = useState("featured");
@@ -239,10 +237,6 @@ function SearchPageComponent() {
           allProducts={allProducts}
           onClearWishlist={clearWishlist}
           isCartOpen={isCartOpen}
-          onFinalizeOrder={() => {
-            setIsCartOpen(false);
-            router.push('/order-confirmed');
-          }}
         />
 
       {!isMobile && (

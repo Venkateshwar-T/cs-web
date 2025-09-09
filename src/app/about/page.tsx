@@ -11,7 +11,6 @@ import { SparkleBackground } from '@/components/sparkle-background';
 import { Footer } from '@/components/footer';
 import { SectionTitle } from "@/components/section-title";
 import { Heart, Leaf, Gift, Sparkles } from "lucide-react";
-import { useCart } from '@/hooks/use-cart';
 import { PopupsManager } from '@/components/popups/popups-manager';
 import { BottomNavbar } from '@/components/bottom-navbar';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -70,8 +69,7 @@ const AboutSection = ({ title, children, icon, isMobile }: { title: string, chil
 
 export default function AboutPage() {
     const router = useRouter();
-    const { cart, updateCart } = useCart();
-    const { likedProducts, toggleLike, clearWishlist } = useAppContext();
+    const { cart, updateCart, likedProducts, toggleLike, clearWishlist } = useAppContext();
     const [isProfileOpen, setIsProfileOpen] = useState(false);
     const [searchInput, setSearchInput] = useState('');
     const [isContentScrolled, setIsContentScrolled] = useState(false);

@@ -9,6 +9,7 @@ import { useLocalStorage } from '@/hooks/use-local-storage';
 const PROFILE_STORAGE_KEY = 'chocoSmileyProfile';
 const WISHLIST_STORAGE_KEY = 'chocoSmileyWishlist';
 const ORDERS_STORAGE_KEY = 'chocoSmileyOrders';
+const CART_STORAGE_KEY = 'chocoSmileyCart';
 
 export type OrderItem = {
   name: string;
@@ -23,17 +24,26 @@ export type Order = {
   total: number;
 };
 
+type Cart = Record<string, number>;
+
 interface AppContextType {
   profileInfo: ProfileInfo;
   updateProfileInfo: (newInfo: Partial<ProfileInfo>) => void;
   isProfileLoaded: boolean;
+  
   likedProducts: Record<number, boolean>;
   toggleLike: (productId: number) => void;
   clearWishlist: () => void;
+  
   orders: Order[];
   addOrder: (newOrder: Order) => void;
   isOrdersLoaded: boolean;
   clearOrders: () => void;
+
+  cart: Cart;
+  updateCart: (productName: string, quantity: number) => void;
+  clearCart: () => void;
+  isCartLoaded: boolean;
 }
 
 const defaultProfileInfo: ProfileInfo = {
@@ -50,7 +60,7 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
     defaultProfileInfo
   );
   
-  const [likedProducts, setLikedProducts] = useLocalStorage<Record<number, boolean>>(
+  const [likedProducts, setLikedProducts, isWishlistLoaded] = useLocalStorage<Record<number, boolean>>(
     WISHLIST_STORAGE_KEY,
     {}
   );
@@ -58,6 +68,11 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
   const [orders, setOrders, isOrdersLoaded] = useLocalStorage<Order[]>(
     ORDERS_STORAGE_KEY,
     []
+  );
+
+  const [cart, setCart, isCartLoaded] = useLocalStorage<Cart>(
+    CART_STORAGE_KEY,
+    {}
   );
 
   const updateProfileInfo = useCallback((newInfo: Partial<ProfileInfo>) => {
@@ -88,6 +103,23 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
     setOrders([]);
   }, [setOrders]);
 
+  const updateCart = useCallback((productName: string, quantity: number) => {
+    setCart(prevCart => {
+      const newCart = { ...prevCart };
+      if (quantity <= 0) {
+        delete newCart[productName];
+      } else {
+        newCart[productName] = quantity;
+      }
+      return newCart;
+    });
+  }, [setCart]);
+
+  const clearCart = useCallback(() => {
+    setCart({});
+  }, [setCart]);
+
+
   const value: AppContextType = {
     profileInfo,
     updateProfileInfo,
@@ -99,6 +131,10 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
     addOrder,
     isOrdersLoaded,
     clearOrders,
+    cart,
+    updateCart,
+    clearCart,
+    isCartLoaded,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

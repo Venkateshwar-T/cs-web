@@ -1,3 +1,4 @@
+
 // @/components/wishlist-view.tsx
 'use client';
 

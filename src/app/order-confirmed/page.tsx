@@ -3,7 +3,6 @@
 
 import { Suspense, useState, useEffect, type UIEvent } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useCart } from '@/hooks/use-cart';
 import type { Product } from '@/app/page';
 import { cn } from '@/lib/utils';
 import { Header } from '@/components/header';
@@ -41,8 +40,7 @@ const ProcessingView = () => (
 function OrderConfirmedPageComponent() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { cart, updateCart } = useCart();
-  const { likedProducts, toggleLike, clearWishlist, orders } = useAppContext();
+  const { cart, updateCart, likedProducts, toggleLike, clearWishlist, orders } = useAppContext();
   
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [searchInput, setSearchInput] = useState('');
@@ -52,7 +50,6 @@ function OrderConfirmedPageComponent() {
   const [isContentScrolled, setIsContentScrolled] = useState(false);
 
   useEffect(() => {
-    setIsLoading(true);
     const orderId = searchParams.get('orderId');
     if (!orderId) {
       router.push('/');
@@ -60,24 +57,16 @@ function OrderConfirmedPageComponent() {
     }
 
     const foundOrder = orders.find(o => o.id === orderId);
-    if (!foundOrder) {
-      // It might take a moment for the context to update after redirect.
-      // If not found, we'll wait and check again. A simple timeout can work here.
-      setTimeout(() => {
-        const foundOrderAgain = orders.find(o => o.id === orderId);
-        if (foundOrderAgain) {
-          setConfirmedOrder(foundOrderAgain);
-        } else {
-          // If still not found, something is wrong, redirect home.
-          router.push('/');
-        }
-        setIsLoading(false);
-      }, 500); // Wait 500ms for context to be available
-    } else {
+    if (foundOrder) {
       setConfirmedOrder(foundOrder);
-      setTimeout(() => {
-        setIsLoading(false);
-      }, 1000); // Simulate processing time even if order found immediately
+      // Simulate a small delay for a better user experience,
+      // allowing them to see the "Processing" state.
+      setTimeout(() => setIsLoading(false), 1000);
+    } else {
+      // If the order is not found (e.g., user refreshed the page after context cleared),
+      // it's safer to redirect to home.
+      console.warn(`Order with ID ${orderId} not found.`);
+      router.push('/');
     }
   }, [searchParams, orders, router]);
   
