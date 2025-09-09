@@ -28,11 +28,37 @@ import {
 import { StaticSparkleBackground } from '@/components/static-sparkle-background';
 import { FloatingCartFinalizeButton } from '@/components/floating-cart-finalize-button';
 import { EmptyState } from '@/components/empty-state';
+import { useAppContext } from '@/context/app-context';
+
+const productPrices: Record<string, number> = {
+  'Diwali Collection Box 1': 799,
+  'Diwali Collection Box 2': 1199,
+  'Diwali Collection Box 3': 999,
+  'Diwali Collection Box 4': 899,
+  'Diwali Collection Box 5': 750,
+  'Diwali Collection Box 6': 1250,
+  'Diwali Collection Box 7': 600,
+  'Diwali Collection Box 8': 1500,
+  'Diwali Collection Box 9': 850,
+  'Diwali Collection Box 10': 950,
+  'Diwali Collection Box 11': 1100,
+  'Diwali Collection Box 12': 1300,
+};
+
+function generateOrderId() {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let result = 'CS';
+    for (let i = 0; i < 10; i++) {
+        result += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return result;
+}
 
 export default function CartPage() {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const router = useRouter();
   const { cart, updateCart, clearCart } = useCart();
+  const { addOrder } = useAppContext();
   const isMobile = useIsMobile();
   const [lastScrollTop, setLastScrollTop] = useState(0);
   const [isHeaderVisible, setIsHeaderVisible] = useState(true);
@@ -86,7 +112,28 @@ export default function CartPage() {
   };
 
   const handleCheckout = () => {
-    router.push('/order-confirmed');
+    const newOrderId = generateOrderId();
+    const subtotal = Object.entries(cart).reduce((acc, [name, quantity]) => {
+        const price = productPrices[name] || 0;
+        return acc + (price * quantity);
+    }, 0);
+    
+    const discount = 500.00;
+    const subtotalAfterDiscount = subtotal - discount;
+    const gstRate = 0.18;
+    const gstAmount = subtotalAfterDiscount * gstRate;
+    const total = subtotalAfterDiscount + gstAmount;
+
+    addOrder({
+        id: newOrderId,
+        date: new Date().toISOString(),
+        items: Object.entries(cart).map(([name, quantity]) => ({ name, quantity })),
+        status: 'Order Requested',
+        total: total > 0 ? total : 0,
+    });
+
+    clearCart();
+    router.push(`/order-confirmed?orderId=${newOrderId}`);
   };
   
   const handleScroll = (event: UIEvent<HTMLDivElement>) => {

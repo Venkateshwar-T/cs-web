@@ -1,8 +1,8 @@
 
 'use client';
 
-import { useState, useEffect, type UIEvent } from 'react';
-import { useRouter } from 'next/navigation';
+import { Suspense, useState, useEffect, type UIEvent } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useCart } from '@/hooks/use-cart';
 import type { Product } from '@/app/page';
 import { cn } from '@/lib/utils';
@@ -16,38 +16,12 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import { StaticSparkleBackground } from '@/components/static-sparkle-background';
 import { Loader } from '@/components/loader';
 import { motion } from 'framer-motion';
-import { useAppContext } from '@/context/app-context';
-
-// Mock data for product prices - in a real app this would come from a database or state management
-const productPrices: Record<string, number> = {
-  'Diwali Collection Box 1': 799,
-  'Diwali Collection Box 2': 1199,
-  'Diwali Collection Box 3': 999,
-  'Diwali Collection Box 4': 899,
-  'Diwali Collection Box 5': 750,
-  'Diwali Collection Box 6': 1250,
-  'Diwali Collection Box 7': 600,
-  'Diwali Collection Box 8': 1500,
-  'Diwali Collection Box 9': 850,
-  'Diwali Collection Box 10': 950,
-  'Diwali Collection Box 11': 1100,
-  'Diwali Collection Box 12': 1300,
-};
+import { useAppContext, type Order } from '@/context/app-context';
 
 const allProducts: Product[] = Array.from({ length: 12 }).map((_, i) => ({
   id: i,
   name: `Diwali Collection Box ${i + 1}`,
 }));
-
-
-function generateOrderId() {
-    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    let result = 'CS';
-    for (let i = 0; i < 10; i++) {
-        result += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
-    return result;
-}
 
 const ProcessingView = () => (
     <div className="flex flex-col items-center justify-center h-full text-center gap-6">
@@ -64,58 +38,48 @@ const ProcessingView = () => (
     </div>
 );
 
-
-export default function OrderConfirmedPage() {
+function OrderConfirmedPageComponent() {
   const router = useRouter();
-  const { cart, clearCart, updateCart } = useCart();
-  const { addOrder } = useAppContext();
-  const { likedProducts, toggleLike, clearWishlist } = useAppContext();
+  const searchParams = useSearchParams();
+  const { cart, updateCart } = useCart();
+  const { likedProducts, toggleLike, clearWishlist, orders } = useAppContext();
   
   const [isProfileOpen, setIsProfileOpen] = useState(false);
-  const { profileInfo } = useAppContext();
   const [searchInput, setSearchInput] = useState('');
-  const [orderId, setOrderId] = useState('');
+  const [confirmedOrder, setConfirmedOrder] = useState<Order | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [processedCart, setProcessedCart] = useState<Record<string, number>>({});
   const isMobile = useIsMobile();
   const [isContentScrolled, setIsContentScrolled] = useState(false);
-    
+
   useEffect(() => {
-    if (Object.keys(cart).length > 0) {
-        setIsLoading(true);
-        const newOrderId = generateOrderId();
-        setOrderId(newOrderId);
-        setProcessedCart(cart);
-
-        const subtotal = Object.entries(cart).reduce((acc, [name, quantity]) => {
-            const price = productPrices[name] || 0;
-            return acc + (price * quantity);
-        }, 0);
-        
-        const discount = 500.00;
-        const subtotalAfterDiscount = subtotal - discount;
-        const gstRate = 0.18;
-        const gstAmount = subtotalAfterDiscount * gstRate;
-        const total = subtotalAfterDiscount + gstAmount;
-
-        addOrder({
-            id: newOrderId,
-            date: new Date().toISOString(),
-            items: Object.entries(cart).map(([name, quantity]) => ({ name, quantity })),
-            status: 'Order Requested',
-            total: total > 0 ? total : 0,
-        });
-
-        const timer = setTimeout(() => {
-            setIsLoading(false);
-            clearCart();
-        }, 3000); // Simulate a 3-second processing time
-
-        return () => clearTimeout(timer);
-    } else {
-        setIsLoading(false);
+    setIsLoading(true);
+    const orderId = searchParams.get('orderId');
+    if (!orderId) {
+      router.push('/');
+      return;
     }
-  }, [cart, addOrder, clearCart]);
+
+    const foundOrder = orders.find(o => o.id === orderId);
+    if (!foundOrder) {
+      // It might take a moment for the context to update after redirect.
+      // If not found, we'll wait and check again. A simple timeout can work here.
+      setTimeout(() => {
+        const foundOrderAgain = orders.find(o => o.id === orderId);
+        if (foundOrderAgain) {
+          setConfirmedOrder(foundOrderAgain);
+        } else {
+          // If still not found, something is wrong, redirect home.
+          router.push('/');
+        }
+        setIsLoading(false);
+      }, 500); // Wait 500ms for context to be available
+    } else {
+      setConfirmedOrder(foundOrder);
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 1000); // Simulate processing time even if order found immediately
+    }
+  }, [searchParams, orders, router]);
   
   const handleScroll = (event: UIEvent<HTMLDivElement>) => {
     const { scrollTop } = event.currentTarget;
@@ -153,12 +117,12 @@ export default function OrderConfirmedPage() {
           "flex-grow flex flex-col gap-8 overflow-y-auto no-scrollbar",
           "pt-24 md:pt-32"
         )}>
-          {isLoading ? (
+          {isLoading || !confirmedOrder ? (
             <ProcessingView />
           ) : (
             <>
               <div className={cn("flex-grow flex flex-col", isMobile ? "px-4" : "md:px-32")}>
-                <OrderConfirmedView cart={processedCart} orderId={orderId} />
+                <OrderConfirmedView order={confirmedOrder} />
               </div>
               <Footer />
             </>
@@ -179,4 +143,12 @@ export default function OrderConfirmedPage() {
       />
     </>
   );
+}
+
+export default function OrderConfirmedPage() {
+    return (
+        <Suspense fallback={<ProcessingView />}>
+            <OrderConfirmedPageComponent />
+        </Suspense>
+    )
 }

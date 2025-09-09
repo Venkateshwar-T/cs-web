@@ -11,6 +11,7 @@ import { OrderSummaryItem } from './order-summary-item';
 import { motion } from 'framer-motion';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { cn } from '@/lib/utils';
+import type { Order } from '@/context/app-context';
 
 // Mock data for product prices - in a real app this would come from a database or state management
 const productPrices: Record<string, number> = {
@@ -29,8 +30,7 @@ const productPrices: Record<string, number> = {
 };
 
 interface OrderConfirmedViewProps {
-    cart: Record<string, number>;
-    orderId: string;
+    order: Order;
 }
 
 const containerVariants = {
@@ -57,21 +57,12 @@ const itemVariants = {
 };
 
 
-export function OrderConfirmedView({ cart, orderId }: OrderConfirmedViewProps) {
+export function OrderConfirmedView({ order }: OrderConfirmedViewProps) {
     const isMobile = useIsMobile();
     
-    const cartItems = Object.entries(cart);
-    
-    const subtotal = cartItems.reduce((acc, [name, quantity]) => {
-        const price = productPrices[name] || 0;
-        return acc + (price * quantity);
-    }, 0);
-
-    const discount = 500.00;
-    const subtotalAfterDiscount = subtotal - discount;
-    const gstRate = 0.18;
-    const gstAmount = subtotalAfterDiscount * gstRate;
-    const total = subtotalAfterDiscount + gstAmount;
+    if (!order) {
+        return null;
+    }
 
   return (
     <motion.div 
@@ -97,7 +88,7 @@ export function OrderConfirmedView({ cart, orderId }: OrderConfirmedViewProps) {
               </div>
             </motion.div>
 
-            <motion.p variants={itemVariants} className="font-plex-sans font-semibold text-xs text-black">Order ID: {orderId}</motion.p>
+            <motion.p variants={itemVariants} className="font-plex-sans font-semibold text-xs text-black">Order ID: {order.id}</motion.p>
 
             <motion.p variants={itemVariants} className="font-semibold font-plex-sans text-sm md:text-lg max-w-2xl text-black">
                 To finalize your order and process the 50% advance payment, please connect with us directly.
@@ -119,22 +110,22 @@ export function OrderConfirmedView({ cart, orderId }: OrderConfirmedViewProps) {
             <motion.div variants={itemVariants} className="bg-white w-full rounded-2xl md:rounded-3xl mt-2 text-black p-4 md:p-6 flex flex-col">
                 <div className="flex justify-between items-center flex-shrink-0">
                     <h3 className="font-bold text-sm md:text-xl">Order Summary</h3>
-                    <p className="font-bold text-sm md:text-xl">Total: ₹{total > 0 ? total.toFixed(2) : '0.00'}</p>
+                    <p className="font-bold text-sm md:text-xl">Total: ₹{order.total > 0 ? order.total.toFixed(2) : '0.00'}</p>
                 </div>
                 <Separator className="bg-gray-200 my-2" />
                 <div className={cn(
                   "flex-grow overflow-y-auto min-h-0 pr-2 always-visible-scrollbar",
                   isMobile ? "max-h-full" : "max-h-[25vh]"
                 )}>
-                    {cartItems.map(([name, quantity], index) => (
-                        <Fragment key={name}>
+                    {order.items.map((item, index) => (
+                        <Fragment key={item.name}>
                           <OrderSummaryItem
-                              productName={name}
-                              quantity={quantity}
-                              price={productPrices[name] || 0}
+                              productName={item.name}
+                              quantity={item.quantity}
+                              price={productPrices[item.name] || 0}
                               isMobile={isMobile}
                           />
-                          {index < cartItems.length - 1 && <Separator className="bg-gray-200 my-2" />}
+                          {index < order.items.length - 1 && <Separator className="bg-gray-200 my-2" />}
                         </Fragment>
                     ))}
                 </div>

@@ -1,4 +1,5 @@
 
+// @/components/popups/popups-manager.tsx
 'use client';
 
 import { CartPopup } from '@/components/cart-popup';
@@ -6,6 +7,10 @@ import { ProfilePopup } from '@/components/profile-popup';
 import type { Product } from '@/app/page';
 import { cn } from '@/lib/utils';
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { useCart } from '@/hooks/use-cart';
+import { useAppContext } from '@/context/app-context';
+
 
 interface PopupsManagerProps {
   isCartOpen?: boolean;
@@ -16,10 +21,34 @@ interface PopupsManagerProps {
   onAddToCart?: (productName: string, quantity: number) => void;
   onToggleCartPopup?: () => void;
   onClearCart?: () => void;
-  onFinalizeOrder?: () => void;
   allProducts?: Product[];
   onClearWishlist?: () => void;
   setIsProfileOpen: (isOpen: boolean) => void;
+  onFinalizeOrder?: () => void;
+}
+
+const productPrices: Record<string, number> = {
+  'Diwali Collection Box 1': 799,
+  'Diwali Collection Box 2': 1199,
+  'Diwali Collection Box 3': 999,
+  'Diwali Collection Box 4': 899,
+  'Diwali Collection Box 5': 750,
+  'Diwali Collection Box 6': 1250,
+  'Diwali Collection Box 7': 600,
+  'Diwali Collection Box 8': 1500,
+  'Diwali Collection Box 9': 850,
+  'Diwali Collection Box 10': 950,
+  'Diwali Collection Box 11': 1100,
+  'Diwali Collection Box 12': 1300,
+};
+
+function generateOrderId() {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let result = 'CS';
+    for (let i = 0; i < 10; i++) {
+        result += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return result;
 }
 
 export function PopupsManager({
@@ -31,18 +60,49 @@ export function PopupsManager({
   onAddToCart,
   onToggleCartPopup,
   onClearCart,
-  onFinalizeOrder,
   allProducts,
   onClearWishlist,
   setIsProfileOpen,
 }: PopupsManagerProps) {
   const isAnyPopupVisible = isCartOpen || isProfileOpen;
+  const router = useRouter();
+  const { addOrder } = useAppContext();
+  const { clearCart } = useCart();
+  
+  const handleFinalizeOrder = () => {
+    if (!cart) return;
+
+    const newOrderId = generateOrderId();
+    const subtotal = Object.entries(cart).reduce((acc, [name, quantity]) => {
+        const price = productPrices[name] || 0;
+        return acc + (price * quantity);
+    }, 0);
+    
+    const discount = 500.00;
+    const subtotalAfterDiscount = subtotal - discount;
+    const gstRate = 0.18;
+    const gstAmount = subtotalAfterDiscount * gstRate;
+    const total = subtotalAfterDiscount + gstAmount;
+
+    addOrder({
+        id: newOrderId,
+        date: new Date().toISOString(),
+        items: Object.entries(cart).map(([name, quantity]) => ({ name, quantity })),
+        status: 'Order Requested',
+        total: total > 0 ? total : 0,
+    });
+
+    if(onToggleCartPopup) onToggleCartPopup();
+    clearCart();
+    router.push(`/order-confirmed?orderId=${newOrderId}`);
+  };
+
 
   return (
     <>
       {isAnyPopupVisible && <div className="fixed inset-0 z-40 bg-black/50" />}
       
-      {isCartOpen && cart && onClearCart && onFinalizeOrder && onAddToCart && onToggleCartPopup && (
+      {isCartOpen && cart && onClearCart && onAddToCart && onToggleCartPopup && (
           <div 
             className={cn("fixed inset-x-0 bottom-0 z-50 h-[82vh] data-[state=closed]:animate-slide-down-out data-[state=open]:animate-slide-up-in")}
             data-state={isCartOpen ? 'open' : 'closed'}
@@ -52,7 +112,7 @@ export function PopupsManager({
                     onClose={onToggleCartPopup}
                     cart={cart}
                     onClearCart={onClearCart}
-                    onFinalizeOrder={onFinalizeOrder}
+                    onFinalizeOrder={handleFinalizeOrder}
                     onQuantityChange={onAddToCart}
                   />
               </div>
