@@ -1,6 +1,7 @@
 // @/app/faq/faq-client-page.tsx
 'use client'; 
 
+import { useState, type UIEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import { Header } from "@/components/header";
 import { SparkleBackground } from '@/components/sparkle-background';
@@ -12,10 +13,14 @@ import { useIsMobile } from '@/hooks/use-mobile';
 export default function FaqPageClient({ children }: { children: React.ReactNode }) {
   const isMobile = useIsMobile();
   const router = useRouter();
+  const [isContentScrolled, setIsContentScrolled] = useState(false);
 
-  // This is the corrected function
   const handleHeaderNavigate = (view: 'about' | 'faq') => {
     router.push(`/${view}`);
+  };
+
+  const handleScroll = (event: UIEvent<HTMLDivElement>) => {
+    setIsContentScrolled(event.currentTarget.scrollTop > 0);
   };
 
   return (
@@ -24,15 +29,18 @@ export default function FaqPageClient({ children }: { children: React.ReactNode 
       <div className="flex flex-col h-screen">
         <Header
           onProfileOpenChange={() => {}}
-          isContentScrolled={isMobile}
+          isContentScrolled={isMobile ? true : isContentScrolled}
           onReset={() => router.push('/')}
           onNavigate={handleHeaderNavigate}
           activeView={'faq'}
         />
-        <main className={cn(
-          "flex-grow flex flex-col overflow-y-auto no-scrollbar transition-all duration-300",
-          isMobile ? "pt-24" : "pt-36"
-        )}>
+        <main 
+          onScroll={handleScroll}
+          className={cn(
+            "flex-grow flex flex-col overflow-y-auto no-scrollbar transition-all duration-300",
+            isMobile ? "pt-24" : "pt-36"
+          )}
+        >
           {children} {/* Renders the FaqContent server component */}
           <Footer />
         </main>
