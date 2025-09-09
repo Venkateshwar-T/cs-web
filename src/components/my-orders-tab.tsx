@@ -10,13 +10,26 @@ import { SectionTitle } from './section-title';
 import { Separator } from './ui/separator';
 import { useAppContext } from '@/context/app-context';
 import { Loader } from './loader';
+import { Button } from './ui/button';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+
 
 interface MyOrdersTabProps {
   isMobile?: boolean;
 }
 
 export function MyOrdersTab({ isMobile = false }: MyOrdersTabProps) {
-    const { orders, isOrdersLoaded } = useAppContext();
+    const { orders, isOrdersLoaded, clearOrders } = useAppContext();
     const router = useRouter();
 
     if (!isOrdersLoaded) {
@@ -39,8 +52,34 @@ export function MyOrdersTab({ isMobile = false }: MyOrdersTabProps) {
             <div className="flex flex-col h-full text-white">
                  {orders.length > 0 && latestOrder ? (
                     <div className="bg-transparent rounded-2xl flex flex-col">
+                        <div className="flex justify-between items-center px-2 pt-4">
+                           <SectionTitle className="text-base text-white pb-2 pl-0 mb-0">Latest Order</SectionTitle>
+                           <AlertDialog>
+                              <AlertDialogTrigger asChild>
+                                <Button
+                                  variant="destructive"
+                                  size="sm"
+                                  className="bg-red-500 text-white rounded-full hover:bg-red-600/90 text-xs h-8 px-3 disabled:opacity-50"
+                                  disabled={orders.length === 0}
+                                >
+                                  Clear History
+                                </Button>
+                              </AlertDialogTrigger>
+                              <AlertDialogContent>
+                                <AlertDialogHeader>
+                                  <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                                  <AlertDialogDescription>
+                                    This will permanently remove all items from your order history.
+                                  </AlertDialogDescription>
+                                </AlertDialogHeader>
+                                <AlertDialogFooter>
+                                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                  <AlertDialogAction onClick={clearOrders}>Confirm</AlertDialogAction>
+                                </AlertDialogFooter>
+                              </AlertDialogContent>
+                            </AlertDialog>
+                        </div>
                         <div className="overflow-y-auto no-scrollbar py-4">
-                           <SectionTitle className="text-base text-white pb-2 pl-2 mb-0">Latest Order</SectionTitle>
                            <div className='space-y-4'>
                             <OrderItemCard 
                                 key={latestOrder.id} 
@@ -84,7 +123,34 @@ export function MyOrdersTab({ isMobile = false }: MyOrdersTabProps) {
 
     return (
         <div className="p-8 text-white h-full flex flex-col relative pb-2">
-            <h2 className="text-3xl font-normal font-poppins self-start mb-6">My Orders</h2>
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-3xl font-normal font-poppins self-start">My Orders</h2>
+              {orders.length > 0 && (
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button
+                      variant="destructive"
+                      className="bg-red-500 text-white rounded-full hover:bg-red-600/90 text-sm h-9 px-4 disabled:opacity-50"
+                      disabled={orders.length === 0}
+                    >
+                      Clear History
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        This will permanently remove all items from your order history.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogAction onClick={clearOrders}>Confirm</AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+              )}
+            </div>
              {orders.length > 0 && latestOrder ? (
                 <div className="flex-grow overflow-y-auto no-scrollbar">
                     <SectionTitle className="text-xl text-white/90 pl-3 mb-2">Latest Order</SectionTitle>

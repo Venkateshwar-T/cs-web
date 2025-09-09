@@ -1,3 +1,4 @@
+
 // @/context/app-context.tsx
 'use client';
 
@@ -32,6 +33,7 @@ interface AppContextType {
   orders: Order[];
   addOrder: (newOrder: Order) => void;
   isOrdersLoaded: boolean;
+  clearOrders: () => void;
 }
 
 const defaultProfileInfo: ProfileInfo = {
@@ -82,6 +84,10 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
     setOrders(prevOrders => [newOrder, ...prevOrders]);
   }, [setOrders]);
 
+  const clearOrders = useCallback(() => {
+    setOrders([]);
+  }, [setOrders]);
+
   const value: AppContextType = {
     profileInfo,
     updateProfileInfo,
@@ -92,6 +98,7 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
     orders,
     addOrder,
     isOrdersLoaded,
+    clearOrders,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
