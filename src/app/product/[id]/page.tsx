@@ -34,7 +34,7 @@ const allProducts: Product[] = Array.from({ length: 12 }).map((_, i) => ({
 export default function ProductPage() {
   const router = useRouter();
   const params = useParams();
-  const { cart, updateCart, clearCart, likedProducts, toggleLike, clearWishlist } = useAppContext();
+  const { cart, updateCart, likedProducts, toggleLike } = useAppContext();
   const isMobile = useIsMobile();
   
   const [product, setProduct] = useState<Product | null>(null);
@@ -246,7 +246,7 @@ export default function ProductPage() {
            <FeaturedProducts 
               products={allProducts}
               onProductClick={handleProductClick}
-              onAddToCart={onAddToCart}
+              onAddToCart={updateCart}
               cart={cart}
               likedProducts={likedProducts}
               onLikeToggle={toggleLike}
@@ -268,15 +268,7 @@ export default function ProductPage() {
       <PopupsManager
         isProfileOpen={isProfileOpen}
         setIsProfileOpen={setIsProfileOpen}
-        likedProducts={likedProducts}
-        onLikeToggle={toggleLike}
-        cart={cart}
-        onAddToCart={updateCart}
-        onClearCart={clearCart}
-        onToggleCartPopup={handleToggleCartPopup}
         allProducts={allProducts}
-        onClearWishlist={clearWishlist}
-        isCartOpen={isCartOpen}
       />
       <BottomNavbar activeView={'search'} onNavigate={handleNavigation} cartItemCount={cartItemCount} />
     </>
