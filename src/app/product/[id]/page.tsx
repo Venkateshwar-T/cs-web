@@ -273,12 +273,6 @@ export default function ProductPage() {
       <PopupsManager
         isProfileOpen={isProfileOpen}
         setIsProfileOpen={setIsProfileOpen}
-        profileInfo={{
-            name: 'John Doe',
-            phone: '+1 234 567 890',
-            email: 'john.doe@example.com',
-        }}
-        onProfileUpdate={(updatedProfile: Partial<any>) => console.log("Profile updated", updatedProfile)}
         likedProducts={likedProducts}
         onLikeToggle={handleLikeToggle}
         cart={cart}

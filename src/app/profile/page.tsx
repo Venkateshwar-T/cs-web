@@ -12,6 +12,8 @@ import { useCart } from '@/hooks/use-cart';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { ProfileMobileView } from '@/components/profile-mobile-view';
 import { StaticSparkleBackground } from '@/components/static-sparkle-background';
+import { useAppContext } from '@/context/app-context';
+import { Loader } from '@/components/loader';
 
 const allProducts: Product[] = Array.from({ length: 12 }).map((_, i) => ({
   id: i,
@@ -26,11 +28,7 @@ export default function ProfilePage() {
   const isMobile = useIsMobile();
   const [likedProducts, setLikedProducts] = useState<Record<number, boolean>>({1:true, 2:true});
   
-  const [profileInfo, setProfileInfo] = useState<ProfileInfo>({
-    name: 'John Doe',
-    phone: '+1 234 567 890',
-    email: 'john.doe@example.com',
-  });
+  const { profileInfo, updateProfileInfo, isProfileLoaded } = useAppContext();
 
   const handleNavigation = (view: ActiveView) => {
     if (view === 'home') {
@@ -46,7 +44,7 @@ export default function ProfilePage() {
   }
 
   const handleProfileUpdate = (updatedProfile: Partial<ProfileInfo>) => {
-    setProfileInfo(prev => ({ ...prev, ...updatedProfile }));
+    updateProfileInfo(updatedProfile);
   };
 
   const handleLikeToggle = (productId: number) => {
@@ -66,6 +64,14 @@ export default function ProfilePage() {
   };
 
   const cartItemCount = Object.values(cart).reduce((acc, quantity) => acc + quantity, 0);
+  
+  if (!isProfileLoaded) {
+    return (
+      <div className="flex h-screen w-full items-center justify-center bg-background">
+        <Loader />
+      </div>
+    )
+  }
 
   return (
     <>

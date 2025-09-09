@@ -4,6 +4,7 @@ import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
 import { ProgressBarComponent } from '@/components/progress-bar';
 import { Suspense } from 'react';
+import { AppContextProvider } from '@/context/app-context';
 
 export const metadata: Metadata = {
   title: 'BizHome',
@@ -25,8 +26,10 @@ export default function RootLayout({
       </head>
       <body className="font-body antialiased">
         <Suspense fallback={null}>
-          <ProgressBarComponent />
-          {children}
+          <AppContextProvider>
+            <ProgressBarComponent />
+            {children}
+          </AppContextProvider>
         </Suspense>
         <Toaster />
       </body>

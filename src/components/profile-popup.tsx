@@ -19,11 +19,11 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
+import { useAppContext } from '@/context/app-context';
+import { Loader } from './loader';
 
 interface ProfilePopupProps {
   onClose: () => void;
-  profile: ProfileInfo;
-  onProfileUpdate: (updatedProfile: Partial<ProfileInfo>) => void;
   products: Product[];
   likedProducts: Record<number, boolean>;
   onLikeToggle: (productId: number) => void;
@@ -34,8 +34,6 @@ interface ProfilePopupProps {
 
 export function ProfilePopup({ 
   onClose, 
-  profile, 
-  onProfileUpdate, 
   products, 
   likedProducts, 
   onLikeToggle,
@@ -47,6 +45,8 @@ export function ProfilePopup({
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   const [isDialogVisible, setIsDialogVisible] = useState(false);
   const [pendingAction, setPendingAction] = useState<(() => void) | null>(null);
+  
+  const { profileInfo, updateProfileInfo, isProfileLoaded } = useAppContext();
 
   const handleActionWithCheck = (action: () => void) => {
     if (hasUnsavedChanges) {
@@ -78,6 +78,10 @@ export function ProfilePopup({
     setPendingAction(null);
   };
 
+  const handleProfileUpdate = (updatedProfile: Partial<ProfileInfo>) => {
+    updateProfileInfo(updatedProfile);
+  };
+
   return (
     <>
       <div className="bg-transparent w-[60vw] h-[85vh] relative rounded-3xl overflow-hidden animate-fade-in">
@@ -93,25 +97,29 @@ export function ProfilePopup({
                   <ProfileSidebar activeTab={activeTab} onTabChange={handleTabChange} />
               </div>
               <div className="w-[75%] h-full bg-custom-purple-dark overflow-y-auto no-scrollbar">
-                  {activeTab === 'My Profile' && (
-                    <ProfileDetailsView 
-                      profile={profile} 
-                      onHasChangesChange={setHasUnsavedChanges}
-                      onProfileUpdate={onProfileUpdate}
-                    />
-                  )}
-                  {activeTab === 'My Wishlist' && (
-                    <WishlistView
-                      products={products}
-                      likedProducts={likedProducts}
-                      onLikeToggle={onLikeToggle}
-                      onAddToCart={onAddToCart}
-                      cart={cart}
-                      onClearWishlist={onClearWishlist}
-                    />
-                  )}
-                  {activeTab === 'My Orders' && (
-                    <MyOrdersTab />
+                  {!isProfileLoaded ? <div className="h-full w-full flex items-center justify-center"><Loader /></div> : (
+                    <>
+                      {activeTab === 'My Profile' && (
+                        <ProfileDetailsView 
+                          profile={profileInfo} 
+                          onHasChangesChange={setHasUnsavedChanges}
+                          onProfileUpdate={handleProfileUpdate}
+                        />
+                      )}
+                      {activeTab === 'My Wishlist' && (
+                        <WishlistView
+                          products={products}
+                          likedProducts={likedProducts}
+                          onLikeToggle={onLikeToggle}
+                          onAddToCart={onAddToCart}
+                          cart={cart}
+                          onClearWishlist={onClearWishlist}
+                        />
+                      )}
+                      {activeTab === 'My Orders' && (
+                        <MyOrdersTab />
+                      )}
+                    </>
                   )}
               </div>
           </div>

@@ -3,7 +3,7 @@
 
 import { CartPopup } from '@/components/cart-popup';
 import { ProfilePopup } from '@/components/profile-popup';
-import type { Product, ProfileInfo } from '@/app/page';
+import type { Product } from '@/app/page';
 import { cn } from '@/lib/utils';
 import { useState, useEffect } from 'react';
 
@@ -17,8 +17,6 @@ interface PopupsManagerProps {
   onToggleCartPopup?: () => void;
   onClearCart?: () => void;
   onFinalizeOrder?: () => void;
-  onProfileUpdate?: (updatedProfile: Partial<ProfileInfo>) => void;
-  profileInfo?: ProfileInfo;
   allProducts?: Product[];
   onClearWishlist?: () => void;
   setIsProfileOpen: (isOpen: boolean) => void;
@@ -34,8 +32,6 @@ export function PopupsManager({
   onToggleCartPopup,
   onClearCart,
   onFinalizeOrder,
-  onProfileUpdate,
-  profileInfo,
   allProducts,
   onClearWishlist,
   setIsProfileOpen,
@@ -63,12 +59,10 @@ export function PopupsManager({
           </div>
       )}
 
-      {isProfileOpen && profileInfo && onProfileUpdate && allProducts && likedProducts && onLikeToggle && cart && onAddToCart && onClearWishlist && (
+      {isProfileOpen && allProducts && likedProducts && onLikeToggle && cart && onAddToCart && onClearWishlist && (
           <div className="fixed inset-0 z-50 flex items-center justify-center">
             <ProfilePopup 
               onClose={() => setIsProfileOpen(false)} 
-              profile={profileInfo} 
-              onProfileUpdate={onProfileUpdate}
               products={allProducts}
               likedProducts={likedProducts}
               onLikeToggle={onLikeToggle}

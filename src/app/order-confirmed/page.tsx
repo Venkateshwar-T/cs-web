@@ -4,7 +4,7 @@
 import { useState, useEffect, type UIEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import { useCart } from '@/hooks/use-cart';
-import type { ProfileInfo, Product } from '@/app/page';
+import type { Product } from '@/app/page';
 import { cn } from '@/lib/utils';
 import { Header } from '@/components/header';
 import { SparkleBackground } from '@/components/sparkle-background';
@@ -17,6 +17,7 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import { StaticSparkleBackground } from '@/components/static-sparkle-background';
 import { Loader } from '@/components/loader';
 import { motion } from 'framer-motion';
+import { useAppContext } from '@/context/app-context';
 
 // Mock data for product prices - in a real app this would come from a database or state management
 const productPrices: Record<string, number> = {
@@ -71,11 +72,7 @@ export default function OrderConfirmedPage() {
   const { addOrder } = useOrders();
   
   const [isProfileOpen, setIsProfileOpen] = useState(false);
-  const [profileInfo, setProfileInfo] = useState<ProfileInfo>({
-    name: 'John Doe',
-    phone: '+1 234 567 890',
-    email: 'john.doe@example.com',
-  });
+  const { profileInfo } = useAppContext();
   const [searchInput, setSearchInput] = useState('');
   const [orderId, setOrderId] = useState('');
   const [isLoading, setIsLoading] = useState(true);
@@ -136,10 +133,6 @@ export default function OrderConfirmedPage() {
     else router.push('/');
   };
 
-  const handleProfileUpdate = (updatedProfile: Partial<ProfileInfo>) => {
-    setProfileInfo(prev => ({ ...prev, ...updatedProfile }));
-  };
-
   const handleLikeToggle = (productId: number) => {
     setLikedProducts(prev => ({ ...prev, [productId]: !prev[productId] }));
   };
@@ -182,8 +175,6 @@ export default function OrderConfirmedPage() {
       <PopupsManager
         isProfileOpen={isProfileOpen}
         setIsProfileOpen={setIsProfileOpen}
-        profileInfo={profileInfo}
-        onProfileUpdate={handleProfileUpdate}
         allProducts={allProducts}
         likedProducts={likedProducts}
         onLikeToggle={handleLikeToggle}

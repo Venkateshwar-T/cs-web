@@ -88,11 +88,6 @@ export default function Home() {
     router.push(`/${view}`);
   };
 
-  const handleProfileUpdate = (updatedProfile: Partial<ProfileInfo>) => {
-    // In a real app, you'd likely send this to a server
-    console.log("Profile updated", updatedProfile);
-  };
-
   const handleLikeToggle = (productId: number) => {
     setLikedProducts(prev => ({ ...prev, [productId]: !prev[productId] }));
   };
@@ -141,12 +136,6 @@ export default function Home() {
       <PopupsManager
         isProfileOpen={isProfileOpen}
         setIsProfileOpen={setIsProfileOpen}
-        profileInfo={{
-            name: 'John Doe',
-            phone: '+1 234 567 890',
-            email: 'john.doe@example.com',
-        }}
-        onProfileUpdate={handleProfileUpdate}
         allProducts={allProducts}
         likedProducts={likedProducts}
         onLikeToggle={handleLikeToggle}
