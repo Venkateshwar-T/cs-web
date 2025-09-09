@@ -1,3 +1,4 @@
+
 // @/app/faq/page.tsx
 'use client';
 
