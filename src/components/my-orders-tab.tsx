@@ -3,24 +3,28 @@
 'use client';
 
 import { OrderItemCard } from './order-item-card';
-import { useOrders, type Order } from '@/hooks/use-orders';
 import { ListOrdered } from 'lucide-react';
 import { EmptyState } from './empty-state';
 import { useRouter } from 'next/navigation';
 import { SectionTitle } from './section-title';
 import { Separator } from './ui/separator';
+import { useAppContext } from '@/context/app-context';
+import { Loader } from './loader';
 
 interface MyOrdersTabProps {
   isMobile?: boolean;
 }
 
 export function MyOrdersTab({ isMobile = false }: MyOrdersTabProps) {
-    const { orders, isLoaded } = useOrders();
+    const { orders, isOrdersLoaded } = useAppContext();
     const router = useRouter();
 
-    if (!isLoaded) {
-        // You can return a loader here if you want
-        return null;
+    if (!isOrdersLoaded) {
+        return (
+            <div className="flex h-full w-full items-center justify-center">
+                <Loader />
+            </div>
+        )
     }
     
     const handleExplore = () => {

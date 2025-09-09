@@ -12,7 +12,6 @@ import { BottomNavbar } from '@/components/bottom-navbar';
 import { PopupsManager } from '@/components/popups/popups-manager';
 import { OrderConfirmedView } from '@/components/order-confirmed-view';
 import { Footer } from '@/components/footer';
-import { useOrders } from '@/hooks/use-orders';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { StaticSparkleBackground } from '@/components/static-sparkle-background';
 import { Loader } from '@/components/loader';
@@ -69,7 +68,7 @@ const ProcessingView = () => (
 export default function OrderConfirmedPage() {
   const router = useRouter();
   const { cart, clearCart, updateCart } = useCart();
-  const { addOrder } = useOrders();
+  const { addOrder } = useAppContext();
   const { likedProducts, toggleLike, clearWishlist } = useAppContext();
   
   const [isProfileOpen, setIsProfileOpen] = useState(false);

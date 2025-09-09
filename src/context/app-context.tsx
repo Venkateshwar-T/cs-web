@@ -7,6 +7,20 @@ import { useLocalStorage } from '@/hooks/use-local-storage';
 
 const PROFILE_STORAGE_KEY = 'chocoSmileyProfile';
 const WISHLIST_STORAGE_KEY = 'chocoSmileyWishlist';
+const ORDERS_STORAGE_KEY = 'chocoSmileyOrders';
+
+export type OrderItem = {
+  name: string;
+  quantity: number;
+};
+
+export type Order = {
+  id: string;
+  date: string;
+  items: OrderItem[];
+  status: 'Order Requested' | 'In Progress' | 'Completed' | 'Cancelled';
+  total: number;
+};
 
 interface AppContextType {
   profileInfo: ProfileInfo;
@@ -15,6 +29,9 @@ interface AppContextType {
   likedProducts: Record<number, boolean>;
   toggleLike: (productId: number) => void;
   clearWishlist: () => void;
+  orders: Order[];
+  addOrder: (newOrder: Order) => void;
+  isOrdersLoaded: boolean;
 }
 
 const defaultProfileInfo: ProfileInfo = {
@@ -34,6 +51,11 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
   const [likedProducts, setLikedProducts] = useLocalStorage<Record<number, boolean>>(
     WISHLIST_STORAGE_KEY,
     {}
+  );
+  
+  const [orders, setOrders, isOrdersLoaded] = useLocalStorage<Order[]>(
+    ORDERS_STORAGE_KEY,
+    []
   );
 
   const updateProfileInfo = (newInfo: Partial<ProfileInfo>) => {
@@ -56,6 +78,9 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
     setLikedProducts({});
   }, [setLikedProducts]);
 
+  const addOrder = useCallback((newOrder: Order) => {
+    setOrders(prevOrders => [newOrder, ...prevOrders]);
+  }, [setOrders]);
 
   const value: AppContextType = {
     profileInfo,
@@ -64,6 +89,9 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
     likedProducts,
     toggleLike,
     clearWishlist,
+    orders,
+    addOrder,
+    isOrdersLoaded,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
