@@ -70,6 +70,7 @@ export default function OrderConfirmedPage() {
   const router = useRouter();
   const { cart, clearCart, updateCart } = useCart();
   const { addOrder } = useOrders();
+  const { likedProducts, toggleLike, clearWishlist } = useAppContext();
   
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const { profileInfo } = useAppContext();
@@ -79,7 +80,6 @@ export default function OrderConfirmedPage() {
   const [processedCart, setProcessedCart] = useState<Record<string, number>>({});
   const isMobile = useIsMobile();
   const [isContentScrolled, setIsContentScrolled] = useState(false);
-  const [likedProducts, setLikedProducts] = useState<Record<number, boolean>>({});
     
   useEffect(() => {
     if (Object.keys(cart).length > 0) {
@@ -133,10 +133,6 @@ export default function OrderConfirmedPage() {
     else router.push('/');
   };
 
-  const handleLikeToggle = (productId: number) => {
-    setLikedProducts(prev => ({ ...prev, [productId]: !prev[productId] }));
-  };
-  
   const cartItemCount = Object.values(cart).reduce((acc, quantity) => acc + quantity, 0);
 
   return (
@@ -177,10 +173,10 @@ export default function OrderConfirmedPage() {
         setIsProfileOpen={setIsProfileOpen}
         allProducts={allProducts}
         likedProducts={likedProducts}
-        onLikeToggle={handleLikeToggle}
+        onLikeToggle={toggleLike}
         cart={cart}
         onAddToCart={updateCart}
-        onClearWishlist={() => setLikedProducts({})}
+        onClearWishlist={clearWishlist}
       />
     </>
   );

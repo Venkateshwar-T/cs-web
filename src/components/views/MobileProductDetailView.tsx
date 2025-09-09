@@ -1,3 +1,4 @@
+
 // @/components/views/MobileProductDetailView.tsx
 'use client';
 
@@ -134,7 +135,7 @@ interface MobileProductDetailViewProps {
   cart: Record<string, number>;
   onBuyNow: () => void;
   isLiked: boolean;
-  onLikeToggle: () => void;
+  onLikeToggle: (productId: number) => void;
   flavourCart: Record<string, number>;
   onFlavourAddToCart: (flavourId: number, quantity: number) => void;
 }
@@ -184,7 +185,7 @@ export function MobileProductDetailView({
         </div>
         
         <div className="px-4 pt-6">
-            <ProductDetails product={product} isLiked={isLiked} onLikeToggle={onLikeToggle} isMobile={true} />
+            <ProductDetails product={product} isLiked={isLiked} onLikeToggle={() => onLikeToggle(product.id)} isMobile={true} />
         </div>
         
         <Separator className="my-4 bg-white/30" />

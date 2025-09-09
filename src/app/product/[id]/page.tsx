@@ -25,6 +25,7 @@ import { ProductCard } from '@/components/product-card';
 import { SectionTitle } from '@/components/section-title';
 import { ChevronRight } from 'lucide-react';
 import { StaticSparkleBackground } from '@/components/static-sparkle-background';
+import { useAppContext } from '@/context/app-context';
 
 const allProducts: Product[] = Array.from({ length: 12 }).map((_, i) => ({
   id: i,
@@ -35,10 +36,10 @@ export default function ProductPage() {
   const router = useRouter();
   const params = useParams();
   const { cart, updateCart, clearCart } = useCart();
+  const { likedProducts, toggleLike, clearWishlist } = useAppContext();
   const isMobile = useIsMobile();
   
   const [product, setProduct] = useState<Product | null>(null);
-  const [likedProducts, setLikedProducts] = useState<Record<number, boolean>>({});
   const [flavourCart, setFlavourCart] = useState<Record<string, number>>({});
   
   const [isProfileOpen, setIsProfileOpen] = useState(false);
@@ -84,10 +85,6 @@ export default function ProductPage() {
     router.push(`/search?q=${encodeURIComponent(query)}`);
   };
 
-  const handleLikeToggle = (productId: number) => {
-    setLikedProducts(prev => ({ ...prev, [productId]: !prev[productId] }));
-  };
-  
   const handleAddToCart = (productName: string, quantity: number, animate: boolean = true) => {
     const prevQuantity = cart[productName] || 0;
     updateCart(productName, quantity);
@@ -163,7 +160,7 @@ export default function ProductPage() {
                 cart={cart}
                 onBuyNow={handleBuyNow}
                 isLiked={!!likedProducts[product.id]}
-                onLikeToggle={() => handleLikeToggle(product.id)}
+                onLikeToggle={() => toggleLike(product.id)}
                 flavourCart={flavourCart}
                 onFlavourAddToCart={handleFlavourAddToCart}
               />
@@ -179,7 +176,7 @@ export default function ProductPage() {
                                   onAddToCart={handleAddToCart}
                                   quantity={cart[p.name] || 0}
                                   isLiked={!!likedProducts[p.id]}
-                                  onLikeToggle={() => handleLikeToggle(p.id)}
+                                  onLikeToggle={() => toggleLike(p.id)}
                                   isMobile={isMobile}
                                 />
                             </div>
@@ -240,7 +237,7 @@ export default function ProductPage() {
                   {/* Right Section */}
                   <div className="flex-grow h-full xl:relative lg:relative">
                       <div className="h-full py-0 pr-6 overflow-y-auto custom-scrollbar pb-28">
-                          <ProductDetails product={product} isLiked={!!likedProducts[product.id]} onLikeToggle={() => handleLikeToggle(product.id)} isMobile={false} />
+                          <ProductDetails product={product} isLiked={!!likedProducts[product.id]} onLikeToggle={() => toggleLike(product.id)} isMobile={false} />
                       </div>
                       <ProductPopupFooter product={product} onAddToCart={handleAddToCart} quantity={cart[product.name] || 0} onToggleCartPopup={handleToggleCartPopup} />
                   </div>
@@ -254,7 +251,7 @@ export default function ProductPage() {
               onAddToCart={handleAddToCart}
               cart={cart}
               likedProducts={likedProducts}
-              onLikeToggle={handleLikeToggle}
+              onLikeToggle={toggleLike}
               isMobile={isMobile}
             />
         </main>
@@ -274,13 +271,13 @@ export default function ProductPage() {
         isProfileOpen={isProfileOpen}
         setIsProfileOpen={setIsProfileOpen}
         likedProducts={likedProducts}
-        onLikeToggle={handleLikeToggle}
+        onLikeToggle={toggleLike}
         cart={cart}
         onAddToCart={updateCart}
         onClearCart={clearCart}
         onToggleCartPopup={handleToggleCartPopup}
         allProducts={allProducts}
-        onClearWishlist={() => setLikedProducts({})}
+        onClearWishlist={clearWishlist}
         isCartOpen={isCartOpen}
         onFinalizeOrder={() => {
           setIsCartOpen(false);

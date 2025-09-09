@@ -15,6 +15,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useCart } from '@/hooks/use-cart';
 import { StaticSparkleBackground } from '@/components/static-sparkle-background';
 import { Footer } from '@/components/footer';
+import { useAppContext } from '@/context/app-context';
 
 
 export type Product = {
@@ -35,14 +36,13 @@ const allProducts: Product[] = Array.from({ length: 12 }).map((_, i) => ({
 
 export default function Home() {
   const { cart, updateCart } = useCart();
+  const { likedProducts, toggleLike, clearWishlist } = useAppContext();
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const isMobile = useIsMobile();
   const router = useRouter();
   const [searchInput, setSearchInput] = useState("");
   const { toast } = useToast();
   
-  const [likedProducts, setLikedProducts] = useState<Record<number, boolean>>({});
-
   useEffect(() => {
     if (isProfileOpen) {
       document.body.classList.add('overflow-hidden');
@@ -86,10 +86,6 @@ export default function Home() {
   
   const handleHeaderNavigate = (view: 'about' | 'faq') => {
     router.push(`/${view}`);
-  };
-
-  const handleLikeToggle = (productId: number) => {
-    setLikedProducts(prev => ({ ...prev, [productId]: !prev[productId] }));
   };
 
   const cartItemCount = Object.values(cart).reduce((acc, quantity) => acc + quantity, 0);
@@ -138,10 +134,10 @@ export default function Home() {
         setIsProfileOpen={setIsProfileOpen}
         allProducts={allProducts}
         likedProducts={likedProducts}
-        onLikeToggle={handleLikeToggle}
+        onLikeToggle={toggleLike}
         cart={cart}
         onAddToCart={updateCart}
-        onClearWishlist={() => setLikedProducts({})}
+        onClearWishlist={clearWishlist}
       />
     </>
   );

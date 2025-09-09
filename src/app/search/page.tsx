@@ -16,6 +16,7 @@ import { FloatingCartButton } from '@/components/floating-cart-button';
 import { MobileSearchHeader } from '@/components/header/mobile-search-header';
 import { useCart } from '@/hooks/use-cart';
 import { StaticSparkleBackground } from '@/components/static-sparkle-background';
+import { useAppContext } from '@/context/app-context';
 
 type FilterState = {
   priceRange: [number, number];
@@ -48,9 +49,9 @@ function SearchPageComponent() {
   const [isSearching, setIsSearching] = useState(true);
   const [isNewSearch, setIsNewSearch] = useState(true);
   const { cart, updateCart, clearCart } = useCart();
+  const { likedProducts, toggleLike, clearWishlist } = useAppContext();
   const [cartMessage, setCartMessage] = useState('');
   const [isCartButtonExpanded, setIsCartButtonExpanded] = useState(false);
-  const [likedProducts, setLikedProducts] = useState<Record<number, boolean>>({});
   const [sortOption, setSortOption] = useState("featured");
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
@@ -116,17 +117,6 @@ function SearchPageComponent() {
     });
     setTimeout(() => setIsSearching(false), 500);
   };
-
-  const handleLikeToggle = (productId: number) => {
-    setLikedProducts(prev => {
-      const newLiked = { ...prev };
-      if (newLiked[productId]) delete newLiked[productId];
-      else newLiked[productId] = true;
-      return newLiked;
-    });
-  };
-
-  const handleClearWishlist = () => setLikedProducts({});
 
   const handleToggleCartPopup = () => setIsCartOpen(p => !p);
 
@@ -223,7 +213,7 @@ function SearchPageComponent() {
               activeFilters={activeFilters}
               onRemoveFilter={handleRemoveFilter}
               likedProducts={likedProducts}
-              onLikeToggle={handleLikeToggle}
+              onLikeToggle={toggleLike}
               sortOption={sortOption}
               onSortChange={handleSortChange}
               isFilterSheetOpen={isFilterSheetOpen}
@@ -241,13 +231,13 @@ function SearchPageComponent() {
           isProfileOpen={isProfileOpen}
           setIsProfileOpen={setIsProfileOpen}
           likedProducts={likedProducts}
-          onLikeToggle={handleLikeToggle}
+          onLikeToggle={toggleLike}
           cart={cart}
           onAddToCart={updateCart}
           onClearCart={clearCart}
           onToggleCartPopup={handleToggleCartPopup}
           allProducts={allProducts}
-          onClearWishlist={handleClearWishlist}
+          onClearWishlist={clearWishlist}
           isCartOpen={isCartOpen}
           onFinalizeOrder={() => {
             setIsCartOpen(false);

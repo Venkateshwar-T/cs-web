@@ -1,16 +1,20 @@
 // @/context/app-context.tsx
 'use client';
 
-import { createContext, useContext, ReactNode, useState } from 'react';
-import type { Product, ProfileInfo } from '@/app/page';
+import { createContext, useContext, ReactNode, useCallback } from 'react';
+import type { ProfileInfo } from '@/app/page';
 import { useLocalStorage } from '@/hooks/use-local-storage';
 
 const PROFILE_STORAGE_KEY = 'chocoSmileyProfile';
+const WISHLIST_STORAGE_KEY = 'chocoSmileyWishlist';
 
 interface AppContextType {
   profileInfo: ProfileInfo;
   updateProfileInfo: (newInfo: Partial<ProfileInfo>) => void;
   isProfileLoaded: boolean;
+  likedProducts: Record<number, boolean>;
+  toggleLike: (productId: number) => void;
+  clearWishlist: () => void;
 }
 
 const defaultProfileInfo: ProfileInfo = {
@@ -26,15 +30,40 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
     PROFILE_STORAGE_KEY,
     defaultProfileInfo
   );
+  
+  const [likedProducts, setLikedProducts] = useLocalStorage<Record<number, boolean>>(
+    WISHLIST_STORAGE_KEY,
+    {}
+  );
 
   const updateProfileInfo = (newInfo: Partial<ProfileInfo>) => {
     setProfileInfo(prev => ({ ...prev, ...newInfo }));
   };
 
+  const toggleLike = useCallback((productId: number) => {
+    setLikedProducts(prev => {
+      const newLiked = { ...prev };
+      if (newLiked[productId]) {
+        delete newLiked[productId];
+      } else {
+        newLiked[productId] = true;
+      }
+      return newLiked;
+    });
+  }, [setLikedProducts]);
+
+  const clearWishlist = useCallback(() => {
+    setLikedProducts({});
+  }, [setLikedProducts]);
+
+
   const value: AppContextType = {
     profileInfo,
     updateProfileInfo,
     isProfileLoaded,
+    likedProducts,
+    toggleLike,
+    clearWishlist,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

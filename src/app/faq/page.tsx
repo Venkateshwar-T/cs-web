@@ -23,6 +23,7 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import { StaticSparkleBackground } from '@/components/static-sparkle-background';
 import { cn } from '@/lib/utils';
 import type { Product, ProfileInfo } from '@/app/page';
+import { useAppContext } from '@/context/app-context';
 
 const allProducts: Product[] = Array.from({ length: 12 }).map((_, i) => ({
   id: i,
@@ -119,12 +120,12 @@ const FaqAccordionItem = ({ item, value }: { item: { question: string; answer: s
 export default function FaqPage() {
     const router = useRouter();
     const { cart, updateCart } = useCart();
+    const { likedProducts, toggleLike, clearWishlist } = useAppContext();
     const [isProfileOpen, setIsProfileOpen] = useState(false);
     const [searchInput, setSearchInput] = useState('');
     const [isContentScrolled, setIsContentScrolled] = useState(false);
     const isMobile = useIsMobile();
     const [accordionValue, setAccordionValue] = React.useState('');
-    const [likedProducts, setLikedProducts] = useState<Record<number, boolean>>({});
 
     const handleScroll = (event: UIEvent<HTMLDivElement>) => {
       const { scrollTop } = event.currentTarget;
@@ -141,10 +142,6 @@ export default function FaqPage() {
     const handleHeaderNavigate = (view: 'about' | 'faq') => {
         router.push(`/${view}`);
     }
-
-    const handleLikeToggle = (productId: number) => {
-      setLikedProducts(prev => ({ ...prev, [productId]: !prev[productId] }));
-    };
 
     const cartItemCount = Object.values(cart).reduce((acc, quantity) => acc + quantity, 0);
 
@@ -200,10 +197,10 @@ export default function FaqPage() {
                 setIsProfileOpen={setIsProfileOpen}
                 allProducts={allProducts}
                 likedProducts={likedProducts}
-                onLikeToggle={handleLikeToggle}
+                onLikeToggle={toggleLike}
                 cart={cart}
                 onAddToCart={updateCart}
-                onClearWishlist={() => setLikedProducts({})}
+                onClearWishlist={clearWishlist}
             />
             <BottomNavbar activeView={'faq'} onNavigate={handleNavigation} cartItemCount={cartItemCount} />
         </>

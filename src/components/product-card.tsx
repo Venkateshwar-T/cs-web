@@ -16,7 +16,7 @@ interface ProductCardProps {
   quantity: number;
   onProductClick: (product: Product) => void;
   isLiked: boolean;
-  onLikeToggle: () => void;
+  onLikeToggle: (productId: number) => void;
   isMobile?: boolean;
 }
 
@@ -91,7 +91,7 @@ export function ProductCard({ product, onAddToCart, quantity, onProductClick, is
   
   const handleLikeClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    onLikeToggle();
+    onLikeToggle(product.id);
   }
 
   const handleMouseEnter = () => {

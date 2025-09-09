@@ -26,9 +26,14 @@ export default function ProfilePage() {
   const router = useRouter();
   const { cart, updateCart } = useCart();
   const isMobile = useIsMobile();
-  const [likedProducts, setLikedProducts] = useState<Record<number, boolean>>({1:true, 2:true});
-  
-  const { profileInfo, updateProfileInfo, isProfileLoaded } = useAppContext();
+  const { 
+    profileInfo, 
+    updateProfileInfo, 
+    isProfileLoaded,
+    likedProducts,
+    toggleLike,
+    clearWishlist
+  } = useAppContext();
 
   const handleNavigation = (view: ActiveView) => {
     if (view === 'home') {
@@ -45,22 +50,6 @@ export default function ProfilePage() {
 
   const handleProfileUpdate = (updatedProfile: Partial<ProfileInfo>) => {
     updateProfileInfo(updatedProfile);
-  };
-
-  const handleLikeToggle = (productId: number) => {
-    setLikedProducts(prev => {
-      const newLiked = { ...prev };
-      if (newLiked[productId]) {
-        delete newLiked[productId];
-      } else {
-        newLiked[productId] = true;
-      }
-      return newLiked;
-    });
-  };
-
-  const handleClearWishlist = () => {
-    setLikedProducts({});
   };
 
   const cartItemCount = Object.values(cart).reduce((acc, quantity) => acc + quantity, 0);
@@ -95,10 +84,10 @@ export default function ProfilePage() {
               onProfileUpdate={handleProfileUpdate}
               products={allProducts}
               likedProducts={likedProducts}
-              onLikeToggle={handleLikeToggle}
+              onLikeToggle={toggleLike}
               onAddToCart={updateCart}
               cart={cart}
-              onClearWishlist={handleClearWishlist}
+              onClearWishlist={clearWishlist}
             />
           ) : (
             <div className="flex flex-col items-center justify-center h-full gap-4 text-center px-4">
