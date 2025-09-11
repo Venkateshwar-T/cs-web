@@ -3,7 +3,7 @@
 
 import { CartPopup } from '@/components/cart-popup';
 import { ProfilePopup } from '@/components/profile-popup';
-import type { Product } from '@/app/page';
+import type { SanityProduct } from '@/types';
 import { cn } from '@/lib/utils';
 import { useRouter } from 'next/navigation';
 import { useAppContext } from '@/context/app-context';
@@ -15,13 +15,13 @@ import { CompleteDetailsPopup } from '../complete-details-popup';
 interface PopupsManagerProps {
   isCartOpen?: boolean;
   isProfileOpen: boolean;
-  likedProducts?: Record<number, boolean>;
-  onLikeToggle?: (productId: number) => void;
+  likedProducts?: Record<string, boolean>;
+  onLikeToggle?: (productId: string) => void;
   cart?: Record<string, number>;
   onAddToCart?: (productName: string, quantity: number) => void;
   onToggleCartPopup?: () => void;
   onClearCart?: () => void;
-  allProducts?: Product[];
+  allProducts?: SanityProduct[];
   onClearWishlist?: () => void;
   setIsProfileOpen: (isOpen: boolean) => void;
 }

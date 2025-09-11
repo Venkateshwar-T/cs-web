@@ -6,17 +6,16 @@ import { Button } from '@/components/ui/button';
 import { Heart, Plus, Minus } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
-import type { Product } from '@/app/page';
-import { productImages } from '@/lib/images';
+import type { SanityProduct } from '@/types';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface ProductCardProps {
-  product: Product;
+  product: SanityProduct;
   onAddToCart: (productName: string, quantity: number) => void;
   quantity: number;
-  onProductClick: (product: Product) => void;
+  onProductClick: (product: SanityProduct) => void;
   isLiked: boolean;
-  onLikeToggle: (productId: number) => void;
+  onLikeToggle: (productId: string) => void;
   isMobile?: boolean;
 }
 
@@ -42,37 +41,35 @@ export function ProductCard({ product, onAddToCart, quantity, onProductClick, is
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isAnimatingLike, setIsAnimatingLike] = useState(false);
 
+  const images = product.images || [];
+
   useEffect(() => {
-    if (!isHovered || isMobile) {
+    if (!isHovered || isMobile || images.length <= 1) {
       return;
     }
 
     let timeoutId: NodeJS.Timeout;
     let intervalId: NodeJS.Timeout;
 
-    // After the initial instant switch, wait 2 seconds then start the interval
     timeoutId = setTimeout(() => {
       intervalId = setInterval(() => {
-        setCurrentImageIndex((prevIndex) => (prevIndex + 1) % productImages.length);
+        setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
       }, 2000);
     }, 2000);
 
-    // Cleanup function to clear the timers
     return () => {
       clearTimeout(timeoutId);
       clearInterval(intervalId);
     };
-  }, [isHovered, currentImageIndex, isMobile]);
+  }, [isHovered, currentImageIndex, isMobile, images.length]);
   
   useEffect(() => {
-    // This effect is purely for the animation. It doesn't need to run on initial render.
     if (isLiked) {
         setIsAnimatingLike(true);
-        const timer = setTimeout(() => setIsAnimatingLike(false), 300); // duration of the animation
+        const timer = setTimeout(() => setIsAnimatingLike(false), 300);
         return () => clearTimeout(timer);
     }
   }, [isLiked]);
-
 
   const handleAddToCartClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -91,20 +88,18 @@ export function ProductCard({ product, onAddToCart, quantity, onProductClick, is
   
   const handleLikeClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    onLikeToggle(product.id);
+    onLikeToggle(product._id);
   }
 
   const handleMouseEnter = () => {
-    if (isMobile) return;
+    if (isMobile || images.length <= 1) return;
     setIsHovered(true);
-    // Instantly switch to the second image on hover
     setCurrentImageIndex(1);
   };
 
   const handleMouseLeave = () => {
     if (isMobile) return;
     setIsHovered(false);
-    // Reset to the first image when mouse leaves
     setCurrentImageIndex(0);
   };
 
@@ -127,6 +122,12 @@ export function ProductCard({ product, onAddToCart, quantity, onProductClick, is
       />
     </button>
   );
+
+  const discountPercentage = product.mrp && product.discountedPrice && product.mrp > product.discountedPrice
+    ? Math.round(((product.mrp - product.discountedPrice) / product.mrp) * 100)
+    : null;
+
+  const subtitle = [product.weight, product.composition, product.packageType].filter(Boolean).join(' | ');
 
   return (
     <div
@@ -157,7 +158,7 @@ export function ProductCard({ product, onAddToCart, quantity, onProductClick, is
               }}
             >
               <Image
-                src={productImages[currentImageIndex].src}
+                src={images.length > 0 ? images[currentImageIndex] : '/placeholder.png'}
                 alt={product.name}
                 layout="fill"
                 objectFit="cover"
@@ -182,14 +183,14 @@ export function ProductCard({ product, onAddToCart, quantity, onProductClick, is
           <p className={cn(
             "text-[#9A7DAB] mt-1 whitespace-nowrap truncate",
             isMobile ? "text-[11px]" : "text-xs"
-          )}>250g | Assorted | Hard Box</p>
+          )}>{subtitle}</p>
         </div>
         <div className="mt-2 md:mt-4 flex flex-col items-start gap-2 md:flex-row md:items-center md:gap-0">
           <div>
-            <p className="text-xs text-gray-500 line-through font-bold">₹1000</p>
+            {product.mrp && <p className="text-xs text-gray-500 line-through font-bold">₹{product.mrp}</p>}
             <div className="flex items-center">
-              <p className="font-bold text-sm md:text-base">₹750</p>
-              <p className="text-custom-gold text-xs font-semibold ml-2">25% OFF</p>
+              {product.discountedPrice && <p className="font-bold text-sm md:text-base">₹{product.discountedPrice}</p>}
+              {discountPercentage && <p className="text-custom-gold text-xs font-semibold ml-2">{discountPercentage}% OFF</p>}
             </div>
           </div>
           <div className="w-full md:w-auto md:flex-grow md:ml-2">

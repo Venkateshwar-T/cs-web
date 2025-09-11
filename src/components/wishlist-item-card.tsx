@@ -5,10 +5,10 @@ import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Heart } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import type { Product } from '@/app/page';
+import type { SanityProduct } from '@/types';
 
 interface WishlistItemCardProps {
-  product: Product;
+  product: SanityProduct;
   onAddToCart: (productName: string, quantity: number) => void;
   onUnlike: () => void;
   isInCart: boolean;
@@ -25,6 +25,8 @@ export function WishlistItemCard({ product, onAddToCart, onUnlike, isInCart, isU
     onAddToCart(product.name, isInCart ? 0 : 1);
   };
 
+  const subtitle = [product.weight, product.composition, product.packageType].filter(Boolean).join(' | ');
+
   if (isMobile) {
     return (
        <div 
@@ -38,13 +40,12 @@ export function WishlistItemCard({ product, onAddToCart, onUnlike, isInCart, isU
         <div className="flex gap-3 items-center">
           <div className="w-1/4 h-20 flex-shrink-0 relative">
             <Image
-              src="/choco img.png"
+              src={product.images && product.images.length > 0 ? product.images[0] : "/placeholder.png"}
               alt={product.name}
               layout="fill"
               objectFit="cover"
               className="rounded-lg"
               onDragStart={(e) => e.preventDefault()}
-              data-ai-hint="chocolate box"
             />
           </div>
 
@@ -56,11 +57,11 @@ export function WishlistItemCard({ product, onAddToCart, onUnlike, isInCart, isU
                     <Heart className="h-5 w-5 text-red-500 fill-red-500" />
                   </button>
               </div>
-              <p className="text-xs text-black/70 truncate">250g | Assorted | Hard-Box</p>
+              <p className="text-xs text-black/70 truncate">{subtitle}</p>
             </div>
             
             <div className="flex justify-between items-end gap-2">
-                <p className="font-bold text-base text-custom-purple-dark mt-1 truncate">₹750</p>
+                {product.discountedPrice && <p className="font-bold text-base text-custom-purple-dark mt-1 truncate">₹{product.discountedPrice}</p>}
                 <Button
                   size="sm"
                   onClick={handleAddToCartClick}
@@ -89,15 +90,14 @@ export function WishlistItemCard({ product, onAddToCart, onUnlike, isInCart, isU
       )}
     >
       <div className="flex gap-3 items-center">
-        <div className="w-1/4 h-24 flex-shrink-0">
+        <div className="w-1/4 h-24 flex-shrink-0 relative">
           <Image
-            src="/choco img.png"
+            src={product.images && product.images.length > 0 ? product.images[0] : "/placeholder.png"}
             alt={product.name}
-            width={100}
-            height={100}
-            className="rounded-lg object-cover w-full h-full"
+            layout="fill"
+            objectFit="cover"
+            className="rounded-lg"
             onDragStart={(e) => e.preventDefault()}
-            data-ai-hint="chocolate box"
           />
         </div>
 
@@ -109,10 +109,10 @@ export function WishlistItemCard({ product, onAddToCart, onUnlike, isInCart, isU
                   <Heart className="h-6 w-6 text-red-500 fill-red-500" />
                 </button>
             </div>
-            <p className="text-sm text-black/70 truncate mt-1">250g | Assorted | Hard-Box</p>
+            <p className="text-sm text-black/70 truncate mt-1">{subtitle}</p>
           </div>
           <div className="flex justify-between items-end gap-2">
-            <p className="font-bold text-xl text-custom-purple-dark truncate">₹750</p>
+            {product.discountedPrice && <p className="font-bold text-xl text-custom-purple-dark truncate">₹{product.discountedPrice}</p>}
             <Button
               size="sm"
               onClick={handleAddToCartClick}

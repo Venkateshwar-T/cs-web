@@ -1,53 +1,44 @@
 // @/components/filter-container.tsx
 'use client';
 
-import type { FilterState } from '@/app/page';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { FilterControls } from './filter-controls';
+import type { StructuredFilter } from '@/types';
+import { useCallback } from 'react';
 
 interface FilterContainerProps {
-    filters: FilterState;
-    onFilterChange: (newFilters: Partial<FilterState>) => void;
+    filters: StructuredFilter[];
     isMobile?: boolean;
 }
 
-export function FilterContainer({ filters, onFilterChange, isMobile = false }: FilterContainerProps) {
+export function FilterContainer({ filters, isMobile = false }: FilterContainerProps) {
+    const router = useRouter();
+    const searchParams = useSearchParams();
 
-  const handlePriceOptionChange = (optionId: string, checked: boolean) => {
-    const newSelected = checked
-      ? [...filters.selectedPriceOptions, optionId]
-      : filters.selectedPriceOptions.filter(id => id !== optionId);
-    onFilterChange({ selectedPriceOptions: newSelected });
-  };
-  
-  const handleSliderChange = (value: [number, number]) => {
-    onFilterChange({ priceRange: value, selectedPriceOptions: [] });
-  };
+    const handleFilterChange = useCallback((categoryKey: string, optionTitle: string, checked: boolean) => {
+        const params = new URLSearchParams(searchParams.toString());
+        
+        const existingValues = params.getAll(categoryKey);
 
-  const createHandler = (filterKey: keyof FilterState) => (id: string, checked: boolean) => {
-    const currentValues = filters[filterKey];
-    if (Array.isArray(currentValues)) {
-        const newValues = checked
-            ? [...currentValues, id]
-            : currentValues.filter(val => val !== id);
-        onFilterChange({ [filterKey]: newValues } as Partial<FilterState>);
-    }
-  };
+        if (checked) {
+            if (!existingValues.includes(optionTitle)) {
+                params.append(categoryKey, optionTitle);
+            }
+        } else {
+            const newValues = existingValues.filter(v => v !== optionTitle);
+            params.delete(categoryKey);
+            newValues.forEach(v => params.append(categoryKey, v));
+        }
 
-  const handleFlavourChange = createHandler('selectedFlavours');
-  const handleOccasionChange = createHandler('selectedOccasions');
-  const handleProductTypeChange = createHandler('selectedProductTypes');
-  const handleWeightChange = createHandler('selectedWeights');
+        router.replace(`?${params.toString()}`, { scroll: false });
+    }, [router, searchParams]);
 
-  return (
-    <FilterControls 
-        filters={filters}
-        onPriceOptionChange={handlePriceOptionChange}
-        onSliderChange={handleSliderChange}
-        onFlavourChange={handleFlavourChange}
-        onOccasionChange={handleOccasionChange}
-        onProductTypeChange={handleProductTypeChange}
-        onWeightChange={handleWeightChange}
-        isMobile={isMobile}
-    />
-  );
+    return (
+        <FilterControls 
+            structuredFilters={filters}
+            isMobile={isMobile}
+            searchParams={searchParams}
+            onFilterChange={handleFilterChange}
+        />
+    );
 }

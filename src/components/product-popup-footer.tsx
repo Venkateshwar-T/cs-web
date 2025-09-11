@@ -3,11 +3,11 @@
 
 import { Button } from './ui/button';
 import { cn } from '@/lib/utils';
-import type { Product } from '@/app/page';
+import type { SanityProduct } from '@/types';
 import { Plus, Minus } from 'lucide-react';
 
 interface ProductPopupFooterProps {
-    product: Product;
+    product: SanityProduct;
     onAddToCart: (productName: string, quantity: number, animate?: boolean) => void;
     quantity: number;
     onToggleCartPopup: () => void;
@@ -34,21 +34,27 @@ export function ProductPopupFooter({ product, onAddToCart, quantity, onToggleCar
         onToggleCartPopup();
     };
 
+    const discountPercentage = product.mrp && product.discountedPrice && product.mrp > product.discountedPrice
+        ? Math.round(((product.mrp - product.discountedPrice) / product.mrp) * 100)
+        : null;
+
     return (
         <div className="absolute bottom-0 left-0 right-0 md:h-[8%] lg:h-[11%] animate-slide-up-fade-in" style={{ animationDuration: '0.2s', animationDelay: '0.1s', animationFillMode: 'both' }}>
             <div className="bg-custom-purple-dark h-full w-full md:rounded-t-xl lg:rounded-t-2xl xl:rounded-t-3xl flex items-center justify-center">
                 <div className="flex items-center justify-center md:gap-6 lg:gap-2 xl:gap-4 text-white w-full">
                     <div className="flex flex-col items-center">
-                        <p className="lg:text-sm xl:text-sm opacity-100">
-                          <span className="relative inline-block
-                            after:content-[''] after:absolute after:left-0 after:top-1/2 after:h-[1.5px] after:bg-white after:animate-cut-through after:origin-left">
-                              ₹1000
-                          </span>
-                        </p>
-                        <p className="lg:text-sm xl:text-m text-custom-gold font-semibold animate-shake" style={{ animationIterationCount: 'infinite', animationDuration: '8s' }}>25% OFF</p>
+                        {product.mrp && (
+                            <p className="lg:text-sm xl:text-sm opacity-100">
+                              <span className="relative inline-block
+                                after:content-[''] after:absolute after:left-0 after:top-1/2 after:h-[1.5px] after:bg-white after:animate-cut-through after:origin-left">
+                                  ₹{product.mrp}
+                              </span>
+                            </p>
+                        )}
+                        {discountPercentage && <p className="lg:text-sm xl:text-m text-custom-gold font-semibold animate-shake" style={{ animationIterationCount: 'infinite', animationDuration: '8s' }}>{discountPercentage}% OFF</p>}
                     </div>
 
-                    <p className="md:text-2xl lg:text-xl xl:text-3xl font-bold">₹750</p>
+                    {product.discountedPrice && <p className="md:text-2xl lg:text-xl xl:text-3xl font-bold">₹{product.discountedPrice}</p>}
                     
                     <div className="flex items-center md:gap-6 lg:gap-2 xl:gap-2">
                         {quantity === 0 ? (

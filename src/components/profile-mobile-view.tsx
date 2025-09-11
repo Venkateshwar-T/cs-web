@@ -3,7 +3,8 @@
 'use client';
 
 import { useState } from 'react';
-import type { Product, ProfileInfo } from '@/app/page';
+import type { ProfileInfo } from '@/app/page';
+import type { SanityProduct } from '@/types';
 import { cn } from '@/lib/utils';
 import { MyProfileTab } from './my-profile-tab';
 import { WishlistView } from './wishlist-view';
@@ -12,9 +13,9 @@ import { MyOrdersTab } from './my-orders-tab';
 interface ProfileMobileViewProps {
   profile: ProfileInfo;
   onProfileUpdate: (updatedProfile: Partial<ProfileInfo>) => void;
-  products: Product[];
-  likedProducts: Record<number, boolean>;
-  onLikeToggle: (productId: number) => void;
+  products: SanityProduct[];
+  likedProducts: Record<string, boolean>;
+  onLikeToggle: (productId: string) => void;
   onAddToCart: (productName: string, quantity: number) => void;
   cart: Record<string, number>;
   onClearWishlist: () => void;

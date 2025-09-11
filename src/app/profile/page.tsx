@@ -3,7 +3,8 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import type { ActiveView, ProfileInfo, Product } from '@/app/page';
+import type { ActiveView, ProfileInfo } from '@/app/page';
+import type { SanityProduct } from '@/types';
 import { Header } from '@/components/header';
 import { BottomNavbar } from '@/components/bottom-navbar';
 import { SparkleBackground } from '@/components/sparkle-background';
@@ -14,10 +15,7 @@ import { StaticSparkleBackground } from '@/components/static-sparkle-background'
 import { useAppContext } from '@/context/app-context';
 import { Loader } from '@/components/loader';
 
-const allProducts: Product[] = Array.from({ length: 12 }).map((_, i) => ({
-  id: i,
-  name: `Diwali Collection Box ${i + 1}`,
-}));
+const allProducts: SanityProduct[] = [];
 
 export default function ProfilePage() {
   const [activeView, setActiveView] = useState<ActiveView>('profile');

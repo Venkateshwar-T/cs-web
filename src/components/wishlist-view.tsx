@@ -3,7 +3,7 @@
 'use client';
 
 import { useState } from 'react';
-import type { Product } from "@/app/page";
+import type { SanityProduct } from "@/types";
 import { WishlistItemCard } from "./wishlist-item-card";
 import { Button } from "./ui/button";
 import { FaTrash } from "react-icons/fa";
@@ -23,9 +23,9 @@ import { EmptyState } from './empty-state';
 import { useRouter } from 'next/navigation';
 
 interface WishlistViewProps {
-  products: Product[];
-  likedProducts: Record<number, boolean>;
-  onLikeToggle: (productId: number) => void;
+  products: SanityProduct[];
+  likedProducts: Record<string, boolean>;
+  onLikeToggle: (productId: string) => void;
   onAddToCart: (productName: string, quantity: number) => void;
   cart: Record<string, number>;
   onClearWishlist: () => void;
@@ -41,15 +41,15 @@ export function WishlistView({
   onClearWishlist, 
   isMobile = false 
 }: WishlistViewProps) {
-  const wishlistedProducts = products.filter(p => likedProducts[p.id]);
-  const [unlikingItems, setUnlikingItems] = useState<number[]>([]);
+  const wishlistedProducts = products.filter(p => likedProducts[p._id]);
+  const [unlikingItems, setUnlikingItems] = useState<string[]>([]);
   const router = useRouter();
 
-  const handleUnlike = (productId: number) => {
+  const handleUnlike = (productId: string) => {
     setUnlikingItems(prev => [...prev, productId]);
   };
 
-  const handleAnimationEnd = (productId: number) => {
+  const handleAnimationEnd = (productId: string) => {
     onLikeToggle(productId);
     setUnlikingItems(prev => prev.filter(id => id !== productId));
   };
@@ -93,13 +93,13 @@ export function WishlistView({
             <div className="overflow-y-auto no-scrollbar">
               {wishlistedProducts.map((product, index) => (
                 <WishlistItemCard 
-                  key={product.id}
+                  key={product._id}
                   product={product}
-                  onUnlike={() => handleUnlike(product.id)}
+                  onUnlike={() => handleUnlike(product._id)}
                   onAddToCart={onAddToCart}
                   isInCart={!!cart[product.name]}
-                  isUnliking={unlikingItems.includes(product.id)}
-                  onAnimationEnd={() => handleAnimationEnd(product.id)}
+                  isUnliking={unlikingItems.includes(product._id)}
+                  onAnimationEnd={() => handleAnimationEnd(product._id)}
                   isLastItem={index === wishlistedProducts.length - 1}
                   isMobile={true}
                 />
@@ -131,13 +131,13 @@ export function WishlistView({
           <div className="flex-grow overflow-y-auto pr-4 space-y-4 custom-scrollbar">
             {wishlistedProducts.map(product => (
               <WishlistItemCard 
-                key={product.id}
+                key={product._id}
                 product={product}
-                onUnlike={() => handleUnlike(product.id)}
+                onUnlike={() => handleUnlike(product._id)}
                 onAddToCart={onAddToCart}
                 isInCart={!!cart[product.name]}
-                isUnliking={unlikingItems.includes(product.id)}
-                onAnimationEnd={() => handleAnimationEnd(product.id)}
+                isUnliking={unlikingItems.includes(product._id)}
+                onAnimationEnd={() => handleAnimationEnd(product._id)}
                 isLastItem={false}
               />
             ))}

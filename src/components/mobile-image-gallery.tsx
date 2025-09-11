@@ -6,17 +6,17 @@ import Image from 'next/image';
 import { useState } from 'react';
 import { Expand, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { productImages } from '@/lib/images';
-import type { Product } from '@/app/page';
+import type { SanityProduct } from '@/types';
 
 interface MobileImageGalleryProps {
-    product: Product;
+    product: SanityProduct;
     onImageExpandChange: (isExpanded: boolean) => void;
 }
 
 export function MobileImageGallery({ product, onImageExpandChange }: MobileImageGalleryProps) {
     const [activeIndex, setActiveIndex] = useState(0);
     const [isExpanded, setIsExpanded] = useState(false);
+    const images = product.images || [];
 
     const handleExpandClick = () => {
         setIsExpanded(true);
@@ -35,12 +35,11 @@ export function MobileImageGallery({ product, onImageExpandChange }: MobileImage
                 {/* Main Image */}
                 <div className="group relative w-2/3 aspect-square">
                     <Image
-                        src={productImages[activeIndex].src}
-                        alt={productImages[activeIndex].alt}
+                        src={images.length > 0 ? images[activeIndex] : '/placeholder.png'}
+                        alt={product.name}
                         layout="fill"
                         objectFit="cover"
                         className="rounded-xl"
-                        data-ai-hint={productImages[activeIndex].hint}
                         onDragStart={(e) => e.preventDefault()}
                     />
                      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/30 rounded-xl">
@@ -56,9 +55,9 @@ export function MobileImageGallery({ product, onImageExpandChange }: MobileImage
 
                 {/* Thumbnails */}
                 <div className="grid grid-cols-4 gap-2 w-2/3">
-                    {productImages.map((image, index) => (
+                    {images.map((image, index) => (
                         <button
-                            key={image.id} 
+                            key={image} 
                             onClick={() => setActiveIndex(index)}
                             className={cn(
                                 "relative w-full aspect-square transition-all duration-200 rounded-md overflow-hidden ring-2 ring-offset-2 ring-offset-[#9A7DAB]",
@@ -66,12 +65,11 @@ export function MobileImageGallery({ product, onImageExpandChange }: MobileImage
                             )}
                         >
                             <Image
-                                src={image.src}
-                                alt={image.alt}
+                                src={image}
+                                alt={`${product.name} thumbnail ${index + 1}`}
                                 layout="fill"
                                 objectFit="cover"
                                 className="rounded-md"
-                                data-ai-hint={image.hint}
                                 onDragStart={(e) => e.preventDefault()}
                             />
                         </button>
@@ -82,12 +80,11 @@ export function MobileImageGallery({ product, onImageExpandChange }: MobileImage
                 <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 animate-fade-in" style={{animationDuration: '0.3s'}}>
                     <div className="relative w-[90vw] h-auto">
                         <Image
-                            src={productImages[activeIndex].src}
-                            alt={productImages[activeIndex].alt}
+                            src={images.length > 0 ? images[activeIndex] : '/placeholder.png'}
+                            alt={product.name}
                             width={1200}
                             height={1200}
                             className="object-contain w-full h-full rounded-lg"
-                            data-ai-hint={productImages[activeIndex].hint}
                             onDragStart={(e) => e.preventDefault()}
                         />
                          <button 

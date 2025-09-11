@@ -5,7 +5,8 @@ import { useState } from 'react';
 import { X } from 'lucide-react';
 import { ProfileSidebar } from './profile-sidebar';
 import { ProfileDetailsView } from './profile-details-view';
-import type { ProfileInfo, Product } from '@/app/page';
+import type { ProfileInfo } from "@/app/page";
+import type { SanityProduct } from '@/types';
 import { WishlistView } from './wishlist-view';
 import { MyOrdersTab } from './my-orders-tab';
 import {
@@ -24,9 +25,9 @@ import { LoginPopup } from './login-popup';
 
 interface ProfilePopupProps {
   onClose: () => void;
-  products: Product[];
-  likedProducts: Record<number, boolean>;
-  onLikeToggle: (productId: number) => void;
+  products: SanityProduct[];
+  likedProducts: Record<string, boolean>;
+  onLikeToggle: (productId: string) => void;
   onAddToCart: (productName: string, quantity: number) => void;
   cart: Record<string, number>;
   onClearWishlist: () => void;

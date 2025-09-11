@@ -4,10 +4,10 @@
 import { useState } from 'react';
 import { Heart } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import type { Product } from '@/app/page';
+import type { SanityProduct } from '@/types';
 
 interface ProductDetailsProps {
-    product: Product;
+    product: SanityProduct;
     isLiked: boolean;
     onLikeToggle: () => void;
     isMobile?: boolean;
@@ -20,6 +20,8 @@ export function ProductDetails({ product, isLiked, onLikeToggle, isMobile = fals
         setLikeClickCount(prev => prev + 1);
         onLikeToggle();
     };
+    
+    const subtitle = [product.weight, product.composition, product.packageType].filter(Boolean).join(' | ');
 
     return (
         <div className={cn("flex flex-col gap-4 h-full animate-slide-in-from-right text-black")} style={{ animationDuration: '0.5s' }}>
@@ -48,7 +50,7 @@ export function ProductDetails({ product, isLiked, onLikeToggle, isMobile = fals
                       <circle cx="12" cy="12" r="7" fill="#137C00"/>
                   </svg>
                 </div>
-                <p className={cn("font-normal font-poppins", isMobile ? "text-sm" : "text-base")}>250g | Assorted | Hard-Box</p>
+                <p className={cn("font-normal font-poppins", isMobile ? "text-sm" : "text-base")}>{subtitle}</p>
             </div>
 
             {/* Best for */}
@@ -90,5 +92,3 @@ export function ProductDetails({ product, isLiked, onLikeToggle, isMobile = fals
         </div>
     );
 }
-
-    

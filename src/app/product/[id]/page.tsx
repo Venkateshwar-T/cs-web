@@ -25,11 +25,9 @@ import { SectionTitle } from '@/components/section-title';
 import { ChevronRight } from 'lucide-react';
 import { StaticSparkleBackground } from '@/components/static-sparkle-background';
 import { useAppContext } from '@/context/app-context';
+import type { SanityProduct } from '@/types';
 
-const allProducts: Product[] = Array.from({ length: 12 }).map((_, i) => ({
-  id: i,
-  name: `Diwali Collection Box ${i + 1}`,
-}));
+const allProducts: SanityProduct[] = [];
 
 export default function ProductPage() {
   const router = useRouter();
@@ -37,7 +35,7 @@ export default function ProductPage() {
   const { cart, updateCart, likedProducts, toggleLike, clearCart, clearWishlist } = useAppContext();
   const isMobile = useIsMobile();
   
-  const [product, setProduct] = useState<Product | null>(null);
+  const [product, setProduct] = useState<SanityProduct | null>(null);
   const [flavourCart, setFlavourCart] = useState<Record<string, number>>({});
   
   const [isProfileOpen, setIsProfileOpen] = useState(false);
@@ -52,8 +50,10 @@ export default function ProductPage() {
 
   useEffect(() => {
     if (params.id) {
-      const productId = parseInt(params.id as string, 10);
-      const foundProduct = allProducts.find(p => p.id === productId);
+      const productId = params.id as string;
+      // In a real app, you would fetch the product by slug `productId` from Sanity
+      // For now, we find it in the (empty) mock array
+      const foundProduct = allProducts.find(p => p.slug.current === productId);
       setProduct(foundProduct || null);
     }
   }, [params.id]);
@@ -119,8 +119,8 @@ export default function ProductPage() {
     else router.push('/');
   };
 
-  const handleProductClick = (product: Product) => {
-    router.push(`/product/${product.id}`);
+  const handleProductClick = (product: SanityProduct) => {
+    router.push(`/product/${product.slug.current}`);
   };
 
   const handleToggleCartPopup = () => setIsCartOpen(p => !p);
@@ -131,7 +131,7 @@ export default function ProductPage() {
     return (
       <div className="flex h-screen items-center justify-center bg-background">
         {isMobile ? <StaticSparkleBackground /> : <SparkleBackground />}
-        <p className="text-white">Product not found.</p>
+        <p className="text-white">Product not found. You may need to fetch this product by its slug from Sanity.</p>
       </div>
     );
   }
@@ -157,8 +157,8 @@ export default function ProductPage() {
                 onAddToCart={handleAddToCart}
                 cart={cart}
                 onBuyNow={handleBuyNow}
-                isLiked={!!likedProducts[product.id]}
-                onLikeToggle={() => toggleLike(product.id)}
+                isLiked={!!likedProducts[product._id]}
+                onLikeToggle={() => toggleLike(product._id)}
                 flavourCart={flavourCart}
                 onFlavourAddToCart={handleFlavourAddToCart}
               />
@@ -167,14 +167,14 @@ export default function ProductPage() {
                     <SectionTitle className="text-base mb-3 p-0 text-center">You might also like</SectionTitle>
                     <div className="flex items-center overflow-x-auto no-scrollbar gap-4 pb-2">
                         {allProducts.slice(0, 6).map(p => (
-                             <div key={p.id} className="flex-shrink-0 w-40">
+                             <div key={p._id} className="flex-shrink-0 w-40">
                                 <ProductCard
                                   product={p}
                                   onProductClick={handleProductClick}
                                   onAddToCart={handleAddToCart}
                                   quantity={cart[p.name] || 0}
-                                  isLiked={!!likedProducts[p.id]}
-                                  onLikeToggle={() => toggleLike(p.id)}
+                                  isLiked={!!likedProducts[p._id]}
+                                  onLikeToggle={() => toggleLike(p._id)}
                                   isMobile={isMobile}
                                 />
                             </div>
@@ -235,7 +235,7 @@ export default function ProductPage() {
                   {/* Right Section */}
                   <div className="flex-grow h-full xl:relative lg:relative">
                       <div className="h-full py-0 pr-6 overflow-y-auto custom-scrollbar pb-28">
-                          <ProductDetails product={product} isLiked={!!likedProducts[product.id]} onLikeToggle={() => toggleLike(product.id)} isMobile={false} />
+                          <ProductDetails product={product} isLiked={!!likedProducts[product._id]} onLikeToggle={() => toggleLike(product._id)} isMobile={false} />
                       </div>
                       <ProductPopupFooter product={product} onAddToCart={handleAddToCart} quantity={cart[product.name] || 0} onToggleCartPopup={handleToggleCartPopup} />
                   </div>

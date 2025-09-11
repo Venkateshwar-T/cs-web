@@ -3,7 +3,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import type { Product } from '@/app/page';
+import type { SanityProduct } from '@/types';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { X, Plus, Minus } from 'lucide-react';
@@ -12,7 +12,7 @@ import { ProductDetails } from '../product-details';
 import { FlavoursSection } from '../flavours-section';
 import { Separator } from '../ui/separator';
 
-const FloatingPriceBox = ({ product, productQuantity, onAddToCart, onBuyNow, className }: { product: Product, productQuantity: number, onAddToCart: any, onBuyNow: any, className?: string }) => {
+const FloatingPriceBox = ({ product, productQuantity, onAddToCart, onBuyNow, className }: { product: SanityProduct, productQuantity: number, onAddToCart: any, onBuyNow: any, className?: string }) => {
     const handleAddToCartClick = () => {
         onAddToCart(product.name, 1, false);
     };
@@ -25,17 +25,23 @@ const FloatingPriceBox = ({ product, productQuantity, onAddToCart, onBuyNow, cla
         onAddToCart(product.name, productQuantity - 1, false);
     };
 
+    const discountPercentage = product.mrp && product.discountedPrice && product.mrp > product.discountedPrice
+        ? Math.round(((product.mrp - product.discountedPrice) / product.mrp) * 100)
+        : null;
+
     return (
         <div className={cn("border-t border-white/20 bg-custom-purple-dark/60 p-2 px-3 backdrop-blur-md", className)}>
             <div className="flex justify-between items-center">
                 <div className="flex items-center gap-2">
                     <div className="text-white">
-                        <p className="pl-1 text-[10px] line-through opacity-70">₹1000</p>
-                        <p className="text-lg font-bold">₹750</p>
+                        {product.mrp && <p className="pl-1 text-[10px] line-through opacity-70">₹{product.mrp}</p>}
+                        {product.discountedPrice && <p className="text-lg font-bold">₹{product.discountedPrice}</p>}
                     </div>
-                     <div className="flex bg-custom-gold text-custom-purple-dark px-1 py-0.5 rounded-md">
-                        <span className="text-[10px] font-bold">25% OFF</span>
-                    </div>
+                     {discountPercentage && (
+                        <div className="flex bg-custom-gold text-custom-purple-dark px-1 py-0.5 rounded-md">
+                            <span className="text-[10px] font-bold">{discountPercentage}% OFF</span>
+                        </div>
+                     )}
                 </div>
                 <div className="flex items-center gap-2">
                      {productQuantity === 0 ? (
@@ -71,7 +77,7 @@ const FloatingPriceBox = ({ product, productQuantity, onAddToCart, onBuyNow, cla
 };
 
 
-const InlinePriceBox = ({ product, productQuantity, onAddToCart, onBuyNow, className }: { product: Product, productQuantity: number, onAddToCart: any, onBuyNow: any, className?: string }) => {
+const InlinePriceBox = ({ product, productQuantity, onAddToCart, onBuyNow, className }: { product: SanityProduct, productQuantity: number, onAddToCart: any, onBuyNow: any, className?: string }) => {
     const handleAddToCartClick = () => {
         onAddToCart(product.name, 1, false);
     };
@@ -84,15 +90,21 @@ const InlinePriceBox = ({ product, productQuantity, onAddToCart, onBuyNow, class
         onAddToCart(product.name, productQuantity - 1, false);
     };
 
+     const discountPercentage = product.mrp && product.discountedPrice && product.mrp > product.discountedPrice
+        ? Math.round(((product.mrp - product.discountedPrice) / product.mrp) * 100)
+        : null;
+
     return (
         <div className={cn("px-4", className)}>
             <div className="bg-custom-purple-dark/80 p-3 backdrop-blur-sm rounded-t-xl">
                  <div className="flex justify-center items-center mb-3 gap-2">
-                    <p className="text-sm line-through opacity-70 text-white">₹1000</p>
-                    <div className="flex bg-custom-gold text-custom-purple-dark px-1 py-0.5 rounded-md text-[10px] font-bold">
-                        <span>25% OFF</span>
-                    </div>
-                    <p className="text-xl font-bold text-white">₹750</p>
+                    {product.mrp && <p className="text-sm line-through opacity-70 text-white">₹{product.mrp}</p>}
+                    {discountPercentage && (
+                        <div className="flex bg-custom-gold text-custom-purple-dark px-1 py-0.5 rounded-md text-[10px] font-bold">
+                            <span>{discountPercentage}% OFF</span>
+                        </div>
+                    )}
+                    {product.discountedPrice && <p className="text-xl font-bold text-white">₹{product.discountedPrice}</p>}
                 </div>
                 <div className="flex flex-wrap items-center gap-2 mx-auto max-w-xs">
                     {productQuantity === 0 ? (
@@ -129,13 +141,13 @@ const InlinePriceBox = ({ product, productQuantity, onAddToCart, onBuyNow, class
 
 
 interface MobileProductDetailViewProps {
-  product: Product;
+  product: SanityProduct;
   onClose: () => void;
   onAddToCart: (name: string, quantity: number, animate?: boolean) => void;
   cart: Record<string, number>;
   onBuyNow: () => void;
   isLiked: boolean;
-  onLikeToggle: (productId: number) => void;
+  onLikeToggle: (productId: string) => void;
   flavourCart: Record<string, number>;
   onFlavourAddToCart: (flavourId: number, quantity: number) => void;
 }
@@ -185,7 +197,7 @@ export function MobileProductDetailView({
         </div>
         
         <div className="px-4 pt-6">
-            <ProductDetails product={product} isLiked={isLiked} onLikeToggle={() => onLikeToggle(product.id)} isMobile={true} />
+            <ProductDetails product={product} isLiked={isLiked} onLikeToggle={() => onLikeToggle(product._id)} isMobile={true} />
         </div>
         
         <Separator className="my-4 bg-white/30" />

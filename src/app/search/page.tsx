@@ -1,263 +1,69 @@
+// src/app/search/page.tsx
 
-'use client';
+import { Suspense } from 'react';
+import { client } from '@/lib/sanity';
+import SearchClientPage from '@/components/views/SearchClientPage'; // We'll create this next
+import type { SanityProduct, StructuredFilter } from '@/types';
 
-import { Suspense, useState, useEffect, type UIEvent } from 'react';
-import { useSearchParams, useRouter } from 'next/navigation';
-import { cn } from '@/lib/utils';
-import { Header } from '@/components/header';
-import { SparkleBackground } from '@/components/sparkle-background';
-import { BottomNavbar } from '@/components/bottom-navbar';
-import { PopupsManager } from '@/components/popups/popups-manager';
-import { SearchView } from '@/components/views/SearchView';
-import { useIsMobile } from '@/hooks/use-mobile';
-import { flavourOptions, occasionOptions, productTypeOptions, weightOptions } from '@/lib/filter-options';
-import type { Product } from '@/app/page';
-import { FloatingCartButton } from '@/components/floating-cart-button';
-import { MobileSearchHeader } from '@/components/header/mobile-search-header';
-import { StaticSparkleBackground } from '@/components/static-sparkle-background';
-import { useAppContext } from '@/context/app-context';
-
-type FilterState = {
-  priceRange: [number, number];
-  selectedPriceOptions: string[];
-  selectedFlavours: string[];
-  selectedOccasions: string[];
-  selectedProductTypes: string[];
-  selectedWeights: string[];
-};
-
-const initialFilterState: FilterState = {
-  priceRange: [0, 3000],
-  selectedPriceOptions: [],
-  selectedFlavours: [],
-  selectedOccasions: [],
-  selectedProductTypes: [],
-  selectedWeights: [],
-};
-
-const allProducts: Product[] = Array.from({ length: 12 }).map((_, i) => ({
-  id: i,
-  name: `Diwali Collection Box ${i + 1}`,
-}));
-
-function SearchPageComponent() {
-  const searchParams = useSearchParams();
-  const router = useRouter();
-  const query = searchParams.get('q') || '';
-  
-  const [isSearching, setIsSearching] = useState(true);
-  const [isNewSearch, setIsNewSearch] = useState(true);
-  const { cart, updateCart, clearCart, likedProducts, toggleLike, clearWishlist } = useAppContext();
-  const [cartMessage, setCartMessage] = useState('');
-  const [isCartButtonExpanded, setIsCartButtonExpanded] = useState(false);
-  const [sortOption, setSortOption] = useState("featured");
-  const [isCartOpen, setIsCartOpen] = useState(false);
-  const [isProfileOpen, setIsProfileOpen] = useState(false);
-  const [isFilterSheetOpen, setIsFilterSheetOpen] = useState(false);
-  const [isSortSheetOpen, setIsSortSheetOpen] = useState(false);
-  const isMobile = useIsMobile();
-  const [searchInput, setSearchInput] = useState(query);
-  const [lastScrollTop, setLastScrollTop] = useState(0);
-  const [isMobileHeaderVisible, setIsMobileHeaderVisible] = useState(true);
-  const [filters, setFilters] = useState<FilterState>(initialFilterState);
-
-  useEffect(() => {
-    setIsSearching(true);
-    setIsNewSearch(true);
-    const timer = setTimeout(() => setIsSearching(false), 500);
-    return () => clearTimeout(timer);
-  }, [query]);
-
-  useEffect(() => {
-    if (isNewSearch) {
-      const timer = setTimeout(() => setIsNewSearch(false), 50);
-      return () => clearTimeout(timer);
+// Fetches filters from Sanity
+async function getFilters(): Promise<StructuredFilter[]> {
+    const query = `{
+        "categories": *[_type == "filterCategory"]{_id, title, "icon": icon.asset->url},
+        "options": *[_type == "filterOption"]{_id, title, "categoryId": category->_id},
+        "flavours": *[_type == "flavour"]{_id, "title": name}
+    }`;
+    try {
+        const { categories, options, flavours } = await client.fetch(query);
+        return categories.map((category: any) => {
+            if (category.title === 'Flavours & Fillings') {
+                return { ...category, options: flavours };
+            }
+            return { ...category, options: options.filter((opt: any) => opt.categoryId === category._id) };
+        });
+    } catch (error) {
+        console.error("Failed to fetch filter data:", error);
+        return [];
     }
-  }, [isNewSearch]);
-
-  const handleAddToCart = (productName: string, quantity: number, animate: boolean = true) => {
-    const prevQuantity = cart[productName] || 0;
-    updateCart(productName, quantity);
-
-    if (animate && quantity > prevQuantity) {
-      setCartMessage(`${quantity - prevQuantity} added`);
-      setIsCartButtonExpanded(true);
-      setTimeout(() => setIsCartButtonExpanded(false), 1500);
-    }
-  };
-
-  const handleProductClick = (product: Product) => {
-    router.push(`/product/${product.id}`);
-  };
-
-  const handleSearchSubmit = (value: string) => {
-    setSearchInput(value);
-    router.push(`/search?q=${encodeURIComponent(value)}`);
-  };
-
-  const handleFilterChange = (newFilters: Partial<FilterState>) => {
-    setIsSearching(true);
-    setFilters(prev => ({ ...prev, ...newFilters }));
-    setTimeout(() => setIsSearching(false), 500);
-  };
-
-  const handleRemoveFilter = (filterType: keyof FilterState, value: string) => {
-    setIsSearching(true);
-    setFilters(prev => {
-      const currentValues = prev[filterType];
-      if (Array.isArray(currentValues)) {
-        return {
-          ...prev,
-          [filterType]: currentValues.filter(v => v !== value)
-        };
-      }
-      return prev;
-    });
-    setTimeout(() => setIsSearching(false), 500);
-  };
-
-  const handleToggleCartPopup = () => setIsCartOpen(p => !p);
-
-  const handleSortChange = (value: string) => {
-    setIsSearching(true);
-    setSortOption(value);
-    setIsSortSheetOpen(false);
-    setTimeout(() => setIsSearching(false), 500);
-  };
-
-  const handleScroll = (event: UIEvent<HTMLDivElement>) => {
-    if (!isMobile) return;
-
-    const currentScrollTop = event.currentTarget.scrollTop;
-    // A small threshold to prevent hiding the header on minor scrolls
-    if (Math.abs(currentScrollTop - lastScrollTop) <= 10) {
-      return;
-    }
-
-    if (currentScrollTop > lastScrollTop && currentScrollTop > 56) { // 56px is header height
-      setIsMobileHeaderVisible(false);
-    } else {
-      setIsMobileHeaderVisible(true);
-    }
-    setLastScrollTop(currentScrollTop <= 0 ? 0 : currentScrollTop);
-  };
-  
-  const getLabelById = (id: string, options: { id: string, label: string }[]) => {
-    return options.find(option => option.id === id)?.label || id;
-  };
-
-  const activeFilters = [
-    ...filters.selectedFlavours.map(id => ({ type: 'selectedFlavours' as const, value: id, label: getLabelById(id, flavourOptions) })),
-    ...filters.selectedOccasions.map(id => ({ type: 'selectedOccasions' as const, value: id, label: getLabelById(id, occasionOptions) })),
-    ...filters.selectedProductTypes.map(id => ({ type: 'selectedProductTypes' as const, value: id, label: getLabelById(id, productTypeOptions) })),
-    ...filters.selectedWeights.map(id => ({ type: 'selectedWeights' as const, value: id, label: getLabelById(id, weightOptions) })),
-  ];
-  
-  const handleNavigation = (view: 'home' | 'cart' | 'profile') => {
-    if (view === 'cart') {
-      router.push('/cart');
-    } else if (view === 'home') {
-      router.push('/');
-    } else if (view === 'profile') {
-      router.push('/profile');
-    }
-  };
-
-  const cartItemCount = Object.values(cart).reduce((acc, quantity) => acc + quantity, 0);
-
-  return (
-    <>
-      {isMobile ? <StaticSparkleBackground /> : <SparkleBackground />}
-      <div className={cn("flex flex-col h-screen", (isProfileOpen || isCartOpen) ? 'opacity-50' : '')}>
-        {isMobile ? (
-          <MobileSearchHeader 
-            value={searchInput}
-            onChange={(e) => setSearchInput(e.target.value)}
-            onSubmit={(e) => {
-              e.preventDefault();
-              handleSearchSubmit(searchInput);
-            }}
-            isVisible={isMobileHeaderVisible}
-          />
-        ) : (
-          <Header 
-            onSearchSubmit={handleSearchSubmit}
-            onProfileOpenChange={setIsProfileOpen}
-            isContentScrolled={false}
-            onReset={() => router.push('/')}
-            onNavigate={(view) => router.push(`/${view}`)}
-            activeView={'search'}
-            isSearchingOnAbout={false}
-            isUsingAnimatedSearch={true}
-            searchInput={searchInput}
-            onSearchInputChange={setSearchInput}
-          />
-        )}
-        <main className={cn(
-          "flex-grow flex flex-col transition-all duration-300 relative min-h-0",
-          "pb-16 md:pb-0",
-          isMobile ? (isMobileHeaderVisible ? 'pt-16' : 'pt-0') : "pt-36"
-        )}>
-           <SearchView
-              filters={filters}
-              onFilterChange={handleFilterChange}
-              isSearching={isSearching}
-              isNewSearch={isNewSearch}
-              products={allProducts}
-              query={query}
-              onAddToCart={handleAddToCart}
-              cart={cart}
-              onProductClick={handleProductClick}
-              activeFilters={activeFilters}
-              onRemoveFilter={handleRemoveFilter}
-              likedProducts={likedProducts}
-              onLikeToggle={toggleLike}
-              sortOption={sortOption}
-              onSortChange={handleSortChange}
-              isFilterSheetOpen={isFilterSheetOpen}
-              onFilterSheetOpenChange={setIsFilterSheetOpen}
-              isSortSheetOpen={isSortSheetOpen}
-              onSortSheetOpenChange={setIsSortSheetOpen}
-              onScroll={handleScroll}
-              isMobile={isMobile}
-            />
-        </main>
-        <BottomNavbar activeView={'search'} onNavigate={handleNavigation} cartItemCount={cartItemCount} />
-      </div>
-
-      <PopupsManager
-          isProfileOpen={isProfileOpen}
-          setIsProfileOpen={setIsProfileOpen}
-          likedProducts={likedProducts}
-          onLikeToggle={toggleLike}
-          cart={cart}
-          onAddToCart={updateCart}
-          onClearCart={clearCart}
-          onToggleCartPopup={handleToggleCartPopup}
-          allProducts={allProducts}
-          onClearWishlist={clearWishlist}
-          isCartOpen={isCartOpen}
-        />
-
-      {!isMobile && (
-        <FloatingCartButton
-          activeView={'search'}
-          isSearchingOnAbout={true}
-          isCartOpen={isCartOpen}
-          onToggleCart={handleToggleCartPopup}
-          isCartButtonExpanded={isCartButtonExpanded}
-          cartMessage={cartMessage}
-          cart={cart}
-        />
-      )}
-    </>
-  );
 }
 
-export default function SearchPage() {
-  return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <SearchPageComponent />
-    </Suspense>
-  )
+// Fetches products from Sanity based on URL filters
+async function getFilteredProducts(searchParams: { [key: string]: string | string[] | undefined }): Promise<SanityProduct[]> {
+    const filters: string[] = [];
+    const params: { [key: string]: any } = {};
+    const queryTerm = searchParams.q as string;
+
+    if (queryTerm) {
+        filters.push(`(name match $queryTerm || tags[] match $queryTerm)`);
+        params.queryTerm = `*${queryTerm}*`;
+    }
+
+    // Add your filter logic here based on searchParams
+    const flavours = searchParams['flavours-fillings'];
+    if (flavours) {
+        const flavourList = Array.isArray(flavours) ? flavours : [flavours];
+        if (flavourList.length > 0) {
+            filters.push(`count((availableFlavours[]->name)[@ in $flavourList]) > 0`);
+            params.flavourList = flavourList;
+        }
+    }
+    // Add more else-if blocks here for other filters...
+
+    const filterClause = filters.length > 0 ? `&& ${filters.join(' && ')}` : '';
+    const productQuery = `*[_type == "product" ${filterClause}]{
+        _id, name, slug, mrp, discountedPrice, weight, packageType, composition, "images": images[].asset->url
+    }`;
+    const products = await client.fetch(productQuery, params);
+    return products;
+}
+
+// The new Server Component page
+export default async function SearchPage({ searchParams }: { searchParams: { [key: string]: string | string[] | undefined } }) {
+    const products = await getFilteredProducts(searchParams);
+    const filters = await getFilters();
+
+    return (
+        <Suspense fallback={<div className="h-screen w-full flex items-center justify-center text-white bg-custom-purple-dark">Loading Your Chocolates...</div>}>
+            <SearchClientPage initialProducts={products} initialFilters={filters} />
+        </Suspense>
+    );
 }

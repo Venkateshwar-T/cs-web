@@ -3,19 +3,19 @@
 
 import { ProductCard } from './product-card';
 import { SectionTitle } from './section-title';
-import type { Product } from '@/app/page';
+import type { SanityProduct } from '@/types';
 import { useRouter } from 'next/navigation';
 import { ChevronRight } from 'lucide-react';
 import { Button } from './ui/button';
 import { cn } from '@/lib/utils';
 
 interface FeaturedProductsProps {
-  products: Product[];
-  onProductClick: (product: Product) => void;
+  products: SanityProduct[];
+  onProductClick: (product: SanityProduct) => void;
   onAddToCart: (productName: string, quantity: number) => void;
   cart: Record<string, number>;
-  likedProducts: Record<number, boolean>;
-  onLikeToggle: (productId: number) => void;
+  likedProducts: Record<string, boolean>;
+  onLikeToggle: (productId: string) => void;
   isMobile?: boolean;
 }
 
@@ -47,13 +47,13 @@ export function FeaturedProducts({
       </SectionTitle>
       <div className="flex items-stretch overflow-x-auto no-scrollbar gap-4 md:gap-6 px-4 pt-2 pb-4">
         {products.map(product => (
-          <div key={product.id} className={cn("flex-shrink-0", isMobile ? "w-40" : "w-48 md:w-64")}>
+          <div key={product._id} className={cn("flex-shrink-0", isMobile ? "w-40" : "w-48 md:w-64")}>
             <ProductCard
               product={product}
               onProductClick={onProductClick}
               onAddToCart={onAddToCart}
               quantity={cart[product.name] || 0}
-              isLiked={!!likedProducts[product.id]}
+              isLiked={!!likedProducts[product._id]}
               onLikeToggle={onLikeToggle}
               isMobile={isMobile}
             />

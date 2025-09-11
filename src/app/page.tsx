@@ -15,6 +15,7 @@ import { useToast } from "@/hooks/use-toast";
 import { StaticSparkleBackground } from '@/components/static-sparkle-background';
 import { Footer } from '@/components/footer';
 import { useAppContext } from '@/context/app-context';
+import type { SanityProduct } from '@/types';
 
 
 export type Product = {
@@ -27,11 +28,6 @@ export type ProfileInfo = {
   phone: string;
   email: string;
 }
-
-const allProducts: Product[] = Array.from({ length: 12 }).map((_, i) => ({
-  id: i,
-  name: `Diwali Collection Box ${i + 1}`,
-}));
 
 export default function Home() {
   const { cart, updateCart, likedProducts, toggleLike, clearWishlist } = useAppContext();
@@ -130,7 +126,7 @@ export default function Home() {
       <PopupsManager
         isProfileOpen={isProfileOpen}
         setIsProfileOpen={setIsProfileOpen}
-        allProducts={allProducts}
+        allProducts={[]}
         likedProducts={likedProducts}
         onLikeToggle={toggleLike}
         cart={cart}
@@ -140,3 +136,4 @@ export default function Home() {
     </>
   );
 }
+
