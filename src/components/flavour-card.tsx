@@ -2,13 +2,13 @@
 
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
-import type { Flavour } from './product-popup';
 import { useState } from 'react';
 import { cn } from '@/lib/utils';
+import type { SanityFlavour } from '@/types';
 
 interface FlavourCardProps {
-  flavour: Flavour;
-  onAddToCart: (flavourId: number, quantity: number) => void;
+  flavour: SanityFlavour;
+  onAddToCart: (flavourId: string, quantity: number) => void;
   quantity: number;
 }
 
@@ -18,7 +18,7 @@ export function FlavourCard({ flavour, onAddToCart, quantity }: FlavourCardProps
   const handleToggleCart = (e: React.MouseEvent) => {
     e.stopPropagation();
     const isInCart = quantity > 0;
-    onAddToCart(flavour.id, isInCart ? 0 : 1);
+    onAddToCart(flavour._id, isInCart ? 0 : 1);
     if (!isInCart) {
       setIsAnimating(true);
     }
@@ -36,12 +36,12 @@ export function FlavourCard({ flavour, onAddToCart, quantity }: FlavourCardProps
     >
       <div className="relative w-full aspect-square">
         <Image
-          src={flavour.src}
+          src={flavour.imageUrl}
           alt={flavour.name}
           layout="fill"
           objectFit="cover"
           className="rounded-full"
-          data-ai-hint={flavour.hint}
+          data-ai-hint={flavour.name}
           onDragStart={(e) => e.preventDefault()}
         />
       </div>

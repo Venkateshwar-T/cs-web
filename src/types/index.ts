@@ -1,4 +1,11 @@
 // src/types/index.ts
+import type { PortableTextBlock } from '@portabletext/react';
+
+export interface SanityFlavour {
+  _id: string;
+  name: string;
+  imageUrl: string;
+}
 
 export interface SanityProduct {
   _id: string;
@@ -10,6 +17,10 @@ export interface SanityProduct {
   weight?: string;
   packageType?: string;
   composition?: string;
+  description?: PortableTextBlock[];
+  ingredients?: string;
+  allergenAlert?: string;
+  availableFlavours?: SanityFlavour[];
 }
 
 export interface StructuredFilter {

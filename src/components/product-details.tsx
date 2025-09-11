@@ -1,10 +1,11 @@
-
+// @/components/product-details.tsx
 'use client';
 
 import { useState } from 'react';
 import { Heart } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { SanityProduct } from '@/types';
+import { PortableText } from '@portabletext/react';
 
 interface ProductDetailsProps {
     product: SanityProduct;
@@ -61,34 +62,32 @@ export function ProductDetails({ product, isLiked, onLikeToggle, isMobile = fals
             </div>
 
             {/* Product Description */}
-            <div>
-                <p className={cn("font-medium font-plex-sans", isMobile ? "text-sm" : "text-base")}>
-                    This premium hard-box presents a curated assortment of handcrafted chocolates. The collection is fully customizable, allowing you to select from a variety of dark, milk, and white chocolates to create a truly personalized gift.
-                </p>
-            </div>
+            {product.description && (
+                <div>
+                    <div className={cn("font-medium font-plex-sans", isMobile ? "text-sm" : "text-base")}>
+                       <PortableText value={product.description} />
+                    </div>
+                </div>
+            )}
 
             {/* Ingredients */}
-            <div>
-                 <p className={cn("font-plex-sans-condensed", isMobile ? "text-xs" : "text-base")}>
-                    <span className="font-medium">Ingredients:</span> Sugar, Edible Vegetable Fat, Cocoa Solids, Emulsifiers (492, 322). Contains Added Natural (Vanilla) Flavouring Substances.
-                </p>
-            </div>
+            {product.ingredients && (
+                <div>
+                     <p className={cn("font-plex-sans-condensed", isMobile ? "text-xs" : "text-base")}>
+                        <span className="font-medium">Ingredients:</span> {product.ingredients}
+                    </p>
+                </div>
+            )}
             
-            {/* Nutritional Information */}
-            <div>
-                <p className={cn("font-plex-sans-condensed", isMobile ? "text-xs" : "text-base")}>
-                    <span className="font-medium">Nutritional Information:</span> Made with Hydrogenated Vegetable Fat. Contains Trans Fats.
-                </p>
-            </div>
-
             {/* Allergen Alert */}
-            <div>
-                <p className={cn("font-semibold", isMobile ? "text-sm" : "text-base")}>Allergen Alert:</p>
-                <ul className="list-disc pl-5 font-semibold">
-                    <li className={cn(isMobile ? "text-xs" : "text-sm")}>Contains soy.</li>
-                    <li className={cn(isMobile ? "text-xs" : "text-sm")}>May contain traces of milk solids.</li>
-                </ul>
-            </div>
+            {product.allergenAlert && (
+                <div>
+                    <p className={cn("font-semibold", isMobile ? "text-sm" : "text-base")}>Allergen Alert:</p>
+                    <ul className="list-disc pl-5 font-semibold">
+                        <li className={cn(isMobile ? "text-xs" : "text-sm")}>{product.allergenAlert}</li>
+                    </ul>
+                </div>
+            )}
         </div>
     );
 }

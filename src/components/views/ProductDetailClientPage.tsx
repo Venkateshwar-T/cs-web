@@ -1,16 +1,15 @@
-
+// @/components/views/ProductDetailClientPage.tsx
 'use client';
 
-import { useState, useEffect, type UIEvent } from 'react';
-import { useParams, useRouter } from 'next/navigation';
-import type { Product } from '@/app/page';
+import { useState, type UIEvent, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import type { SanityProduct } from '@/types';
 import { cn } from '@/lib/utils';
 import { Header } from '@/components/header';
 import { SparkleBackground } from '@/components/sparkle-background';
 import { BottomNavbar } from '@/components/bottom-navbar';
 import { PopupsManager } from '@/components/popups/popups-manager';
 import { FloatingCartButton } from '@/components/floating-cart-button';
-
 import { ImageGallery } from '@/components/image-gallery';
 import { FlavoursSection } from '@/components/flavours-section';
 import { ProductDetails } from '@/components/product-details';
@@ -20,22 +19,19 @@ import { FeaturedProducts } from '@/components/featured-products';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { MobileSearchHeader } from '@/components/header/mobile-search-header';
 import { MobileProductDetailView } from '@/components/views/MobileProductDetailView';
-import { ProductCard } from '@/components/product-card';
-import { SectionTitle } from '@/components/section-title';
-import { ChevronRight } from 'lucide-react';
 import { StaticSparkleBackground } from '@/components/static-sparkle-background';
 import { useAppContext } from '@/context/app-context';
-import type { SanityProduct } from '@/types';
 
-const allProducts: SanityProduct[] = [];
+interface ProductDetailClientPageProps {
+  product: SanityProduct;
+  featuredProducts: SanityProduct[];
+}
 
-export default function ProductPage() {
+export default function ProductDetailClientPage({ product, featuredProducts }: ProductDetailClientPageProps) {
   const router = useRouter();
-  const params = useParams();
-  const { cart, updateCart, likedProducts, toggleLike, clearCart, clearWishlist } = useAppContext();
+  const { cart, updateCart, clearCart, likedProducts, toggleLike, clearWishlist } = useAppContext();
   const isMobile = useIsMobile();
   
-  const [product, setProduct] = useState<SanityProduct | null>(null);
   const [flavourCart, setFlavourCart] = useState<Record<string, number>>({});
   
   const [isProfileOpen, setIsProfileOpen] = useState(false);
@@ -47,17 +43,6 @@ export default function ProductPage() {
   const [isMobileHeaderVisible, setIsMobileHeaderVisible] = useState(true);
   const [isCartOpen, setIsCartOpen] = useState(false);
 
-
-  useEffect(() => {
-    if (params.id) {
-      const productId = params.id as string;
-      // In a real app, you would fetch the product by slug `productId` from Sanity
-      // For now, we find it in the (empty) mock array
-      const foundProduct = allProducts.find(p => p.slug.current === productId);
-      setProduct(foundProduct || null);
-    }
-  }, [params.id]);
-  
   const handleScroll = (event: UIEvent<HTMLDivElement>) => {
     const { scrollTop } = event.currentTarget;
     setIsScrolled(scrollTop > 0);
@@ -94,13 +79,13 @@ export default function ProductPage() {
     }
   };
   
-  const handleFlavourAddToCart = (flavourId: number, quantity: number) => {
+  const handleFlavourAddToCart = (flavourId: string, quantity: number) => {
     setFlavourCart(prev => {
       const newCart = { ...prev };
       if (quantity > 0) {
-        newCart[flavourId.toString()] = quantity;
+        newCart[flavourId] = quantity;
       } else {
-        delete newCart[flavourId.toString()];
+        delete newCart[flavourId];
       }
       return newCart;
     });
@@ -163,32 +148,15 @@ export default function ProductPage() {
                 onFlavourAddToCart={handleFlavourAddToCart}
               />
               <div className="mt-8">
-                <div className="bg-white/10 rounded-2xl p-4">
-                    <SectionTitle className="text-base mb-3 p-0 text-center">You might also like</SectionTitle>
-                    <div className="flex items-center overflow-x-auto no-scrollbar gap-4 pb-2">
-                        {allProducts.slice(0, 6).map(p => (
-                             <div key={p._id} className="flex-shrink-0 w-40">
-                                <ProductCard
-                                  product={p}
-                                  onProductClick={handleProductClick}
-                                  onAddToCart={handleAddToCart}
-                                  quantity={cart[p.name] || 0}
-                                  isLiked={!!likedProducts[p._id]}
-                                  onLikeToggle={() => toggleLike(p._id)}
-                                  isMobile={isMobile}
-                                />
-                            </div>
-                        ))}
-                         <div 
-                           onClick={() => router.push('/search?q=')}
-                           className="flex-shrink-0 w-12 h-40 flex items-center justify-center cursor-pointer"
-                          >
-                           <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
-                              <ChevronRight className="w-8 h-8 text-white" />
-                           </div>
-                         </div>
-                    </div>
-                </div>
+                <FeaturedProducts 
+                    products={featuredProducts}
+                    onProductClick={handleProductClick}
+                    onAddToCart={updateCart}
+                    cart={cart}
+                    likedProducts={likedProducts}
+                    onLikeToggle={toggleLike}
+                    isMobile={isMobile}
+                />
               </div>
                <div className="h-4" />
             </div>
@@ -226,7 +194,7 @@ export default function ProductPage() {
                       <ImageGallery product={product} onImageExpandChange={() => {}} />
                     </div>
                     <div className="pb-6 rounded-lg w-full h-[55%]">
-                      <FlavoursSection onAddToCart={handleFlavourAddToCart} cart={flavourCart} />
+                      <FlavoursSection availableFlavours={product.availableFlavours || []} onAddToCart={handleFlavourAddToCart} cart={flavourCart} />
                     </div>
                   </div>
                   
@@ -244,7 +212,7 @@ export default function ProductPage() {
             </div>
           </div>
            <FeaturedProducts 
-              products={allProducts}
+              products={featuredProducts}
               onProductClick={handleProductClick}
               onAddToCart={updateCart}
               cart={cart}
@@ -270,7 +238,7 @@ export default function ProductPage() {
         setIsProfileOpen={setIsProfileOpen}
         isCartOpen={isCartOpen}
         onToggleCartPopup={handleToggleCartPopup}
-        allProducts={allProducts}
+        allProducts={featuredProducts}
         likedProducts={likedProducts}
         onLikeToggle={toggleLike}
         cart={cart}

@@ -1,35 +1,21 @@
-
 'use client';
 
 import { useRef, useState, useEffect } from 'react';
 import { FlavourCard } from './flavour-card';
 import { SectionTitle } from './section-title';
-import type { Flavour } from './product-popup';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from './ui/button';
 import { cn } from '@/lib/utils';
+import type { SanityFlavour } from '@/types';
 
 interface FlavoursSectionProps {
-  onAddToCart: (flavourId: number, quantity: number) => void;
+  onAddToCart: (flavourId: string, quantity: number) => void;
   cart: Record<string, number>;
   isMobile?: boolean;
+  availableFlavours: SanityFlavour[];
 }
 
-const flavours: Flavour[] = [
-    { id: 1, name: 'Roasted Almond', src: '/flavours/almonds.png', hint: 'roasted almond' },
-    { id: 2, name: 'Fruit & Nut', src: '/flavours/nuts.png', hint: 'fruit nut chocolate' },
-    { id: 3, name: 'Dark Chocolate', src: '/flavours/darkchoco.png', hint: 'dark chocolate' },
-    { id: 4, name: 'Hazelnut', src: '/flavours/hazelnut.png', hint: 'hazelnut' },
-    { id: 5, name: 'Butter Scotch', src: '/flavours/butterscotch.png', hint: 'butterscotch' },
-    { id: 6, name: 'Dates', src: '/flavours/dates.png', hint: 'dates chocolate' },
-    { id: 7, name: 'Plain Chocolate', src: '/flavours/plainchoco.png', hint: 'plain chocolate' },
-    { id: 8, name: 'Mint', src: '/flavours/mint.png', hint: 'mint chocolate' },
-    { id: 9, name: 'Raisins', src: '/flavours/raisins.png', hint: 'raisins chocolate' },
-    { id: 10, name: 'Sugar Free', src: '/flavours/sugarfree.png', hint: 'sugar free chocolate' },
-    { id: 11, name: 'White Chocolate', src: '/flavours/whitechoco.png', hint: 'white chocolate' },
-];
-
-export function FlavoursSection({ onAddToCart, cart, isMobile = false }: FlavoursSectionProps) {
+export function FlavoursSection({ onAddToCart, cart, isMobile = false, availableFlavours }: FlavoursSectionProps) {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
@@ -55,7 +41,7 @@ export function FlavoursSection({ onAddToCart, cart, isMobile = false }: Flavour
       container.removeEventListener('scroll', checkScrollability);
       resizeObserver.unobserve(container);
     };
-  }, []);
+  }, [availableFlavours]);
 
   const scroll = (direction: 'left' | 'right') => {
     const container = scrollContainerRef.current;
@@ -88,12 +74,12 @@ export function FlavoursSection({ onAddToCart, cart, isMobile = false }: Flavour
       )}
 
       <div ref={scrollContainerRef} className="flex overflow-x-auto no-scrollbar gap-4 flex-grow items-center md:px-0 lg:px-4">
-        {flavours.map((flavour) => (
+        {availableFlavours.map((flavour) => (
           <FlavourCard
-            key={flavour.id}
+            key={flavour._id}
             flavour={flavour}
             onAddToCart={onAddToCart}
-            quantity={cart[flavour.id.toString()] || 0}
+            quantity={cart[flavour._id] || 0}
           />
         ))}
       </div>
@@ -111,5 +97,3 @@ export function FlavoursSection({ onAddToCart, cart, isMobile = false }: Flavour
     </div>
   );
 }
-
-    
