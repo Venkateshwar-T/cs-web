@@ -1,3 +1,4 @@
+
 // src/components/search-results-details.tsx
 'use client';
 
@@ -109,7 +110,33 @@ export function SearchResultsDetails({
                                 />
                             </SheetContent>
                         </Sheet>
-                        {/* ... your mobile sort sheet ... */}
+                        <Sheet open={isSortSheetOpen} onOpenChange={onSortSheetOpenChange}>
+                          <SheetTrigger asChild>
+                            <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-custom-gold hover:text-custom-purple-dark">
+                              <ArrowUpDown className="h-5 w-5" />
+                            </Button>
+                          </SheetTrigger>
+                          <SheetContent side="bottom" className="bg-custom-purple-dark text-white border-t-2 border-custom-gold rounded-t-3xl h-auto p-0">
+                            <SheetHeader className="p-4 border-b border-white/20">
+                              <SheetTitle className="text-white text-center">Sort By</SheetTitle>
+                            </SheetHeader>
+                            <div className="flex flex-col p-4">
+                              {sortOptions.map(option => (
+                                <Button
+                                  key={option.value}
+                                  variant="ghost"
+                                  onClick={() => onSortChange(option.value)}
+                                  className={cn(
+                                    "justify-start text-base py-3 h-auto",
+                                    sortOption === option.value && "font-bold text-custom-gold"
+                                  )}
+                                >
+                                  {option.label}
+                                </Button>
+                              ))}
+                            </div>
+                          </SheetContent>
+                        </Sheet>
                       </div>
                     </div>
                     {activeFilters.length > 0 && (
@@ -136,7 +163,19 @@ export function SearchResultsDetails({
                   <h2 className="text-lg md:text-xl mb-2 md:mb-0">
                     Showing {products.length} results for <span className="italic text-custom-gold">{query || 'all products'}</span>
                   </h2>
-                  {/* ... your desktop sort select ... */}
+                  <div className="flex items-center gap-2">
+                    <p className="text-sm">Sort by:</p>
+                    <Select value={sortOption} onValueChange={onSortChange}>
+                        <SelectTrigger className="w-[180px] bg-white/10 border-white/20 text-white">
+                            <SelectValue placeholder="Sort" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            {sortOptions.map(option => (
+                                <SelectItem key={option.value} value={option.value}>{option.label}</SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                  </div>
                 </div>
                 {activeFilters.length > 0 && (
                   <div className="hidden md:flex gap-2 mt-4 flex-nowrap overflow-x-auto no-scrollbar">

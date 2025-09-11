@@ -126,21 +126,33 @@ export default function SearchClientPage({ initialProducts, initialFilters }: Se
     <>
       {isMobile ? <StaticSparkleBackground /> : <SparkleBackground />}
       <div className={cn("flex flex-col h-screen", (isProfileOpen || isCartOpen) ? 'opacity-50' : '')}>
-        <Header 
-          onSearchSubmit={handleSearchSubmit}
-          onProfileOpenChange={setIsProfileOpen}
-          isContentScrolled={false}
-          onReset={() => router.push('/')}
-          onNavigate={(view) => router.push(`/${view}`)}
-          activeView={'search'}
-          isSearchingOnAbout={false}
-          isUsingAnimatedSearch={true}
-          searchInput={searchInput}
-          onSearchInputChange={setSearchInput}
-        />
+        {isMobile ? (
+          <MobileSearchHeader
+            value={searchInput}
+            onChange={(e) => setSearchInput(e.target.value)}
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleSearchSubmit(searchInput);
+            }}
+            isVisible={isMobileHeaderVisible}
+          />
+        ) : (
+          <Header 
+            onSearchSubmit={handleSearchSubmit}
+            onProfileOpenChange={setIsProfileOpen}
+            isContentScrolled={false}
+            onReset={() => router.push('/')}
+            onNavigate={(view) => router.push(`/${view}`)}
+            activeView={'search'}
+            isSearchingOnAbout={false}
+            isUsingAnimatedSearch={true}
+            searchInput={searchInput}
+            onSearchInputChange={setSearchInput}
+          />
+        )}
         <main className={cn(
           "flex-grow flex flex-col transition-all duration-300 relative min-h-0 md:pb-0",
-          "pt-24 md:pt-32" 
+          isMobile ? (isMobileHeaderVisible ? "pt-16" : "pt-0") : "pt-32"
         )}>
            <SearchView
              filters={initialFilters}
