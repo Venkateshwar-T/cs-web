@@ -16,7 +16,7 @@ interface SearchBarProps {
     onSearchInputChange: (value: string) => void;
 }
 
-const textsToType = ["Corporate gifts", "Family presents", "Festive gifts", "Birthday surprises", "Anniversary specials"];
+const textsToType = ["Corporate gifts", "Family presents", "Festive gifts", "Anniversary specials"];
 
 export function SearchBar({ activeView, isEnquireOpen, onSubmit, searchInput, onSearchInputChange }: SearchBarProps) {
     const [placeholder, setPlaceholder] = useState("");
