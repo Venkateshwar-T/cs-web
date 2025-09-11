@@ -1,3 +1,4 @@
+
 // src/components/views/SearchClientPage.tsx
 'use client';
 
@@ -137,7 +138,10 @@ export default function SearchClientPage({ initialProducts, initialFilters }: Se
           searchInput={searchInput}
           onSearchInputChange={setSearchInput}
         />
-        <main className={cn("flex-grow flex flex-col ...")}>
+        <main className={cn(
+          "flex-grow flex flex-col transition-all duration-300 relative min-h-0 md:pb-0",
+          "pt-24 md:pt-32" 
+        )}>
            <SearchView
              filters={initialFilters}
              isSearching={isSearching}

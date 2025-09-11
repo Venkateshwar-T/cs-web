@@ -1,3 +1,4 @@
+
 // src/components/views/SearchView.tsx
 'use client';
 
