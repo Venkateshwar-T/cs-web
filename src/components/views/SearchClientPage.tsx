@@ -79,7 +79,7 @@ export default function SearchClientPage({ initialProducts, initialFilters }: Se
   const getActiveFilters = () => {
     const active: { type: string, value: string, label: string }[] = [];
     for (const [key, value] of searchParams.entries()) {
-      if (key !== 'q') {
+      if (key !== 'q' && key !== 'minPrice' && key !== 'maxPrice') {
         active.push({ type: key, value: value, label: value });
       }
     }

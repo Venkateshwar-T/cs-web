@@ -39,6 +39,18 @@ async function getFilteredProducts(searchParams: { [key: string]: string | strin
         params.queryTerm = `*${queryTerm}*`;
     }
 
+    // Add price filter
+    const minPrice = searchParams.minPrice;
+    const maxPrice = searchParams.maxPrice;
+    if (minPrice) {
+        filters.push(`discountedPrice >= $minPrice`);
+        params.minPrice = Number(minPrice);
+    }
+    if (maxPrice) {
+        filters.push(`discountedPrice <= $maxPrice`);
+        params.maxPrice = Number(maxPrice);
+    }
+
     // Add your filter logic here based on searchParams
     const flavours = searchParams['flavours-fillings'];
     if (flavours) {

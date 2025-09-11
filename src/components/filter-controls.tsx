@@ -1,3 +1,4 @@
+
 // @/components/filter-controls.tsx
 'use client';
 
@@ -9,6 +10,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import type { StructuredFilter } from "@/types";
 import { ReadonlyURLSearchParams } from "next/navigation";
+import { useState, useEffect } from "react";
 
 const FilterSection = ({ title, icon, children }: { title: string, icon?: React.ReactNode, children: React.ReactNode }) => (
   <div className="space-y-3">
@@ -40,11 +42,21 @@ interface FilterControlsProps {
     isMobile?: boolean;
     searchParams: ReadonlyURLSearchParams;
     onFilterChange: (categoryKey: string, optionTitle: string, checked: boolean) => void;
+    onPriceRangeChange: (range: [number, number]) => void;
+    onPriceCheckboxChange: (range: [number, number] | null, checked: boolean) => void;
 }
 
 function formatCategoryTitleToKey(title: string) {
     return title.toLowerCase().replace(/ & /g, '-').replace(/ /g, '-');
 }
+
+const priceOptions = [
+    { id: '0-500', title: 'Under ₹500', range: [0, 500] },
+    { id: '500-1000', title: '₹500 - ₹1000', range: [500, 1000] },
+    { id: '1000-1500', title: '₹1000 - ₹1500', range: [1000, 1500] },
+    { id: '1500-2000', title: '₹1500 - ₹2000', range: [1500, 2000] },
+    { id: '2000-9999', title: 'Above ₹2000', range: [2000, 9999] },
+];
 
 
 export function FilterControls({ 
@@ -52,24 +64,48 @@ export function FilterControls({
     isMobile = false,
     searchParams,
     onFilterChange,
+    onPriceRangeChange,
+    onPriceCheckboxChange
 }: FilterControlsProps) {
-    // Add a price range filter for demonstration if not provided by Sanity
-    const priceFilter = {
-        _id: 'price',
-        title: 'Price',
-        options: [
-            { _id: '0-500', title: 'Under ₹500' },
-            { _id: '500-1000', title: '₹500 - ₹1000' },
-            { _id: '1000-1500', title: '₹1000 - ₹1500' },
-            { _id: '1500-2000', title: '₹1500 - ₹2000' },
-            { _id: '2000-9999', title: 'Above ₹2000' },
-        ]
-    };
+    const minPrice = searchParams.get('minPrice');
+    const maxPrice = searchParams.get('maxPrice');
     
-    const allFilters = [priceFilter, ...structuredFilters];
+    const [sliderValue, setSliderValue] = useState<[number, number]>([
+        minPrice ? Number(minPrice) : 0,
+        maxPrice ? Number(maxPrice) : 3000
+    ]);
 
-    // Dummy slider state - this would need to be managed via state and URL params in a real implementation
-    const priceRange: [number, number] = [0, 3000];
+    const [activeCheckbox, setActiveCheckbox] = useState<string | null>(null);
+
+    useEffect(() => {
+        const min = minPrice ? Number(minPrice) : 0;
+        const max = maxPrice ? Number(maxPrice) : 3000;
+        setSliderValue([min, max]);
+
+        // Check if the current slider values match a checkbox option
+        const matchingOption = priceOptions.find(opt => opt.range[0] === min && opt.range[1] === max);
+        if (matchingOption) {
+            setActiveCheckbox(matchingOption.id);
+        } else {
+            setActiveCheckbox(null);
+        }
+    }, [minPrice, maxPrice]);
+
+    const handleSliderCommit = (value: [number, number]) => {
+        onPriceRangeChange(value);
+    };
+
+    const handleCheckboxChange = (optionId: string, range: [number, number], isChecked: boolean) => {
+        if (isChecked) {
+            setActiveCheckbox(optionId);
+            onPriceCheckboxChange(range, true);
+        } else {
+            setActiveCheckbox(null);
+            onPriceCheckboxChange(null, false);
+        }
+    };
+
+    const allFilters = structuredFilters;
 
     const containerClasses = isMobile 
         ? "h-[75vh] flex flex-col" 
@@ -95,19 +131,32 @@ export function FilterControls({
                     )}
                     
                     <div className="space-y-6">
-                        {/* Price Slider - shown only for non-price filters */}
                         <div className="space-y-2">
                             <p className="text-sm text-white/80 font-poppins">Price</p>
                             <p className="text-base text-white font-semibold font-plex-sans">
-                                ₹{priceRange[0]} - ₹{priceRange[1]}
+                                ₹{sliderValue[0]} - ₹{sliderValue[1]}
                             </p>
                             <Slider
-                                defaultValue={priceRange}
+                                value={sliderValue}
+                                onValueChange={setSliderValue}
+                                onValueCommit={handleSliderCommit}
                                 max={3000}
                                 step={100}
                                 className="w-full"
                             />
                         </div>
+
+                         <FilterSection title="Price Range">
+                            {priceOptions.map((option) => (
+                                <CheckboxItem
+                                    key={option.id}
+                                    id={`${isMobile ? 'mobile-' : ''}${option.id}`}
+                                    label={option.title}
+                                    checked={activeCheckbox === option.id}
+                                    onCheckedChange={(checked) => handleCheckboxChange(option.id, option.range as [number, number], !!checked)}
+                                />
+                            ))}
+                        </FilterSection>
                         
                         {allFilters.map((filterCategory) => {
                             const categoryKey = formatCategoryTitleToKey(filterCategory.title);
