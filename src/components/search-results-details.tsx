@@ -161,21 +161,22 @@ export function SearchResultsDetails({
                 {/* Desktop Header */}
                 <div className="hidden md:flex flex-col md:flex-row justify-between md:items-center text-white">
                   <h2 className="text-lg md:text-xl mb-2 md:mb-0">
-                    Showing {products.length} results for <span className="italic text-custom-gold">{query || 'all products'}</span>
+                    Showing results for <span className="italic text-custom-gold">{query}</span>
                   </h2>
-                  <div className="flex items-center gap-2">
-                    <p className="text-sm">Sort by:</p>
-                    <Select value={sortOption} onValueChange={onSortChange}>
-                        <SelectTrigger className="w-[180px] bg-white/10 border-white/20 text-white">
-                            <SelectValue placeholder="Sort" />
-                        </SelectTrigger>
-                        <SelectContent>
-                            {sortOptions.map(option => (
-                                <SelectItem key={option.value} value={option.value}>{option.label}</SelectItem>
-                            ))}
-                        </SelectContent>
-                    </Select>
-                  </div>
+                  <Select value={sortOption} onValueChange={onSortChange}>
+                    <SelectTrigger className="w-full md:w-[220px] rounded-full bg-white text-custom-purple-dark border-2 border-custom-purple-dark h-8 md:h-9 focus:ring-0 focus:ring-offset-0 text-xs md:text-sm">
+                      <SelectValue>
+                        Sort By: {sortOption.charAt(0).toUpperCase() + sortOption.slice(1).replace(/-/g, ' ')}
+                      </SelectValue>
+                    </SelectTrigger>
+                    <SelectContent className="bg-white text-custom-purple-dark">
+                        {sortOptions.map(option => (
+                            <SelectItem key={option.value} value={option.value}>
+                                {option.label}
+                            </SelectItem>
+                        ))}
+                    </SelectContent>
+                  </Select>
                 </div>
                 {activeFilters.length > 0 && (
                   <div className="hidden md:flex gap-2 mt-4 flex-nowrap overflow-x-auto no-scrollbar">
