@@ -66,13 +66,13 @@ export function SearchView({
 
   return (
     <div className="flex w-full items-start h-full flex-grow min-h-0">
-      <div className="hidden md:block w-full md:sticky md:top-0 md:w-[25%] lg:w-[20%] h-full">
+      <div className="hidden md:block md:sticky md:top-0 md:w-[320px] lg:w-[350px] flex-shrink-0 h-full">
         {/* The FilterContainer for desktop now receives the live filter data */}
         <FilterContainer 
           filters={filters} 
         />
       </div>
-      <div className={cn("h-full flex-grow md:ml-8 relative min-h-0 w-full md:w-auto px-4 md:px-0")}>
+      <div className={cn("h-full flex-grow relative min-h-0 w-full md:w-auto px-4 md:px-0 md:ml-8")}>
         {/* SearchResultsDetails receives the products and all interactive props */}
         <SearchResultsDetails 
           products={products}
