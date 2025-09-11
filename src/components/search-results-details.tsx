@@ -18,6 +18,8 @@ import { ProductCardSkeleton } from "./product-card-skeleton";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { FilterContainer } from "./filter-container";
 import type { SanityProduct, StructuredFilter } from '@/types'; // CHANGED: Use real types
+import { EmptyState } from "./empty-state";
+import { useRouter } from "next/navigation";
 
 // CHANGED: The props interface is updated to use the new data types
 interface SearchResultsDetailsProps {
@@ -73,6 +75,7 @@ export function SearchResultsDetails({
 }: SearchResultsDetailsProps) {
 
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
   
   useEffect(() => {
     if (isSearching && scrollContainerRef.current) {
@@ -201,23 +204,36 @@ export function SearchResultsDetails({
                   onScroll={onScroll}
                   className="flex-grow h-full overflow-y-auto custom-scrollbar pt-0 md:pt-4 pb-8 min-h-0 px-4 md:px-8"
               >
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
-                  {isSearching 
-                    ? Array.from({ length: 12 }).map((_, index) => <ProductCardSkeleton key={index} />)
-                    : products.map((product) => (
-                        <ProductCard
-                          key={product._id} // CHANGED: Use Sanity's unique ID
-                          product={product}
-                          onAddToCart={onAddToCart}
-                          quantity={cart[product.name] || 0}
-                          onProductClick={onProductClick}
-                          isLiked={!!likedProducts[product._id]}
-                          onLikeToggle={() => onLikeToggle(product._id)}
-                          isMobile={isMobile}
-                        />
-                    ))
-                  }
-                </div>
+                {isSearching ? (
+                   <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+                    {Array.from({ length: 12 }).map((_, index) => <ProductCardSkeleton key={index} />)}
+                   </div>
+                ) : products.length > 0 ? (
+                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+                      {products.map((product) => (
+                          <ProductCard
+                            key={product._id} // CHANGED: Use Sanity's unique ID
+                            product={product}
+                            onAddToCart={onAddToCart}
+                            quantity={cart[product.name] || 0}
+                            onProductClick={onProductClick}
+                            isLiked={!!likedProducts[product._id]}
+                            onLikeToggle={() => onLikeToggle(product._id)}
+                            isMobile={isMobile}
+                          />
+                      ))}
+                  </div>
+                ) : (
+                  <div className="flex items-center justify-center h-full pt-16">
+                     <EmptyState
+                        imageUrl="/icons/empty.png"
+                        title="No Products Found"
+                        description="We couldn't find any products matching your search or filters. Try adjusting them!"
+                        buttonText="Continue Shopping"
+                        onButtonClick={() => router.push('/')}
+                      />
+                  </div>
+                )}
               </div>
           </div>
       </div>
