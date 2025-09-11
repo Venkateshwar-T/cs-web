@@ -5,6 +5,7 @@
 import { Home, ShoppingCart, User } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { ActiveView } from '@/app/page';
+import { useState, useEffect } from 'react';
 
 interface BottomNavbarProps {
   activeView: ActiveView;
@@ -19,6 +20,12 @@ const navItems = [
 ] as const;
 
 export function BottomNavbar({ activeView, onNavigate, cartItemCount = 0 }: BottomNavbarProps) {
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
   return (
     <div className="fixed bottom-0 left-0 right-0 h-16 bg-background border-t border-white/20 md:hidden z-50">
       <div className="flex justify-around items-center h-full">
@@ -37,7 +44,7 @@ export function BottomNavbar({ activeView, onNavigate, cartItemCount = 0 }: Bott
             >
               <div className="relative">
                 <item.icon className="h-6 w-6" />
-                {isCartItem && cartItemCount > 0 && (
+                {isClient && isCartItem && cartItemCount > 0 && (
                   <span className="absolute -top-1.5 -right-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[10px] text-white">
                     {cartItemCount}
                   </span>
