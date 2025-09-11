@@ -103,7 +103,7 @@ export function FilterControls({
                             </p>
                             <Slider
                                 defaultValue={priceRange}
-                                max={5000}
+                                max={3000}
                                 step={100}
                                 className="w-full"
                             />
