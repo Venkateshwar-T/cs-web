@@ -60,13 +60,6 @@ async function getFilteredProducts(searchParams: { [key: string]: string | strin
 
 const LoadingFallback = () => (
     <div className="h-screen w-full flex flex-col items-center justify-center text-white bg-background gap-4">
-        <Image 
-            src="/Choco Smiley Logo.png"
-            alt="Choco Smiley Logo"
-            width={200}
-            height={80}
-            className="w-48 animate-pulse"
-        />
         <p className="text-lg">Loading your chocolates...</p>
     </div>
 );
