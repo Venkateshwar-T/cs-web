@@ -184,13 +184,13 @@ export default function ProductDetailClientPage({ product, featuredProducts }: P
         <main onScroll={handleScroll} className="flex-grow flex flex-col px-32 pt-24 md:pt-32 gap-8 overflow-y-auto no-scrollbar">
           <div className="flex-grow flex flex-col">
              <div className="bg-[#9A7DAB] rounded-[40px] text-white flex-grow flex items-center justify-center">
-              <div className="flex w-full h-full gap-8 py-4">
+              <div className="flex w-full h-full gap-8 pr-8">
                   <div className="w-1/2 h-full">
                       {/* Left Panel Content */}
                   </div>
-                  <Separator orientation="vertical" className="bg-white/30" />
-                  <div className="w-1/2 h-full flex flex-col relative">
-                      <div className="flex-grow overflow-y-auto custom-scrollbar pr-4 pb-28">
+                  <Separator orientation="vertical" className="bg-white/30 h-[98%] mt-2" />
+                  <div className="h-full relative py-4">
+                      <div className="flex-grow overflow-y-auto custom-scrollbar pb-28">
                           <ProductDetails
                               product={product}
                               isLiked={!!likedProducts[product._id]}
