@@ -1,3 +1,4 @@
+
 // @/components/views/MobileProductDetailView.tsx
 'use client';
 
@@ -10,6 +11,7 @@ import { MobileImageGallery } from '../mobile-image-gallery';
 import { ProductDetails } from '../product-details';
 import { FlavoursSection } from '../flavours-section';
 import { Separator } from '../ui/separator';
+import type { OrderItem } from '@/context/app-context';
 
 const FloatingPriceBox = ({ product, productQuantity, onAddToCart, onBuyNow, className }: { product: SanityProduct, productQuantity: number, onAddToCart: any, onBuyNow: any, className?: string }) => {
     const handleAddToCartClick = () => {
@@ -143,7 +145,7 @@ interface MobileProductDetailViewProps {
   product: SanityProduct;
   onClose: () => void;
   onAddToCart: (name: string, quantity: number, animate?: boolean) => void;
-  cart: Record<string, number>;
+  cart: Record<string, OrderItem>;
   onBuyNow: () => void;
   isLiked: boolean;
   onLikeToggle: (productId: string) => void;
@@ -162,7 +164,7 @@ export function MobileProductDetailView({
   flavourCart,
   onFlavourAddToCart,
 }: MobileProductDetailViewProps) {
-  const productQuantity = cart[product.name] || 0;
+  const productQuantity = cart[product.name]?.quantity || 0;
   const [isInlinePriceBoxVisible, setIsInlinePriceBoxVisible] = useState(true);
   const inlinePriceBoxRef = useRef<HTMLDivElement>(null);
 
