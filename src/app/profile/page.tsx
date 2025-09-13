@@ -50,7 +50,7 @@ export default function ProfilePage() {
     updateProfileInfo(updatedProfile);
   };
 
-  const cartItemCount = Object.values(cart).reduce((acc, quantity) => acc + quantity, 0);
+  const cartItemCount = Object.values(cart).reduce((acc, item) => acc + item.quantity, 0);
   
   if (!isProfileLoaded) {
     return (
