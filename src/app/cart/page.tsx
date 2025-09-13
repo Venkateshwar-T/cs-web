@@ -28,21 +28,8 @@ import { StaticSparkleBackground } from '@/components/static-sparkle-background'
 import { FloatingCartFinalizeButton } from '@/components/floating-cart-finalize-button';
 import { EmptyState } from '@/components/empty-state';
 import { useAppContext } from '@/context/app-context';
-
-const productPrices: Record<string, number> = {
-  'Diwali Collection Box 1': 799,
-  'Diwali Collection Box 2': 1199,
-  'Diwali Collection Box 3': 999,
-  'Diwali Collection Box 4': 899,
-  'Diwali Collection Box 5': 750,
-  'Diwali Collection Box 6': 1250,
-  'Diwali Collection Box 7': 600,
-  'Diwali Collection Box 8': 1500,
-  'Diwali Collection Box 9': 850,
-  'Diwali Collection Box 10': 950,
-  'Diwali Collection Box 11': 1100,
-  'Diwali Collection Box 12': 1300,
-};
+import type { SanityProduct } from '@/types';
+import { client } from '@/lib/sanity';
 
 function generateOrderId() {
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
@@ -57,11 +44,28 @@ export default function CartPage() {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const router = useRouter();
   const { cart, updateCart, clearCart, addOrder } = useAppContext();
+  const [allProducts, setAllProducts] = useState<SanityProduct[]>([]);
   const isMobile = useIsMobile();
   const [lastScrollTop, setLastScrollTop] = useState(0);
   const [isHeaderVisible, setIsHeaderVisible] = useState(true);
   const [isSummaryVisible, setIsSummaryVisible] = useState(false);
   const summaryRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    async function fetchAllProducts() {
+        const query = `*[_type == "product"]{
+            _id, name, slug, mrp, discountedPrice, weight, packageType, composition, "images": images[].asset->url, "filterOptions": filterOptions[]->{title, "category": category->title},
+            availableFlavours[]->{
+                _id,
+                name,
+                "imageUrl": image.asset->url
+            }
+        }`;
+        const products = await client.fetch(query);
+        setAllProducts(products);
+    }
+    fetchAllProducts();
+  }, []);
 
   useEffect(() => {
     if (!isMobile) return;
@@ -110,10 +114,15 @@ export default function CartPage() {
   };
 
   const handleCheckout = () => {
-    const newOrderId = generateOrderId();
-    const subtotal = Object.entries(cart).reduce((acc, [name, quantity]) => {
-        const price = productPrices[name] || 0;
-        return acc + (price * quantity);
+    const productsByName = allProducts.reduce((acc, product) => {
+        acc[product.name] = product;
+        return acc;
+    }, {} as Record<string, SanityProduct>);
+    
+    const subtotal = Object.values(cart).reduce((acc, item) => {
+        const product = productsByName[item.name];
+        const price = product?.discountedPrice || 0;
+        return acc + (price * item.quantity);
     }, 0);
     
     const discount = 500.00;
@@ -123,15 +132,15 @@ export default function CartPage() {
     const total = subtotalAfterDiscount + gstAmount;
 
     addOrder({
-        id: newOrderId,
+        id: generateOrderId(),
         date: new Date().toISOString(),
-        items: Object.entries(cart).map(([name, quantity]) => ({ name, quantity })),
+        items: Object.values(cart),
         status: 'Order Requested',
         total: total > 0 ? total : 0,
     });
 
     clearCart();
-    router.push(`/order-confirmed?orderId=${newOrderId}`);
+    router.push(`/order-confirmed?orderId=${generateOrderId()}`);
   };
   
   const handleScroll = (event: UIEvent<HTMLDivElement>) => {
@@ -151,8 +160,12 @@ export default function CartPage() {
   };
 
 
-  const cartItems = Object.entries(cart);
-  const cartItemCount = Object.values(cart).reduce((acc, quantity) => acc + quantity, 0);
+  const cartItems = Object.values(cart);
+  const cartItemCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
+  const productsByName = allProducts.reduce((acc, product) => {
+    acc[product.name] = product;
+    return acc;
+  }, {} as Record<string, SanityProduct>);
 
   return (
     <>
@@ -214,20 +227,24 @@ export default function CartPage() {
                         </AlertDialog>
                       </div>
                       <div className="overflow-y-auto no-scrollbar">
-                        {cartItems.map(([productName, quantity], index) => (
+                        {cartItems.map((item, index) => {
+                          const product = productsByName[item.name];
+                          if (!product) return null;
+                          return (
                            <MobileCartItemCard
-                              key={productName}
-                              productName={productName}
-                              quantity={quantity}
+                              key={item.name}
+                              item={item}
+                              product={product}
                               onQuantityChange={handleQuantityChange}
                               onRemove={handleRemove}
                               isLastItem={index === cartItems.length - 1}
                             />
-                        ))}
+                          )
+                        })}
                       </div>
                     </div>
                     {cartItems.length > 0 && (
-                      <MobileCartSummary ref={summaryRef} cart={cart} onCheckout={handleCheckout} />
+                      <MobileCartSummary ref={summaryRef} cart={cart} allProducts={allProducts} onCheckout={handleCheckout} />
                     )}
                   </div>
                   <div className="h-16" />
@@ -249,10 +266,12 @@ export default function CartPage() {
       <PopupsManager
         isProfileOpen={isProfileOpen}
         setIsProfileOpen={setIsProfileOpen}
+        allProducts={allProducts}
       />
       {isMobile && cartItems.length > 0 && (
         <FloatingCartFinalizeButton
           cart={cart}
+          allProducts={allProducts}
           onCheckout={handleCheckout}
           isVisible={!isSummaryVisible}
         />

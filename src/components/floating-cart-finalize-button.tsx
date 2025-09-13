@@ -1,37 +1,28 @@
-
 // @/components/floating-cart-finalize-button.tsx
 'use client';
 
 import { Button } from './ui/button';
 import { cn } from '@/lib/utils';
+import type { OrderItem } from '@/context/app-context';
+import type { SanityProduct } from '@/types';
 
 interface FloatingCartFinalizeButtonProps {
-    cart: Record<string, number>;
+    cart: Record<string, OrderItem>;
+    allProducts: SanityProduct[];
     onCheckout: () => void;
     isVisible: boolean;
 }
 
-// Mock data for product prices - in a real app this would come from a database or state management
-const productPrices: Record<string, number> = {
-  'Diwali Collection Box 1': 799,
-  'Anniversary Special Box': 1199,
-  'Diwali Collection Box 2': 1199,
-  'Diwali Collection Box 3': 999,
-  'Diwali Collection Box 4': 899,
-  'Diwali Collection Box 5': 750,
-  'Diwali Collection Box 6': 1250,
-  'Diwali Collection Box 7': 600,
-  'Diwali Collection Box 8': 1500,
-  'Diwali Collection Box 9': 850,
-  'Diwali Collection Box 10': 950,
-  'Diwali Collection Box 11': 1100,
-  'Diwali Collection Box 12': 1300,
-};
-
-export function FloatingCartFinalizeButton({ cart, onCheckout, isVisible }: FloatingCartFinalizeButtonProps) {
-    const subtotal = Object.entries(cart).reduce((acc, [name, quantity]) => {
-        const price = productPrices[name] || 0;
-        return acc + (price * quantity);
+export function FloatingCartFinalizeButton({ cart, allProducts, onCheckout, isVisible }: FloatingCartFinalizeButtonProps) {
+    const productsByName = allProducts.reduce((acc, product) => {
+        acc[product.name] = product;
+        return acc;
+    }, {} as Record<string, SanityProduct>);
+    
+    const subtotal = Object.values(cart).reduce((acc, item) => {
+        const product = productsByName[item.name];
+        const price = product?.discountedPrice || 0;
+        return acc + (price * item.quantity);
     }, 0);
 
     const discount = 500.00; // Mock discount

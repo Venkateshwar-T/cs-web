@@ -1,4 +1,3 @@
-
 // @/components/mobile-cart-item-card.tsx
 'use client';
 
@@ -14,10 +13,12 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import type { OrderItem } from '@/context/app-context';
+import type { SanityProduct } from '@/types';
 
 interface MobileCartItemCardProps {
-    productName: string;
-    quantity: number;
+    item: OrderItem;
+    product: SanityProduct;
     onQuantityChange: (productName: string, newQuantity: number) => void;
     onRemove: (productName: string) => void;
     isLastItem: boolean;
@@ -29,21 +30,25 @@ const selectedFlavours = [
     { name: 'Dark Chocolate', price: 75 },
 ];
 
-export function MobileCartItemCard({ productName, quantity, onQuantityChange, onRemove, isLastItem }: MobileCartItemCardProps) {
+export function MobileCartItemCard({ item, product, onQuantityChange, onRemove, isLastItem }: MobileCartItemCardProps) {
     const handleRemove = () => {
-        onRemove(productName);
+        onRemove(item.name);
     }
     
     const handleIncrement = () => {
-        onQuantityChange(productName, quantity + 1);
+        onQuantityChange(item.name, item.quantity + 1);
     };
 
     const handleDecrement = () => {
-        if (quantity > 1) {
-            onQuantityChange(productName, quantity - 1);
+        if (item.quantity > 1) {
+            onQuantityChange(item.name, item.quantity - 1);
         }
     };
 
+    const subtitle = [product.weight, product.composition, product.packageType].filter(Boolean).join(' | ');
+    const discountPercentage = product.mrp && product.discountedPrice && product.mrp > product.discountedPrice
+    ? Math.round(((product.mrp - product.discountedPrice) / product.mrp) * 100)
+    : null;
 
     return (
         <div 
@@ -55,8 +60,8 @@ export function MobileCartItemCard({ productName, quantity, onQuantityChange, on
             <div className="flex gap-3 items-center">
                 <div className="w-1/4 flex-shrink-0 flex flex-col items-center gap-2">
                     <Image
-                        src="/choco img.png"
-                        alt={productName}
+                        src={product.images && product.images.length > 0 ? product.images[0] : "/placeholder.png"}
+                        alt={item.name}
                         width={100}
                         height={100}
                         className="rounded-lg object-cover w-full aspect-square"
@@ -68,12 +73,12 @@ export function MobileCartItemCard({ productName, quantity, onQuantityChange, on
                             variant="ghost"
                             onClick={handleDecrement}
                             className="h-full rounded-none bg-gray-200 hover:bg-gray-300 text-black flex-1 flex items-center justify-center"
-                            disabled={quantity <= 1}
+                            disabled={item.quantity <= 1}
                         >
                             <Minus className="h-4 w-4" />
                         </Button>
                         <div className="flex-1 text-center bg-gray-200 h-full flex items-center justify-center">
-                            <span className="font-bold px-1 text-sm">{quantity}</span>
+                            <span className="font-bold px-1 text-sm">{item.quantity}</span>
                         </div>
                         <Button
                             size="icon"
@@ -88,47 +93,50 @@ export function MobileCartItemCard({ productName, quantity, onQuantityChange, on
                 <div className="w-3/4 flex flex-col justify-between self-stretch">
                     <div className="flex flex-col items-start">
                         <div className="flex justify-between items-center w-full gap-2">
-                            <h3 className="font-bold text-base flex-1 truncate">{productName}</h3>
+                            <h3 className="font-bold text-base flex-1 truncate">{item.name}</h3>
                             <button onClick={handleRemove} className="text-black/80 hover:text-red-500 transition-colors flex-shrink-0">
                                 <FaTrash size={18} />
                             </button>
                         </div>
-                        <p className="text-xs text-black/80 truncate mt-0">250g | Assorted | Hard-Box</p>
+                        <p className="text-xs text-black/80 truncate mt-0">{subtitle}</p>
                         
-                        <Sheet>
-                          <SheetTrigger asChild>
-                            <Button variant="ghost" className="h-auto p-2 mt-2 text-custom-purple-dark text-xs rounded-lg hover:text-custom-purple-dark hover:bg-black/5">
-                              <span>Selected Flavours</span>
-                              <ChevronDown className="h-4 w-4 text-custom-purple-dark" />
-                            </Button>
-                          </SheetTrigger>
-                          <SheetContent side="bottom" className="bg-custom-purple-dark text-white border-t-2 border-custom-gold rounded-t-3xl h-auto p-0">
-                            <SheetHeader className="p-4 border-b border-white/20">
-                              <SheetTitle className="text-white">Selected Flavours & Fillings</SheetTitle>
-                            </SheetHeader>
-                            <div className="bg-white/10 rounded-lg p-4 m-4">
-                                <ul className="list-disc list-inside text-sm mt-1 space-y-2 font-medium">
-                                  {selectedFlavours.map((flavour, index) => (
-                                      <li key={index}>
-                                          <span className="w-36 inline-block">{flavour.name}</span>
-                                          <span className='ml-1'>+₹{flavour.price}</span>
-                                      </li>
-                                  ))}
-                                </ul>
-                            </div>
-                          </SheetContent>
-                        </Sheet>
+                        {item.flavours && item.flavours.length > 0 && (
+                            <Sheet>
+                                <SheetTrigger asChild>
+                                    <Button variant="ghost" className="h-auto p-2 mt-2 text-custom-purple-dark text-xs rounded-lg hover:text-custom-purple-dark hover:bg-black/5">
+                                    <span>Selected Flavours</span>
+                                    <ChevronDown className="h-4 w-4 text-custom-purple-dark" />
+                                    </Button>
+                                </SheetTrigger>
+                                <SheetContent side="bottom" className="bg-custom-purple-dark text-white border-t-2 border-custom-gold rounded-t-3xl h-auto p-0">
+                                    <SheetHeader className="p-4 border-b border-white/20">
+                                    <SheetTitle className="text-white">Selected Flavours & Fillings</SheetTitle>
+                                    </SheetHeader>
+                                    <div className="bg-white/10 rounded-lg p-4 m-4">
+                                        <ul className="list-disc list-inside text-sm mt-1 space-y-2 font-medium">
+                                        {item.flavours.map((flavour, index) => (
+                                            <li key={index}>
+                                                <span className="w-36 inline-block">{flavour}</span>
+                                            </li>
+                                        ))}
+                                        </ul>
+                                    </div>
+                                </SheetContent>
+                            </Sheet>
+                        )}
                     </div>
 
                     <div className="mt-2 flex items-center justify-between">
                          <div className="flex items-baseline gap-2">
-                           <p className="text-sm line-through text-black/70 font-semibold">₹1000</p>
-                           <div className="flex items-center gap-1 text-custom-purple-dark bg-custom-gold px-1.5 py-0.5 rounded-md">
-                            <svg className="h-3 w-3" viewBox="0 0 24 24" fill="currentColor"><path d="M12 16l-6-6h12z"/></svg>
-                            <span className="text-xs font-semibold">25%</span>
-                           </div>
+                           {product.mrp && <p className="text-sm line-through text-black/70 font-semibold">₹{product.mrp}</p>}
+                           {discountPercentage && (
+                            <div className="flex items-center gap-1 text-custom-purple-dark bg-custom-gold px-1.5 py-0.5 rounded-md">
+                                <svg className="h-3 w-3" viewBox="0 0 24 24" fill="currentColor"><path d="M12 16l-6-6h12z"/></svg>
+                                <span className="text-xs font-semibold">{discountPercentage}%</span>
+                            </div>
+                           )}
                         </div>
-                        <p className="text-lg font-bold">₹750</p>
+                        {product.discountedPrice && <p className="text-lg font-bold">₹{product.discountedPrice}</p>}
                     </div>
                 </div>
             </div>

@@ -21,18 +21,25 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import type { OrderItem } from '@/context/app-context';
+import type { SanityProduct } from '@/types';
 
 interface CartPopupProps {
   onClose: () => void;
   cart: Record<string, OrderItem>;
+  allProducts: SanityProduct[];
   onClearCart: () => void;
   onFinalizeOrder: () => void;
   onQuantityChange: (productName: string, newQuantity: number) => void;
 }
 
-export function CartPopup({ onClose, cart, onClearCart, onFinalizeOrder, onQuantityChange }: CartPopupProps) {
+export function CartPopup({ onClose, cart, allProducts, onClearCart, onFinalizeOrder, onQuantityChange }: CartPopupProps) {
   const [removingItems, setRemovingItems] = useState<string[]>([]);
   const cartItems = Object.values(cart);
+  const productsByName = allProducts.reduce((acc, product) => {
+    acc[product.name] = product;
+    return acc;
+  }, {} as Record<string, SanityProduct>);
+
 
   const handleRemove = (productName: string) => {
     setRemovingItems(prev => [...prev, productName]);
@@ -89,17 +96,21 @@ export function CartPopup({ onClose, cart, onClearCart, onFinalizeOrder, onQuant
               </div>
             ) : (
               <div className="space-y-4 pb-4">
-                {cartItems.map((item) => (
-                  <CartItemCard 
-                    key={item.name}
-                    item={item}
-                    quantity={item.quantity}
-                    onQuantityChange={onQuantityChange}
-                    onRemove={() => handleRemove(item.name)}
-                    isRemoving={removingItems.includes(item.name)}
-                    onAnimationEnd={() => handleAnimationEnd(item.name)}
-                  />
-                ))}
+                {cartItems.map((item) => {
+                  const product = productsByName[item.name];
+                  if (!product) return null;
+                  return (
+                    <CartItemCard
+                      key={item.name}
+                      item={item}
+                      product={product}
+                      onQuantityChange={onQuantityChange}
+                      onRemove={() => handleRemove(item.name)}
+                      isRemoving={removingItems.includes(item.name)}
+                      onAnimationEnd={() => handleAnimationEnd(item.name)}
+                    />
+                  )
+                })}
               </div>
             )}
           </div>
@@ -108,7 +119,7 @@ export function CartPopup({ onClose, cart, onClearCart, onFinalizeOrder, onQuant
         {/* Right Section (40%) */}
         <div className="w-[40%] rounded-l-2xl flex flex-col pr-6">
             <div className="flex-grow min-h-0">
-                <OrderSummary cart={cart} />
+                <OrderSummary cart={cart} allProducts={allProducts} />
             </div>
             <CartPopupFooter cart={cart} onFinalizeOrder={onFinalizeOrder} />
         </div>

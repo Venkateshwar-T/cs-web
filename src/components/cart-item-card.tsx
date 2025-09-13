@@ -7,31 +7,37 @@ import { Button } from './ui/button';
 import { FaTrash } from 'react-icons/fa';
 import { cn } from '@/lib/utils';
 import type { OrderItem } from '@/context/app-context';
+import type { SanityProduct } from '@/types';
 
 interface CartItemCardProps {
     item: OrderItem;
-    quantity: number;
+    product: SanityProduct;
     onQuantityChange: (productName: string, newQuantity: number) => void;
     onRemove: (productName: string) => void;
     isRemoving: boolean;
     onAnimationEnd: () => void;
 }
 
-export function CartItemCard({ item, quantity, onQuantityChange, onRemove, isRemoving, onAnimationEnd }: CartItemCardProps) {
+export function CartItemCard({ item, product, onQuantityChange, onRemove, isRemoving, onAnimationEnd }: CartItemCardProps) {
 
     const handleIncrement = (e: React.MouseEvent) => {
         e.stopPropagation();
-        onQuantityChange(item.name, quantity + 1);
+        onQuantityChange(item.name, item.quantity + 1);
     };
 
     const handleDecrement = (e: React.MouseEvent) => {
         e.stopPropagation();
-        onQuantityChange(item.name, quantity - 1);
+        onQuantityChange(item.name, item.quantity - 1);
     };
     
     const handleRemove = () => {
         onRemove(item.name);
     }
+
+    const subtitle = [product.weight, product.composition, product.packageType].filter(Boolean).join(' | ');
+    const discountPercentage = product.mrp && product.discountedPrice && product.mrp > product.discountedPrice
+    ? Math.round(((product.mrp - product.discountedPrice) / product.mrp) * 100)
+    : null;
 
     return (
         <div 
@@ -44,7 +50,7 @@ export function CartItemCard({ item, quantity, onQuantityChange, onRemove, isRem
             <div className="flex gap-4">
                 <div className="w-1/3 flex-shrink-0">
                     <Image
-                        src="/choco img.png"
+                        src={product.images && product.images.length > 0 ? product.images[0] : "/placeholder.png"}
                         alt={item.name}
                         width={200}
                         height={200}
@@ -54,7 +60,7 @@ export function CartItemCard({ item, quantity, onQuantityChange, onRemove, isRem
                 <div className="w-2/3 flex flex-col justify-between">
                     <div>
                         <h3 className="font-bold text-xl pr-8">{item.name}</h3>
-                        <p className="text-sm text-black/70">250g | Assorted | Hard-Box</p>
+                        <p className="text-sm text-black/70">{subtitle}</p>
                         
                         {item.flavours && item.flavours.length > 0 && (
                             <>
@@ -87,7 +93,7 @@ export function CartItemCard({ item, quantity, onQuantityChange, onRemove, isRem
                             <Minus className="h-4 w-4" />
                         </Button>
                         <div className="flex-1 text-center bg-white text-custom-purple-dark h-full flex items-center justify-center">
-                            <span className="font-bold px-1 text-sm">{quantity}</span>
+                            <span className="font-bold px-1 text-sm">{item.quantity}</span>
                         </div>
                         <Button
                             size="icon"
@@ -100,10 +106,10 @@ export function CartItemCard({ item, quantity, onQuantityChange, onRemove, isRem
                     </div>
                     <div className="flex items-end gap-4">
                         <div className="flex flex-col items-center">
-                            <p className="text-sm line-through text-gray-500 font-bold">₹1000</p>
-                            <p className="text-sm text-custom-purple-dark font-semibold">25% OFF</p>
+                            {product.mrp && <p className="text-sm line-through text-gray-500 font-bold">₹{product.mrp}</p>}
+                            {discountPercentage && <p className="text-sm text-custom-purple-dark font-semibold">{discountPercentage}% OFF</p>}
                         </div>
-                        <p className="font-bold text-2xl">₹750</p>
+                        {product.discountedPrice && <p className="font-bold text-2xl">₹{product.discountedPrice}</p>}
                     </div>
                 </div>
 

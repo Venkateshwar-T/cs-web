@@ -4,26 +4,13 @@
 import { Separator } from './ui/separator';
 import { cn } from '@/lib/utils';
 import type { OrderItem } from '@/context/app-context';
+import type { SanityProduct } from '@/types';
 
 interface OrderSummaryProps {
   cart: Record<string, OrderItem>;
+  allProducts: SanityProduct[];
 }
 
-// Mock data for product prices - in a real app this would come from a database or state management
-const productPrices: Record<string, number> = {
-  'Diwali Collection Box 1': 799,
-  'Diwali Collection Box 2': 1199,
-  'Diwali Collection Box 3': 999,
-  'Diwali Collection Box 4': 899,
-  'Diwali Collection Box 5': 750,
-  'Diwali Collection Box 6': 1250,
-  'Diwali Collection Box 7': 600,
-  'Diwali Collection Box 8': 1500,
-  'Diwali Collection Box 9': 850,
-  'Diwali Collection Box 10': 950,
-  'Diwali Collection Box 11': 1100,
-  'Diwali Collection Box 12': 1300,
-};
 
 const SummaryRow = ({ label, value, isBold = false }: { label: React.ReactNode, value: string, isBold?: boolean }) => (
     <div className={cn("flex justify-between items-center text-sm", isBold && "font-bold")}>
@@ -32,8 +19,13 @@ const SummaryRow = ({ label, value, isBold = false }: { label: React.ReactNode, 
     </div>
 );
 
-export function OrderSummary({ cart }: OrderSummaryProps) {
+export function OrderSummary({ cart, allProducts }: OrderSummaryProps) {
   const cartItems = Object.values(cart);
+  const productsByName = allProducts.reduce((acc, product) => {
+    acc[product.name] = product;
+    return acc;
+  }, {} as Record<string, SanityProduct>);
+
 
   if (cartItems.length === 0) {
       return (
@@ -44,7 +36,8 @@ export function OrderSummary({ cart }: OrderSummaryProps) {
   }
 
   const subtotal = cartItems.reduce((acc, item) => {
-    const price = productPrices[item.name] || 0;
+    const product = productsByName[item.name];
+    const price = product?.discountedPrice || 0;
     return acc + (price * item.quantity);
   }, 0);
 
@@ -59,13 +52,18 @@ export function OrderSummary({ cart }: OrderSummaryProps) {
         <h3 className="font-bold text-xl text-center mb-4 flex-shrink-0">Order Summary</h3>
         
         <div className="flex-grow space-y-2 overflow-y-auto no-scrollbar">
-            {cartItems.map((item) => (
-                <div key={item.name} className="flex justify-between items-center">
-                    <span className="text-sm font-bold w-2/3 truncate pr-2">{item.name}</span>
-                    <span className="text-sm text-gray-600">x{item.quantity}</span>
-                    <span className="text-sm font-semibold w-1/4 text-right">₹{(productPrices[item.name] || 0).toFixed(2)}</span>
-                </div>
-            ))}
+            {cartItems.map((item) => {
+                const product = productsByName[item.name];
+                if (!product) return null;
+                const price = product.discountedPrice || 0;
+                return (
+                    <div key={item.name} className="flex justify-between items-center">
+                        <span className="text-sm font-bold w-2/3 truncate pr-2">{item.name}</span>
+                        <span className="text-sm text-gray-600">x{item.quantity}</span>
+                        <span className="text-sm font-semibold w-1/4 text-right">₹{price.toFixed(2)}</span>
+                    </div>
+                )
+            })}
         </div>
 
         <div className="mt-4 pt-4 border-t border-dashed border-gray-300 space-y-2.5 flex-shrink-0">
@@ -75,18 +73,18 @@ export function OrderSummary({ cart }: OrderSummaryProps) {
             />
              <SummaryRow 
                 label="Subtotal"
-                value={`₹${subtotalAfterDiscount.toFixed(2)}`}
+                value={`₹${subtotalAfterDiscount > 0 ? subtotalAfterDiscount.toFixed(2) : '0.00'}`}
             />
             <SummaryRow 
                 label={<>GST + Taxes <span className="font-normal text-gray-500">(18%)</span></>}
-                value={`+₹${gstAmount.toFixed(2)}`}
+                value={`+₹${gstAmount > 0 ? gstAmount.toFixed(2) : '0.00'}`}
             />
 
             <Separator className="my-2 bg-gray-400 h-[1.5px]" />
             
             <SummaryRow 
                 label="Total (Amount Payable)"
-                value={`₹${total.toFixed(2)}`}
+                value={`₹${total > 0 ? total.toFixed(2) : '0.00'}`}
                 isBold={true}
             />
         </div>

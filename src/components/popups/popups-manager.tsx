@@ -22,25 +22,10 @@ interface PopupsManagerProps {
   onAddToCart?: (productName: string, quantity: number, flavours?: string[]) => void;
   onToggleCartPopup?: () => void;
   onClearCart?: () => void;
-  allProducts?: SanityProduct[];
+  allProducts: SanityProduct[];
   onClearWishlist?: () => void;
   setIsProfileOpen: (isOpen: boolean) => void;
 }
-
-const productPrices: Record<string, number> = {
-  'Diwali Collection Box 1': 799,
-  'Diwali Collection Box 2': 1199,
-  'Diwali Collection Box 3': 999,
-  'Diwali Collection Box 4': 899,
-  'Diwali Collection Box 5': 750,
-  'Diwali Collection Box 6': 1250,
-  'Diwali Collection Box 7': 600,
-  'Diwali Collection Box 8': 1500,
-  'Diwali Collection Box 9': 850,
-  'Diwali Collection Box 10': 950,
-  'Diwali Collection Box 11': 1100,
-  'Diwali Collection Box 12': 1300,
-};
 
 function generateOrderId() {
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
@@ -76,9 +61,15 @@ export function PopupsManager({
     }
     if (!cart) return;
 
+    const productsByName = allProducts.reduce((acc, product) => {
+      acc[product.name] = product;
+      return acc;
+    }, {} as Record<string, SanityProduct>);
+
     const newOrderId = generateOrderId();
     const subtotal = Object.values(cart).reduce((acc, item) => {
-        const price = productPrices[item.name] || 0;
+        const product = productsByName[item.name];
+        const price = product?.discountedPrice || 0;
         return acc + (price * item.quantity);
     }, 0);
     
@@ -132,6 +123,7 @@ export function PopupsManager({
                   <CartPopup
                     onClose={onToggleCartPopup}
                     cart={cart}
+                    allProducts={allProducts}
                     onClearCart={onClearCart}
                     onFinalizeOrder={handleFinalizeOrder}
                     onQuantityChange={onAddToCart}
@@ -140,7 +132,7 @@ export function PopupsManager({
           </div>
       )}
 
-      {isProfileOpen && allProducts && likedProducts && onLikeToggle && cart && onAddToCart && onClearWishlist && (
+      {isProfileOpen && likedProducts && onLikeToggle && cart && onAddToCart && onClearWishlist && (
           <div className="fixed inset-0 z-50 flex items-center justify-center">
             <ProfilePopup 
               onClose={() => setIsProfileOpen(false)} 

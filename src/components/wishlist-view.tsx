@@ -21,6 +21,7 @@ import {
 import { EmptyState } from './empty-state';
 import { useRouter } from 'next/navigation';
 import type { OrderItem } from '@/context/app-context';
+import { useAppContext } from '@/context/app-context';
 
 interface WishlistViewProps {
   products: SanityProduct[];
@@ -41,12 +42,22 @@ export function WishlistView({
   onClearWishlist, 
   isMobile = false 
 }: WishlistViewProps) {
+  const { setFlavourSelection } = useAppContext();
   const wishlistedProducts = products.filter(p => likedProducts[p._id]);
   const [unlikingItems, setUnlikingItems] = useState<string[]>([]);
   const router = useRouter();
 
   const handleUnlike = (productId: string) => {
     setUnlikingItems(prev => [...prev, productId]);
+  };
+  
+  const handleAddToCartFromWishlist = (product: SanityProduct) => {
+    const isInCart = !!cart[product.name];
+    if (isInCart) {
+      onAddToCart(product.name, 0); // Remove from cart
+    } else {
+      setFlavourSelection({ product, isOpen: true }); // Open flavour popup
+    }
   };
 
   const handleAnimationEnd = (productId: string) => {
@@ -96,7 +107,7 @@ export function WishlistView({
                   key={product._id}
                   product={product}
                   onUnlike={() => handleUnlike(product._id)}
-                  onAddToCart={onAddToCart}
+                  onAddToCart={() => handleAddToCartFromWishlist(product)}
                   isInCart={!!cart[product.name]}
                   isUnliking={unlikingItems.includes(product._id)}
                   onAnimationEnd={() => handleAnimationEnd(product._id)}
@@ -134,7 +145,7 @@ export function WishlistView({
                 key={product._id}
                 product={product}
                 onUnlike={() => handleUnlike(product._id)}
-                onAddToCart={onAddToCart}
+                onAddToCart={() => handleAddToCartFromWishlist(product)}
                 isInCart={!!cart[product.name]}
                 isUnliking={unlikingItems.includes(product._id)}
                 onAnimationEnd={() => handleAnimationEnd(product._id)}
