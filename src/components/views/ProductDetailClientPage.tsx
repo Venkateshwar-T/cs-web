@@ -173,7 +173,7 @@ export default function ProductDetailClientPage({ product, featuredProducts }: P
   return (
     <>
       <SparkleBackground />
-      <div className={cn("flex flex-col h-screen", (isProfileOpen || isCartOpen) && 'opacity-50')}>
+      <div className={cn("flex flex-col h-screen", (isProfileOpen || isCartOpen))}>
         <Header 
           onProfileOpenChange={setIsProfileOpen}
           isContentScrolled={isScrolled}
@@ -186,7 +186,6 @@ export default function ProductDetailClientPage({ product, featuredProducts }: P
           onSearchInputChange={setSearchInput}
         />
         <main onScroll={handleScroll} className="flex-grow flex flex-col px-32 pt-24 md:pt-32 gap-8 overflow-y-auto no-scrollbar">
-          <div className="flex-grow flex flex-col">
              <div className="bg-[#9A7DAB] rounded-[40px] text-white flex-grow flex items-center justify-center">
               <div className="flex w-full h-full gap-8 pr-8">
                 {/* Left Panel Content */}
@@ -194,7 +193,7 @@ export default function ProductDetailClientPage({ product, featuredProducts }: P
                     <div className="flex h-[45%] rounded-lg w-full justify-center pl-4 pt-6">
                       <ImageGallery product={product} onImageExpandChange={setIsImageExpanded} />
                     </div>
-                    <div className="py-6 pl-8 rounded-lg w-full flex-grow min-h-0">
+                    <div className="py-6 pl-8 rounded-lg flex-wrap justify-center w-full">
                       <FlavoursSection availableFlavours={product.availableFlavours || []} onAddToCart={handleFlavourAddToCart} cart={flavourCart} />
                     </div>
                   </div>
@@ -216,7 +215,17 @@ export default function ProductDetailClientPage({ product, featuredProducts }: P
                       />
                   </div>
               </div>
-            </div>
+          </div>
+          <div className="pb-8">
+            <FeaturedProducts 
+                products={featuredProducts}
+                onProductClick={handleProductClick}
+                onAddToCart={updateCart}
+                cart={cart}
+                likedProducts={likedProducts}
+                onLikeToggle={toggleLike}
+                isMobile={isMobile}
+            />
           </div>
         </main>
       </div>
