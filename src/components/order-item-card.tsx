@@ -22,6 +22,11 @@ export function OrderItemCard({ order, isMobile = false, products, onProductClic
         month: 'long',
         day: 'numeric',
     });
+    const formattedTime = orderDate.toLocaleTimeString('en-US', {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: true,
+    });
     
     const productsByName = products.reduce((acc, product) => {
         if(product) {
@@ -46,7 +51,7 @@ export function OrderItemCard({ order, isMobile = false, products, onProductClic
                  <div className="flex justify-between items-center mb-2">
                     <div>
                         <p className="text-xs text-black/70">Order ID: {order.id}</p>
-                        <p className="text-xs text-black/70">{formattedDate}</p>
+                        <p className="text-xs text-black/70">{formattedDate}, {formattedTime}</p>
                     </div>
                      <Badge variant={statusVariant(order.status)} className="text-xs bg-custom-gold">{order.status}</Badge>
                  </div>
@@ -87,7 +92,7 @@ export function OrderItemCard({ order, isMobile = false, products, onProductClic
             <div className="flex justify-between items-start mb-2">
                 <div>
                     <p className="text-sm text-black/70">Order ID: <span className="font-semibold">{order.id}</span></p>
-                    <p className="text-sm text-black/70">Date: <span className="font-semibold">{formattedDate}</span></p>
+                    <p className="text-sm text-black/70">Date: <span className="font-semibold">{formattedDate} at {formattedTime}</span></p>
                 </div>
                 <Badge variant={statusVariant(order.status)}>{order.status}</Badge>
             </div>
