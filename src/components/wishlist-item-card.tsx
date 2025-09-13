@@ -16,13 +16,19 @@ interface WishlistItemCardProps {
   onAnimationEnd: () => void;
   isLastItem: boolean;
   isMobile?: boolean;
+  onProductClick: (product: SanityProduct) => void;
 }
 
-export function WishlistItemCard({ product, onAddToCart, onUnlike, isInCart, isUnliking, onAnimationEnd, isLastItem, isMobile = false }: WishlistItemCardProps) {
+export function WishlistItemCard({ product, onAddToCart, onUnlike, isInCart, isUnliking, onAnimationEnd, isLastItem, isMobile = false, onProductClick }: WishlistItemCardProps) {
   
   const handleAddToCartClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     onAddToCart(product.name, isInCart ? 0 : 1);
+  };
+  
+  const handleUnlikeClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    onUnlike();
   };
 
   const subtitle = [product.weight, product.composition, product.packageType].filter(Boolean).join(' | ');
@@ -30,9 +36,10 @@ export function WishlistItemCard({ product, onAddToCart, onUnlike, isInCart, isU
   if (isMobile) {
     return (
        <div 
+        onClick={() => onProductClick(product)}
         onAnimationEnd={onAnimationEnd}
         className={cn(
-          "w-full bg-transparent p-3 text-black relative transition-all duration-300 overflow-hidden",
+          "w-full bg-transparent p-3 text-black relative transition-all duration-300 overflow-hidden cursor-pointer",
           !isLastItem && "border-b border-black/10",
           isUnliking && 'animate-fade-out-slide-up',
         )}
@@ -53,7 +60,7 @@ export function WishlistItemCard({ product, onAddToCart, onUnlike, isInCart, isU
             <div>
               <div className="flex justify-between items-start gap-2">
                   <h3 className="font-bold text-sm leading-tight flex-1 truncate">{product.name}</h3>
-                  <button onClick={onUnlike} className="p-1 flex-shrink-0">
+                  <button onClick={handleUnlikeClick} className="p-1 flex-shrink-0">
                     <Heart className="h-5 w-5 text-red-500 fill-red-500" />
                   </button>
               </div>
@@ -83,9 +90,10 @@ export function WishlistItemCard({ product, onAddToCart, onUnlike, isInCart, isU
 
   return (
     <div 
+      onClick={() => onProductClick(product)}
       onAnimationEnd={onAnimationEnd}
       className={cn(
-        "bg-white/90 p-3 text-black w-full relative transition-all duration-300 overflow-hidden rounded-2xl",
+        "bg-white/90 p-3 text-black w-full relative transition-all duration-300 overflow-hidden rounded-2xl cursor-pointer",
         isUnliking && 'animate-fade-out-slide-up',
       )}
     >
@@ -105,7 +113,7 @@ export function WishlistItemCard({ product, onAddToCart, onUnlike, isInCart, isU
           <div>
             <div className="flex justify-between items-start gap-2">
                 <h3 className="font-bold text-lg leading-tight flex-1 truncate">{product.name}</h3>
-                <button onClick={onUnlike} className="p-1 flex-shrink-0">
+                <button onClick={handleUnlikeClick} className="p-1 flex-shrink-0">
                   <Heart className="h-6 w-6 text-red-500 fill-red-500" />
                 </button>
             </div>

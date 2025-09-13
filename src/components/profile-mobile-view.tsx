@@ -74,6 +74,7 @@ export function ProfileMobileView({
             cart={cart}
             onClearWishlist={onClearWishlist}
             isMobile={true}
+            onProductClick={handleProductClick}
           />
         )}
         {activeTab === 'My Orders' && (

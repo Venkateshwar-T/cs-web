@@ -21,7 +21,6 @@ import {
 } from "@/components/ui/alert-dialog"
 import { useAppContext } from '@/context/app-context';
 import { Loader } from './loader';
-import { LoginPopup } from './login-popup';
 import type { OrderItem } from '@/context/app-context';
 import { useRouter } from 'next/navigation';
 
@@ -123,6 +122,7 @@ export function ProfilePopup({
                           onAddToCart={onAddToCart}
                           cart={cart}
                           onClearWishlist={onClearWishlist}
+                          onProductClick={handleProductClick}
                         />
                       )}
                       {activeTab === 'My Orders' && (

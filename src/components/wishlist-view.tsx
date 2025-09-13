@@ -31,6 +31,7 @@ interface WishlistViewProps {
   cart: Record<string, OrderItem>;
   onClearWishlist: () => void;
   isMobile?: boolean;
+  onProductClick: (product: SanityProduct) => void;
 }
 
 export function WishlistView({ 
@@ -40,7 +41,8 @@ export function WishlistView({
   onAddToCart, 
   cart, 
   onClearWishlist, 
-  isMobile = false 
+  isMobile = false,
+  onProductClick
 }: WishlistViewProps) {
   const { setFlavourSelection } = useAppContext();
   const wishlistedProducts = products.filter(p => likedProducts[p._id]);
@@ -113,6 +115,7 @@ export function WishlistView({
                   onAnimationEnd={() => handleAnimationEnd(product._id)}
                   isLastItem={index === wishlistedProducts.length - 1}
                   isMobile={true}
+                  onProductClick={onProductClick}
                 />
               ))}
             </div>
@@ -150,6 +153,7 @@ export function WishlistView({
                 isUnliking={unlikingItems.includes(product._id)}
                 onAnimationEnd={() => handleAnimationEnd(product._id)}
                 isLastItem={false}
+                onProductClick={onProductClick}
               />
             ))}
           </div>
