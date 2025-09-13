@@ -184,7 +184,9 @@ export default function ProductDetailClientPage({ product, featuredProducts }: P
           onSearchInputChange={setSearchInput}
         />
         <main onScroll={handleScroll} className="flex-grow pt-32 md:px-32 flex flex-col gap-8 pb-8 overflow-y-auto no-scrollbar">
-          {/* Desktop content is removed as requested */}
+          <div className="bg-[#9A7DAB] rounded-[40px] p-8 text-white h-full flex items-center justify-center flex-grow">
+            {/* Content will go here */}
+          </div>
         </main>
       </div>
       
