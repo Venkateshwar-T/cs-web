@@ -83,9 +83,9 @@ export function ProductDetails({ product, isLiked, onLikeToggle, isMobile = fals
             
             {/* Allergen Alert */}
             {product.allergenAlert && (
-                <div>
+                <div className={cn("font-medium font-plex-sans", isMobile ? "text-sm" : "text-base")}>
                     <p className={cn("font-semibold", isMobile ? "text-sm" : "text-sm")}>Allergen Alert:</p>
-                    
+                    <PortableText value={product.allergenAlert} />
                 </div>
             )}
         </div>
