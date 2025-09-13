@@ -65,12 +65,12 @@ async function getFilteredProducts(searchParams: { [key: string]: string | strin
             if (filterValues.length > 0) {
                  if (category.title === 'Flavours & Fillings') {
                     // Special handling for flavours which are in a separate reference array
-                    const paramName = `flavourList_${categoryKey}`;
+                    const paramName = `flavourList_${categoryKey.replace(/-/g, '_')}`;
                     filters.push(`count((availableFlavours[]->name)[@ in $${paramName}]) > 0`);
                     params[paramName] = filterValues;
                 } else {
                     // Standard handling for other filters via the filterOptions reference
-                    const paramName = `filterList_${categoryKey}`;
+                    const paramName = `filterList_${categoryKey.replace(/-/g, '_')}`;
                     filters.push(`count((filterOptions[]->title)[@ in $${paramName}]) > 0`);
                     params[paramName] = filterValues;
                 }
