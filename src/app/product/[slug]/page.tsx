@@ -30,7 +30,12 @@ async function getFeaturedProducts(): Promise<SanityProduct[]> {
         weight,
         packageType,
         composition,
-        "images": images[].asset->url
+        "images": images[].asset->url,
+        availableFlavours[]->{
+            _id,
+            name,
+            "imageUrl": image.asset->url
+        }
     }`;
     const products = await client.fetch(query);
     return products;

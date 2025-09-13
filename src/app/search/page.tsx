@@ -60,27 +60,38 @@ async function getFilteredProducts(searchParams: { [key: string]: string | strin
         const categoryKey = formatCategoryTitleToKey(category.title);
         const urlValues = searchParams[categoryKey];
 
-        if (urlValues) {
-            const filterValues = Array.isArray(urlValues) ? urlValues : [urlValues];
-            if (filterValues.length > 0) {
-                 if (category.title === 'Flavours & Fillings') {
-                    // Special handling for flavours which are in a separate reference array
-                    const paramName = `flavourList_${categoryKey.replace(/-/g, '_')}`;
-                    filters.push(`count((availableFlavours[]->name)[@ in $${paramName}]) > 0`);
-                    params[paramName] = filterValues;
-                } else {
-                    // Standard handling for other filters via the filterOptions reference
-                    const paramName = `filterList_${categoryKey.replace(/-/g, '_')}`;
-                    filters.push(`count((filterOptions[]->title)[@ in $${paramName}]) > 0`);
-                    params[paramName] = filterValues;
-                }
+        if (urlValues && Array.isArray(urlValues) && urlValues.length > 0) {
+            if (category.title === 'Flavours & Fillings') {
+                const paramName = `flavourList_${categoryKey.replace(/-/g, '_')}`;
+                filters.push(`count((availableFlavours[]->name)[@ in $${paramName}]) > 0`);
+                params[paramName] = urlValues;
+            } else {
+                const paramName = `filterList_${categoryKey.replace(/-/g, '_')}`;
+                filters.push(`count((filterOptions[]->title)[@ in $${paramName}]) > 0`);
+                params[paramName] = urlValues;
+            }
+        } else if (urlValues && !Array.isArray(urlValues)) {
+            const filterValues = [urlValues];
+             if (category.title === 'Flavours & Fillings') {
+                const paramName = `flavourList_${categoryKey.replace(/-/g, '_')}`;
+                filters.push(`count((availableFlavours[]->name)[@ in $${paramName}]) > 0`);
+                params[paramName] = filterValues;
+            } else {
+                const paramName = `filterList_${categoryKey.replace(/-/g, '_')}`;
+                filters.push(`count((filterOptions[]->title)[@ in $${paramName}]) > 0`);
+                params[paramName] = filterValues;
             }
         }
     });
 
     const filterClause = filters.length > 0 ? `&& ${filters.join(' && ')}` : '';
     const productQuery = `*[_type == "product" ${filterClause}]{
-        _id, name, slug, mrp, discountedPrice, weight, packageType, composition, "images": images[].asset->url, "filterOptions": filterOptions[]->{title, "category": category->title}
+        _id, name, slug, mrp, discountedPrice, weight, packageType, composition, "images": images[].asset->url, "filterOptions": filterOptions[]->{title, "category": category->title},
+        availableFlavours[]->{
+            _id,
+            name,
+            "imageUrl": image.asset->url
+        }
     }`;
     
     try {
