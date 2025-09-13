@@ -186,7 +186,7 @@ export default function ProductDetailClientPage({ product, featuredProducts }: P
           onSearchInputChange={setSearchInput}
         />
         <main onScroll={handleScroll} className="flex-grow pt-24 md:pt-32 overflow-y-auto no-scrollbar">
-             <div className="bg-[#9A7DAB] rounded-[40px] text-white mx-32 h-[82vh] flex items-center justify-center">
+             <div className="bg-[#9A7DAB] rounded-[40px] text-white mx-32 h-[85vh] flex items-center justify-center">
                 <div className="flex w-full h-full px-5 gap-4 pr-10">
                     <div className="w-1/2 h-full flex flex-col">
                         <div className="flex h-[46%] rounded-lg w-full justify-center pt-6">
@@ -198,7 +198,7 @@ export default function ProductDetailClientPage({ product, featuredProducts }: P
                     </div>
                     <Separator orientation="vertical" className="bg-white/30 h-[98%] self-center mr-4" />
                     <div className="h-full relative py-4 w-1/2">
-                        <div className="flex-grow overflow-y-auto custom-scrollbar pb-28 h-full">
+                        <div className="flex-grow overflow-y-auto custom-scrollbar h-full pb-24">
                             <ProductDetails
                                 product={product}
                                 isLiked={!!likedProducts[product._id]}
@@ -214,7 +214,7 @@ export default function ProductDetailClientPage({ product, featuredProducts }: P
                     </div>
                 </div>
             </div>
-            <div className="mx-24 py-8">
+            <div className="mx-24 py-8 mb-8">
               <FeaturedProducts 
                   products={featuredProducts}
                   onProductClick={handleProductClick}
