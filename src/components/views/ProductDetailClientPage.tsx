@@ -23,11 +23,19 @@ import { ProductPopupFooter } from '../product-popup-footer';
 import { ImageGallery } from '../image-gallery';
 import { FlavoursSection } from '../flavours-section';
 import { FlavourSelectionPopup } from '../flavour-selection-popup';
+import { Loader } from '../loader';
 
 interface ProductDetailClientPageProps {
   product: SanityProduct;
   featuredProducts: SanityProduct[];
 }
+
+const LoadingFallback = () => (
+    <div className="flex h-screen w-full items-center justify-center bg-background flex-col gap-4">
+        <Loader />
+        <p className="text-white">Loading your Chocolate...</p>
+    </div>
+);
 
 export default function ProductDetailClientPage({ product, featuredProducts }: ProductDetailClientPageProps) {
   const router = useRouter();
@@ -50,7 +58,7 @@ export default function ProductDetailClientPage({ product, featuredProducts }: P
   };
 
   const handleMobileScroll = (event: UIEvent<HTMLDivElement>) => {
-    if (!isMobile) return;
+    if (isMobile === undefined || !isMobile) return;
 
     const currentScrollTop = event.currentTarget.scrollTop;
     if (Math.abs(currentScrollTop - lastScrollTop) <= 10) {
@@ -89,6 +97,12 @@ export default function ProductDetailClientPage({ product, featuredProducts }: P
 
     // Otherwise (for increasing quantity of existing item), update directly
     updateCart(productName, quantity);
+
+    if (animate && quantity > prevQuantity) {
+      setCartMessage(`${quantity - prevQuantity} added`);
+      setIsCartButtonExpanded(true);
+      setTimeout(() => setIsCartButtonExpanded(false), 1500);
+    }
   };
   
   const handleFlavourAddToCart = (productName: string, flavourName: string) => {
@@ -139,6 +153,10 @@ export default function ProductDetailClientPage({ product, featuredProducts }: P
   const handleToggleCartPopup = () => setIsCartOpen(p => !p);
   
   const cartItemCount = Object.values(cart).reduce((acc, item) => acc + item.quantity, 0);
+
+  if (isMobile === undefined) {
+    return <LoadingFallback />;
+  }
 
   if (!product) {
     return (
