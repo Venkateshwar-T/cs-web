@@ -31,6 +31,7 @@ interface SearchViewProps {
   onLikeToggle: (productId: string) => void;
   onAddToCart: (productName: string, quantity: number) => void;
   onProductCardAddToCart: (product: SanityProduct) => void;
+  onProductCardRemoveFromCart: (product: SanityProduct) => void;
 }
 
 export function SearchView({
@@ -55,6 +56,7 @@ export function SearchView({
   onLikeToggle,
   onAddToCart,
   onProductCardAddToCart,
+  onProductCardRemoveFromCart,
 }: SearchViewProps) {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   
@@ -93,6 +95,7 @@ export function SearchView({
           onLikeToggle={onLikeToggle}
           onAddToCart={onAddToCart}
           onProductCardAddToCart={onProductCardAddToCart}
+          onProductCardRemoveFromCart={onProductCardRemoveFromCart}
           filters={filters}
         />
       </div>

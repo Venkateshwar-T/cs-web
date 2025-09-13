@@ -43,6 +43,7 @@ interface SearchResultsDetailsProps {
   onLikeToggle: (productId: string) => void;
   onAddToCart: (productName: string, quantity: number) => void;
   onProductCardAddToCart: (product: SanityProduct) => void;
+  onProductCardRemoveFromCart: (product: SanityProduct) => void;
 }
 
 const sortOptions = [
@@ -74,6 +75,7 @@ export function SearchResultsDetails({
   onLikeToggle,
   onAddToCart,
   onProductCardAddToCart,
+  onProductCardRemoveFromCart,
 }: SearchResultsDetailsProps) {
 
   const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -217,6 +219,7 @@ export function SearchResultsDetails({
                             key={product._id}
                             product={product}
                             onAddToCart={() => onProductCardAddToCart(product)}
+                            onRemoveFromCart={() => onProductCardRemoveFromCart(product)}
                             quantity={cart[product.name]?.quantity || 0}
                             onProductClick={onProductClick}
                             isLiked={!!likedProducts[product._id]}

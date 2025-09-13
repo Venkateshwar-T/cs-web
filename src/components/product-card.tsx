@@ -12,6 +12,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 interface ProductCardProps {
   product: SanityProduct;
   onAddToCart: (product: SanityProduct) => void;
+  onRemoveFromCart: (product: SanityProduct) => void;
   quantity: number;
   onProductClick: (product: SanityProduct) => void;
   isLiked: boolean;
@@ -36,7 +37,7 @@ const variants = {
   },
 };
 
-export function ProductCard({ product, onAddToCart, quantity, onProductClick, isLiked, onLikeToggle, isMobile = false }: ProductCardProps) {
+export function ProductCard({ product, onAddToCart, onRemoveFromCart, quantity, onProductClick, isLiked, onLikeToggle, isMobile = false }: ProductCardProps) {
   const [isHovered, setIsHovered] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isAnimatingLike, setIsAnimatingLike] = useState(false);
@@ -83,7 +84,7 @@ export function ProductCard({ product, onAddToCart, quantity, onProductClick, is
 
   const handleDecrement = (e: React.MouseEvent) => {
     e.stopPropagation();
-    onAddToCart(product);
+    onRemoveFromCart(product);
   };
   
   const handleLikeClick = (e: React.MouseEvent) => {

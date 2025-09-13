@@ -164,6 +164,13 @@ export default function SearchClientPage({ initialProducts, initialFilters }: Se
     }
   };
 
+  const onProductCardRemoveFromCart = (product: SanityProduct) => {
+    const prevQuantity = cart[product.name]?.quantity || 0;
+    if (prevQuantity > 0) {
+      updateCart(product.name, prevQuantity - 1);
+    }
+  };
+
   return (
     <>
       {isMobile ? <StaticSparkleBackground /> : <SparkleBackground />}
@@ -204,6 +211,7 @@ export default function SearchClientPage({ initialProducts, initialFilters }: Se
              query={query}
              onAddToCart={handleAddToCart}
              onProductCardAddToCart={onProductCardAddToCart}
+             onProductCardRemoveFromCart={onProductCardRemoveFromCart}
              cart={cart}
              onProductClick={handleProductClick}
              activeFilters={activeFilters}
