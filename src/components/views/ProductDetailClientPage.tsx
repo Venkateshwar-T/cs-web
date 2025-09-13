@@ -185,19 +185,19 @@ export default function ProductDetailClientPage({ product, featuredProducts }: P
           searchInput={searchInput}
           onSearchInputChange={setSearchInput}
         />
-        <main onScroll={handleScroll} className="flex-grow px-32 pt-24 md:pt-32 overflow-y-auto no-scrollbar">
-             <div className="bg-[#9A7DAB] rounded-[40px] text-white h-[85vh] flex items-center justify-center">
-                <div className="flex w-full h-full p-2">
+        <main onScroll={handleScroll} className="flex-grow pt-24 md:pt-32 overflow-y-auto no-scrollbar">
+             <div className="bg-[#9A7DAB] rounded-[40px] text-white mx-32 h-[82vh] flex items-center justify-center">
+                <div className="flex w-full h-full px-5 gap-4 pr-10">
                     <div className="w-1/2 h-full flex flex-col">
-                        <div className="flex-grow min-h-0">
+                        <div className="flex h-[46%] rounded-lg w-full justify-center pt-6">
                             <ImageGallery product={product} onImageExpandChange={setIsImageExpanded} />
                         </div>
-                        <div className="p-4 flex-shrink-0">
+                        <div className="py-6 px-6 rounded-lg w-full flex-grow min-h-0">
                             <FlavoursSection availableFlavours={product.availableFlavours || []} onAddToCart={handleFlavourAddToCart} cart={flavourCart} />
                         </div>
                     </div>
-                    <Separator orientation="vertical" className="bg-white/30 h-[98%] self-center" />
-                    <div className="h-full relative py-4 pl-8 w-1/2">
+                    <Separator orientation="vertical" className="bg-white/30 h-[98%] self-center mr-4" />
+                    <div className="h-full relative py-4 w-1/2">
                         <div className="flex-grow overflow-y-auto custom-scrollbar pb-28 h-full">
                             <ProductDetails
                                 product={product}
@@ -214,7 +214,7 @@ export default function ProductDetailClientPage({ product, featuredProducts }: P
                     </div>
                 </div>
             </div>
-            <div className="py-8">
+            <div className="mx-24 py-8">
               <FeaturedProducts 
                   products={featuredProducts}
                   onProductClick={handleProductClick}

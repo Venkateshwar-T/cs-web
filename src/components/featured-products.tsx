@@ -40,12 +40,12 @@ export function FeaturedProducts({
       isMobile ? "py-4" : "py-6"
     )}>
       <SectionTitle className={cn(
-        "mb-4 text-black",
-        isMobile ? "text-base px-2" : "text-xl md:text-2xl"
+        "text-black",
+        isMobile ? "mb-4 text-base px-2" : "mb-2 text-xl md:text-2xl"
       )}>
         You might also like
       </SectionTitle>
-      <div className="flex items-stretch overflow-x-auto no-scrollbar gap-4 md:gap-6 px-0 md:px-4 pb-2">
+      <div className="flex items-stretch overflow-x-auto no-scrollbar gap-4 md:gap-6 px-0 md:px-4 pb-2 md:py-4">
         {products.map(product => (
           <div key={product._id} className={cn("flex-shrink-0", isMobile ? "w-40" : "w-48 md:w-64")}>
             <ProductCard

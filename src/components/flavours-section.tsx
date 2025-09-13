@@ -60,7 +60,7 @@ export function FlavoursSection({ onAddToCart, cart, isMobile = false, available
         isMobile ? "bg-custom-purple-dark/80 rounded-[15px] p-4" : "bg-[#5D2B79] md:rounded-[15px] lg:rounded-[35px] py-2 px-4 md:h-[85%] lg:h-full"
       )} 
       style={{ animationDuration: '0.5s', animationDelay: '0.2s', animationFillMode: 'both' }}>
-      <SectionTitle className={cn(isMobile ? "text-sm mb-3 p-0 flex justify-center" :"flex text-sm md:text-m lg:text-xl md:pl-0 lg:pl-4 mb-2 pt-0 font-poppins justify-center")}>Flavours & Fillings</SectionTitle>
+      <SectionTitle className={cn(isMobile ? "text-sm mb-3 p-0 flex justify-center" :"flex text-sm md:text-m lg:text-xl md:pl-0 lg:pl-4 mb-0 pt-1 font-poppins")}>Flavours & Fillings</SectionTitle>
       
       {canScrollLeft && (
         <Button 
