@@ -1,4 +1,4 @@
-
+// @/components/product-card.tsx
 'use client';
 
 import Image from 'next/image';
@@ -11,7 +11,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 interface ProductCardProps {
   product: SanityProduct;
-  onAddToCart: (productName: string, quantity: number) => void;
+  onAddToCart: (product: SanityProduct) => void;
   quantity: number;
   onProductClick: (product: SanityProduct) => void;
   isLiked: boolean;
@@ -73,17 +73,17 @@ export function ProductCard({ product, onAddToCart, quantity, onProductClick, is
 
   const handleAddToCartClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    onAddToCart(product.name, 1);
+    onAddToCart(product);
   };
 
   const handleIncrement = (e: React.MouseEvent) => {
     e.stopPropagation();
-    onAddToCart(product.name, quantity + 1);
+    onAddToCart(product);
   };
 
   const handleDecrement = (e: React.MouseEvent) => {
     e.stopPropagation();
-    onAddToCart(product.name, quantity - 1);
+    onAddToCart(product);
   };
   
   const handleLikeClick = (e: React.MouseEvent) => {

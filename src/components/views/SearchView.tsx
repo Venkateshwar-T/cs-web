@@ -1,4 +1,3 @@
-
 // src/components/views/SearchView.tsx
 'use client';
 
@@ -6,9 +5,10 @@ import { useRef, useEffect, type UIEvent } from 'react';
 import { FilterContainer } from '@/components/filter-container';
 import { SearchResultsDetails } from '@/components/search-results-details';
 import { cn } from '@/lib/utils';
-import type { SanityProduct, StructuredFilter } from '@/types'; // Use real types from Sanity
+import type { SanityProduct, StructuredFilter } from '@/types';
+import type { OrderItem } from '@/context/app-context';
 
-// The props interface is updated to use the new data types
+
 interface SearchViewProps {
   filters: StructuredFilter[];
   products: SanityProduct[];
@@ -25,12 +25,12 @@ interface SearchViewProps {
   onSortSheetOpenChange: (open: boolean) => void;
   onScroll: (event: UIEvent<HTMLDivElement>) => void;
   isMobile: boolean;
-  // Pass down the interactive props needed by child components
   onProductClick: (product: SanityProduct) => void;
-  cart: Record<string, number>;
+  cart: Record<string, OrderItem>;
   likedProducts: Record<string, boolean>; // Sanity ID (_id) is a string
   onLikeToggle: (productId: string) => void;
   onAddToCart: (productName: string, quantity: number) => void;
+  onProductCardAddToCart: (product: SanityProduct) => void;
 }
 
 export function SearchView({
@@ -54,6 +54,7 @@ export function SearchView({
   likedProducts,
   onLikeToggle,
   onAddToCart,
+  onProductCardAddToCart,
 }: SearchViewProps) {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   
@@ -67,13 +68,11 @@ export function SearchView({
   return (
     <div className="flex w-full items-start h-full flex-grow min-h-0">
       <div className="hidden md:block w-full md:w-auto md:sticky md:top-0 md:w-[17%] h-full">
-        {/* The FilterContainer for desktop now receives the live filter data */}
         <FilterContainer 
           filters={filters} 
         />
       </div>
       <div className={cn("h-full flex-grow md:ml-8 md:mr-8 relative min-h-0 w-full md:w-auto px-4 md:px-0")}>
-        {/* SearchResultsDetails receives the products and all interactive props */}
         <SearchResultsDetails 
           products={products}
           query={query} 
@@ -93,7 +92,7 @@ export function SearchView({
           likedProducts={likedProducts}
           onLikeToggle={onLikeToggle}
           onAddToCart={onAddToCart}
-          // The FilterContainer for mobile is rendered inside SearchResultsDetails, so it also needs the filters
+          onProductCardAddToCart={onProductCardAddToCart}
           filters={filters}
         />
       </div>

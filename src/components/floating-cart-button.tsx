@@ -1,4 +1,4 @@
-
+// @/components/floating-cart-button.tsx
 'use client';
 
 import Image from 'next/image';
@@ -6,6 +6,7 @@ import { X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import type { ActiveView } from '@/app/page';
+import type { OrderItem } from '@/context/app-context';
 
 interface FloatingCartButtonProps {
   activeView: ActiveView;
@@ -14,7 +15,7 @@ interface FloatingCartButtonProps {
   onToggleCart: () => void;
   isCartButtonExpanded: boolean;
   cartMessage: string;
-  cart: Record<string, number>;
+  cart: Record<string, OrderItem>;
 }
 
 export function FloatingCartButton({
@@ -27,7 +28,7 @@ export function FloatingCartButton({
   cart,
 }: FloatingCartButtonProps) {
 
-  const totalQuantity = Object.values(cart).reduce((acc, cur) => acc + cur, 0);
+  const totalQuantity = Object.values(cart).reduce((acc, cur) => acc + cur.quantity, 0);
 
   const shouldShow = (activeView === 'search' || isSearchingOnAbout) && activeView !== 'order-confirmed';
 

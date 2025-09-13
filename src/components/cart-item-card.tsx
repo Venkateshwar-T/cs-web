@@ -1,4 +1,3 @@
-
 // @/components/cart-item-card.tsx
 'use client';
 
@@ -7,9 +6,10 @@ import { Plus, Minus } from 'lucide-react';
 import { Button } from './ui/button';
 import { FaTrash } from 'react-icons/fa';
 import { cn } from '@/lib/utils';
+import type { OrderItem } from '@/context/app-context';
 
 interface CartItemCardProps {
-    productName: string;
+    item: OrderItem;
     quantity: number;
     onQuantityChange: (productName: string, newQuantity: number) => void;
     onRemove: (productName: string) => void;
@@ -17,26 +17,20 @@ interface CartItemCardProps {
     onAnimationEnd: () => void;
 }
 
-const selectedFlavours = [
-    { name: 'Roasted Almond', price: 100 },
-    { name: 'Fruit & Nut', price: 50 },
-    { name: 'Dark Chocolate', price: 75 },
-];
-
-export function CartItemCard({ productName, quantity, onQuantityChange, onRemove, isRemoving, onAnimationEnd }: CartItemCardProps) {
+export function CartItemCard({ item, quantity, onQuantityChange, onRemove, isRemoving, onAnimationEnd }: CartItemCardProps) {
 
     const handleIncrement = (e: React.MouseEvent) => {
         e.stopPropagation();
-        onQuantityChange(productName, quantity + 1);
+        onQuantityChange(item.name, quantity + 1);
     };
 
     const handleDecrement = (e: React.MouseEvent) => {
         e.stopPropagation();
-        onQuantityChange(productName, quantity - 1);
+        onQuantityChange(item.name, quantity - 1);
     };
     
     const handleRemove = () => {
-        onRemove(productName);
+        onRemove(item.name);
     }
 
     return (
@@ -51,7 +45,7 @@ export function CartItemCard({ productName, quantity, onQuantityChange, onRemove
                 <div className="w-1/3 flex-shrink-0">
                     <Image
                         src="/choco img.png"
-                        alt={productName}
+                        alt={item.name}
                         width={200}
                         height={200}
                         className="rounded-lg object-cover w-full aspect-square"
@@ -59,24 +53,24 @@ export function CartItemCard({ productName, quantity, onQuantityChange, onRemove
                 </div>
                 <div className="w-2/3 flex flex-col justify-between">
                     <div>
-                        <h3 className="font-bold text-xl pr-8">{productName}</h3>
+                        <h3 className="font-bold text-xl pr-8">{item.name}</h3>
                         <p className="text-sm text-black/70">250g | Assorted | Hard-Box</p>
                         
-                        <p className="font-bold mt-2">Your Selection</p>
-                        <p className="text-sm text-black/60 font-semibold">Flavours & Fillings</p>
-                        <ul className="list-disc list-inside text-sm mt-1 space-y-0.5 font-bold">
-                            {selectedFlavours.map((flavour, index) => (
-                                <li key={index}>
-                                    <span className="w-36 inline-block">{flavour.name}</span>
-                                    <span>+₹{flavour.price}</span>
-                                </li>
-                            ))}
-                        </ul>
+                        {item.flavours && item.flavours.length > 0 && (
+                            <>
+                                <p className="font-bold mt-2">Your Selection</p>
+                                <p className="text-sm text-black/60 font-semibold">Flavours & Fillings</p>
+                                <ul className="list-disc list-inside text-sm mt-1 space-y-0.5 font-bold">
+                                    {item.flavours.map((flavour, index) => (
+                                        <li key={index}>
+                                            <span className="w-36 inline-block">{flavour}</span>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </>
+                        )}
                     </div>
 
-                    <div className="mt-4 text-right">
-                        <p className="text-xs italic text-gray-600 mt-1">*Additional charges may apply for special flavors*</p>
-                    </div>
                 </div>
 
                 <div className="absolute top-4 right-4 flex flex-col items-end gap-12">

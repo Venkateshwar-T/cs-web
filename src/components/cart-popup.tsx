@@ -1,4 +1,3 @@
-
 // @/components/cart-popup.tsx
 'use client';
 
@@ -21,10 +20,11 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
+import type { OrderItem } from '@/context/app-context';
 
 interface CartPopupProps {
   onClose: () => void;
-  cart: Record<string, number>;
+  cart: Record<string, OrderItem>;
   onClearCart: () => void;
   onFinalizeOrder: () => void;
   onQuantityChange: (productName: string, newQuantity: number) => void;
@@ -32,7 +32,7 @@ interface CartPopupProps {
 
 export function CartPopup({ onClose, cart, onClearCart, onFinalizeOrder, onQuantityChange }: CartPopupProps) {
   const [removingItems, setRemovingItems] = useState<string[]>([]);
-  const cartItems = Object.entries(cart);
+  const cartItems = Object.values(cart);
 
   const handleRemove = (productName: string) => {
     setRemovingItems(prev => [...prev, productName]);
@@ -89,15 +89,15 @@ export function CartPopup({ onClose, cart, onClearCart, onFinalizeOrder, onQuant
               </div>
             ) : (
               <div className="space-y-4 pb-4">
-                {cartItems.map(([productName, quantity]) => (
+                {cartItems.map((item) => (
                   <CartItemCard 
-                    key={productName}
-                    productName={productName}
-                    quantity={quantity}
+                    key={item.name}
+                    item={item}
+                    quantity={item.quantity}
                     onQuantityChange={onQuantityChange}
-                    onRemove={() => handleRemove(productName)}
-                    isRemoving={removingItems.includes(productName)}
-                    onAnimationEnd={() => handleAnimationEnd(productName)}
+                    onRemove={() => handleRemove(item.name)}
+                    isRemoving={removingItems.includes(item.name)}
+                    onAnimationEnd={() => handleAnimationEnd(item.name)}
                   />
                 ))}
               </div>

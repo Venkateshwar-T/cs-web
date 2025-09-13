@@ -22,6 +22,7 @@ import {
 import { useAppContext } from '@/context/app-context';
 import { Loader } from './loader';
 import { LoginPopup } from './login-popup';
+import type { OrderItem } from '@/context/app-context';
 
 interface ProfilePopupProps {
   onClose: () => void;
@@ -29,7 +30,7 @@ interface ProfilePopupProps {
   likedProducts: Record<string, boolean>;
   onLikeToggle: (productId: string) => void;
   onAddToCart: (productName: string, quantity: number) => void;
-  cart: Record<string, number>;
+  cart: Record<string, OrderItem>;
   onClearWishlist: () => void;
 }
 

@@ -2,7 +2,7 @@
 'use client';
 
 import { createContext, useContext, ReactNode, useCallback, useState } from 'react';
-import type { ProfileInfo } from '@/app/page';
+import type { ProfileInfo, SanityProduct } from '@/app/page';
 import { useLocalStorage } from '@/hooks/use-local-storage';
 
 const PROFILE_STORAGE_KEY = 'chocoSmileyProfile';
@@ -14,6 +14,7 @@ const AUTH_STORAGE_KEY = 'chocoSmileyAuth';
 export type OrderItem = {
   name: string;
   quantity: number;
+  flavours?: string[];
 };
 
 export type Order = {
@@ -24,7 +25,7 @@ export type Order = {
   total: number;
 };
 
-type Cart = Record<string, number>;
+type Cart = Record<string, OrderItem>;
 type AuthPopupType = 'login' | 'signup' | 'completeDetails' | null;
 
 interface AppContextType {
@@ -32,8 +33,8 @@ interface AppContextType {
   updateProfileInfo: (newInfo: Partial<ProfileInfo>) => void;
   isProfileLoaded: boolean;
   
-  likedProducts: Record<number, boolean>;
-  toggleLike: (productId: number) => void;
+  likedProducts: Record<string, boolean>;
+  toggleLike: (productId: string) => void;
   clearWishlist: () => void;
   
   orders: Order[];
@@ -42,7 +43,7 @@ interface AppContextType {
   clearOrders: () => void;
 
   cart: Cart;
-  updateCart: (productName: string, quantity: number) => void;
+  updateCart: (productName: string, quantity: number, flavours?: string[]) => void;
   clearCart: () => void;
   isCartLoaded: boolean;
 
@@ -51,6 +52,12 @@ interface AppContextType {
   logout: () => void;
   authPopup: AuthPopupType;
   setAuthPopup: (popup: AuthPopupType) => void;
+
+  flavourSelection: {
+    product: SanityProduct | null;
+    isOpen: boolean;
+  };
+  setFlavourSelection: (selection: { product: SanityProduct | null; isOpen: boolean }) => void;
 }
 
 const defaultProfileInfo: ProfileInfo = {
@@ -67,7 +74,7 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
     defaultProfileInfo
   );
   
-  const [likedProducts, setLikedProducts, isWishlistLoaded] = useLocalStorage<Record<number, boolean>>(
+  const [likedProducts, setLikedProducts, isWishlistLoaded] = useLocalStorage<Record<string, boolean>>(
     WISHLIST_STORAGE_KEY,
     {}
   );
@@ -88,12 +95,14 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
   );
 
   const [authPopup, setAuthPopup] = useState<AuthPopupType>(null);
+  const [flavourSelection, setFlavourSelection] = useState<{ product: SanityProduct | null; isOpen: boolean }>({ product: null, isOpen: false });
+
 
   const updateProfileInfo = useCallback((newInfo: Partial<ProfileInfo>) => {
     setProfileInfo(prev => ({ ...prev, ...newInfo }));
   }, [setProfileInfo]);
 
-  const toggleLike = useCallback((productId: number) => {
+  const toggleLike = useCallback((productId: string) => {
     setLikedProducts(prev => {
       const newLiked = { ...prev };
       if (newLiked[productId]) {
@@ -117,17 +126,24 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
     setOrders([]);
   }, [setOrders]);
 
-  const updateCart = useCallback((productName: string, quantity: number) => {
+  const updateCart = useCallback((productName: string, quantity: number, flavours?: string[]) => {
     setCart(prevCart => {
       const newCart = { ...prevCart };
       if (quantity <= 0) {
         delete newCart[productName];
       } else {
-        newCart[productName] = quantity;
+        const existingItem = newCart[productName] || { name: productName, quantity: 0 };
+        newCart[productName] = {
+          ...existingItem,
+          quantity,
+          // Only update flavours if they are provided, otherwise keep existing ones
+          flavours: flavours !== undefined ? flavours : existingItem.flavours,
+        };
       }
       return newCart;
     });
   }, [setCart]);
+
 
   const clearCart = useCallback(() => {
     setCart({});
@@ -162,6 +178,8 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
     logout,
     authPopup,
     setAuthPopup,
+    flavourSelection,
+    setFlavourSelection,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

@@ -1,4 +1,3 @@
-
 // src/components/views/SearchClientPage.tsx
 'use client';
 
@@ -16,6 +15,7 @@ import { FloatingCartButton } from '@/components/floating-cart-button';
 import { MobileSearchHeader } from '@/components/header/mobile-search-header';
 import { StaticSparkleBackground } from '@/components/static-sparkle-background';
 import { useAppContext } from '@/context/app-context';
+import { FlavourSelectionPopup } from '../flavour-selection-popup';
 
 interface SearchClientPageProps {
   initialProducts: SanityProduct[];
@@ -28,7 +28,16 @@ export default function SearchClientPage({ initialProducts, initialFilters }: Se
   const searchParams = useSearchParams();
   const query = searchParams.get('q') || '';
   
-  const { cart, updateCart, clearCart, likedProducts, toggleLike, clearWishlist } = useAppContext();
+  const { 
+    cart, 
+    updateCart, 
+    clearCart, 
+    likedProducts, 
+    toggleLike, 
+    clearWishlist,
+    flavourSelection,
+    setFlavourSelection 
+  } = useAppContext();
   const [isSearching, setIsSearching] = useState(false);
   const [isNewSearch, setIsNewSearch] = useState(true);
   const [cartMessage, setCartMessage] = useState('');
@@ -57,13 +66,18 @@ export default function SearchClientPage({ initialProducts, initialFilters }: Se
   }, [isNewSearch]);
 
   const handleAddToCart = (productName: string, quantity: number, animate: boolean = true) => {
-    const prevQuantity = cart[productName] || 0;
+    const prevQuantity = cart[productName]?.quantity || 0;
     updateCart(productName, quantity);
     if (animate && quantity > prevQuantity) {
       setCartMessage(`${quantity - prevQuantity} added`);
       setIsCartButtonExpanded(true);
       setTimeout(() => setIsCartButtonExpanded(false), 1500);
     }
+  };
+
+  const handleFlavourConfirm = (productName: string, flavours: string[]) => {
+    const prevQuantity = cart[productName]?.quantity || 0;
+    updateCart(productName, prevQuantity + 1, flavours);
   };
 
   const handleProductClick = (product: SanityProduct) => {
@@ -112,7 +126,7 @@ export default function SearchClientPage({ initialProducts, initialFilters }: Se
     router.push(view === 'home' ? '/' : `/${view}`);
   };
 
-  const cartItemCount = Object.values(cart).reduce((acc, quantity) => acc + quantity, 0);
+  const cartItemCount = Object.values(cart).reduce((acc, item) => acc + item.quantity, 0);
 
   const handleScroll = (event: UIEvent<HTMLDivElement>) => {
     if (!isMobile) return;
@@ -120,6 +134,10 @@ export default function SearchClientPage({ initialProducts, initialFilters }: Se
     if (Math.abs(currentScrollTop - lastScrollTop) <= 10) return;
     setIsMobileHeaderVisible(currentScrollTop <= lastScrollTop || currentScrollTop <= 56);
     setLastScrollTop(currentScrollTop <= 0 ? 0 : currentScrollTop);
+  };
+  
+  const onProductCardAddToCart = (product: SanityProduct) => {
+    setFlavourSelection({ product, isOpen: true });
   };
 
   return (
@@ -161,6 +179,7 @@ export default function SearchClientPage({ initialProducts, initialFilters }: Se
              products={initialProducts}
              query={query}
              onAddToCart={handleAddToCart}
+             onProductCardAddToCart={onProductCardAddToCart}
              cart={cart}
              onProductClick={handleProductClick}
              activeFilters={activeFilters}
@@ -185,7 +204,7 @@ export default function SearchClientPage({ initialProducts, initialFilters }: Se
         likedProducts={likedProducts}
         onLikeToggle={toggleLike}
         cart={cart}
-        onAddToCart={updateCart}
+        onAddToCart={handleAddToCart}
         onClearCart={clearCart}
         onToggleCartPopup={handleToggleCartPopup}
         allProducts={initialProducts} // Pass real products to popups
@@ -203,6 +222,12 @@ export default function SearchClientPage({ initialProducts, initialFilters }: Se
           cart={cart}
         />
       )}
+       <FlavourSelectionPopup
+        product={flavourSelection.product}
+        open={flavourSelection.isOpen}
+        onOpenChange={(isOpen) => setFlavourSelection({ product: null, isOpen })}
+        onConfirm={handleFlavourConfirm}
+      />
     </>
   );
 }

@@ -1,4 +1,3 @@
-
 // @/components/profile-mobile-view.tsx
 'use client';
 
@@ -9,6 +8,7 @@ import { cn } from '@/lib/utils';
 import { MyProfileTab } from './my-profile-tab';
 import { WishlistView } from './wishlist-view';
 import { MyOrdersTab } from './my-orders-tab';
+import type { OrderItem } from '@/context/app-context';
 
 interface ProfileMobileViewProps {
   profile: ProfileInfo;
@@ -17,7 +17,7 @@ interface ProfileMobileViewProps {
   likedProducts: Record<string, boolean>;
   onLikeToggle: (productId: string) => void;
   onAddToCart: (productName: string, quantity: number) => void;
-  cart: Record<string, number>;
+  cart: Record<string, OrderItem>;
   onClearWishlist: () => void;
 }
 

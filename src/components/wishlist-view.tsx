@@ -1,4 +1,3 @@
-
 // @/components/wishlist-view.tsx
 'use client';
 
@@ -21,13 +20,14 @@ import {
 } from "@/components/ui/alert-dialog"
 import { EmptyState } from './empty-state';
 import { useRouter } from 'next/navigation';
+import type { OrderItem } from '@/context/app-context';
 
 interface WishlistViewProps {
   products: SanityProduct[];
   likedProducts: Record<string, boolean>;
   onLikeToggle: (productId: string) => void;
   onAddToCart: (productName: string, quantity: number) => void;
-  cart: Record<string, number>;
+  cart: Record<string, OrderItem>;
   onClearWishlist: () => void;
   isMobile?: boolean;
 }

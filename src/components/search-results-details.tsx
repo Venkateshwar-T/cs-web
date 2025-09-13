@@ -1,4 +1,3 @@
-
 // src/components/search-results-details.tsx
 'use client';
 
@@ -17,11 +16,12 @@ import { Button } from '@/components/ui/button';
 import { ProductCardSkeleton } from "./product-card-skeleton";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { FilterContainer } from "./filter-container";
-import type { SanityProduct, StructuredFilter } from '@/types'; // CHANGED: Use real types
+import type { SanityProduct, StructuredFilter } from '@/types';
 import { EmptyState } from "./empty-state";
 import { useRouter } from "next/navigation";
+import type { OrderItem } from "@/context/app-context";
 
-// CHANGED: The props interface is updated to use the new data types
+
 interface SearchResultsDetailsProps {
   products: SanityProduct[];
   filters: StructuredFilter[];
@@ -38,10 +38,11 @@ interface SearchResultsDetailsProps {
   onScroll: (event: UIEvent<HTMLDivElement>) => void;
   isMobile: boolean;
   onProductClick: (product: SanityProduct) => void;
-  cart: Record<string, number>;
+  cart: Record<string, OrderItem>;
   likedProducts: Record<string, boolean>;
   onLikeToggle: (productId: string) => void;
   onAddToCart: (productName: string, quantity: number) => void;
+  onProductCardAddToCart: (product: SanityProduct) => void;
 }
 
 const sortOptions = [
@@ -71,7 +72,8 @@ export function SearchResultsDetails({
   cart, 
   likedProducts, 
   onLikeToggle,
-  onAddToCart, 
+  onAddToCart,
+  onProductCardAddToCart,
 }: SearchResultsDetailsProps) {
 
   const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -212,10 +214,10 @@ export function SearchResultsDetails({
                   <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
                       {products.map((product) => (
                           <ProductCard
-                            key={product._id} // CHANGED: Use Sanity's unique ID
+                            key={product._id}
                             product={product}
-                            onAddToCart={onAddToCart}
-                            quantity={cart[product.name] || 0}
+                            onAddToCart={() => onProductCardAddToCart(product)}
+                            quantity={cart[product.name]?.quantity || 0}
                             onProductClick={onProductClick}
                             isLiked={!!likedProducts[product._id]}
                             onLikeToggle={() => onLikeToggle(product._id)}

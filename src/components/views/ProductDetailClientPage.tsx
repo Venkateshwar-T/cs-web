@@ -1,5 +1,3 @@
-
-
 // @/components/views/ProductDetailClientPage.tsx
 'use client';
 
@@ -23,6 +21,7 @@ import { ProductDetails } from '../product-details';
 import { ProductPopupFooter } from '../product-popup-footer';
 import { ImageGallery } from '../image-gallery';
 import { FlavoursSection } from '../flavours-section';
+import { FlavourSelectionPopup } from '../flavour-selection-popup';
 
 interface ProductDetailClientPageProps {
   product: SanityProduct;
@@ -31,7 +30,7 @@ interface ProductDetailClientPageProps {
 
 export default function ProductDetailClientPage({ product, featuredProducts }: ProductDetailClientPageProps) {
   const router = useRouter();
-  const { cart, updateCart, clearCart, likedProducts, toggleLike, clearWishlist } = useAppContext();
+  const { cart, updateCart, clearCart, likedProducts, toggleLike, clearWishlist, flavourSelection, setFlavourSelection } = useAppContext();
   const isMobile = useIsMobile();
   
   const [flavourCart, setFlavourCart] = useState<Record<string, number>>({});
@@ -72,14 +71,18 @@ export default function ProductDetailClientPage({ product, featuredProducts }: P
   };
 
   const handleAddToCart = (productName: string, quantity: number, animate: boolean = true) => {
-    const prevQuantity = cart[productName] || 0;
-    updateCart(productName, quantity);
+    const prevQuantity = cart[productName]?.quantity || 0;
     
-    if (animate && quantity > prevQuantity) {
-      setCartMessage(`${quantity - prevQuantity} added`);
-      setIsCartButtonExpanded(true);
-      setTimeout(() => setIsCartButtonExpanded(false), 1500);
+    // If quantity is increasing, open flavour selection
+    if (quantity > prevQuantity) {
+      const productToSelect = featuredProducts.find(p => p.name === productName) || product;
+      if (productToSelect) {
+        setFlavourSelection({ product: productToSelect, isOpen: true });
+        return;
+      }
     }
+    // Otherwise (for decreasing quantity), update directly
+    updateCart(productName, quantity);
   };
   
   const handleFlavourAddToCart = (flavourId: string, quantity: number) => {
@@ -94,11 +97,18 @@ export default function ProductDetailClientPage({ product, featuredProducts }: P
     });
   };
 
+  const handleFlavourConfirm = (productName: string, flavours: string[]) => {
+    const prevQuantity = cart[productName]?.quantity || 0;
+    updateCart(productName, prevQuantity + 1, flavours);
+  };
+
+
   const handleBuyNow = () => {
-    if (product && (cart[product.name] || 0) === 0) {
-      handleAddToCart(product.name, 1, false);
+    if (product && (cart[product.name]?.quantity || 0) === 0) {
+      setFlavourSelection({ product: product, isOpen: true });
+    } else {
+      router.push('/cart');
     }
-    router.push('/cart');
   };
 
   const handleNavigation = (view: 'home' | 'cart' | 'profile') => {
@@ -113,7 +123,7 @@ export default function ProductDetailClientPage({ product, featuredProducts }: P
 
   const handleToggleCartPopup = () => setIsCartOpen(p => !p);
   
-  const cartItemCount = Object.values(cart).reduce((acc, quantity) => acc + quantity, 0);
+  const cartItemCount = Object.values(cart).reduce((acc, item) => acc + item.quantity, 0);
 
   if (!product) {
     return (
@@ -154,7 +164,7 @@ export default function ProductDetailClientPage({ product, featuredProducts }: P
                 <FeaturedProducts 
                     products={featuredProducts}
                     onProductClick={handleProductClick}
-                    onAddToCart={updateCart}
+                    onAddToCart={(prod) => setFlavourSelection({ product: prod, isOpen: true })}
                     cart={cart}
                     likedProducts={likedProducts}
                     onLikeToggle={toggleLike}
@@ -166,6 +176,12 @@ export default function ProductDetailClientPage({ product, featuredProducts }: P
           </main>
         </div>
         <BottomNavbar activeView={'search'} onNavigate={handleNavigation} cartItemCount={cartItemCount} />
+         <FlavourSelectionPopup
+            product={flavourSelection.product}
+            open={flavourSelection.isOpen}
+            onOpenChange={(isOpen) => setFlavourSelection({ product: null, isOpen })}
+            onConfirm={handleFlavourConfirm}
+          />
       </>
     );
   }
@@ -198,7 +214,7 @@ export default function ProductDetailClientPage({ product, featuredProducts }: P
                     </div>
                     <Separator orientation="vertical" className="bg-white/30 h-[98%] self-center mr-4" />
                     <div className="h-full relative py-4 w-1/2 flex flex-col">
-                        <div className="flex-grow overflow-y-auto no-scrollbar mb-16 min-h-0">
+                        <div className="flex-grow overflow-y-auto no-scrollbar min-h-0">
                             <ProductDetails
                                 product={product}
                                 isLiked={!!likedProducts[product._id]}
@@ -208,7 +224,7 @@ export default function ProductDetailClientPage({ product, featuredProducts }: P
                         <div className="flex-shrink-0">
                           <ProductPopupFooter
                               product={product}
-                              quantity={cart[product.name] || 0}
+                              quantity={cart[product.name]?.quantity || 0}
                               onAddToCart={handleAddToCart}
                               onToggleCartPopup={handleToggleCartPopup}
                           />
@@ -220,7 +236,7 @@ export default function ProductDetailClientPage({ product, featuredProducts }: P
               <FeaturedProducts 
                   products={featuredProducts}
                   onProductClick={handleProductClick}
-                  onAddToCart={updateCart}
+                  onAddToCart={(prod) => setFlavourSelection({ product: prod, isOpen: true })}
                   cart={cart}
                   likedProducts={likedProducts}
                   onLikeToggle={toggleLike}
@@ -249,11 +265,17 @@ export default function ProductDetailClientPage({ product, featuredProducts }: P
         likedProducts={likedProducts}
         onLikeToggle={toggleLike}
         cart={cart}
-        onAddToCart={updateCart}
+        onAddToCart={handleAddToCart}
         onClearCart={clearCart}
         onClearWishlist={clearWishlist}
       />
       <BottomNavbar activeView={'search'} onNavigate={handleNavigation} cartItemCount={cartItemCount} />
+      <FlavourSelectionPopup
+        product={flavourSelection.product}
+        open={flavourSelection.isOpen}
+        onOpenChange={(isOpen) => setFlavourSelection({ product: null, isOpen })}
+        onConfirm={handleFlavourConfirm}
+      />
     </>
   );
 }

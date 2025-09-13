@@ -3,9 +3,10 @@
 
 import { Button } from './ui/button';
 import { cn } from '@/lib/utils';
+import type { OrderItem } from '@/context/app-context';
 
 interface CartPopupFooterProps {
-    cart: Record<string, number>;
+    cart: Record<string, OrderItem>;
     onFinalizeOrder: () => void;
 }
 
@@ -26,9 +27,9 @@ const productPrices: Record<string, number> = {
 };
 
 export function CartPopupFooter({ cart, onFinalizeOrder }: CartPopupFooterProps) {
-    const subtotal = Object.entries(cart).reduce((acc, [name, quantity]) => {
-        const price = productPrices[name] || 0;
-        return acc + (price * quantity);
+    const subtotal = Object.values(cart).reduce((acc, item) => {
+        const price = productPrices[item.name] || 0;
+        return acc + (price * item.quantity);
     }, 0);
 
     const discount = 500.00; // Mock discount

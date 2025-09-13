@@ -10,6 +10,7 @@ import { useAppContext } from '@/context/app-context';
 import { LoginPopup } from '../login-popup';
 import { SignUpPopup } from '../signup-popup';
 import { CompleteDetailsPopup } from '../complete-details-popup';
+import type { OrderItem } from '@/context/app-context';
 
 
 interface PopupsManagerProps {
@@ -17,8 +18,8 @@ interface PopupsManagerProps {
   isProfileOpen: boolean;
   likedProducts?: Record<string, boolean>;
   onLikeToggle?: (productId: string) => void;
-  cart?: Record<string, number>;
-  onAddToCart?: (productName: string, quantity: number) => void;
+  cart?: Record<string, OrderItem>;
+  onAddToCart?: (productName: string, quantity: number, flavours?: string[]) => void;
   onToggleCartPopup?: () => void;
   onClearCart?: () => void;
   allProducts?: SanityProduct[];
@@ -76,9 +77,9 @@ export function PopupsManager({
     if (!cart) return;
 
     const newOrderId = generateOrderId();
-    const subtotal = Object.entries(cart).reduce((acc, [name, quantity]) => {
-        const price = productPrices[name] || 0;
-        return acc + (price * quantity);
+    const subtotal = Object.values(cart).reduce((acc, item) => {
+        const price = productPrices[item.name] || 0;
+        return acc + (price * item.quantity);
     }, 0);
     
     const discount = 500.00;
@@ -90,7 +91,7 @@ export function PopupsManager({
     addOrder({
         id: newOrderId,
         date: new Date().toISOString(),
-        items: Object.entries(cart).map(([name, quantity]) => ({ name, quantity })),
+        items: Object.values(cart),
         status: 'Order Requested',
         total: total > 0 ? total : 0,
     });

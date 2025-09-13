@@ -37,3 +37,9 @@ export interface StructuredFilter {
     title: string;
   }[];
 }
+
+export type OrderItem = {
+  name: string;
+  quantity: number;
+  flavours?: string[];
+};
