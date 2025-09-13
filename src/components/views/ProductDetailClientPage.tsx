@@ -178,7 +178,7 @@ export default function ProductDetailClientPage({ product, featuredProducts }: P
           searchInput={searchInput}
           onSearchInputChange={setSearchInput}
         />
-        <main onScroll={handleScroll} className="flex-grow pt-32 md:px-32 flex flex-col gap-8 pb-8 overflow-y-auto no-scrollbar">
+        <main onScroll={handleScroll} className="flex-grow flex flex-col px-32 pt-24 md:pt-32 gap-8 overflow-y-auto no-scrollbar">
           <div className="flex-grow flex flex-col">
             <div className="bg-[#9A7DAB] rounded-[40px] p-8 text-white flex-grow flex items-center justify-center">
               {/* Content will go here */}
