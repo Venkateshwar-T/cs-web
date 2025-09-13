@@ -1,4 +1,5 @@
 
+
 // @/components/views/ProductDetailClientPage.tsx
 'use client';
 
@@ -43,6 +44,7 @@ export default function ProductDetailClientPage({ product, featuredProducts }: P
   const [lastScrollTop, setLastScrollTop] = useState(0);
   const [isMobileHeaderVisible, setIsMobileHeaderVisible] = useState(true);
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isImageExpanded, setIsImageExpanded] = useState(false);
 
   const handleScroll = (event: UIEvent<HTMLDivElement>) => {
     const { scrollTop } = event.currentTarget;
@@ -171,7 +173,7 @@ export default function ProductDetailClientPage({ product, featuredProducts }: P
   return (
     <>
       <SparkleBackground />
-      <div className={cn("flex flex-col h-screen", (isProfileOpen || isCartOpen) && 'opacity-50')}>
+      <div className={cn("flex flex-col h-screen", (isProfileOpen || isCartOpen || isImageExpanded) && 'opacity-50')}>
         <Header 
           onProfileOpenChange={setIsProfileOpen}
           isContentScrolled={isScrolled}
@@ -190,7 +192,7 @@ export default function ProductDetailClientPage({ product, featuredProducts }: P
                 {/* Left Panel Content */}
                   <div className="w-1/2 h-full gap-6">
                       <div className="flex h-[45%] rounded-lg w-full justify-center pt-6">
-                      <ImageGallery product={product} />
+                      <ImageGallery product={product} onImageExpandChange={setIsImageExpanded} />
                     </div>
                     <div className="py-6 pl-8 rounded-lg w-full h-[55%]">
                       <FlavoursSection availableFlavours={product.availableFlavours || []} onAddToCart={handleFlavourAddToCart} cart={flavourCart} />
