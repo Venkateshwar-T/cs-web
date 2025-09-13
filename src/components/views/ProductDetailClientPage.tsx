@@ -185,48 +185,46 @@ export default function ProductDetailClientPage({ product, featuredProducts }: P
           searchInput={searchInput}
           onSearchInputChange={setSearchInput}
         />
-        <main onScroll={handleScroll} className="flex-grow flex flex-col px-32 pt-24 md:pt-32 gap-8 overflow-y-auto no-scrollbar">
-             <div className="bg-[#9A7DAB] rounded-[40px] text-white flex-grow flex items-center justify-center">
-              <div className="flex w-full h-full gap-8 pr-8">
-                {/* Left Panel Content */}
-                  <div className="w-1/2 h-full flex flex-col">
-                    <div className="flex h-[45%] rounded-lg w-full justify-center pl-4 pt-6">
-                      <ImageGallery product={product} onImageExpandChange={setIsImageExpanded} />
+        <main onScroll={handleScroll} className="flex-grow px-32 pt-24 md:pt-32 overflow-y-auto no-scrollbar">
+             <div className="bg-[#9A7DAB] rounded-[40px] text-white h-[85vh] flex items-center justify-center">
+                <div className="flex w-full h-full p-2">
+                    <div className="w-1/2 h-full flex flex-col">
+                        <div className="flex-grow min-h-0">
+                            <ImageGallery product={product} onImageExpandChange={setIsImageExpanded} />
+                        </div>
+                        <div className="p-4 flex-shrink-0">
+                            <FlavoursSection availableFlavours={product.availableFlavours || []} onAddToCart={handleFlavourAddToCart} cart={flavourCart} />
+                        </div>
                     </div>
-                    <div className="py-6 pl-8 rounded-lg flex-wrap justify-center w-full">
-                      <FlavoursSection availableFlavours={product.availableFlavours || []} onAddToCart={handleFlavourAddToCart} cart={flavourCart} />
+                    <Separator orientation="vertical" className="bg-white/30 h-[98%] self-center" />
+                    <div className="h-full relative py-4 pl-8 w-1/2">
+                        <div className="flex-grow overflow-y-auto custom-scrollbar pb-28 h-full">
+                            <ProductDetails
+                                product={product}
+                                isLiked={!!likedProducts[product._id]}
+                                onLikeToggle={() => toggleLike(product._id)}
+                            />
+                        </div>
+                        <ProductPopupFooter
+                            product={product}
+                            quantity={cart[product.name] || 0}
+                            onAddToCart={handleAddToCart}
+                            onToggleCartPopup={handleToggleCartPopup}
+                        />
                     </div>
-                  </div>
-                  <Separator orientation="vertical" className="bg-white/30 h-[98%] mt-2" />
-                  {/* Right Panel Content */}
-                  <div className="h-full relative py-4 w-1/2">
-                      <div className="flex-grow overflow-y-auto custom-scrollbar pb-28 h-full">
-                          <ProductDetails
-                              product={product}
-                              isLiked={!!likedProducts[product._id]}
-                              onLikeToggle={() => toggleLike(product._id)}
-                          />
-                      </div>
-                      <ProductPopupFooter
-                          product={product}
-                          quantity={cart[product.name] || 0}
-                          onAddToCart={handleAddToCart}
-                          onToggleCartPopup={handleToggleCartPopup}
-                      />
-                  </div>
-              </div>
-          </div>
-          <div className="pb-8">
-            <FeaturedProducts 
-                products={featuredProducts}
-                onProductClick={handleProductClick}
-                onAddToCart={updateCart}
-                cart={cart}
-                likedProducts={likedProducts}
-                onLikeToggle={toggleLike}
-                isMobile={isMobile}
-            />
-          </div>
+                </div>
+            </div>
+            <div className="py-8">
+              <FeaturedProducts 
+                  products={featuredProducts}
+                  onProductClick={handleProductClick}
+                  onAddToCart={updateCart}
+                  cart={cart}
+                  likedProducts={likedProducts}
+                  onLikeToggle={toggleLike}
+                  isMobile={isMobile}
+              />
+            </div>
         </main>
       </div>
       
@@ -257,3 +255,5 @@ export default function ProductDetailClientPage({ product, featuredProducts }: P
     </>
   );
 }
+
+    
