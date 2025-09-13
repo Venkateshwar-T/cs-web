@@ -55,12 +55,12 @@ export function ProductDetails({ product, isLiked, onLikeToggle, isMobile = fals
             </div>
 
             {/* Best for */}
-            {product.bestFor && product.bestFor.length > 0 && (
-              <div>
-                <p className={cn("font-semibold font-plex-sans-condensed break-words", isMobile ? "text-sm" : "text-base")}>
-                  <span className="font-bold">Best for:</span> {product.bestFor.join(', ')}
-                </p>
-              </div>
+            {product.bestFor && (
+                <div>
+                     <p className={cn("font-semibold font-plex-sans-condensed", isMobile ? "text-xs" : "text-base")}>
+                        <span className="font-semibold">Best for:</span> {product.bestFor}
+                    </p>
+                </div>
             )}
 
             {/* Product Description */}
@@ -84,10 +84,8 @@ export function ProductDetails({ product, isLiked, onLikeToggle, isMobile = fals
             {/* Allergen Alert */}
             {product.allergenAlert && (
                 <div>
-                    <p className={cn("font-semibold", isMobile ? "text-sm" : "text-base")}>Allergen Alert:</p>
-                    <ul className="list-disc pl-5 font-semibold">
-                        <li className={cn(isMobile ? "text-xs" : "text-sm")}>{product.allergenAlert}</li>
-                    </ul>
+                    <p className={cn("font-semibold", isMobile ? "text-sm" : "text-sm")}>Allergen Alert:</p>
+                    
                 </div>
             )}
         </div>

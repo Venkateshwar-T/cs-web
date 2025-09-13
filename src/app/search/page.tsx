@@ -28,8 +28,12 @@ async function getFilters(): Promise<StructuredFilter[]> {
     }
 }
 
+function formatCategoryTitleToKey(title: string) {
+    return title.toLowerCase().replace(/ & /g, '-').replace(/ /g, '-');
+}
+
 // Fetches products from Sanity based on URL filters
-async function getFilteredProducts(searchParams: { [key: string]: string | string[] | undefined }): Promise<SanityProduct[]> {
+async function getFilteredProducts(searchParams: { [key: string]: string | string[] | undefined }, allFilters: StructuredFilter[]): Promise<SanityProduct[]> {
     const filters: string[] = [];
     const params: { [key: string]: any } = {};
     const queryTerm = searchParams.q as string;
@@ -51,23 +55,41 @@ async function getFilteredProducts(searchParams: { [key: string]: string | strin
         params.maxPrice = Number(maxPrice);
     }
 
-    // Add your filter logic here based on searchParams
-    const flavours = searchParams['flavours-fillings'];
-    if (flavours) {
-        const flavourList = Array.isArray(flavours) ? flavours : [flavours];
-        if (flavourList.length > 0) {
-            filters.push(`count((availableFlavours[]->name)[@ in $flavourList]) > 0`);
-            params.flavourList = flavourList;
+    // Handle dynamic filters from Sanity
+    allFilters.forEach(category => {
+        const categoryKey = formatCategoryTitleToKey(category.title);
+        const urlValues = searchParams[categoryKey];
+
+        if (urlValues) {
+            const filterValues = Array.isArray(urlValues) ? urlValues : [urlValues];
+            if (filterValues.length > 0) {
+                 if (category.title === 'Flavours & Fillings') {
+                    // Special handling for flavours which are in a separate reference array
+                    const paramName = `flavourList_${categoryKey}`;
+                    filters.push(`count((availableFlavours[]->name)[@ in $${paramName}]) > 0`);
+                    params[paramName] = filterValues;
+                } else {
+                    // Standard handling for other filters via the filterOptions reference
+                    const paramName = `filterList_${categoryKey}`;
+                    filters.push(`count((filterOptions[]->title)[@ in $${paramName}]) > 0`);
+                    params[paramName] = filterValues;
+                }
+            }
         }
-    }
-    // Add more else-if blocks here for other filters...
+    });
 
     const filterClause = filters.length > 0 ? `&& ${filters.join(' && ')}` : '';
     const productQuery = `*[_type == "product" ${filterClause}]{
-        _id, name, slug, mrp, discountedPrice, weight, packageType, composition, "images": images[].asset->url
+        _id, name, slug, mrp, discountedPrice, weight, packageType, composition, "images": images[].asset->url, "filterOptions": filterOptions[]->{title, "category": category->title}
     }`;
-    const products = await client.fetch(productQuery, params);
-    return products;
+    
+    try {
+        const products = await client.fetch(productQuery, params);
+        return products;
+    } catch (error) {
+        console.error("Failed to fetch filtered products:", error);
+        return [];
+    }
 }
 
 const LoadingFallback = () => (
@@ -79,8 +101,8 @@ const LoadingFallback = () => (
 
 // The new Server Component page
 export default async function SearchPage({ searchParams }: { searchParams: { [key: string]: string | string[] | undefined } }) {
-    const products = await getFilteredProducts(searchParams);
     const filters = await getFilters();
+    const products = await getFilteredProducts(searchParams, filters);
 
     return (
         <Suspense fallback={<LoadingFallback />}>
