@@ -173,7 +173,7 @@ export default function ProductDetailClientPage({ product, featuredProducts }: P
   return (
     <>
       <SparkleBackground />
-      <div className={cn("flex flex-col h-screen", (isProfileOpen || isCartOpen))}>
+      <div className={cn("flex flex-col h-screen", (isProfileOpen || isCartOpen || isImageExpanded))}>
         <Header 
           onProfileOpenChange={setIsProfileOpen}
           isContentScrolled={isScrolled}
@@ -185,7 +185,7 @@ export default function ProductDetailClientPage({ product, featuredProducts }: P
           searchInput={searchInput}
           onSearchInputChange={setSearchInput}
         />
-        <main onScroll={handleScroll} className="flex-grow pt-24 md:pt-32 overflow-y-auto no-scrollbar">
+        <main onScroll={handleScroll} className="pt-24 md:pt-32 overflow-y-auto no-scrollbar">
              <div className="bg-[#9A7DAB] rounded-[40px] text-white mx-32 h-[85vh] flex items-center justify-center">
                 <div className="flex w-full h-full px-5 gap-4 pr-10">
                     <div className="w-1/2 h-full flex flex-col">
@@ -197,20 +197,22 @@ export default function ProductDetailClientPage({ product, featuredProducts }: P
                         </div>
                     </div>
                     <Separator orientation="vertical" className="bg-white/30 h-[98%] self-center mr-4" />
-                    <div className="h-full relative py-4 w-1/2">
-                        <div className="flex-grow overflow-y-auto custom-scrollbar h-full pb-24">
+                    <div className="h-full relative py-4 w-1/2 flex flex-col">
+                        <div className="flex-grow overflow-y-auto custom-scrollbar min-h-0">
                             <ProductDetails
                                 product={product}
                                 isLiked={!!likedProducts[product._id]}
                                 onLikeToggle={() => toggleLike(product._id)}
                             />
                         </div>
-                        <ProductPopupFooter
-                            product={product}
-                            quantity={cart[product.name] || 0}
-                            onAddToCart={handleAddToCart}
-                            onToggleCartPopup={handleToggleCartPopup}
-                        />
+                        <div className="flex-shrink-0">
+                          <ProductPopupFooter
+                              product={product}
+                              quantity={cart[product.name] || 0}
+                              onAddToCart={handleAddToCart}
+                              onToggleCartPopup={handleToggleCartPopup}
+                          />
+                        </div>
                     </div>
                 </div>
             </div>
@@ -255,5 +257,3 @@ export default function ProductDetailClientPage({ product, featuredProducts }: P
     </>
   );
 }
-
-    
