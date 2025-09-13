@@ -149,8 +149,7 @@ interface MobileProductDetailViewProps {
   onBuyNow: () => void;
   isLiked: boolean;
   onLikeToggle: (productId: string) => void;
-  flavourCart: Record<string, number>;
-  onFlavourAddToCart: (flavourId: string, quantity: number) => void;
+  onFlavourAddToCart: (productName: string, flavourName: string) => void;
 }
 
 export function MobileProductDetailView({ 
@@ -161,7 +160,6 @@ export function MobileProductDetailView({
   onBuyNow, 
   isLiked,
   onLikeToggle,
-  flavourCart,
   onFlavourAddToCart,
 }: MobileProductDetailViewProps) {
   const productQuantity = cart[product.name]?.quantity || 0;
@@ -203,7 +201,12 @@ export function MobileProductDetailView({
         
         <Separator className="my-4 bg-white/30" />
         <div className="px-4 pb-4">
-            <FlavoursSection availableFlavours={product.availableFlavours || []} onAddToCart={onFlavourAddToCart} cart={flavourCart} isMobile={true} />
+            <FlavoursSection 
+              product={product} 
+              onAddToCart={onFlavourAddToCart} 
+              cart={cart} 
+              isMobile={true} 
+            />
         </div>
         
         <div ref={inlinePriceBoxRef}>

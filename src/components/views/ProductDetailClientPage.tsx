@@ -34,8 +34,6 @@ export default function ProductDetailClientPage({ product, featuredProducts }: P
   const { cart, updateCart, clearCart, likedProducts, toggleLike, clearWishlist, flavourSelection, setFlavourSelection } = useAppContext();
   const isMobile = useIsMobile();
   
-  const [flavourCart, setFlavourCart] = useState<Record<string, number>>({});
-  
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [searchInput, setSearchInput] = useState('');
   const [isScrolled, setIsScrolled] = useState(false);
@@ -93,16 +91,25 @@ export default function ProductDetailClientPage({ product, featuredProducts }: P
     updateCart(productName, quantity);
   };
   
-  const handleFlavourAddToCart = (flavourId: string, quantity: number) => {
-    setFlavourCart(prev => {
-      const newCart = { ...prev };
-      if (quantity > 0) {
-        newCart[flavourId] = quantity;
-      } else {
-        delete newCart[flavourId];
-      }
-      return newCart;
-    });
+  const handleFlavourAddToCart = (productName: string, flavourName: string) => {
+    const itemInCart = cart[productName];
+    const newFlavours = itemInCart?.flavours ? [...itemInCart.flavours] : [];
+    
+    if (newFlavours.includes(flavourName)) {
+      // Remove flavour
+      const index = newFlavours.indexOf(flavourName);
+      newFlavours.splice(index, 1);
+    } else {
+      // Add flavour
+      newFlavours.push(flavourName);
+    }
+
+    // If there are any flavours left, update the cart item.
+    // If all flavours are removed for a product that was only in the cart for its flavours,
+    // you might want to remove the product from the cart entirely.
+    if (newFlavours.length > 0 || itemInCart) {
+        updateCart(productName, itemInCart?.quantity || 1, newFlavours);
+    }
   };
 
   const handleFlavourConfirm = (productName: string, flavours: string[]) => {
@@ -165,7 +172,6 @@ export default function ProductDetailClientPage({ product, featuredProducts }: P
                 onBuyNow={handleBuyNow}
                 isLiked={!!likedProducts[product._id]}
                 onLikeToggle={() => toggleLike(product._id)}
-                flavourCart={flavourCart}
                 onFlavourAddToCart={handleFlavourAddToCart}
               />
               <div className="mt-8">
@@ -217,7 +223,11 @@ export default function ProductDetailClientPage({ product, featuredProducts }: P
                             <ImageGallery product={product} onImageExpandChange={setIsImageExpanded} />
                         </div>
                         <div className="py-6 px-6 rounded-lg w-full flex-grow min-h-0">
-                            <FlavoursSection availableFlavours={product.availableFlavours || []} onAddToCart={handleFlavourAddToCart} cart={flavourCart} />
+                            <FlavoursSection
+                                product={product}
+                                onAddToCart={handleFlavourAddToCart}
+                                cart={cart}
+                            />
                         </div>
                     </div>
                     <Separator orientation="vertical" className="bg-white/30 h-[98%] self-center mr-4" />
@@ -276,6 +286,7 @@ export default function ProductDetailClientPage({ product, featuredProducts }: P
         onAddToCart={handleAddToCart}
         onClearCart={clearCart}
         onClearWishlist={clearWishlist}
+        onProductClick={handleProductClick}
       />
       <BottomNavbar activeView={'search'} onNavigate={handleNavigation} cartItemCount={cartItemCount} />
       <FlavourSelectionPopup

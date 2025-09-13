@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useRef, useState, useEffect } from 'react';
@@ -6,19 +7,24 @@ import { SectionTitle } from './section-title';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from './ui/button';
 import { cn } from '@/lib/utils';
-import type { SanityFlavour } from '@/types';
+import type { SanityFlavour, SanityProduct } from '@/types';
+import type { OrderItem } from '@/context/app-context';
 
 interface FlavoursSectionProps {
-  onAddToCart: (flavourId: string, quantity: number) => void;
-  cart: Record<string, number>;
+  product: SanityProduct;
+  onAddToCart: (productName: string, flavourName: string) => void;
+  cart: Record<string, OrderItem>;
   isMobile?: boolean;
-  availableFlavours: SanityFlavour[];
 }
 
-export function FlavoursSection({ onAddToCart, cart, isMobile = false, availableFlavours }: FlavoursSectionProps) {
+export function FlavoursSection({ product, onAddToCart, cart, isMobile = false }: FlavoursSectionProps) {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
+  
+  const availableFlavours = product.availableFlavours || [];
+  const selectedFlavoursForProduct = cart[product.name]?.flavours || [];
+
 
   useEffect(() => {
     const container = scrollContainerRef.current;
@@ -78,8 +84,8 @@ export function FlavoursSection({ onAddToCart, cart, isMobile = false, available
           <FlavourCard
             key={flavour._id}
             flavour={flavour}
-            onAddToCart={onAddToCart}
-            quantity={cart[flavour._id] || 0}
+            onAddToCart={() => onAddToCart(product.name, flavour.name)}
+            quantity={selectedFlavoursForProduct.includes(flavour.name) ? 1 : 0}
           />
         ))}
       </div>

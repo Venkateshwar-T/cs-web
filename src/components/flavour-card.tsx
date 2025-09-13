@@ -1,3 +1,4 @@
+
 'use client';
 
 import Image from 'next/image';
@@ -8,7 +9,7 @@ import type { SanityFlavour } from '@/types';
 
 interface FlavourCardProps {
   flavour: SanityFlavour;
-  onAddToCart: (flavourId: string, quantity: number) => void;
+  onAddToCart: () => void;
   quantity: number;
 }
 
@@ -18,7 +19,7 @@ export function FlavourCard({ flavour, onAddToCart, quantity }: FlavourCardProps
   const handleToggleCart = (e: React.MouseEvent) => {
     e.stopPropagation();
     const isInCart = quantity > 0;
-    onAddToCart(flavour._id, isInCart ? 0 : 1);
+    onAddToCart();
     if (!isInCart) {
       setIsAnimating(true);
     }
