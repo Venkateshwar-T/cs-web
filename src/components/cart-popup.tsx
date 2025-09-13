@@ -2,6 +2,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { CartItemCard } from './cart-item-card';
@@ -22,6 +23,7 @@ import {
 } from "@/components/ui/alert-dialog"
 import type { OrderItem } from '@/context/app-context';
 import type { SanityProduct } from '@/types';
+import { EmptyState } from './empty-state';
 
 interface CartPopupProps {
   onClose: () => void;
@@ -29,11 +31,12 @@ interface CartPopupProps {
   allProducts: SanityProduct[];
   onClearCart: () => void;
   onFinalizeOrder: () => void;
-  onQuantityChange: (productName: string, newQuantity: number) => void;
+  onQuantityChange: (productName: string, newQuantity: number, flavours?: string[]) => void;
 }
 
 export function CartPopup({ onClose, cart, allProducts, onClearCart, onFinalizeOrder, onQuantityChange }: CartPopupProps) {
   const [removingItems, setRemovingItems] = useState<string[]>([]);
+  const router = useRouter();
   const cartItems = Object.values(cart);
   const productsByName = allProducts.reduce((acc, product) => {
     acc[product.name] = product;
@@ -91,8 +94,18 @@ export function CartPopup({ onClose, cart, allProducts, onClearCart, onFinalizeO
             className="flex-grow overflow-y-auto pr-4 min-h-0 custom-scrollbar"
           >
             {cartItems.length === 0 ? (
-              <div className="flex items-center justify-center h-full">
-                <p className="text-xl text-black">Your cart is empty.</p>
+              <div className="flex items-center justify-center h-full bg-white/80 rounded-2xl">
+                 <EmptyState
+                    imageUrl="/icons/empty.png"
+                    title="Your Cart is Empty"
+                    description="Looks like you haven't added anything to your cart yet. Start exploring to find the perfect gift!"
+                    buttonText="Continue Shopping"
+                    onButtonClick={() => {
+                        onClose();
+                        router.push('/');
+                    }}
+                    containerClassName="text-black"
+                />
               </div>
             ) : (
               <div className="space-y-4 pb-4">
