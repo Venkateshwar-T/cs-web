@@ -1,3 +1,4 @@
+
 // @/components/cart-popup.tsx
 'use client';
 
@@ -31,7 +32,7 @@ interface CartPopupProps {
   allProducts: SanityProduct[];
   onClearCart: () => void;
   onFinalizeOrder: () => void;
-  onQuantityChange: (productName: string, newQuantity: number, flavours?: string[]) => void;
+  onQuantityChange: (productName: string, quantity: number, flavours?: string[]) => void;
 }
 
 export function CartPopup({ onClose, cart, allProducts, onClearCart, onFinalizeOrder, onQuantityChange }: CartPopupProps) {
@@ -61,53 +62,54 @@ export function CartPopup({ onClose, cart, allProducts, onClearCart, onFinalizeO
             <Image src="/icons/cart.png" alt="Cart" width={16} height={16} />
             <h2 className="text-sm font-bold ml-2">My Cart</h2>
         </div>
-        <AlertDialog>
-          <AlertDialogTrigger asChild>
-            <Button
-              variant="destructive"
-              className="bg-custom-purple-dark text-white rounded-full hover:bg-custom-purple-dark/90 text-sm h-9 px-4 disabled:opacity-50"
-              disabled={cartItems.length === 0}
-            >
-              <X className="h-4 w-0" />
-              Clear Cart
-            </Button>
-          </AlertDialogTrigger>
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-              <AlertDialogDescription>
-                This will permanently remove all items from your cart. This action cannot be undone.
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel>Cancel</AlertDialogCancel>
-              <AlertDialogAction onClick={onClearCart}>Confirm</AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
+        {cartItems.length > 0 && (
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button
+                variant="destructive"
+                className="bg-custom-purple-dark text-white rounded-full hover:bg-custom-purple-dark/90 text-sm h-9 px-4"
+              >
+                <X className="h-4 w-0" />
+                Clear Cart
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  This will permanently remove all items from your cart. This action cannot be undone.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction onClick={onClearCart}>Confirm</AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+        )}
       </div>
 
-      <div className="flex h-full gap-4 flex-grow min-h-0 pl-6">
-        {/* Left Section (60%) */}
-        <div className="w-[60%] flex flex-col">
-          <div 
-            className="flex-grow overflow-y-auto pr-4 min-h-0 custom-scrollbar"
-          >
-            {cartItems.length === 0 ? (
-              <div className="flex items-center justify-center h-full bg-white/80 rounded-2xl">
-                 <EmptyState
-                    imageUrl="/icons/empty.png"
-                    title="Your Cart is Empty"
-                    description="Looks like you haven't added anything to your cart yet. Start exploring to find the perfect gift!"
-                    buttonText="Continue Shopping"
-                    onButtonClick={() => {
-                        onClose();
-                        router.push('/');
-                    }}
-                    containerClassName="text-black"
-                />
-              </div>
-            ) : (
+      {cartItems.length === 0 ? (
+          <div className="flex-grow flex items-center justify-center h-full">
+              <EmptyState
+                  imageUrl="/icons/empty.png"
+                  title="Your Cart is Empty"
+                  description="Looks like you haven't added anything to your cart yet. Start exploring to find the perfect gift!"
+                  buttonText="Continue Shopping"
+                  onButtonClick={() => {
+                      onClose();
+                      router.push('/');
+                  }}
+                  containerClassName="text-black"
+              />
+          </div>
+      ) : (
+        <div className="flex h-full gap-4 flex-grow min-h-0 pl-6">
+          {/* Left Section (60%) */}
+          <div className="w-[60%] flex flex-col">
+            <div 
+              className="flex-grow overflow-y-auto pr-4 min-h-0 custom-scrollbar"
+            >
               <div className="space-y-4 pb-4">
                 {cartItems.map((item) => {
                   const product = productsByName[item.name];
@@ -125,18 +127,18 @@ export function CartPopup({ onClose, cart, allProducts, onClearCart, onFinalizeO
                   )
                 })}
               </div>
-            )}
+            </div>
+          </div>
+
+          {/* Right Section (40%) */}
+          <div className="w-[40%] rounded-l-2xl flex flex-col pr-6">
+              <div className="flex-grow min-h-0">
+                  <OrderSummary cart={cart} allProducts={allProducts} />
+              </div>
+              <CartPopupFooter cart={cart} onFinalizeOrder={onFinalizeOrder} />
           </div>
         </div>
-
-        {/* Right Section (40%) */}
-        <div className="w-[40%] rounded-l-2xl flex flex-col pr-6">
-            <div className="flex-grow min-h-0">
-                <OrderSummary cart={cart} allProducts={allProducts} />
-            </div>
-            <CartPopupFooter cart={cart} onFinalizeOrder={onFinalizeOrder} />
-        </div>
-      </div>
+      )}
     </div>
   );
 }
