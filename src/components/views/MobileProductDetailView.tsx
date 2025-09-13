@@ -105,7 +105,7 @@ const InlinePriceBox = ({ product, productQuantity, onAddToCart, onBuyNow, class
                     )}
                     {product.discountedPrice && <p className="text-xl font-bold text-white">₹{product.discountedPrice}</p>}
                 </div>
-                <div className="flex flex-wrap items-center gap-2 mx-auto max-w-xs">
+                <div className="flex flex-wrap items-center gap-2 mx-auto px-12 max-w-xs">
                     {productQuantity === 0 ? (
                         <Button
                             className="w-full rounded-full font-semibold text-xs border-2 border-custom-gold bg-custom-gold text-custom-purple-dark py-1 h-8 hover:bg-custom-gold/90"
@@ -200,7 +200,7 @@ export function MobileProductDetailView({
         </div>
         
         <Separator className="my-4 bg-white/30" />
-        <div className="px-4">
+        <div className="px-4 pb-4">
             <FlavoursSection availableFlavours={product.availableFlavours || []} onAddToCart={onFlavourAddToCart} cart={flavourCart} isMobile={true} />
         </div>
         

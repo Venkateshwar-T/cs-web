@@ -57,10 +57,10 @@ export function FlavoursSection({ onAddToCart, cart, isMobile = false, available
   return (
     <div className={cn(
         "relative flex flex-col animate-fade-in",
-        isMobile ? "bg-white/10 rounded-[15px] p-4" : "bg-[#5D2B79] md:rounded-[15px] lg:rounded-[40px] py-5 px-4 md:h-[85%] lg:h-full"
+        isMobile ? "bg-custom-purple-dark/80 rounded-[15px] p-4" : "bg-[#5D2B79] md:rounded-[15px] lg:rounded-[35px] py-2 px-4 md:h-[85%] lg:h-full"
       )} 
       style={{ animationDuration: '0.5s', animationDelay: '0.2s', animationFillMode: 'both' }}>
-      <SectionTitle className={cn(isMobile ? "text-sm mb-3 p-0 flex justify-center" :"text-sm md:text-m lg:text-xl md:pl-0 lg:pl-4 mb-2 pt-0 font-poppins")}>Flavours & Fillings</SectionTitle>
+      <SectionTitle className={cn(isMobile ? "text-sm mb-3 p-0 flex justify-center" :"flex text-sm md:text-m lg:text-xl md:pl-0 lg:pl-4 mb-2 pt-0 font-poppins justify-center")}>Flavours & Fillings</SectionTitle>
       
       {canScrollLeft && (
         <Button 
@@ -73,7 +73,7 @@ export function FlavoursSection({ onAddToCart, cart, isMobile = false, available
         </Button>
       )}
 
-      <div ref={scrollContainerRef} className="flex overflow-x-auto no-scrollbar gap-4 flex-grow items-center md:px-0 lg:px-4">
+      <div ref={scrollContainerRef} className="flex overflow-x-auto no-scrollbar gap-4 flex-grow items-center md:px-0 lg:px-4 justify-center">
         {availableFlavours.map((flavour) => (
           <FlavourCard
             key={flavour._id}
