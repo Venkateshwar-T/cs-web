@@ -1,3 +1,4 @@
+
 // @/components/flavour-selection-popup.tsx
 'use client';
 
@@ -27,11 +28,19 @@ export function FlavourSelectionPopup({ product, open, onOpenChange, onConfirm }
   const [selectedFlavours, setSelectedFlavours] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
-    // Reset selection when the popup is closed or the product changes
-    if (!open) {
+    // Reset selection when the popup is closed or product changes,
+    // but pre-select if there's only one flavour.
+    if (open && product) {
+      const availableFlavours = product.availableFlavours || [];
+      if (availableFlavours.length === 1) {
+        setSelectedFlavours({ [availableFlavours[0]._id]: true });
+      } else {
+        setSelectedFlavours({});
+      }
+    } else {
       setSelectedFlavours({});
     }
-  }, [open]);
+  }, [open, product]);
 
   if (!product) return null;
 
@@ -52,6 +61,7 @@ export function FlavourSelectionPopup({ product, open, onOpenChange, onConfirm }
 
   const availableFlavours = product.availableFlavours || [];
   const hasFlavours = availableFlavours.length > 0;
+  const isConfirmDisabled = Object.values(selectedFlavours).filter(Boolean).length === 0;
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -99,7 +109,11 @@ export function FlavourSelectionPopup({ product, open, onOpenChange, onConfirm }
                         Cancel
                     </Button>
                 </DialogClose>
-                <Button onClick={handleConfirm} className="bg-custom-gold text-base text-custom-purple-dark rounded-full px-10 hover:bg-custom-gold/90">
+                <Button 
+                    onClick={handleConfirm} 
+                    className="bg-custom-gold text-base text-custom-purple-dark rounded-full px-10 hover:bg-custom-gold/90 disabled:bg-gray-400 disabled:cursor-not-allowed"
+                    disabled={hasFlavours && isConfirmDisabled}
+                >
                     Confirm
                 </Button>
             </div>
