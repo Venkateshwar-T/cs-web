@@ -3,9 +3,10 @@
 
 import { Separator } from './ui/separator';
 import { cn } from '@/lib/utils';
+import type { OrderItem } from '@/context/app-context';
 
 interface OrderSummaryProps {
-  cart: Record<string, number>;
+  cart: Record<string, OrderItem>;
 }
 
 // Mock data for product prices - in a real app this would come from a database or state management
@@ -32,7 +33,7 @@ const SummaryRow = ({ label, value, isBold = false }: { label: React.ReactNode, 
 );
 
 export function OrderSummary({ cart }: OrderSummaryProps) {
-  const cartItems = Object.entries(cart);
+  const cartItems = Object.values(cart);
 
   if (cartItems.length === 0) {
       return (
@@ -42,9 +43,9 @@ export function OrderSummary({ cart }: OrderSummaryProps) {
       );
   }
 
-  const subtotal = cartItems.reduce((acc, [name, quantity]) => {
-    const price = productPrices[name] || 0;
-    return acc + (price * quantity);
+  const subtotal = cartItems.reduce((acc, item) => {
+    const price = productPrices[item.name] || 0;
+    return acc + (price * item.quantity);
   }, 0);
 
   const discount = 500.00;
@@ -58,11 +59,11 @@ export function OrderSummary({ cart }: OrderSummaryProps) {
         <h3 className="font-bold text-xl text-center mb-4 flex-shrink-0">Order Summary</h3>
         
         <div className="flex-grow space-y-2 overflow-y-auto no-scrollbar">
-            {cartItems.map(([name, quantity]) => (
-                <div key={name} className="flex justify-between items-center">
-                    <span className="text-sm font-bold w-2/3 truncate pr-2">{name}</span>
-                    <span className="text-sm text-gray-600">x{quantity}</span>
-                    <span className="text-sm font-semibold w-1/4 text-right">₹{(productPrices[name] || 0).toFixed(2)}</span>
+            {cartItems.map((item) => (
+                <div key={item.name} className="flex justify-between items-center">
+                    <span className="text-sm font-bold w-2/3 truncate pr-2">{item.name}</span>
+                    <span className="text-sm text-gray-600">x{item.quantity}</span>
+                    <span className="text-sm font-semibold w-1/4 text-right">₹{(productPrices[item.name] || 0).toFixed(2)}</span>
                 </div>
             ))}
         </div>
