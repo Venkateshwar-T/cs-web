@@ -82,7 +82,7 @@ export default function Home() {
     router.push(`/${view}`);
   };
 
-  const cartItemCount = Object.values(cart).reduce((acc, quantity) => acc + quantity, 0);
+  const cartItemCount = Object.values(cart).reduce((acc, item) => acc + item.quantity, 0);
   
   const mainContentClass = cn(
     "flex flex-col items-center justify-start transition-all duration-500 relative flex-grow min-h-0 pb-16 md:pb-0"
@@ -136,4 +136,3 @@ export default function Home() {
     </>
   );
 }
-
