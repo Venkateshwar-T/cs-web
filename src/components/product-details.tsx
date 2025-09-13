@@ -55,11 +55,13 @@ export function ProductDetails({ product, isLiked, onLikeToggle, isMobile = fals
             </div>
 
             {/* Best for */}
-            <div>
+            {product.bestFor && product.bestFor.length > 0 && (
+              <div>
                 <p className={cn("font-semibold font-plex-sans-condensed break-words", isMobile ? "text-sm" : "text-base")}>
-                    Best for: Weddings, Corporate Gifts, Birthdays & Anniversaries, Festive Seasons Weddings, Corporate Gifts, Birthdays & Anniversaries, FestiveWeddings, Corporate Gifts, Birthdays & Anniversaries, FestiveWeddings, Corporate Gifts, Birthdays & Anniversaries, FestiveWeddings, Corporate Gifts, Birthdays & Anniversaries, FestiveWeddings, Corporate Gifts, Birthdays & Anniversaries, FestiveWeddings, Corporate Gifts, Birthdays & Anniversaries, FestiveWeddings, Corporate Gifts, Birthdays & Anniversaries, FestiveWeddings, Corporate Gifts, Birthdays & Anniversaries, FestiveWeddings, Corporate Gifts, Birthdays & Anniversaries, FestiveWeddings, Corporate Gifts, Birthdays & Anniversaries, FestiveWeddings, Corporate Gifts, Birthdays & Anniversaries, FestiveWeddings, Corporate Gifts, Birthdays & Anniversaries, FestiveWeddings, Corporate Gifts, Birthdays & Anniversaries, FestiveWeddings, Corporate Gifts, Birthdays & Anniversaries, FestiveWeddings, Corporate Gifts, Birthdays & Anniversaries, FestiveWeddings, Corporate Gifts, Birthdays & Anniversaries, FestiveWeddings, Corporate Gifts, Birthdays & Anniversaries, FestiveWeddings, Corporate Gifts, Birthdays & Anniversaries, FestiveWeddings, Corporate Gifts, Birthdays & Anniversaries, FestiveWeddings, Corporate Gifts, Birthdays & Anniversaries, FestiveWeddings, Corporate Gifts, Birthdays & Anniversaries, FestiveWeddings, Corporate Gifts, Birthdays & Anniversaries, Festive
+                  <span className="font-bold">Best for:</span> {product.bestFor.join(', ')}
                 </p>
-            </div>
+              </div>
+            )}
 
             {/* Product Description */}
             {product.description && (

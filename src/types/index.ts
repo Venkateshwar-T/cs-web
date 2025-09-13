@@ -21,6 +21,7 @@ export interface SanityProduct {
   ingredients?: string;
   allergenAlert?: string;
   availableFlavours?: SanityFlavour[];
+  bestFor?: string[];
 }
 
 export interface StructuredFilter {
