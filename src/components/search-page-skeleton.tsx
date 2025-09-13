@@ -6,6 +6,7 @@ import { cn } from '@/lib/utils';
 import { ProductCardSkeleton } from './product-card-skeleton';
 import { Skeleton } from './ui/skeleton';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { Loader } from './loader';
 
 const MobileSkeleton = () => (
     <div className="flex flex-col h-screen bg-background">
@@ -122,7 +123,8 @@ export function SearchPageSkeleton() {
     if (isMobile === undefined) {
         return (
             <div className="h-screen w-full flex flex-col items-center justify-center text-white bg-background gap-4">
-                {/* You can put a simple loader here for the brief moment before hydration */}
+                <Loader />
+                <p>Loading your chocolates...</p>
             </div>
         );
     }
