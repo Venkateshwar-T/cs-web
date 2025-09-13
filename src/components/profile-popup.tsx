@@ -50,17 +50,6 @@ export function ProfilePopup({
   
   const { profileInfo, updateProfileInfo, isProfileLoaded, isAuthenticated, setAuthPopup } = useAppContext();
 
-  if (!isAuthenticated) {
-    return (
-      <LoginPopup 
-        open={true}
-        onOpenChange={(open) => { if (!open) onClose(); }}
-        onSignUpClick={() => setAuthPopup('signup')}
-        onLoginSuccess={onClose}
-      />
-    )
-  }
-
   const handleActionWithCheck = (action: () => void) => {
     if (hasUnsavedChanges) {
       setPendingAction(() => action); // Store the action to be executed after confirmation

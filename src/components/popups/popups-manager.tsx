@@ -54,11 +54,6 @@ export function PopupsManager({
   const isAnyPopupVisible = isCartOpen || isProfileOpen || !!authPopup;
 
   const handleFinalizeOrder = () => {
-    if (!isAuthenticated) {
-        if(onToggleCartPopup) onToggleCartPopup();
-        setAuthPopup('login');
-        return;
-    }
     if (!cart) return;
 
     const productsByName = allProducts.reduce((acc, product) => {
