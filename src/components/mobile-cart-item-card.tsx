@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/sheet";
 import type { OrderItem } from '@/context/app-context';
 import type { SanityProduct } from '@/types';
+import { useRouter } from 'next/navigation';
 
 interface MobileCartItemCardProps {
     item: OrderItem;
@@ -22,6 +23,7 @@ interface MobileCartItemCardProps {
     onQuantityChange: (productName: string, newQuantity: number) => void;
     onRemove: (productName: string) => void;
     isLastItem: boolean;
+    onProductClick: (product: SanityProduct) => void;
 }
 
 const selectedFlavours = [
@@ -30,20 +32,27 @@ const selectedFlavours = [
     { name: 'Dark Chocolate', price: 75 },
 ];
 
-export function MobileCartItemCard({ item, product, onQuantityChange, onRemove, isLastItem }: MobileCartItemCardProps) {
-    const handleRemove = () => {
+export function MobileCartItemCard({ item, product, onQuantityChange, onRemove, isLastItem, onProductClick }: MobileCartItemCardProps) {
+    const handleRemove = (e: React.MouseEvent) => {
+        e.stopPropagation();
         onRemove(item.name);
     }
     
-    const handleIncrement = () => {
+    const handleIncrement = (e: React.MouseEvent) => {
+        e.stopPropagation();
         onQuantityChange(item.name, item.quantity + 1);
     };
 
-    const handleDecrement = () => {
+    const handleDecrement = (e: React.MouseEvent) => {
+        e.stopPropagation();
         if (item.quantity > 1) {
             onQuantityChange(item.name, item.quantity - 1);
         }
     };
+    
+    const handleClick = () => {
+        onProductClick(product);
+    }
 
     const subtitle = [product.weight, product.composition, product.packageType].filter(Boolean).join(' | ');
     const discountPercentage = product.mrp && product.discountedPrice && product.mrp > product.discountedPrice
@@ -52,8 +61,9 @@ export function MobileCartItemCard({ item, product, onQuantityChange, onRemove, 
 
     return (
         <div 
+            onClick={handleClick}
             className={cn(
-                "w-full bg-transparent pl-3 py-3 pr-4 text-black relative transition-all duration-300 overflow-hidden",
+                "w-full bg-transparent pl-3 py-3 pr-4 text-black relative transition-all duration-300 overflow-hidden cursor-pointer",
                 !isLastItem && "border-b border-black/10"
             )}
         >
@@ -103,7 +113,7 @@ export function MobileCartItemCard({ item, product, onQuantityChange, onRemove, 
                         {item.flavours && item.flavours.length > 0 && (
                             <Sheet>
                                 <SheetTrigger asChild>
-                                    <Button variant="ghost" className="h-auto p-2 mt-2 text-custom-purple-dark text-xs rounded-lg hover:text-custom-purple-dark hover:bg-black/5">
+                                    <Button variant="ghost" className="h-auto p-2 mt-2 text-custom-purple-dark text-xs rounded-lg hover:text-custom-purple-dark hover:bg-black/5" onClick={(e) => e.stopPropagation()}>
                                     <span>Selected Flavours</span>
                                     <ChevronDown className="h-4 w-4 text-custom-purple-dark" />
                                     </Button>

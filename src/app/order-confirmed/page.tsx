@@ -1,4 +1,3 @@
-
 'use client';
 
 import { Suspense, useState, useEffect, type UIEvent } from 'react';
@@ -16,11 +15,9 @@ import { StaticSparkleBackground } from '@/components/static-sparkle-background'
 import { Loader } from '@/components/loader';
 import { motion } from 'framer-motion';
 import { useAppContext, type Order } from '@/context/app-context';
+import type { SanityProduct } from '@/types';
+import { client } from '@/lib/sanity';
 
-const allProducts: Product[] = Array.from({ length: 12 }).map((_, i) => ({
-  id: i,
-  name: `Diwali Collection Box ${i + 1}`,
-}));
 
 const ProcessingView = () => (
     <div className="flex flex-col items-center justify-center h-full text-center gap-6">
@@ -42,12 +39,22 @@ function OrderConfirmedPageComponent() {
   const searchParams = useSearchParams();
   const { cart, updateCart, likedProducts, toggleLike, clearWishlist, orders } = useAppContext();
   
+  const [allProducts, setAllProducts] = useState<SanityProduct[]>([]);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [searchInput, setSearchInput] = useState('');
   const [confirmedOrder, setConfirmedOrder] = useState<Order | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const isMobile = useIsMobile();
   const [isContentScrolled, setIsContentScrolled] = useState(false);
+
+  useEffect(() => {
+    async function getProducts() {
+        const query = `*[_type == "product"]{ ..., "images": images[].asset->url, availableFlavours[]->{ _id, name, "imageUrl": image.asset->url } }`;
+        const products = await client.fetch(query);
+        setAllProducts(products);
+    }
+    getProducts();
+  }, []);
 
   useEffect(() => {
     const orderId = searchParams.get('orderId');
@@ -77,6 +84,10 @@ function OrderConfirmedPageComponent() {
   
   const handleSearchSubmit = (query: string) => {
     router.push(`/search?q=${encodeURIComponent(query)}`);
+  };
+  
+  const handleProductClick = (product: SanityProduct) => {
+    router.push(`/product/${product.slug.current}`);
   };
 
   const handleNavigation = (view: 'home' | 'cart' | 'profile') => {
@@ -111,7 +122,7 @@ function OrderConfirmedPageComponent() {
           ) : (
             <>
               <div className={cn("flex-grow flex flex-col", isMobile ? "px-4" : "md:px-32")}>
-                <OrderConfirmedView order={confirmedOrder} />
+                <OrderConfirmedView order={confirmedOrder} products={allProducts} />
               </div>
               <Footer />
             </>
@@ -129,6 +140,7 @@ function OrderConfirmedPageComponent() {
         cart={cart}
         onAddToCart={updateCart}
         onClearWishlist={clearWishlist}
+        onProductClick={handleProductClick}
       />
     </>
   );

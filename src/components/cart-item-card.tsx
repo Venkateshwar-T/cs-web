@@ -8,6 +8,7 @@ import { FaTrash } from 'react-icons/fa';
 import { cn } from '@/lib/utils';
 import type { OrderItem } from '@/context/app-context';
 import type { SanityProduct } from '@/types';
+import { useRouter } from 'next/navigation';
 
 interface CartItemCardProps {
     item: OrderItem;
@@ -16,10 +17,11 @@ interface CartItemCardProps {
     onRemove: (productName: string) => void;
     isRemoving: boolean;
     onAnimationEnd: () => void;
+    onProductClick: (product: SanityProduct) => void;
 }
 
-export function CartItemCard({ item, product, onQuantityChange, onRemove, isRemoving, onAnimationEnd }: CartItemCardProps) {
-
+export function CartItemCard({ item, product, onQuantityChange, onRemove, isRemoving, onAnimationEnd, onProductClick }: CartItemCardProps) {
+    const router = useRouter();
     const handleIncrement = (e: React.MouseEvent) => {
         e.stopPropagation();
         onQuantityChange(item.name, item.quantity + 1);
@@ -30,8 +32,13 @@ export function CartItemCard({ item, product, onQuantityChange, onRemove, isRemo
         onQuantityChange(item.name, item.quantity - 1);
     };
     
-    const handleRemove = () => {
+    const handleRemove = (e: React.MouseEvent) => {
+        e.stopPropagation();
         onRemove(item.name);
+    }
+    
+    const handleClick = () => {
+        onProductClick(product);
     }
 
     const subtitle = [product.weight, product.composition, product.packageType].filter(Boolean).join(' | ');
@@ -41,9 +48,10 @@ export function CartItemCard({ item, product, onQuantityChange, onRemove, isRemo
 
     return (
         <div 
+            onClick={handleClick}
             onAnimationEnd={onAnimationEnd}
             className={cn(
-                "w-full bg-white/80 rounded-2xl p-4 text-black relative transition-all duration-300 overflow-hidden",
+                "w-full bg-white/80 rounded-2xl p-4 text-black relative transition-all duration-300 overflow-hidden cursor-pointer",
                 isRemoving && 'animate-fade-out-slide-up'
             )}
         >

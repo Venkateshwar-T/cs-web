@@ -1,4 +1,3 @@
-
 // @/components/my-orders-tab.tsx
 'use client';
 
@@ -22,13 +21,16 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import type { SanityProduct } from '@/types';
 
 
 interface MyOrdersTabProps {
   isMobile?: boolean;
+  products: SanityProduct[];
+  onProductClick: (product: SanityProduct) => void;
 }
 
-export function MyOrdersTab({ isMobile = false }: MyOrdersTabProps) {
+export function MyOrdersTab({ isMobile = false, products, onProductClick }: MyOrdersTabProps) {
     const { orders, isOrdersLoaded, clearOrders } = useAppContext();
     const router = useRouter();
 
@@ -85,6 +87,8 @@ export function MyOrdersTab({ isMobile = false }: MyOrdersTabProps) {
                                 key={latestOrder.id} 
                                 order={latestOrder} 
                                 isMobile={true} 
+                                products={products}
+                                onProductClick={onProductClick}
                               />
                            </div>
                             
@@ -98,6 +102,8 @@ export function MyOrdersTab({ isMobile = false }: MyOrdersTabProps) {
                                       key={order.id} 
                                       order={order} 
                                       isMobile={true} 
+                                      products={products}
+                                      onProductClick={onProductClick}
                                     />
                                   ))}
                                 </div>
@@ -154,7 +160,7 @@ export function MyOrdersTab({ isMobile = false }: MyOrdersTabProps) {
              {orders.length > 0 && latestOrder ? (
                 <div className="flex-grow overflow-y-auto no-scrollbar">
                     <SectionTitle className="text-xl text-white/90 pl-3 mb-2">Latest Order</SectionTitle>
-                    <OrderItemCard key={latestOrder.id} order={latestOrder} />
+                    <OrderItemCard key={latestOrder.id} order={latestOrder} products={products} onProductClick={onProductClick} />
 
                     {pastOrders.length > 0 && (
                       <>
@@ -162,7 +168,7 @@ export function MyOrdersTab({ isMobile = false }: MyOrdersTabProps) {
                         <SectionTitle className="text-xl text-white/90 pl-3 mb-2">Past Orders</SectionTitle>
                         <div className="space-y-4">
                           {pastOrders.map(order => (
-                              <OrderItemCard key={order.id} order={order} />
+                              <OrderItemCard key={order.id} order={order} products={products} onProductClick={onProductClick} />
                           ))}
                         </div>
                       </>

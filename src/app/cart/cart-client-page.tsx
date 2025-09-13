@@ -1,4 +1,3 @@
-
 // @/app/cart/cart-client-page.tsx
 'use client';
 
@@ -91,6 +90,10 @@ export default function CartClientPage({ allProducts }: { allProducts: SanityPro
     }
     // If view is 'cart', do nothing as we are already on the page.
   };
+  
+  const handleProductClick = (product: SanityProduct) => {
+    router.push(`/product/${product.slug.current}`);
+  };
 
   const handleHeaderNavigate = (view: 'about' | 'faq') => {
     router.push(`/${view}`);
@@ -121,9 +124,11 @@ export default function CartClientPage({ allProducts }: { allProducts: SanityPro
     const gstRate = 0.18;
     const gstAmount = subtotalAfterDiscount * gstRate;
     const total = subtotalAfterDiscount + gstAmount;
+    
+    const newOrderId = generateOrderId();
 
     addOrder({
-        id: generateOrderId(),
+        id: newOrderId,
         date: new Date().toISOString(),
         items: Object.values(cart),
         status: 'Order Requested',
@@ -131,7 +136,7 @@ export default function CartClientPage({ allProducts }: { allProducts: SanityPro
     });
 
     clearCart();
-    router.push(`/order-confirmed?orderId=${generateOrderId()}`);
+    router.push(`/order-confirmed?orderId=${newOrderId}`);
   };
   
   const handleScroll = (event: UIEvent<HTMLDivElement>) => {
@@ -233,6 +238,7 @@ export default function CartClientPage({ allProducts }: { allProducts: SanityPro
                               onQuantityChange={handleQuantityChange}
                               onRemove={handleRemove}
                               isLastItem={index === cartItems.length - 1}
+                              onProductClick={handleProductClick}
                             />
                           )
                         })}
@@ -262,6 +268,7 @@ export default function CartClientPage({ allProducts }: { allProducts: SanityPro
         isProfileOpen={isProfileOpen}
         setIsProfileOpen={setIsProfileOpen}
         allProducts={allProducts}
+        onProductClick={handleProductClick}
       />
       {isMobile && cartItems.length > 0 && allProducts.length > 0 && (
         <FloatingCartFinalizeButton
@@ -274,4 +281,3 @@ export default function CartClientPage({ allProducts }: { allProducts: SanityPro
     </>
   );
 }
-

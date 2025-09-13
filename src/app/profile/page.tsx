@@ -1,7 +1,6 @@
-
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import type { ActiveView, ProfileInfo } from '@/app/page';
 import type { SanityProduct } from '@/types';
@@ -14,12 +13,13 @@ import { ProfileMobileView } from '@/components/profile-mobile-view';
 import { StaticSparkleBackground } from '@/components/static-sparkle-background';
 import { useAppContext } from '@/context/app-context';
 import { Loader } from '@/components/loader';
+import { client } from '@/lib/sanity';
 
-const allProducts: SanityProduct[] = [];
 
 export default function ProfilePage() {
   const [activeView, setActiveView] = useState<ActiveView>('profile');
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [allProducts, setAllProducts] = useState<SanityProduct[]>([]);
   const router = useRouter();
   const isMobile = useIsMobile();
   const { 
@@ -32,6 +32,15 @@ export default function ProfilePage() {
     toggleLike,
     clearWishlist
   } = useAppContext();
+  
+  useEffect(() => {
+    async function getProducts() {
+        const query = `*[_type == "product"]{ ..., "images": images[].asset->url, availableFlavours[]->{ _id, name, "imageUrl": image.asset->url } }`;
+        const products = await client.fetch(query);
+        setAllProducts(products);
+    }
+    getProducts();
+  }, []);
 
   const handleNavigation = (view: ActiveView) => {
     if (view === 'home') {
@@ -48,6 +57,10 @@ export default function ProfilePage() {
 
   const handleProfileUpdate = (updatedProfile: Partial<ProfileInfo>) => {
     updateProfileInfo(updatedProfile);
+  };
+  
+  const handleProductClick = (product: SanityProduct) => {
+    router.push(`/product/${product.slug.current}`);
   };
 
   const cartItemCount = Object.values(cart).reduce((acc, item) => acc + item.quantity, 0);

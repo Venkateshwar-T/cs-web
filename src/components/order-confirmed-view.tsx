@@ -1,4 +1,3 @@
-
 // @/components/order-confirmed-view.tsx
 'use client';
 
@@ -12,6 +11,8 @@ import { motion } from 'framer-motion';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { cn } from '@/lib/utils';
 import type { Order } from '@/context/app-context';
+import type { SanityProduct } from '@/types';
+import { useRouter } from 'next/navigation';
 
 // Mock data for product prices - in a real app this would come from a database or state management
 const productPrices: Record<string, number> = {
@@ -31,6 +32,7 @@ const productPrices: Record<string, number> = {
 
 interface OrderConfirmedViewProps {
     order: Order;
+    products: SanityProduct[];
 }
 
 const containerVariants = {
@@ -57,11 +59,23 @@ const itemVariants = {
 };
 
 
-export function OrderConfirmedView({ order }: OrderConfirmedViewProps) {
+export function OrderConfirmedView({ order, products }: OrderConfirmedViewProps) {
     const isMobile = useIsMobile();
+    const router = useRouter();
     
     if (!order) {
         return null;
+    }
+    
+    const productsByName = products.reduce((acc, product) => {
+        acc[product.name] = product;
+        return acc;
+    }, {} as Record<string, SanityProduct>);
+    
+    const handleProductClick = (product: SanityProduct) => {
+        if (product?.slug?.current) {
+            router.push(`/product/${product.slug.current}`);
+        }
     }
 
   return (
@@ -117,17 +131,20 @@ export function OrderConfirmedView({ order }: OrderConfirmedViewProps) {
                   "flex-grow overflow-y-auto min-h-0 pr-2 always-visible-scrollbar",
                   isMobile ? "max-h-full" : "max-h-[25vh]"
                 )}>
-                    {order.items.map((item, index) => (
+                    {order.items.map((item, index) => {
+                       const product = productsByName[item.name];
+                       if (!product) return null;
+                       return (
                         <Fragment key={item.name}>
                           <OrderSummaryItem
-                              productName={item.name}
+                              product={product}
                               quantity={item.quantity}
-                              price={productPrices[item.name] || 0}
                               isMobile={isMobile}
+                              onClick={() => handleProductClick(product)}
                           />
                           {index < order.items.length - 1 && <Separator className="bg-gray-200 my-2" />}
                         </Fragment>
-                    ))}
+                    )})}
                 </div>
             </motion.div>
         </motion.div>

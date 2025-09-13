@@ -1,4 +1,3 @@
-
 // @/components/cart-popup.tsx
 'use client';
 
@@ -33,9 +32,10 @@ interface CartPopupProps {
   onClearCart: () => void;
   onFinalizeOrder: () => void;
   onQuantityChange: (productName: string, quantity: number, flavours?: string[]) => void;
+  onProductClick: (product: SanityProduct) => void;
 }
 
-export function CartPopup({ onClose, cart, allProducts, onClearCart, onFinalizeOrder, onQuantityChange }: CartPopupProps) {
+export function CartPopup({ onClose, cart, allProducts, onClearCart, onFinalizeOrder, onQuantityChange, onProductClick }: CartPopupProps) {
   const [removingItems, setRemovingItems] = useState<string[]>([]);
   const router = useRouter();
   const cartItems = Object.values(cart);
@@ -123,6 +123,7 @@ export function CartPopup({ onClose, cart, allProducts, onClearCart, onFinalizeO
                       onRemove={() => handleRemove(item.name)}
                       isRemoving={removingItems.includes(item.name)}
                       onAnimationEnd={() => handleAnimationEnd(item.name)}
+                      onProductClick={onProductClick}
                     />
                   )
                 })}

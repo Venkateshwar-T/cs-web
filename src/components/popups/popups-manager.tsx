@@ -25,6 +25,7 @@ interface PopupsManagerProps {
   allProducts: SanityProduct[];
   onClearWishlist?: () => void;
   setIsProfileOpen: (isOpen: boolean) => void;
+  onProductClick: (product: SanityProduct) => void;
 }
 
 function generateOrderId() {
@@ -48,6 +49,7 @@ export function PopupsManager({
   allProducts,
   onClearWishlist,
   setIsProfileOpen,
+  onProductClick,
 }: PopupsManagerProps) {
   const router = useRouter();
   const { addOrder, clearCart: globalClearCart, authPopup, setAuthPopup, login, isAuthenticated, updateProfileInfo } = useAppContext();
@@ -122,6 +124,7 @@ export function PopupsManager({
                     onClearCart={onClearCart}
                     onFinalizeOrder={handleFinalizeOrder}
                     onQuantityChange={onAddToCart}
+                    onProductClick={onProductClick}
                   />
               </div>
           </div>

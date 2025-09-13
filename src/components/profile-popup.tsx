@@ -23,6 +23,7 @@ import { useAppContext } from '@/context/app-context';
 import { Loader } from './loader';
 import { LoginPopup } from './login-popup';
 import type { OrderItem } from '@/context/app-context';
+import { useRouter } from 'next/navigation';
 
 interface ProfilePopupProps {
   onClose: () => void;
@@ -48,7 +49,8 @@ export function ProfilePopup({
   const [isDialogVisible, setIsDialogVisible] = useState(false);
   const [pendingAction, setPendingAction] = useState<(() => void) | null>(null);
   
-  const { profileInfo, updateProfileInfo, isProfileLoaded, isAuthenticated, setAuthPopup } = useAppContext();
+  const { profileInfo, updateProfileInfo, isProfileLoaded } = useAppContext();
+  const router = useRouter();
 
   const handleActionWithCheck = (action: () => void) => {
     if (hasUnsavedChanges) {
@@ -57,6 +59,11 @@ export function ProfilePopup({
     } else {
       action(); // Execute immediately if no changes
     }
+  };
+  
+  const handleProductClick = (product: SanityProduct) => {
+      router.push(`/product/${product.slug.current}`);
+      onClose();
   };
 
   const handleClose = () => handleActionWithCheck(onClose);
@@ -119,7 +126,7 @@ export function ProfilePopup({
                         />
                       )}
                       {activeTab === 'My Orders' && (
-                        <MyOrdersTab />
+                        <MyOrdersTab products={products} onProductClick={handleProductClick} />
                       )}
                     </>
                   )}

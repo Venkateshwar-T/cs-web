@@ -9,6 +9,7 @@ import { MyProfileTab } from './my-profile-tab';
 import { WishlistView } from './wishlist-view';
 import { MyOrdersTab } from './my-orders-tab';
 import type { OrderItem } from '@/context/app-context';
+import { useRouter } from 'next/navigation';
 
 interface ProfileMobileViewProps {
   profile: ProfileInfo;
@@ -34,6 +35,11 @@ export function ProfileMobileView({
   onClearWishlist 
 }: ProfileMobileViewProps) {
   const [activeTab, setActiveTab] = useState('My Profile');
+  const router = useRouter();
+  
+  const handleProductClick = (product: SanityProduct) => {
+    router.push(`/product/${product.slug.current}`);
+  };
 
   return (
     <div className="flex flex-col h-full px-4 text-white">
@@ -71,7 +77,7 @@ export function ProfileMobileView({
           />
         )}
         {activeTab === 'My Orders' && (
-          <MyOrdersTab isMobile={true} />
+          <MyOrdersTab isMobile={true} products={products} onProductClick={handleProductClick} />
         )}
       </div>
     </div>
