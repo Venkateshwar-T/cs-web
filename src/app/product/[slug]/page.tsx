@@ -9,13 +9,24 @@ import { Loader } from '@/components/loader';
 
 async function getProduct(slug: string): Promise<SanityProduct | null> {
     const query = `*[_type == "product" && slug.current == $slug][0]{
-        ...,
+        _id,
+        name,
+        slug,
+        mrp,
+        discountedPrice,
         "images": images[].asset->url,
+        weight,
+        packageType,
+        composition,
+        description,
+        ingredients,
+        allergenAlert,
         availableFlavours[]->{
             _id,
             name,
             "imageUrl": image.asset->url
-        }
+        },
+        bestFor
     }`;
     const product = await client.fetch(query, { slug });
     return product;
