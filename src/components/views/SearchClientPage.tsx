@@ -1,3 +1,4 @@
+
 // src/components/views/SearchClientPage.tsx
 'use client';
 
@@ -67,7 +68,25 @@ export default function SearchClientPage({ initialProducts, initialFilters }: Se
 
   const handleAddToCart = (productName: string, quantity: number, animate: boolean = true) => {
     const prevQuantity = cart[productName]?.quantity || 0;
+    
+    // If quantity is decreasing, just update the cart
+    if (quantity < prevQuantity) {
+        updateCart(productName, quantity);
+        return;
+    }
+
+    // If quantity is increasing from 0, open flavour selection
+    if (quantity > 0 && prevQuantity === 0) {
+        const productToSelect = initialProducts.find(p => p.name === productName);
+        if (productToSelect) {
+            setFlavourSelection({ product: productToSelect, isOpen: true });
+            return;
+        }
+    }
+
+    // Otherwise (for increasing quantity of existing item), update directly
     updateCart(productName, quantity);
+
     if (animate && quantity > prevQuantity) {
       setCartMessage(`${quantity - prevQuantity} added`);
       setIsCartButtonExpanded(true);
@@ -137,7 +156,12 @@ export default function SearchClientPage({ initialProducts, initialFilters }: Se
   };
   
   const onProductCardAddToCart = (product: SanityProduct) => {
-    setFlavourSelection({ product, isOpen: true });
+    const prevQuantity = cart[product.name]?.quantity || 0;
+    if (prevQuantity === 0) {
+      setFlavourSelection({ product, isOpen: true });
+    } else {
+      updateCart(product.name, prevQuantity + 1);
+    }
   };
 
   return (

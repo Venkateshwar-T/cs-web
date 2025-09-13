@@ -1,3 +1,4 @@
+
 // @/components/views/ProductDetailClientPage.tsx
 'use client';
 
@@ -73,15 +74,22 @@ export default function ProductDetailClientPage({ product, featuredProducts }: P
   const handleAddToCart = (productName: string, quantity: number, animate: boolean = true) => {
     const prevQuantity = cart[productName]?.quantity || 0;
     
-    // If quantity is increasing, open flavour selection
-    if (quantity > prevQuantity) {
+    // If quantity is decreasing, just update the cart
+    if (quantity < prevQuantity) {
+      updateCart(productName, quantity);
+      return;
+    }
+
+    // If quantity is increasing from 0, open flavour selection
+    if (quantity > 0 && prevQuantity === 0) {
       const productToSelect = featuredProducts.find(p => p.name === productName) || product;
       if (productToSelect) {
         setFlavourSelection({ product: productToSelect, isOpen: true });
         return;
       }
     }
-    // Otherwise (for decreasing quantity), update directly
+
+    // Otherwise (for increasing quantity of existing item), update directly
     updateCart(productName, quantity);
   };
   
@@ -189,7 +197,7 @@ export default function ProductDetailClientPage({ product, featuredProducts }: P
   return (
     <>
       <SparkleBackground />
-      <div className={cn("flex flex-col h-screen", (isProfileOpen || isCartOpen || isImageExpanded))}>
+      <div className={cn("flex flex-col h-screen", (isProfileOpen || isCartOpen || isImageExpanded) && 'opacity-50' )}>
         <Header 
           onProfileOpenChange={setIsProfileOpen}
           isContentScrolled={isScrolled}
@@ -214,7 +222,7 @@ export default function ProductDetailClientPage({ product, featuredProducts }: P
                     </div>
                     <Separator orientation="vertical" className="bg-white/30 h-[98%] self-center mr-4" />
                     <div className="h-full relative py-4 w-1/2 flex flex-col">
-                        <div className="flex-grow overflow-y-auto no-scrollbar min-h-0">
+                        <div className="flex-grow overflow-y-auto no-scrollbar min-h-0 pb-24">
                             <ProductDetails
                                 product={product}
                                 isLiked={!!likedProducts[product._id]}
