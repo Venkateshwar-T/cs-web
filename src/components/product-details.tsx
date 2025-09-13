@@ -5,7 +5,18 @@ import { useState } from 'react';
 import { Heart } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { SanityProduct } from '@/types';
-import { PortableText } from '@portabletext/react';
+import { PortableText, PortableTextComponents } from '@portabletext/react';
+
+const customComponents: PortableTextComponents = {
+    list: {
+      // For bulleted lists
+      bullet: ({ children }) => <ul className="list-disc space-y-1">{children}</ul>,
+    },
+    listItem: {
+      // For each item in the list
+      bullet: ({ children }) => <li className="text-sm">{children}</li>,
+    },
+  };
 
 interface ProductDetailsProps {
     product: SanityProduct;
@@ -13,6 +24,7 @@ interface ProductDetailsProps {
     onLikeToggle: () => void;
     isMobile?: boolean;
 }
+
 
 export function ProductDetails({ product, isLiked, onLikeToggle, isMobile = false }: ProductDetailsProps) {
     const [likeClickCount, setLikeClickCount] = useState(0);
@@ -83,9 +95,11 @@ export function ProductDetails({ product, isLiked, onLikeToggle, isMobile = fals
             
             {/* Allergen Alert */}
             {product.allergenAlert && (
-                <div className={cn("font-medium font-plex-sans", isMobile ? "text-sm" : "text-base")}>
-                    <p className={cn("font-semibold", isMobile ? "text-sm" : "text-sm")}>Allergen Alert:</p>
-                    <PortableText value={product.allergenAlert} />
+                <div className={cn("font-semibold text-black font-plex-sans text-sm")}>
+                    <p>Allergen Alert:</p>
+        <div className="prose prose-sm list-disc list-inside pl-5">
+        <PortableText value={product.allergenAlert} components={customComponents} />
+        </div>
                 </div>
             )}
         </div>
