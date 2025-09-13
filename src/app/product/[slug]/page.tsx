@@ -1,3 +1,4 @@
+
 // @/app/product/[slug]/page.tsx
 import { client } from '@/lib/sanity';
 import type { SanityProduct } from '@/types';
@@ -41,6 +42,14 @@ async function getFeaturedProducts(): Promise<SanityProduct[]> {
     return products;
 }
 
+const LoadingFallback = () => (
+    <div className="flex h-screen w-full items-center justify-center bg-background flex-col gap-4">
+        <Loader />
+        <p className="text-white">Loading your Chocolate...</p>
+    </div>
+);
+
+
 export default async function ProductPage({ params }: { params: { slug: string } }) {
     const product = await getProduct(params.slug);
     const featuredProducts = await getFeaturedProducts();
@@ -50,7 +59,7 @@ export default async function ProductPage({ params }: { params: { slug: string }
     }
 
     return (
-        <Suspense fallback={<div className="flex h-screen w-full items-center justify-center bg-background"><Loader /></div>}>
+        <Suspense fallback={<LoadingFallback />}>
             <ProductDetailClientPage product={product} featuredProducts={featuredProducts} />
         </Suspense>
     );
