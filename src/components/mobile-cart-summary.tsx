@@ -1,3 +1,4 @@
+
 // @/components/mobile-cart-summary.tsx
 'use client';
 
@@ -29,7 +30,7 @@ export const MobileCartSummary = React.forwardRef<HTMLDivElement, MobileCartSumm
     }, {} as Record<string, SanityProduct>);
 
 
-    if (cartItems.length === 0) {
+    if (cartItems.length === 0 || allProducts.length === 0) {
         return null;
     }
 

@@ -30,6 +30,7 @@ import { EmptyState } from '@/components/empty-state';
 import { useAppContext } from '@/context/app-context';
 import type { SanityProduct } from '@/types';
 import { client } from '@/lib/sanity';
+import { Loader } from '@/components/loader';
 
 function generateOrderId() {
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
@@ -45,6 +46,7 @@ export default function CartPage() {
   const router = useRouter();
   const { cart, updateCart, clearCart, addOrder } = useAppContext();
   const [allProducts, setAllProducts] = useState<SanityProduct[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const isMobile = useIsMobile();
   const [lastScrollTop, setLastScrollTop] = useState(0);
   const [isHeaderVisible, setIsHeaderVisible] = useState(true);
@@ -53,6 +55,7 @@ export default function CartPage() {
 
   useEffect(() => {
     async function fetchAllProducts() {
+        setIsLoading(true);
         const query = `*[_type == "product"]{
             _id, name, slug, mrp, discountedPrice, weight, packageType, composition, "images": images[].asset->url, "filterOptions": filterOptions[]->{title, "category": category->title},
             availableFlavours[]->{
@@ -63,6 +66,7 @@ export default function CartPage() {
         }`;
         const products = await client.fetch(query);
         setAllProducts(products);
+        setIsLoading(false);
     }
     fetchAllProducts();
   }, []);
@@ -90,7 +94,7 @@ export default function CartPage() {
         observer.unobserve(currentRef);
       }
     };
-  }, [isMobile]);
+  }, [isMobile, allProducts]);
 
   const handleNavigation = (view: ActiveView) => {
     if (view === 'home') {
@@ -183,7 +187,11 @@ export default function CartPage() {
           "flex-grow flex flex-col transition-all duration-300 relative min-h-0 md:pb-0",
           isMobile ? (isHeaderVisible ? 'pt-24' : 'pt-0') : "pt-36" 
         )}>
-          {cartItems.length === 0 ? (
+          {isLoading ? (
+            <div className="flex h-full w-full items-center justify-center">
+              <Loader />
+            </div>
+          ) : cartItems.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-full px-4">
               <EmptyState
                 imageUrl="/icons/empty.png"
@@ -243,7 +251,7 @@ export default function CartPage() {
                         })}
                       </div>
                     </div>
-                    {cartItems.length > 0 && (
+                    {cartItems.length > 0 && allProducts.length > 0 && (
                       <MobileCartSummary ref={summaryRef} cart={cart} allProducts={allProducts} onCheckout={handleCheckout} />
                     )}
                   </div>
@@ -268,7 +276,7 @@ export default function CartPage() {
         setIsProfileOpen={setIsProfileOpen}
         allProducts={allProducts}
       />
-      {isMobile && cartItems.length > 0 && (
+      {isMobile && cartItems.length > 0 && allProducts.length > 0 && (
         <FloatingCartFinalizeButton
           cart={cart}
           allProducts={allProducts}

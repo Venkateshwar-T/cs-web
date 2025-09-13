@@ -1,3 +1,4 @@
+
 // @/components/floating-cart-finalize-button.tsx
 'use client';
 
@@ -14,6 +15,10 @@ interface FloatingCartFinalizeButtonProps {
 }
 
 export function FloatingCartFinalizeButton({ cart, allProducts, onCheckout, isVisible }: FloatingCartFinalizeButtonProps) {
+    if (allProducts.length === 0) {
+        return null;
+    }
+    
     const productsByName = allProducts.reduce((acc, product) => {
         acc[product.name] = product;
         return acc;
