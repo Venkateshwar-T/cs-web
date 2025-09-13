@@ -1,3 +1,4 @@
+
 // @/components/views/ProductDetailClientPage.tsx
 'use client';
 
@@ -169,7 +170,7 @@ export default function ProductDetailClientPage({ product, featuredProducts }: P
 
   return (
     <>
-      {isMobile ? <StaticSparkleBackground /> : <SparkleBackground />}
+      <SparkleBackground />
       <div className={cn("flex flex-col h-screen", (isProfileOpen || isCartOpen) && 'opacity-50')}>
         <Header 
           onProfileOpenChange={setIsProfileOpen}
@@ -183,43 +184,7 @@ export default function ProductDetailClientPage({ product, featuredProducts }: P
           onSearchInputChange={setSearchInput}
         />
         <main onScroll={handleScroll} className="flex-grow pt-32 md:px-32 flex flex-col gap-8 pb-8 overflow-y-auto no-scrollbar">
-          <div className="px-4 sm:px-6 lg:px-8 flex flex-col">
-            <div className="relative w-full flex-grow flex flex-col">
-              <div className={cn("bg-[#9A7DAB] rounded-[40px] pt-6 md:px-4 lg:px-5 xl:px-8 text-white overflow-hidden relative flex flex-col")}>
-                               
-                <div className="flex flex-row flex-grow md:gap-4 lg:gap-4 xl:gap-8">
-                  {/* Left Section */}
-                  <div className="w-[48%] flex flex-col gap-4 h-full items-center">
-                    <div className="flex md:h-full xl:h-[45%] rounded-lg w-full justify-center">
-                      <ImageGallery product={product} onImageExpandChange={() => {}} />
-                    </div>
-                    <div className="pb-6 rounded-lg w-full h-[55%]">
-                      <FlavoursSection availableFlavours={product.availableFlavours || []} onAddToCart={handleFlavourAddToCart} cart={flavourCart} />
-                    </div>
-                  </div>
-                  
-                  <Separator orientation="vertical" className="bg-white/50 h-[95%] w-0.5" />
-
-                  {/* Right Section */}
-                  <div className="flex-grow h-full xl:relative lg:relative">
-                      <div className="h-full py-0 pr-6 overflow-y-auto custom-scrollbar pb-28">
-                          <ProductDetails product={product} isLiked={!!likedProducts[product._id]} onLikeToggle={() => toggleLike(product._id)} isMobile={false} />
-                      </div>
-                      <ProductPopupFooter product={product} onAddToCart={handleAddToCart} quantity={cart[product.name] || 0} onToggleCartPopup={handleToggleCartPopup} />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-           <FeaturedProducts 
-              products={featuredProducts}
-              onProductClick={handleProductClick}
-              onAddToCart={updateCart}
-              cart={cart}
-              likedProducts={likedProducts}
-              onLikeToggle={toggleLike}
-              isMobile={isMobile}
-            />
+          {/* Desktop content is removed as requested */}
         </main>
       </div>
       
