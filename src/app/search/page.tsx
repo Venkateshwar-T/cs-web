@@ -7,6 +7,7 @@ import SearchClientPage from '@/components/views/SearchClientPage'; // We'll cre
 import type { SanityProduct, StructuredFilter } from '@/types';
 import Image from 'next/image';
 import { Loader } from '@/components/loader';
+import { SearchPageSkeleton } from '@/components/search-page-skeleton';
 
 // Fetches filters from Sanity
 async function getFilters(): Promise<StructuredFilter[]> {
@@ -105,10 +106,7 @@ async function getFilteredProducts(searchParams: { [key: string]: string | strin
 }
 
 const LoadingFallback = () => (
-    <div className="h-screen w-full flex flex-col items-center justify-center text-white bg-background gap-4">
-        <Loader />
-        <p className="text-lg">Loading your chocolates...</p>
-    </div>
+    <SearchPageSkeleton />
 );
 
 
