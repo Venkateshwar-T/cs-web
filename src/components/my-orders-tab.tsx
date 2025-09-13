@@ -136,7 +136,7 @@ export function MyOrdersTab({ isMobile = false, products, onProductClick }: MyOr
                   <AlertDialogTrigger asChild>
                     <Button
                       variant="destructive"
-                      className="bg-red-500 text-white rounded-full hover:bg-red-600/90 text-sm h-9 px-4 disabled:opacity-50"
+                      className="bg-red-500 text-white rounded-full hover:bg-red-500/90 text-sm h-9 px-4 disabled:opacity-50"
                       disabled={orders.length === 0}
                     >
                       Clear History
@@ -182,6 +182,7 @@ export function MyOrdersTab({ isMobile = false, products, onProductClick }: MyOr
                       description="Looks like you haven't placed an order. Your past orders will appear here."
                       buttonText="Explore Now"
                       onButtonClick={handleExplore}
+                      showButton={false}
                     />
                 </div>
              )}

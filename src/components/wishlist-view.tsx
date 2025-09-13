@@ -192,6 +192,7 @@ export function WishlistView({
               description="Your wishlist is where you can store all your favorite chocolates and come back to them later."
               buttonText="Explore Now"
               onButtonClick={handleExplore}
+              showButton={false}
             />
         </div>
       )}
