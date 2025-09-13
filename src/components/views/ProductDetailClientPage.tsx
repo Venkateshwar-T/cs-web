@@ -17,6 +17,7 @@ import { MobileProductDetailView } from '@/components/views/MobileProductDetailV
 import { StaticSparkleBackground } from '@/components/static-sparkle-background';
 import { useAppContext } from '@/context/app-context';
 import { FeaturedProducts } from '../featured-products';
+import { Separator } from '../ui/separator';
 
 interface ProductDetailClientPageProps {
   product: SanityProduct;
@@ -181,7 +182,15 @@ export default function ProductDetailClientPage({ product, featuredProducts }: P
         <main onScroll={handleScroll} className="flex-grow flex flex-col px-32 pt-24 md:pt-32 gap-8 overflow-y-auto no-scrollbar">
           <div className="flex-grow flex flex-col">
             <div className="bg-[#9A7DAB] rounded-[40px] p-8 text-white flex-grow flex items-center justify-center">
-              {/* Content will go here */}
+              <div className="flex w-full h-full gap-8 py-4">
+                <div className="w-[55%] h-full">
+                  {/* Left Panel Content */}
+                </div>
+                <Separator orientation="vertical" className="bg-white/30" />
+                <div className="w-[45%] h-full">
+                  {/* Right Panel Content */}
+                </div>
+              </div>
             </div>
           </div>
         </main>
