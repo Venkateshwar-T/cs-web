@@ -190,8 +190,8 @@ export default function ProductDetailClientPage({ product, featuredProducts }: P
              <div className="bg-[#9A7DAB] rounded-[40px] text-white flex-grow flex items-center justify-center">
               <div className="flex w-full h-full gap-8 pr-8">
                 {/* Left Panel Content */}
-                  <div className="w-1/2 h-full flex flex-col gap-6">
-                      <div className="flex h-[45%] rounded-lg w-full justify-center pt-6">
+                  <div className="w-1/2 h-full flex flex-col">
+                    <div className="flex h-[45%] rounded-lg w-full justify-center pl-4 pt-6">
                       <ImageGallery product={product} onImageExpandChange={setIsImageExpanded} />
                     </div>
                     <div className="py-6 pl-8 rounded-lg w-full flex-grow min-h-0">
