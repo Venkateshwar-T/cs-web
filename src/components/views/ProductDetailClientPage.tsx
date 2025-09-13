@@ -183,11 +183,11 @@ export default function ProductDetailClientPage({ product, featuredProducts }: P
           <div className="flex-grow flex flex-col">
             <div className="bg-[#9A7DAB] rounded-[40px] p-8 text-white flex-grow flex items-center justify-center">
               <div className="flex w-full h-full gap-8 py-4">
-                <div className="w-[55%] h-full">
+                <div className="w-1/2 h-full">
                   {/* Left Panel Content */}
                 </div>
                 <Separator orientation="vertical" className="bg-white/30" />
-                <div className="w-[45%] h-full">
+                <div className="w-1/2 h-full">
                   {/* Right Panel Content */}
                 </div>
               </div>
