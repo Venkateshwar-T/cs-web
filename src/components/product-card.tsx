@@ -8,6 +8,7 @@ import { useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import type { SanityProduct } from '@/types';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Loader } from './loader';
 
 interface ProductCardProps {
   product: SanityProduct;
@@ -38,6 +39,7 @@ export function ProductCard({ product, onAddToCart, onRemoveFromCart, quantity, 
   const [isHovered, setIsHovered] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isAnimatingLike, setIsAnimatingLike] = useState(false);
+  const [isImageLoading, setIsImageLoading] = useState(true);
 
   const images = product.images || [];
 
@@ -100,6 +102,13 @@ export function ProductCard({ product, onAddToCart, onRemoveFromCart, quantity, 
     setIsHovered(false);
     setCurrentImageIndex(0);
   };
+  
+  const currentImageUrl = images.length > 0 ? images[currentImageIndex] : '/placeholder.png';
+
+  useEffect(() => {
+    setIsImageLoading(true);
+  }, [currentImageUrl]);
+
 
   const HeartButton = () => (
     <button 
@@ -142,6 +151,11 @@ export function ProductCard({ product, onAddToCart, onRemoveFromCart, quantity, 
         isMobile ? "pt-[80%]" : "pt-[70%]"
       )}>
         {isMobile && <HeartButton />}
+        {isImageLoading && (
+            <div className="absolute inset-0 flex items-center justify-center bg-gray-300/50">
+                <Loader className="h-8 w-8" />
+            </div>
+        )}
         <AnimatePresence initial={false}>
             <motion.div
               key={currentImageIndex}
@@ -155,14 +169,17 @@ export function ProductCard({ product, onAddToCart, onRemoveFromCart, quantity, 
               }}
             >
               <Image
-                src={images.length > 0 ? images[currentImageIndex] : '/placeholder.png'}
+                key={currentImageUrl}
+                src={currentImageUrl}
                 alt={product.name}
                 layout="fill"
                 objectFit="cover"
                 className={cn(
-                  "rounded-t-lg md:rounded-t-2xl",
-                  !isMobile && "transition-transform duration-300 ease-in-out group-hover:scale-110"
+                  "rounded-t-lg md:rounded-t-2xl transition-opacity duration-300",
+                  isImageLoading ? 'opacity-0' : 'opacity-100',
+                  !isMobile && "group-hover:scale-110"
                 )}
+                onLoad={() => setIsImageLoading(false)}
               />
             </motion.div>
         </AnimatePresence>
