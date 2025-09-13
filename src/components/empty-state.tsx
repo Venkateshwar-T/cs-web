@@ -1,3 +1,4 @@
+
 // @/components/empty-state.tsx
 'use client';
 
@@ -9,10 +10,11 @@ interface EmptyStateProps {
     imageUrl: string;
     title: string;
     description: string;
-    buttonText: string;
-    onButtonClick: () => void;
+    buttonText?: string;
+    onButtonClick?: () => void;
     imageClassName?: string;
     containerClassName?: string;
+    showButton?: boolean;
 }
 
 export function EmptyState({ 
@@ -23,6 +25,7 @@ export function EmptyState({
     onButtonClick,
     imageClassName,
     containerClassName,
+    showButton = true,
 }: EmptyStateProps) {
     return (
         <div className={cn("flex flex-col items-center justify-center text-center gap-4 h-full", containerClassName)}>
@@ -36,12 +39,14 @@ export function EmptyState({
             />
             <h2 className="text-xl md:text-2xl font-bold text-white">{title}</h2>
             <p className="text-sm md:text-base text-white/70 max-w-xs">{description}</p>
-            <Button 
-                onClick={onButtonClick} 
-                className="mt-4 bg-custom-gold text-custom-purple-dark hover:bg-custom-gold/90 rounded-full px-8 font-bold"
-            >
-                {buttonText}
-            </Button>
+            {showButton && buttonText && onButtonClick && (
+              <Button 
+                  onClick={onButtonClick} 
+                  className="mt-4 bg-custom-gold text-custom-purple-dark hover:bg-custom-gold/90 rounded-full px-8 font-bold"
+              >
+                  {buttonText}
+              </Button>
+            )}
         </div>
     );
 }

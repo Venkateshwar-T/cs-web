@@ -95,12 +95,12 @@ export function CartPopup({ onClose, cart, allProducts, onClearCart, onFinalizeO
                   imageUrl="/icons/empty.png"
                   title="Your Cart is Empty"
                   description="Looks like you haven't added anything to your cart yet. Start exploring to find the perfect gift!"
-                  buttonText="Continue Shopping"
                   onButtonClick={() => {
                       onClose();
                       router.push('/');
                   }}
                   containerClassName="text-black"
+                  showButton={false}
               />
           </div>
       ) : (
