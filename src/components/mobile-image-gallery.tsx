@@ -1,10 +1,9 @@
-
 // @/components/mobile-image-gallery.tsx
 'use client';
 
 import Image from 'next/image';
 import { useState } from 'react';
-import { Expand, X } from 'lucide-react';
+import { Expand, X, ChevronLeft, ChevronRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { SanityProduct } from '@/types';
 
@@ -26,6 +25,16 @@ export function MobileImageGallery({ product, onImageExpandChange }: MobileImage
     const handleCloseExpanded = () => {
         setIsExpanded(false);
         onImageExpandChange(false);
+    };
+    
+    const handlePrev = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        setActiveIndex((prevIndex) => (prevIndex === 0 ? images.length - 1 : prevIndex - 1));
+    };
+
+    const handleNext = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        setActiveIndex((prevIndex) => (prevIndex === images.length - 1 ? 0 : prevIndex + 1));
     };
 
     return (
@@ -51,6 +60,25 @@ export function MobileImageGallery({ product, onImageExpandChange }: MobileImage
                             <Expand size={28} />
                         </button>
                     </div>
+
+                    {images.length > 1 && (
+                        <>
+                             <button
+                                onClick={handlePrev}
+                                className="absolute left-1 top-1/2 -translate-y-1/2 bg-black/30 text-white p-1 rounded-full opacity-80 hover:opacity-100 transition-opacity"
+                                aria-label="Previous image"
+                            >
+                                <ChevronLeft size={20} />
+                            </button>
+                            <button
+                                onClick={handleNext}
+                                className="absolute right-1 top-1/2 -translate-y-1/2 bg-black/30 text-white p-1 rounded-full opacity-80 hover:opacity-100 transition-opacity"
+                                aria-label="Next image"
+                            >
+                                <ChevronRight size={20} />
+                            </button>
+                        </>
+                    )}
                 </div>
 
                 {/* Thumbnails */}
