@@ -11,17 +11,12 @@ import { SparkleBackground } from '@/components/sparkle-background';
 import { BottomNavbar } from '@/components/bottom-navbar';
 import { PopupsManager } from '@/components/popups/popups-manager';
 import { FloatingCartButton } from '@/components/floating-cart-button';
-import { ImageGallery } from '@/components/image-gallery';
-import { FlavoursSection } from '@/components/flavours-section';
-import { ProductDetails } from '@/components/product-details';
-import { Separator } from '@/components/ui/separator';
-import { ProductPopupFooter } from '@/components/product-popup-footer';
-import { FeaturedProducts } from '@/components/featured-products';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { MobileSearchHeader } from '@/components/header/mobile-search-header';
 import { MobileProductDetailView } from '@/components/views/MobileProductDetailView';
 import { StaticSparkleBackground } from '@/components/static-sparkle-background';
 import { useAppContext } from '@/context/app-context';
+import { FeaturedProducts } from '../featured-products';
 
 interface ProductDetailClientPageProps {
   product: SanityProduct;
