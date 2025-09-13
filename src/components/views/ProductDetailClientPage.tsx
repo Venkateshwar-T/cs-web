@@ -173,7 +173,7 @@ export default function ProductDetailClientPage({ product, featuredProducts }: P
   return (
     <>
       <SparkleBackground />
-      <div className={cn("flex flex-col h-screen", (isProfileOpen || isCartOpen || isImageExpanded) && 'opacity-50')}>
+      <div className={cn("flex flex-col h-screen", (isProfileOpen || isCartOpen) && 'opacity-50')}>
         <Header 
           onProfileOpenChange={setIsProfileOpen}
           isContentScrolled={isScrolled}
@@ -190,18 +190,18 @@ export default function ProductDetailClientPage({ product, featuredProducts }: P
              <div className="bg-[#9A7DAB] rounded-[40px] text-white flex-grow flex items-center justify-center">
               <div className="flex w-full h-full gap-8 pr-8">
                 {/* Left Panel Content */}
-                  <div className="w-1/2 h-full gap-6">
+                  <div className="w-1/2 h-full flex flex-col gap-6">
                       <div className="flex h-[45%] rounded-lg w-full justify-center pt-6">
                       <ImageGallery product={product} onImageExpandChange={setIsImageExpanded} />
                     </div>
-                    <div className="py-6 pl-8 rounded-lg w-full h-[55%]">
+                    <div className="py-6 pl-8 rounded-lg w-full flex-grow min-h-0">
                       <FlavoursSection availableFlavours={product.availableFlavours || []} onAddToCart={handleFlavourAddToCart} cart={flavourCart} />
                     </div>
                   </div>
                   <Separator orientation="vertical" className="bg-white/30 h-[98%] mt-2" />
                   {/* Right Panel Content */}
-                  <div className="h-full relative py-4">
-                      <div className="flex-grow overflow-y-auto custom-scrollbar pb-28">
+                  <div className="h-full relative py-4 w-1/2">
+                      <div className="flex-grow overflow-y-auto custom-scrollbar pb-28 h-full">
                           <ProductDetails
                               product={product}
                               isLiked={!!likedProducts[product._id]}
