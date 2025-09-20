@@ -62,7 +62,10 @@ export function MobileCartItemCard({ item, product, onQuantityChange, onRemove, 
             )}
         >
             <div className="flex gap-3 items-center">
-                <div className="w-1/4 flex-shrink-0 flex flex-col items-center gap-2">
+                <div 
+                    className="w-1/4 flex-shrink-0 flex flex-col items-center gap-2 cursor-pointer"
+                    onClick={() => onProductClick(product)}
+                >
                     <Image
                         src={product.images && product.images.length > 0 ? product.images[0] : "/placeholder.png"}
                         alt={item.name}
@@ -115,6 +118,7 @@ export function MobileCartItemCard({ item, product, onQuantityChange, onRemove, 
                                 <SheetContent 
                                   side="bottom" 
                                   className="bg-custom-purple-dark text-white border-t-2 border-custom-gold rounded-t-3xl h-auto p-0"
+                                  onPointerDownOutside={(e) => e.preventDefault()}
                                 >
                                     <SheetHeader className="p-4 border-b border-white/20">
                                     <SheetTitle className="text-white">Selected Flavours & Fillings</SheetTitle>

@@ -61,7 +61,10 @@ export function CartItemCard({ item, product, onQuantityChange, onRemove, isRemo
             )}
         >
             <div className="flex gap-4">
-                <div className="w-1/3 flex-shrink-0">
+                <div 
+                    className="w-1/3 flex-shrink-0 cursor-pointer"
+                    onClick={handleClick}
+                >
                     <Image
                         src={product.images && product.images.length > 0 ? product.images[0] : "/placeholder.png"}
                         alt={item.name}
