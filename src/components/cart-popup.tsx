@@ -136,7 +136,7 @@ export function CartPopup({ onClose, cart, allProducts, onClearCart, onFinalizeO
               <div className="flex-grow min-h-0">
                   <OrderSummary cart={cart} allProducts={allProducts} />
               </div>
-              <CartPopupFooter cart={cart} onFinalizeOrder={onFinalizeOrder} />
+              <CartPopupFooter cart={cart} onFinalizeOrder={onFinalizeOrder} allProducts={allProducts} />
           </div>
         </div>
       )}

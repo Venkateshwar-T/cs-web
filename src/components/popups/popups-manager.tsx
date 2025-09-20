@@ -25,7 +25,7 @@ interface PopupsManagerProps {
   allProducts: SanityProduct[];
   onClearWishlist?: () => void;
   setIsProfileOpen: (isOpen: boolean) => void;
-  onProductClick: (product: SanityProduct) => void;
+  onProductClick?: (product: SanityProduct) => void;
 }
 
 function generateOrderId() {
@@ -111,7 +111,7 @@ export function PopupsManager({
     <>
       {isAnyPopupVisible && <div className="fixed inset-0 z-40 bg-black/50" />}
       
-      {isCartOpen && cart && onClearCart && onAddToCart && onToggleCartPopup && (
+      {isCartOpen && cart && onClearCart && onAddToCart && onToggleCartPopup && onProductClick && (
           <div 
             className={cn("fixed inset-x-0 bottom-0 z-50 h-[82vh] data-[state=closed]:animate-slide-down-out data-[state=open]:animate-slide-up-in")}
             data-state={isCartOpen ? 'open' : 'closed'}
@@ -130,7 +130,7 @@ export function PopupsManager({
           </div>
       )}
 
-      {isProfileOpen && likedProducts && onLikeToggle && cart && onAddToCart && onClearWishlist && (
+      {isProfileOpen && likedProducts && onLikeToggle && cart && onAddToCart && onClearWishlist && onProductClick && (
           <div className="fixed inset-0 z-50 flex items-center justify-center">
             <ProfilePopup 
               onClose={() => setIsProfileOpen(false)} 
@@ -140,6 +140,7 @@ export function PopupsManager({
               onAddToCart={onAddToCart}
               cart={cart}
               onClearWishlist={onClearWishlist}
+              onProductClick={onProductClick}
             />
           </div>
       )}

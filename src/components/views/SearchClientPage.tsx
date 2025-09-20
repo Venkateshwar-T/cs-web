@@ -1,4 +1,3 @@
-
 // src/components/views/SearchClientPage.tsx
 'use client';
 
@@ -34,7 +33,7 @@ export default function SearchClientPage({ initialProducts, initialFilters }: Se
     updateCart, 
     clearCart, 
     likedProducts, 
-    toggleLike, 
+    toggleLike, _
     clearWishlist,
     flavourSelection,
     setFlavourSelection 
@@ -242,6 +241,7 @@ export default function SearchClientPage({ initialProducts, initialFilters }: Se
         allProducts={initialProducts} // Pass real products to popups
         onClearWishlist={clearWishlist}
         isCartOpen={isCartOpen}
+        onProductClick={handleProductClick}
       />
       {!isMobile && (
         <FloatingCartButton
