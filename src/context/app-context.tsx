@@ -1,9 +1,11 @@
+
 // @/context/app-context.tsx
 'use client';
 
 import { createContext, useContext, ReactNode, useCallback, useState } from 'react';
-import type { ProfileInfo, SanityProduct } from '@/app/page';
+import type { SanityProduct } from '@/types';
 import { useLocalStorage } from '@/hooks/use-local-storage';
+import { useToast } from '@/hooks/use-toast';
 
 const PROFILE_STORAGE_KEY = 'chocoSmileyProfile';
 const WISHLIST_STORAGE_KEY = 'chocoSmileyWishlist';
@@ -41,6 +43,7 @@ interface AppContextType {
   addOrder: (newOrder: Order) => void;
   isOrdersLoaded: boolean;
   clearOrders: () => void;
+  reorder: (orderId: string) => void;
 
   cart: Cart;
   updateCart: (productName: string, quantity: number, flavours?: string[]) => void;
@@ -69,6 +72,7 @@ const defaultProfileInfo: ProfileInfo = {
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export function AppContextProvider({ children }: { children: ReactNode }) {
+  const { toast } = useToast();
   const [profileInfo, setProfileInfo, isProfileLoaded] = useLocalStorage<ProfileInfo>(
     PROFILE_STORAGE_KEY,
     defaultProfileInfo
@@ -144,6 +148,35 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
     });
   }, [setCart]);
 
+  const reorder = useCallback((orderId: string) => {
+    const orderToReorder = orders.find(o => o.id === orderId);
+    if (!orderToReorder) return;
+
+    setCart(prevCart => {
+      const newCart = { ...prevCart };
+      orderToReorder.items.forEach(item => {
+        if (newCart[item.name]) {
+          // If item exists, add quantity and merge flavours (removing duplicates)
+          newCart[item.name].quantity += item.quantity;
+          const existingFlavours = newCart[item.name].flavours || [];
+          const newFlavours = item.flavours || [];
+          newCart[item.name].flavours = [...new Set([...existingFlavours, ...newFlavours])];
+        } else {
+          // Otherwise, add the new item to the cart
+          newCart[item.name] = { ...item };
+        }
+      });
+      return newCart;
+    });
+
+    toast({
+      title: "Order Added to Cart",
+      description: "All items from your previous order have been added to your cart.",
+      variant: "success",
+    });
+
+  }, [orders, setCart, toast]);
+
 
   const clearCart = useCallback(() => {
     setCart({});
@@ -169,6 +202,7 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
     addOrder,
     isOrdersLoaded,
     clearOrders,
+    reorder,
     cart,
     updateCart,
     clearCart,

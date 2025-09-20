@@ -1,3 +1,4 @@
+
 // @/components/order-item-card.tsx
 'use client';
 
@@ -7,15 +8,29 @@ import { cn } from '@/lib/utils';
 import { Badge } from './ui/badge';
 import { Separator } from './ui/separator';
 import type { SanityProduct } from '@/types';
+import { Button } from './ui/button';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { RotateCcw } from 'lucide-react';
 
 interface OrderItemCardProps {
     order: Order;
     isMobile?: boolean;
     products: SanityProduct[];
     onProductClick: (product: SanityProduct) => void;
+    onOrderAgain?: () => void;
 }
 
-export function OrderItemCard({ order, isMobile = false, products, onProductClick }: OrderItemCardProps) {
+export function OrderItemCard({ order, isMobile = false, products, onProductClick, onOrderAgain }: OrderItemCardProps) {
     const orderDate = new Date(order.date);
     const formattedDate = orderDate.toLocaleDateString('en-US', {
         year: 'numeric',
@@ -80,8 +95,32 @@ export function OrderItemCard({ order, isMobile = false, products, onProductClic
                  </div>
                  <Separator className="bg-black/10 my-2" />
                  <div className="flex justify-between items-center">
-                    <p className="text-sm font-medium">Total Items: {order.items.reduce((sum, item) => sum + item.quantity, 0)}</p>
-                    <p className="text-base font-bold">₹{order.total.toFixed(2)}</p>
+                    <div>
+                        <p className="text-xs font-medium">Total Items: {order.items.reduce((sum, item) => sum + item.quantity, 0)}</p>
+                        <p className="text-base font-bold">₹{order.total.toFixed(2)}</p>
+                    </div>
+                    {onOrderAgain && (
+                         <AlertDialog>
+                          <AlertDialogTrigger asChild>
+                            <Button size="sm" className="bg-custom-purple-dark text-white rounded-full hover:bg-custom-purple-dark/90 h-8 px-4 text-xs">
+                                <RotateCcw className="mr-2 h-3 w-3" />
+                                Order Again
+                            </Button>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent className="mx-4">
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>Order Again?</AlertDialogTitle>
+                              <AlertDialogDescription>
+                                This will add all items from this order to your current cart.
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel>Cancel</AlertDialogCancel>
+                              <AlertDialogAction onClick={onOrderAgain}>Confirm</AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
+                    )}
                  </div>
             </div>
         )

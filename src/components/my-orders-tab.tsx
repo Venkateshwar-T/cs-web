@@ -1,3 +1,4 @@
+
 // @/components/my-orders-tab.tsx
 'use client';
 
@@ -31,7 +32,7 @@ interface MyOrdersTabProps {
 }
 
 export function MyOrdersTab({ isMobile = false, products, onProductClick }: MyOrdersTabProps) {
-    const { orders, isOrdersLoaded, clearOrders } = useAppContext();
+    const { orders, isOrdersLoaded, clearOrders, reorder } = useAppContext();
     const router = useRouter();
 
     if (!isOrdersLoaded) {
@@ -89,6 +90,7 @@ export function MyOrdersTab({ isMobile = false, products, onProductClick }: MyOr
                                 isMobile={true} 
                                 products={products}
                                 onProductClick={onProductClick}
+                                onOrderAgain={() => reorder(latestOrder.id)}
                               />
                            </div>
                             
@@ -104,6 +106,7 @@ export function MyOrdersTab({ isMobile = false, products, onProductClick }: MyOr
                                       isMobile={true} 
                                       products={products}
                                       onProductClick={onProductClick}
+                                      onOrderAgain={() => reorder(order.id)}
                                     />
                                   ))}
                                 </div>
