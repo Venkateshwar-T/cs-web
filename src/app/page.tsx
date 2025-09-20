@@ -81,6 +81,10 @@ export default function Home() {
   const handleHeaderNavigate = (view: 'about' | 'faq') => {
     router.push(`/${view}`);
   };
+  
+  const handleProductClick = (product: SanityProduct) => {
+    router.push(`/product/${product.slug.current}`);
+  };
 
   const cartItemCount = Object.values(cart).reduce((acc, item) => acc + item.quantity, 0);
   
@@ -132,6 +136,7 @@ export default function Home() {
         cart={cart}
         onAddToCart={updateCart}
         onClearWishlist={clearWishlist}
+        onProductClick={handleProductClick}
       />
     </>
   );
