@@ -14,8 +14,10 @@ async function getProduct(slug: string): Promise<SanityProduct | null> {
         availableFlavours[]->{
             _id,
             name,
-            "imageUrl": image.asset->url
-        }
+            "imageUrl": image.asset->url,
+            "price": coalesce(price, 0)
+        },
+        numberOfChocolates
     }`;
     const product = await client.fetch(query, { slug });
     return product;
@@ -35,8 +37,10 @@ async function getFeaturedProducts(): Promise<SanityProduct[]> {
         availableFlavours[]->{
             _id,
             name,
-            "imageUrl": image.asset->url
-        }
+            "imageUrl": image.asset->url,
+            "price": coalesce(price, 0)
+        },
+        numberOfChocolates
     }`;
     const products = await client.fetch(query);
     return products;

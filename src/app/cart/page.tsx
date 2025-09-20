@@ -13,8 +13,10 @@ async function getAllProducts(): Promise<SanityProduct[]> {
         availableFlavours[]->{
             _id,
             name,
-            "imageUrl": image.asset->url
-        }
+            "imageUrl": image.asset->url,
+            "price": coalesce(price, 0)
+        },
+        numberOfChocolates
     }`;
     const products = await client.fetch(query);
     return products;

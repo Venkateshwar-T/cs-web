@@ -5,6 +5,7 @@ export interface SanityFlavour {
   _id: string;
   name: string;
   imageUrl: string;
+  price?: number;
 }
 
 export interface SanityProduct {
@@ -26,6 +27,7 @@ export interface SanityProduct {
     title: string;
     category: string;
   }[];
+  numberOfChocolates?: number;
 }
 
 export interface StructuredFilter {

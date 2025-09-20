@@ -60,6 +60,11 @@ export function MobileCartItemCard({ item, product, onQuantityChange, onRemove, 
     ? Math.round(((product.mrp - product.discountedPrice) / product.mrp) * 100)
     : null;
 
+    const availableFlavoursMap = product.availableFlavours?.reduce((acc, flavour) => {
+        acc[flavour.name] = flavour;
+        return acc;
+    }, {} as Record<string, typeof product.availableFlavours[number]>);
+
     return (
         <div 
             onClick={handleClick}
@@ -129,11 +134,17 @@ export function MobileCartItemCard({ item, product, onQuantityChange, onRemove, 
                                     </SheetHeader>
                                     <div className="bg-white/10 rounded-lg p-4 m-4">
                                         <ul className="list-disc list-inside text-sm mt-1 space-y-2 font-medium">
-                                        {item.flavours.map((flavour, index) => (
-                                            <li key={index}>
-                                                <span className="w-36 inline-block">{flavour}</span>
-                                            </li>
-                                        ))}
+                                        {item.flavours.map((flavour, index) => {
+                                            const flavourDetails = availableFlavoursMap?.[flavour];
+                                            const price = flavourDetails?.price ?? 0;
+                                            return (
+                                                <li key={index} className="flex justify-between items-center">
+                                                    <span className="w-24 inline-block">{flavour}</span>
+                                                    {product.numberOfChocolates && <span className="text-xs text-white/70 font-medium">x{product.numberOfChocolates} Pieces</span>}
+                                                    <span className="font-semibold text-right w-20">{price > 0 ? `+₹${price}` : '+₹0'}</span>
+                                                </li>
+                                            )
+                                        })}
                                         </ul>
                                     </div>
                                 </SheetContent>

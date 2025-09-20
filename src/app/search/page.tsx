@@ -91,8 +91,10 @@ async function getFilteredProducts(searchParams: { [key: string]: string | strin
         availableFlavours[]->{
             _id,
             name,
-            "imageUrl": image.asset->url
-        }
+            "imageUrl": image.asset->url,
+            "price": coalesce(price, 0)
+        },
+        numberOfChocolates
     }`;
     
     try {
