@@ -77,7 +77,7 @@ export default function FaqPageClient({ children, allProducts }: { children: Rea
                 isMobile ? (isHeaderVisible ? "pt-24" : "pt-0") : "pt-36"
             )}
             >
-            <div className="flex-grow">
+            <div>
               {children}
             </div>
             <Footer />
