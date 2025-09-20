@@ -115,7 +115,7 @@ export function MyOrdersTab({ isMobile = false, products, onProductClick }: MyOr
                         </div>
                     </div>
                 ) : (
-                    <div className="flex-grow flex flex-col items-center justify-center h-full text-center gap-4 px-4">
+                    <div className="flex-grow flex flex-col items-center justify-center h-full text-center gap-4 px-4 pb-24">
                         <EmptyState
                           imageUrl="/icons/empty.png"
                           title="You Haven't Ordered Yet"

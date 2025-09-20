@@ -1,3 +1,4 @@
+
 // @/components/wishlist-view.tsx
 'use client';
 
@@ -121,7 +122,7 @@ export function WishlistView({
             </div>
           </div>
         ) : (
-          <div className="flex-grow flex items-center justify-center h-full">
+          <div className="flex-grow flex items-center justify-center h-full pb-24">
             <EmptyState
               imageUrl="/icons/empty.png"
               title="Find a Sweet Treat to Save!"
