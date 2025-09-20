@@ -6,6 +6,7 @@ import { notFound } from 'next/navigation';
 import ProductDetailClientPage from '@/components/views/ProductDetailClientPage';
 import { Suspense } from 'react';
 import { Loader } from '@/components/loader';
+import Image from 'next/image';
 
 async function getProduct(slug: string): Promise<SanityProduct | null> {
     const query = `*[_type == "product" && slug.current == $slug][0]{
@@ -48,7 +49,10 @@ async function getFeaturedProducts(): Promise<SanityProduct[]> {
 
 const LoadingFallback = () => (
     <div className="flex h-screen w-full items-center justify-center bg-background flex-col gap-4">
-        <Loader />
+        <div className="flex flex-col items-center gap-4">
+            <Image src="/Choco Smiley Logo.png" alt="Choco Smiley" width={180} height={70} />
+            <Loader />
+        </div>
         <p className="text-white">Loading your Chocolate...</p>
     </div>
 );

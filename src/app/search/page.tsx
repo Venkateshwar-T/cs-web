@@ -108,7 +108,10 @@ async function getFilteredProducts(searchParams: { [key: string]: string | strin
 
 const LoadingFallback = () => (
     <div className="flex h-screen w-full items-center justify-center bg-background flex-col gap-4">
-        <Loader />
+        <div className="flex flex-col items-center gap-4">
+            <Image src="/Choco Smiley Logo.png" alt="Choco Smiley" width={180} height={70} />
+            <Loader />
+        </div>
         <p className="text-white">Loading your chocolates...</p>
     </div>
 );
