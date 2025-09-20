@@ -83,7 +83,10 @@ export function FlavourSelectionPopup({ product, open, onOpenChange, onConfirm }
                     <p className="text-sm px-6 -mt-2 text-center text-white/80">
                         Select your favorite flavours to be included in the <span className="font-bold text-custom-gold">{product.name}</span>.
                     </p>
-                    <div className="bg-white/10 rounded-2xl p-4 overflow-y-auto custom-scrollbar">
+                    <p className="text-xs text-center text-white/70 italic mt-2">
+                        *Additional charges may apply for special flavours*
+                    </p>
+                    <div className="bg-white/10 rounded-2xl p-4 mt-2 overflow-y-auto custom-scrollbar">
                         <div className="flex flex-wrap justify-center gap-4">
                             {availableFlavours.map((flavour) => (
                                 <FlavourCard
