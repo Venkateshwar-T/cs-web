@@ -86,10 +86,10 @@ export function CartItemCard({ item, product, onQuantityChange, onRemove, isRemo
                                         const price = flavourDetails?.price ?? 0;
 
                                         return (
-                                            <li key={index} className="flex items-center gap-4">
-                                                <span>{flavour}</span>
-                                                {product.numberOfChocolates && <span className="text-xs text-black/70 font-medium">x{product.numberOfChocolates} Pieces</span>}
-                                                <span className="font-semibold">{price > 0 ? `+₹${price}` : '+₹0'}</span>
+                                            <li key={index}>
+                                                <span className="w-32 inline-block">{flavour}</span>
+                                                {product.numberOfChocolates && <span className="text-xs text-black/70 font-medium pr-4">x{product.numberOfChocolates} Pieces</span>}
+                                                <span className="font-medium text-sm">{price > 0 ? `+₹${price}` : '+₹0'}</span>
                                             </li>
                                         )
                                     })}
@@ -100,8 +100,8 @@ export function CartItemCard({ item, product, onQuantityChange, onRemove, isRemo
 
                 </div>
 
-                <div className="absolute top-4 right-4 flex flex-col items-end gap-12">
-                     <button onClick={handleRemove} className="text-custom-purple-dark hover:text-red-600 transition-colors">
+                <div className="absolute top-4 right-4 flex flex-col items-end">
+                     <button onClick={handleRemove} className="text-custom-purple-dark hover:text-red-600 transition-colors pb-[78%]">
                         <FaTrash size={20} />
                     </button>
                     <div className="flex items-center justify-between rounded-full text-white h-9 w-32 border-2 border-custom-purple-dark overflow-hidden">
@@ -125,7 +125,7 @@ export function CartItemCard({ item, product, onQuantityChange, onRemove, isRemo
                             <Plus className="h-4 w-4" />
                         </Button>
                     </div>
-                    <div className="flex items-end gap-4">
+                    <div className="flex items-end gap-4 pt-4">
                         <div className="flex flex-col items-center">
                             {product.mrp && <p className="text-sm line-through text-gray-500 font-bold">₹{product.mrp}</p>}
                             {discountPercentage && <p className="text-sm text-custom-purple-dark font-semibold">{discountPercentage}% OFF</p>}
