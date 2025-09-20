@@ -32,6 +32,7 @@ interface ProfilePopupProps {
   onAddToCart: (productName: string, quantity: number) => void;
   cart: Record<string, OrderItem>;
   onClearWishlist: () => void;
+  onProductClick: (product: SanityProduct) => void;
 }
 
 export function ProfilePopup({ 
@@ -42,6 +43,7 @@ export function ProfilePopup({
   onAddToCart,
   cart,
   onClearWishlist,
+  onProductClick,
 }: ProfilePopupProps) {
   const [activeTab, setActiveTab] = useState('My Profile');
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
@@ -60,9 +62,9 @@ export function ProfilePopup({
     }
   };
   
-  const handleProductClick = (product: SanityProduct) => {
-      router.push(`/product/${product.slug.current}`);
+  const handleProductClickInPopup = (product: SanityProduct) => {
       onClose();
+      onProductClick(product);
   };
 
   const handleClose = () => handleActionWithCheck(onClose);
@@ -122,11 +124,11 @@ export function ProfilePopup({
                           onAddToCart={onAddToCart}
                           cart={cart}
                           onClearWishlist={onClearWishlist}
-                          onProductClick={handleProductClick}
+                          onProductClick={handleProductClickInPopup}
                         />
                       )}
                       {activeTab === 'My Orders' && (
-                        <MyOrdersTab products={products} onProductClick={handleProductClick} />
+                        <MyOrdersTab products={products} onProductClick={handleProductClickInPopup} />
                       )}
                     </>
                   )}

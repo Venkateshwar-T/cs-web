@@ -14,7 +14,7 @@ import { PopupsManager } from '@/components/popups/popups-manager';
 import { useAppContext } from '@/context/app-context';
 import type { SanityProduct } from '@/types';
 
-export default function FaqPageClient({ children }: { children: React.ReactNode }) {
+export default function FaqPageClient({ children, allProducts }: { children: React.ReactNode, allProducts: SanityProduct[] }) {
   const isMobile = useIsMobile();
   const router = useRouter();
   const [isContentScrolled, setIsContentScrolled] = useState(false);
@@ -60,7 +60,7 @@ export default function FaqPageClient({ children }: { children: React.ReactNode 
       <PopupsManager
         isProfileOpen={isProfileOpen}
         setIsProfileOpen={setIsProfileOpen}
-        allProducts={[]}
+        allProducts={allProducts}
         likedProducts={likedProducts}
         onLikeToggle={toggleLike}
         cart={cart}
