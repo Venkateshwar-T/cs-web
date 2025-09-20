@@ -13,7 +13,7 @@ import { useRouter } from 'next/navigation';
 interface CartItemCardProps {
     item: OrderItem;
     product: SanityProduct;
-    onQuantityChange: (productName: string, newQuantity: number) => void;
+    onQuantityChange: (productName: string, quantity: number, flavours?: string[]) => void;
     onRemove: (productName: string) => void;
     isRemoving: boolean;
     onAnimationEnd: () => void;
@@ -54,10 +54,9 @@ export function CartItemCard({ item, product, onQuantityChange, onRemove, isRemo
 
     return (
         <div 
-            onClick={handleClick}
             onAnimationEnd={onAnimationEnd}
             className={cn(
-                "w-full bg-white/80 rounded-2xl p-4 text-black relative transition-all duration-300 overflow-hidden cursor-pointer",
+                "w-full bg-white/80 rounded-2xl p-4 text-black relative transition-all duration-300 overflow-hidden",
                 isRemoving && 'animate-fade-out-slide-up'
             )}
         >
@@ -80,15 +79,15 @@ export function CartItemCard({ item, product, onQuantityChange, onRemove, isRemo
                             <>
                                 <p className="font-bold mt-2">Your Selection</p>
                                 <p className="text-sm text-black/60 font-semibold">Flavours & Fillings</p>
-                                <ul className="list-disc list-inside text-sm mt-1 space-y-0.5 font-bold">
+                                <ul className="list-disc list-inside text-sm mt-1 space-y-1 font-bold">
                                     {item.flavours.map((flavour, index) => {
                                         const flavourDetails = availableFlavoursMap?.[flavour];
                                         const price = flavourDetails?.price ?? 0;
 
                                         return (
-                                            <li key={index}>
-                                                <span className="w-32 inline-block">{flavour}</span>
-                                                {product.numberOfChocolates && <span className="text-xs text-black/70 font-medium pr-4">x{product.numberOfChocolates} Pieces</span>}
+                                            <li key={index} className="flex items-center gap-1.5">
+                                                <span>{flavour}</span>
+                                                {product.numberOfChocolates && <span className="text-xs text-black/70 font-medium">x{product.numberOfChocolates} Pieces</span>}
                                                 <span className="font-medium text-sm">{price > 0 ? `+₹${price}` : '+₹0'}</span>
                                             </li>
                                         )

@@ -1,4 +1,3 @@
-
 // @/components/mobile-cart-item-card.tsx
 'use client';
 
@@ -45,10 +44,6 @@ export function MobileCartItemCard({ item, product, onQuantityChange, onRemove, 
         }
     };
     
-    const handleClick = () => {
-        onProductClick(product);
-    }
-
     const subtitle = [product.weight, product.composition, product.packageType].filter(Boolean).join(' | ');
     const discountPercentage = product.mrp && product.discountedPrice && product.mrp > product.discountedPrice
     ? Math.round(((product.mrp - product.discountedPrice) / product.mrp) * 100)
@@ -61,9 +56,8 @@ export function MobileCartItemCard({ item, product, onQuantityChange, onRemove, 
 
     return (
         <div 
-            onClick={handleClick}
             className={cn(
-                "w-full bg-transparent pl-3 py-3 pr-4 text-black relative transition-all duration-300 overflow-hidden cursor-pointer",
+                "w-full bg-transparent pl-3 py-3 pr-4 text-black relative transition-all duration-300 overflow-hidden",
                 !isLastItem && "border-b border-black/10"
             )}
         >
@@ -121,8 +115,7 @@ export function MobileCartItemCard({ item, product, onQuantityChange, onRemove, 
                                 <SheetContent 
                                   side="bottom" 
                                   className="bg-custom-purple-dark text-white border-t-2 border-custom-gold rounded-t-3xl h-auto p-0"
-                                  onClick={(e) => e.stopPropagation()}
-                                  onPointerDownOutside={(e) => e.stopPropagation()}
+                                  onPointerDownOutside={(e) => e.preventDefault()}
                                 >
                                     <SheetHeader className="p-4 border-b border-white/20">
                                     <SheetTitle className="text-white">Selected Flavours & Fillings</SheetTitle>
