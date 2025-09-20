@@ -50,6 +50,12 @@ export function CartItemCard({ item, product, onQuantityChange, onRemove, isRemo
         acc[flavour.name] = flavour;
         return acc;
     }, {} as Record<string, typeof product.availableFlavours[number]>);
+    
+    const flavourTotal = (item.flavours && availableFlavoursMap)
+        ? item.flavours.reduce((acc, flavourName) => acc + (availableFlavoursMap[flavourName]?.price || 0), 0)
+        : 0;
+        
+    const itemPrice = (product.discountedPrice || 0) + flavourTotal;
 
 
     return (
@@ -132,7 +138,7 @@ export function CartItemCard({ item, product, onQuantityChange, onRemove, isRemo
                             {product.mrp && <p className="text-sm line-through text-gray-500 font-bold">₹{product.mrp}</p>}
                             {discountPercentage && <p className="text-sm text-custom-purple-dark font-semibold">{discountPercentage}% OFF</p>}
                         </div>
-                        {product.discountedPrice && <p className="font-bold text-2xl">₹{product.discountedPrice}</p>}
+                        {<p className="font-bold text-2xl">₹{itemPrice}</p>}
                     </div>
                 </div>
 

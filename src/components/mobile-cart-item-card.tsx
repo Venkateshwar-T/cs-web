@@ -1,4 +1,3 @@
-
 // @/components/mobile-cart-item-card.tsx
 'use client';
 
@@ -63,6 +62,12 @@ export function MobileCartItemCard({ item, product, onQuantityChange, onRemove, 
         acc[flavour.name] = flavour;
         return acc;
     }, {} as Record<string, typeof product.availableFlavours[number]>);
+    
+    const flavourTotal = (item.flavours && availableFlavoursMap)
+        ? item.flavours.reduce((acc, flavourName) => acc + (availableFlavoursMap[flavourName]?.price || 0), 0)
+        : 0;
+        
+    const itemPrice = (product.discountedPrice || 0) + flavourTotal;
 
     return (
         <div 
@@ -166,7 +171,7 @@ export function MobileCartItemCard({ item, product, onQuantityChange, onRemove, 
                             </div>
                            )}
                         </div>
-                        {product.discountedPrice && <p className="text-lg font-bold">₹{product.discountedPrice}</p>}
+                        {<p className="text-lg font-bold">₹{itemPrice}</p>}
                     </div>
                 </div>
             </div>
