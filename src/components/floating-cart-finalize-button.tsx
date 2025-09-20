@@ -1,4 +1,3 @@
-
 // @/components/floating-cart-finalize-button.tsx
 'use client';
 

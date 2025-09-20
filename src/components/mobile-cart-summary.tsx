@@ -1,4 +1,3 @@
-
 // @/components/mobile-cart-summary.tsx
 'use client';
 

@@ -35,7 +35,7 @@ export function OrderSummary({ cart, allProducts }: OrderSummaryProps) {
       );
   }
 
-  const subtotal = cartItems.reduce((acc, item) => {
+  const subtotal = Object.values(cart).reduce((acc, item) => {
     const product = productsByName[item.name];
     const price = product?.discountedPrice || 0;
     return acc + (price * item.quantity);
