@@ -115,7 +115,6 @@ export function MobileCartItemCard({ item, product, onQuantityChange, onRemove, 
                                 <SheetContent 
                                   side="bottom" 
                                   className="bg-custom-purple-dark text-white border-t-2 border-custom-gold rounded-t-3xl h-auto p-0"
-                                  onPointerDownOutside={(e) => e.preventDefault()}
                                 >
                                     <SheetHeader className="p-4 border-b border-white/20">
                                     <SheetTitle className="text-white">Selected Flavours & Fillings</SheetTitle>
