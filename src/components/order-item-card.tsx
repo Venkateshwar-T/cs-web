@@ -108,7 +108,7 @@ export function OrderItemCard({ order, isMobile = false, products, onProductClic
                                 Order Again
                             </Button>
                           </AlertDialogTrigger>
-                          <AlertDialogContent className="mx-4">
+                          <AlertDialogContent>
                             <AlertDialogHeader>
                               <AlertDialogTitle>Order Again?</AlertDialogTitle>
                               <AlertDialogDescription>
