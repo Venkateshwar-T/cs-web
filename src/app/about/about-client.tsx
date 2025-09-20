@@ -114,7 +114,7 @@ export default function AboutPageClient({ allProducts }: { allProducts: SanityPr
                     )}>
                         <div className="bg-[#5D2B79] rounded-[20px] md:rounded-[40px] mt-8 mb-8 mx-4 md:mx-32 animate-fade-in flex flex-col flex-grow" style={{ animationDuration: '0.5s', animationDelay: '0.2s', animationFillMode: 'both' }}>
                             <div className="bg-white/10 rounded-[20px] md:rounded-[40px] py-8 px-6 md:py-10 md:px-24 flex-grow">
-                                <SectionTitle className="text-3xl md:text-4xl text-center mb-8 md:mb-12 font-poppins">
+                                <SectionTitle className="text-3xl md:text-4xl text-center mb-8 md:mb-12 font-poppins px-0 md:px-0">
                                     Our Philosophy
                                 </SectionTitle>
                                 
