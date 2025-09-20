@@ -201,8 +201,8 @@ export function ProductCard({ product, onAddToCart, onRemoveFromCart, quantity, 
                 size="sm"
                 onClick={handleAddToCartClick}
                 className={cn(
-                  "w-full rounded-full uppercase bg-transparent border-2 border-b-[3px] border-custom-purple-dark text-custom-purple-dark text-xs",
-                  isMobile ? "h-7" : "h-8 hover:bg-custom-purple-dark hover:text-white"
+                  "w-full rounded-full uppercase bg-transparent border-2 border-b-[3px] border-custom-purple-dark text-custom-purple-dark text-xs hover:bg-custom-purple-dark hover:text-white",
+                  isMobile ? "h-7" : "h-8"
                 )}
               >
                 Add

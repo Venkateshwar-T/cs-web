@@ -76,10 +76,8 @@ export function WishlistItemCard({ product, onAddToCart, onUnlike, isInCart, isU
                   className={cn(
                     "rounded-full uppercase border-2 border-b-[3px] h-8 px-5 text-xs transition-colors duration-300 border-custom-purple-dark flex-shrink-0",
                     isInCart
-                      ? 'bg-custom-purple-dark text-white'
-                      : 'bg-transparent text-custom-purple-dark',
-                    !isMobile && !isInCart && 'hover:bg-custom-purple-dark hover:text-white',
-                    !isMobile && isInCart && 'hover:bg-custom-purple-dark/90'
+                      ? 'bg-custom-purple-dark text-white hover:bg-custom-purple-dark/90'
+                      : 'bg-transparent text-custom-purple-dark hover:bg-custom-purple-dark hover:text-white'
                   )}
                 >
                   {isInCart ? 'ADDED' : 'ADD'}
