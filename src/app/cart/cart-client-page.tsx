@@ -190,7 +190,7 @@ export default function CartClientPage({ allProducts }: { allProducts: SanityPro
               <Loader />
             </div>
           ) : cartItems.length === 0 ? (
-            <div className="flex flex-col items-center justify-center h-full px-4">
+            <div className="flex flex-col items-center justify-center h-full px-4 pb-32">
               <EmptyState
                 imageUrl="/icons/empty.png"
                 title="Your Cart is Empty"

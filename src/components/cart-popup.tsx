@@ -90,7 +90,7 @@ export function CartPopup({ onClose, cart, allProducts, onClearCart, onFinalizeO
       </div>
 
       {cartItems.length === 0 ? (
-          <div className="flex-grow flex items-center justify-center h-full">
+          <div className="flex-grow flex items-center justify-center h-full pb-16">
               <EmptyState
                   imageUrl="/icons/empty.png"
                   title="Your Cart is Empty"
