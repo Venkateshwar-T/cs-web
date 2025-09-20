@@ -65,7 +65,7 @@ export function FlavourSelectionPopup({ product, open, onOpenChange, onConfirm }
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="p-0 w-[90vw] md:w-full max-w-2xl bg-custom-purple-dark border-2 border-custom-gold rounded-2xl md:rounded-[30px]">
+      <DialogContent className="justify-center p-0 w-[90vw] md:w-full max-w-2xl bg-custom-purple-dark border-2 border-custom-gold rounded-2xl md:rounded-[30px]">
         <DialogHeader>
           <DialogTitle className="sr-only">Select Your Flavours</DialogTitle>
           <DialogClose className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground text-white z-10">
@@ -74,7 +74,7 @@ export function FlavourSelectionPopup({ product, open, onOpenChange, onConfirm }
           </DialogClose>
         </DialogHeader>
         <div className="flex flex-col gap-4 px-6 pt-10 pb-6 text-white max-h-[80vh]">
-            <SectionTitle className="text-3xl text-center mb-0 font-poppins">
+            <SectionTitle className="flex justify-center text-2xl md:text-3xl text-center mb-0 font-poppins">
                 {hasFlavours ? 'Customize Your Box' : 'Confirm Your Addition'}
             </SectionTitle>
             
