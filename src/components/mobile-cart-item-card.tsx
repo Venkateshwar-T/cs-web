@@ -119,7 +119,11 @@ export function MobileCartItemCard({ item, product, onQuantityChange, onRemove, 
                                     <ChevronDown className="h-4 w-4 text-custom-purple-dark" />
                                     </Button>
                                 </SheetTrigger>
-                                <SheetContent side="bottom" className="bg-custom-purple-dark text-white border-t-2 border-custom-gold rounded-t-3xl h-auto p-0">
+                                <SheetContent 
+                                  side="bottom" 
+                                  className="bg-custom-purple-dark text-white border-t-2 border-custom-gold rounded-t-3xl h-auto p-0"
+                                  onClick={(e) => e.stopPropagation()}
+                                >
                                     <SheetHeader className="p-4 border-b border-white/20">
                                     <SheetTitle className="text-white">Selected Flavours & Fillings</SheetTitle>
                                     </SheetHeader>
