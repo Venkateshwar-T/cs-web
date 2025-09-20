@@ -1,3 +1,4 @@
+
 // @/app/cart/cart-client-page.tsx
 'use client';
 
@@ -118,7 +119,18 @@ export default function CartClientPage({ allProducts }: { allProducts: SanityPro
         if (product) {
             const price = product.discountedPrice || 0;
             const mrp = product.mrp || price;
-            acc.subtotal += price * cartItem.quantity;
+            let itemTotal = price * cartItem.quantity;
+            
+            // Add flavour prices
+            if (cartItem.flavours && product.availableFlavours) {
+                const flavourPrices = cartItem.flavours.reduce((flavourAcc, flavourName) => {
+                    const flavour = product.availableFlavours.find(f => f.name === flavourName);
+                    return flavourAcc + (flavour?.price || 0);
+                }, 0);
+                itemTotal += flavourPrices * cartItem.quantity;
+            }
+
+            acc.subtotal += itemTotal;
             if (mrp > price) {
                 acc.totalDiscount += (mrp - price) * cartItem.quantity;
             }
@@ -126,7 +138,7 @@ export default function CartClientPage({ allProducts }: { allProducts: SanityPro
         return acc;
     }, { subtotal: 0, totalDiscount: 0 });
     
-    const subtotalAfterDiscount = subtotal; // subtotal is already discounted prices
+    const subtotalAfterDiscount = subtotal; // subtotal is now with flavour prices
     const gstRate = 0.18;
     const gstAmount = subtotalAfterDiscount * gstRate;
     const total = subtotalAfterDiscount + gstAmount;

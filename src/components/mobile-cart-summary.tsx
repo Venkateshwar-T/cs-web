@@ -1,3 +1,4 @@
+
 // @/components/mobile-cart-summary.tsx
 'use client';
 
@@ -38,7 +39,18 @@ export const MobileCartSummary = React.forwardRef<HTMLDivElement, MobileCartSumm
         if (product) {
             const price = product.discountedPrice || 0;
             const mrp = product.mrp || price;
-            acc.subtotal += price * cartItem.quantity;
+            let itemTotal = price * cartItem.quantity;
+            
+            if (cartItem.flavours && product.availableFlavours) {
+                const flavourPrices = cartItem.flavours.reduce((flavourAcc, flavourName) => {
+                    const flavour = product.availableFlavours.find(f => f.name === flavourName);
+                    return flavourAcc + (flavour?.price || 0);
+                }, 0);
+                itemTotal += flavourPrices * cartItem.quantity;
+            }
+            
+            acc.subtotal += itemTotal;
+
             if (mrp > price) {
                 acc.totalDiscount += (mrp - price) * cartItem.quantity;
             }
@@ -62,11 +74,21 @@ export const MobileCartSummary = React.forwardRef<HTMLDivElement, MobileCartSumm
                     const product = productsByName[item.name];
                     if (!product) return null;
                     const price = product.discountedPrice || 0;
+                    
+                    let itemTotal = price;
+                    if (item.flavours && product.availableFlavours) {
+                        const flavourPrices = item.flavours.reduce((flavourAcc, flavourName) => {
+                            const flavour = product.availableFlavours.find(f => f.name === flavourName);
+                            return flavourAcc + (flavour?.price || 0);
+                        }, 0);
+                        itemTotal += flavourPrices;
+                    }
+
                     return (
                         <div key={item.name} className="flex justify-between items-center text-sm">
                             <span className="font-medium w-2/3 truncate pr-2">{item.name}</span>
                             <span className="text-black/60">x{item.quantity}</span>
-                            <span className="font-semibold w-1/4 text-right">₹{price.toFixed(2)}</span>
+                            <span className="font-semibold w-1/4 text-right">₹{(itemTotal * item.quantity).toFixed(2)}</span>
                         </div>
                     )
                   })}

@@ -1,3 +1,4 @@
+
 // @/components/popups/popups-manager.tsx
 'use client';
 
@@ -68,7 +69,16 @@ export function PopupsManager({
         const product = productsByName[productName];
         if (product) {
             const price = product.discountedPrice || 0;
-            acc.subtotal += price * cartItem.quantity;
+            let itemTotal = price * cartItem.quantity;
+
+            if (cartItem.flavours && product.availableFlavours) {
+                const flavourPrices = cartItem.flavours.reduce((flavourAcc, flavourName) => {
+                    const flavour = product.availableFlavours.find(f => f.name === flavourName);
+                    return flavourAcc + (flavour?.price || 0);
+                }, 0);
+                itemTotal += flavourPrices * cartItem.quantity;
+            }
+            acc.subtotal += itemTotal;
         }
         return acc;
     }, { subtotal: 0 });

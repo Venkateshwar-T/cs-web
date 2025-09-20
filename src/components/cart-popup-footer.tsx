@@ -1,3 +1,4 @@
+
 // @/components/cart-popup-footer.tsx
 'use client';
 
@@ -24,7 +25,17 @@ export function CartPopupFooter({ cart, onFinalizeOrder, allProducts }: CartPopu
         if (product) {
             const price = product.discountedPrice || 0;
             const mrp = product.mrp || price;
-            acc.subtotal += price * cartItem.quantity;
+            let itemTotal = price * cartItem.quantity;
+            
+            if (cartItem.flavours && product.availableFlavours) {
+                const flavourPrices = cartItem.flavours.reduce((flavourAcc, flavourName) => {
+                    const flavour = product.availableFlavours.find(f => f.name === flavourName);
+                    return flavourAcc + (flavour?.price || 0);
+                }, 0);
+                itemTotal += flavourPrices * cartItem.quantity;
+            }
+
+            acc.subtotal += itemTotal;
             acc.totalOriginalPrice += mrp * cartItem.quantity;
         }
         return acc;
