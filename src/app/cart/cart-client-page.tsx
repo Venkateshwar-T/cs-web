@@ -113,14 +113,20 @@ export default function CartClientPage({ allProducts }: { allProducts: SanityPro
         return acc;
     }, {} as Record<string, SanityProduct>);
     
-    const subtotal = Object.values(cart).reduce((acc, item) => {
-        const product = productsByName[item.name];
-        const price = product?.discountedPrice || 0;
-        return acc + (price * item.quantity);
-    }, 0);
+    const { subtotal, totalDiscount } = Object.entries(cart).reduce((acc, [productName, cartItem]) => {
+        const product = productsByName[productName];
+        if (product) {
+            const price = product.discountedPrice || 0;
+            const mrp = product.mrp || price;
+            acc.subtotal += price * cartItem.quantity;
+            if (mrp > price) {
+                acc.totalDiscount += (mrp - price) * cartItem.quantity;
+            }
+        }
+        return acc;
+    }, { subtotal: 0, totalDiscount: 0 });
     
-    const discount = 500.00;
-    const subtotalAfterDiscount = subtotal - discount;
+    const subtotalAfterDiscount = subtotal; // subtotal is already discounted prices
     const gstRate = 0.18;
     const gstAmount = subtotalAfterDiscount * gstRate;
     const total = subtotalAfterDiscount + gstAmount;

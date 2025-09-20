@@ -33,14 +33,20 @@ export const MobileCartSummary = React.forwardRef<HTMLDivElement, MobileCartSumm
         return null;
     }
 
-    const subtotal = cartItems.reduce((acc, item) => {
-      const product = productsByName[item.name];
-      const price = product?.discountedPrice || 0;
-      return acc + (price * item.quantity);
-    }, 0);
+    const { subtotal, totalDiscount } = Object.entries(cart).reduce((acc, [productName, cartItem]) => {
+        const product = productsByName[productName];
+        if (product) {
+            const price = product.discountedPrice || 0;
+            const mrp = product.mrp || price;
+            acc.subtotal += price * cartItem.quantity;
+            if (mrp > price) {
+                acc.totalDiscount += (mrp - price) * cartItem.quantity;
+            }
+        }
+        return acc;
+    }, { subtotal: 0, totalDiscount: 0 });
 
-    const discount = 500.00;
-    const subtotalAfterDiscount = subtotal - discount;
+    const subtotalAfterDiscount = subtotal;
     const gstRate = 0.18;
     const gstAmount = subtotalAfterDiscount * gstRate;
     const rawTotal = subtotalAfterDiscount + gstAmount;
@@ -70,7 +76,7 @@ export const MobileCartSummary = React.forwardRef<HTMLDivElement, MobileCartSumm
 
               <SummaryRow 
                   label="Discount Applied"
-                  value={`-₹${discount.toFixed(2)}`}
+                  value={`-₹${totalDiscount.toFixed(2)}`}
               />
               <SummaryRow 
                   label="Subtotal"

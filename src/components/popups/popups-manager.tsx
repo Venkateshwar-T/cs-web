@@ -64,14 +64,16 @@ export function PopupsManager({
     }, {} as Record<string, SanityProduct>);
 
     const newOrderId = generateOrderId();
-    const subtotal = Object.values(cart).reduce((acc, item) => {
-        const product = productsByName[item.name];
-        const price = product?.discountedPrice || 0;
-        return acc + (price * item.quantity);
-    }, 0);
+    const { subtotal } = Object.entries(cart).reduce((acc, [productName, cartItem]) => {
+        const product = productsByName[productName];
+        if (product) {
+            const price = product.discountedPrice || 0;
+            acc.subtotal += price * cartItem.quantity;
+        }
+        return acc;
+    }, { subtotal: 0 });
     
-    const discount = 500.00;
-    const subtotalAfterDiscount = subtotal - discount;
+    const subtotalAfterDiscount = subtotal;
     const gstRate = 0.18;
     const gstAmount = subtotalAfterDiscount * gstRate;
     const total = subtotalAfterDiscount + gstAmount;

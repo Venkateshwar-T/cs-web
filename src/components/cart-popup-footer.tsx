@@ -19,14 +19,18 @@ export function CartPopupFooter({ cart, onFinalizeOrder, allProducts }: CartPopu
         return acc;
     }, {} as Record<string, SanityProduct>);
     
-    const subtotal = Object.values(cart).reduce((acc, item) => {
-        const product = productsByName[item.name];
-        const price = product?.discountedPrice || 0;
-        return acc + (price * item.quantity);
-    }, 0);
+    const { subtotal, totalOriginalPrice } = Object.entries(cart).reduce((acc, [productName, cartItem]) => {
+        const product = productsByName[productName];
+        if (product) {
+            const price = product.discountedPrice || 0;
+            const mrp = product.mrp || price;
+            acc.subtotal += price * cartItem.quantity;
+            acc.totalOriginalPrice += mrp * cartItem.quantity;
+        }
+        return acc;
+    }, { subtotal: 0, totalOriginalPrice: 0 });
 
-    const discount = 500.00; // Mock discount
-    const subtotalAfterDiscount = subtotal - discount;
+    const subtotalAfterDiscount = subtotal;
     const gstRate = 0.18;
     const gstAmount = subtotalAfterDiscount * gstRate;
     const total = subtotalAfterDiscount + gstAmount;
@@ -39,9 +43,9 @@ export function CartPopupFooter({ cart, onFinalizeOrder, allProducts }: CartPopu
                         <p className="lg:text-sm xl:text-sm opacity-100">
                           <span className={cn(
                             "relative inline-block",
-                            subtotal > 0 && "after:content-[''] after:absolute after:left-0 after:top-1/2 after:h-[1.5px] after:bg-white after:animate-cut-through after:origin-left"
+                            totalOriginalPrice > 0 && "after:content-[''] after:absolute after:left-0 after:top-1/2 after:h-[1.5px] after:bg-white after:animate-cut-through after:origin-left"
                           )}>
-                              ₹{subtotal.toFixed(2)}
+                              ₹{totalOriginalPrice.toFixed(2)}
                           </span>
                         </p>
                         <p className="lg:text-sm xl:text-m text-custom-gold font-semibold">Total Price</p>
