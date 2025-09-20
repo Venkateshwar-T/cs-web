@@ -99,14 +99,14 @@ function OrderConfirmedPageComponent({ allProducts }: { allProducts: SanityProdu
           onSearchInputChange={setSearchInput}
         />
         <main onScroll={handleScroll} className={cn(
-          "flex-grow flex flex-col gap-8 overflow-y-auto no-scrollbar",
+          "flex-grow flex flex-col overflow-y-auto no-scrollbar",
           "pt-24 md:pt-32"
         )}>
           {isLoading || !confirmedOrder ? (
             <ProcessingView />
           ) : (
             <>
-              <div className={cn("flex flex-col", isMobile ? "px-4" : "md:px-32")}>
+              <div className={cn("flex flex-col", isMobile ? "px-4 pb-8" : "md:px-32 pb-12")}>
                 <OrderConfirmedView order={confirmedOrder} products={allProducts} />
               </div>
               <Footer />

@@ -68,7 +68,7 @@ export function FlavourSelectionPopup({ product, open, onOpenChange, onConfirm }
       <DialogContent className="justify-center p-0 w-[90vw] md:w-full max-w-2xl bg-custom-purple-dark border-2 border-custom-gold rounded-2xl md:rounded-[30px]">
         <DialogHeader>
           <DialogTitle className="sr-only">Select Your Flavours</DialogTitle>
-          <DialogClose className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground text-white z-10">
+          <DialogClose className="absolute right-3 top-3 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground text-white z-10">
             <X className="h-5 w-5" />
             <span className="sr-only">Close</span>
           </DialogClose>
