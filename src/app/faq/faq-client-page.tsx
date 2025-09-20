@@ -13,11 +13,13 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import { PopupsManager } from '@/components/popups/popups-manager';
 import { useAppContext } from '@/context/app-context';
 import type { SanityProduct } from '@/types';
+import { BottomNavbar } from '@/components/bottom-navbar';
 
 export default function FaqPageClient({ children, allProducts }: { children: React.ReactNode, allProducts: SanityProduct[] }) {
   const isMobile = useIsMobile();
   const router = useRouter();
-  const [isContentScrolled, setIsContentScrolled] = useState(false);
+  const [lastScrollTop, setLastScrollTop] = useState(0);
+  const [isHeaderVisible, setIsHeaderVisible] = useState(true);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const { cart, updateCart, likedProducts, toggleLike, clearWishlist } = useAppContext();
 
@@ -26,12 +28,35 @@ export default function FaqPageClient({ children, allProducts }: { children: Rea
   };
 
   const handleScroll = (event: UIEvent<HTMLDivElement>) => {
-    setIsContentScrolled(event.currentTarget.scrollTop > 0);
+      if (!isMobile) {
+        return;
+      }
+
+      const currentScrollTop = event.currentTarget.scrollTop;
+      if (Math.abs(currentScrollTop - lastScrollTop) <= 10) {
+        return;
+      }
+
+      if (currentScrollTop > lastScrollTop && currentScrollTop > 56) {
+        setIsHeaderVisible(false);
+      } else {
+        setIsHeaderVisible(true);
+      }
+      setLastScrollTop(currentScrollTop <= 0 ? 0 : currentScrollTop);
   };
   
   const handleProductClick = (product: SanityProduct) => {
     router.push(`/product/${product.slug.current}`);
   };
+
+  const handleNavigation = (view: 'home' | 'cart' | 'profile' | 'faq') => {
+      if (view === 'home') router.push('/');
+      else if (view === 'cart') router.push('/cart');
+      else if (view === 'profile') router.push('/profile');
+      else if (view === 'faq') router.push('/faq');
+  };
+
+  const cartItemCount = Object.values(cart).reduce((acc, quantity) => acc + quantity.quantity, 0);
 
   return (
     <>
@@ -40,7 +65,7 @@ export default function FaqPageClient({ children, allProducts }: { children: Rea
         <div className="flex flex-col h-screen">
             <Header
             onProfileOpenChange={setIsProfileOpen}
-            isContentScrolled={isMobile ? true : isContentScrolled}
+            isContentScrolled={isMobile ? true : !isHeaderVisible}
             onReset={() => router.push('/')}
             onNavigate={handleHeaderNavigate}
             activeView={'faq'}
@@ -49,13 +74,14 @@ export default function FaqPageClient({ children, allProducts }: { children: Rea
             onScroll={handleScroll}
             className={cn(
                 "flex-grow flex flex-col overflow-y-auto no-scrollbar transition-all duration-300",
-                isMobile ? "pt-24" : "pt-36"
+                isMobile ? (isHeaderVisible ? "pt-24" : "pt-0") : "pt-36"
             )}
             >
             <div className="flex-grow">
               {children}
             </div>
             <Footer />
+            <div className="h-16 flex-shrink-0 md:hidden" />
             </main>
         </div>
       </div>
@@ -70,6 +96,7 @@ export default function FaqPageClient({ children, allProducts }: { children: Rea
         onClearWishlist={clearWishlist}
         onProductClick={handleProductClick}
       />
+      <BottomNavbar activeView={'faq'} onNavigate={handleNavigation} cartItemCount={cartItemCount} />
     </>
   );
 }
