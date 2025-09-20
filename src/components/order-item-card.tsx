@@ -95,7 +95,7 @@ export function OrderItemCard({ order, isMobile = false, products, onProductClic
                  </div>
                  <Separator className="bg-black/10 my-2" />
                  <div className="flex justify-between items-center">
-                    <div>
+                    <div className="flex flex-col">
                         <p className="text-xs font-medium">Total Items: {order.items.reduce((sum, item) => sum + item.quantity, 0)}</p>
                         <p className="text-base font-bold">₹{order.total.toFixed(2)}</p>
                     </div>
