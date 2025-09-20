@@ -17,6 +17,7 @@ import {
 import type { OrderItem } from '@/context/app-context';
 import type { SanityProduct } from '@/types';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 interface MobileCartItemCardProps {
     item: OrderItem;
@@ -28,6 +29,8 @@ interface MobileCartItemCardProps {
 }
 
 export function MobileCartItemCard({ item, product, onQuantityChange, onRemove, isLastItem, onProductClick }: MobileCartItemCardProps) {
+    const [isFlavourSheetOpen, setIsFlavourSheetOpen] = useState(false);
+    
     const handleRemove = (e: React.MouseEvent) => {
         e.stopPropagation();
         onRemove(item.name);
@@ -44,6 +47,12 @@ export function MobileCartItemCard({ item, product, onQuantityChange, onRemove, 
             onQuantityChange(item.name, item.quantity - 1);
         }
     };
+
+    const handleImageClick = (e: React.MouseEvent) => {
+        if (!isFlavourSheetOpen) {
+            onProductClick(product);
+        }
+    }
     
     const subtitle = [product.weight, product.composition, product.packageType].filter(Boolean).join(' | ');
     const discountPercentage = product.mrp && product.discountedPrice && product.mrp > product.discountedPrice
@@ -66,7 +75,7 @@ export function MobileCartItemCard({ item, product, onQuantityChange, onRemove, 
                 <div 
                     className="w-1/4 flex-shrink-0 flex flex-col items-center gap-2"
                 >
-                    <div className="cursor-pointer" onClick={() => onProductClick(product)}>
+                    <div className="cursor-pointer" onClick={handleImageClick}>
                       <Image
                           src={product.images && product.images.length > 0 ? product.images[0] : "/placeholder.png"}
                           alt={item.name}
@@ -110,7 +119,7 @@ export function MobileCartItemCard({ item, product, onQuantityChange, onRemove, 
                         <p className="text-xs text-black/80 truncate mt-0">{subtitle}</p>
                         
                         {item.flavours && item.flavours.length > 0 && (
-                            <Sheet>
+                            <Sheet open={isFlavourSheetOpen} onOpenChange={setIsFlavourSheetOpen}>
                                 <SheetTrigger asChild>
                                     <Button variant="ghost" className="h-auto p-2 mt-2 text-custom-purple-dark text-xs rounded-lg hover:text-custom-purple-dark hover:bg-black/5" onClick={(e) => e.stopPropagation()}>
                                     <span>Selected Flavours</span>
@@ -120,7 +129,6 @@ export function MobileCartItemCard({ item, product, onQuantityChange, onRemove, 
                                 <SheetContent 
                                   side="bottom" 
                                   className="bg-custom-purple-dark text-white border-t-2 border-custom-gold rounded-t-3xl h-auto p-0"
-                                  onPointerDownOutside={(e) => e.preventDefault()}
                                 >
                                     <SheetHeader className="p-4 border-b border-white/20">
                                     <SheetTitle className="text-white">Selected Flavours & Fillings</SheetTitle>
