@@ -52,7 +52,9 @@ export default function FaqPageClient({ children, allProducts }: { children: Rea
                 isMobile ? "pt-24" : "pt-36"
             )}
             >
-            {children} {/* Renders the FaqContent server component */}
+            <div className="flex-grow">
+              {children}
+            </div>
             <Footer />
             </main>
         </div>
