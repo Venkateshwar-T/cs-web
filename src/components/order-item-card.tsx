@@ -66,7 +66,8 @@ export function OrderItemCard({ order, isMobile = false, products, onProductClic
                  <div className="flex justify-between items-center mb-2">
                     <div>
                         <p className="text-xs text-black/70">Order ID: {order.id}</p>
-                        <p className="text-xs text-black/70">{formattedDate}, {formattedTime}</p>
+                        <p className="text-xs text-black/70">{formattedDate}</p>
+                        <p className="text-xs text-black/70">{formattedTime}</p>
                     </div>
                      <Badge variant={statusVariant(order.status)} className="text-xs bg-custom-gold">{order.status}</Badge>
                  </div>
