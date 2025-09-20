@@ -1,3 +1,4 @@
+
 // @/components/header/search-bar.tsx
 'use client';
 
@@ -5,7 +6,7 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import type { ActiveView } from '@/app/page';
+import type { ActiveView } from "@/app/page";
 import { X } from 'lucide-react';
 
 interface SearchBarProps {
@@ -84,6 +85,7 @@ export function SearchBar({ activeView, isEnquireOpen, onSubmit, searchInput, on
                         value={searchInput}
                         onChange={(e) => onSearchInputChange(e.target.value)}
                         placeholder={activeView !== 'home' ? 'Search for gifts...' : placeholder}
+                        enterKeyHint="search"
                         className={`w-full pl-12 pr-10 h-9 md:h-11 rounded-full bg-transparent border-none focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-gray-500 text-base md:text-lg text-black`}
                     />
                     {searchInput && (

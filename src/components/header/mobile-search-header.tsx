@@ -31,6 +31,7 @@ export function MobileSearchHeader({ value, onChange, onSubmit, isVisible }: Mob
                         value={value}
                         onChange={onChange}
                         placeholder={'Search for gifts...'}
+                        enterKeyHint="search"
                         className={cn(
                             `w-full pl-11 pr-10 h-10 rounded-full bg-white border-none focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-gray-500 text-base text-black`
                         )}

@@ -82,6 +82,7 @@ export function AnimatedSearchBar({
                     placeholder="Search for gifts..."
                     value={searchInput}
                     onChange={(e) => onSearchInputChange(e.target.value)}
+                    enterKeyHint="search"
                     className="w-full bg-transparent outline-none text-black placeholder:text-gray-500 text-base md:text-lg"
                     onClick={(e) => e.stopPropagation()}
                 />
