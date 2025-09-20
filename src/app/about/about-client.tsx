@@ -68,11 +68,28 @@ export default function AboutPageClient({ allProducts }: { allProducts: SanityPr
     const { cart, updateCart, likedProducts, toggleLike, clearWishlist } = useAppContext();
     const [isProfileOpen, setIsProfileOpen] = useState(false);
     const [searchInput, setSearchInput] = useState('');
+    const [lastScrollTop, setLastScrollTop] = useState(0);
+    const [isHeaderVisible, setIsHeaderVisible] = useState(true);
     const [isContentScrolled, setIsContentScrolled] = useState(false);
     const isMobile = useIsMobile();
     
     const handleScroll = (event: UIEvent<HTMLDivElement>) => {
-      setIsContentScrolled(event.currentTarget.scrollTop > 0);
+      if (!isMobile) {
+        setIsContentScrolled(event.currentTarget.scrollTop > 0);
+        return;
+      }
+
+      const currentScrollTop = event.currentTarget.scrollTop;
+      if (Math.abs(currentScrollTop - lastScrollTop) <= 10) {
+        return;
+      }
+
+      if (currentScrollTop > lastScrollTop && currentScrollTop > 56) {
+        setIsHeaderVisible(false);
+      } else {
+        setIsHeaderVisible(true);
+      }
+      setLastScrollTop(currentScrollTop <= 0 ? 0 : currentScrollTop);
     };
 
     const handleNavigation = (view: 'home' | 'cart' | 'profile' | 'faq') => {
@@ -110,7 +127,7 @@ export default function AboutPageClient({ allProducts }: { allProducts: SanityPr
                     />
                     <main onScroll={handleScroll} className={cn(
                       "flex-grow flex flex-col overflow-y-auto no-scrollbar transition-all duration-300", 
-                      isMobile ? "pt-24" : "pt-36"
+                      isMobile ? (isHeaderVisible ? "pt-24" : "pt-0") : "pt-36"
                     )}>
                         <div className="bg-[#5D2B79] rounded-[20px] md:rounded-[40px] mt-8 mb-8 mx-4 md:mx-32 animate-fade-in flex flex-col" style={{ animationDuration: '0.5s', animationDelay: '0.2s', animationFillMode: 'both' }}>
                             <div className="bg-white/10 rounded-[20px] md:rounded-[40px] py-8 px-6 md:py-10 md:px-24">
@@ -143,6 +160,7 @@ export default function AboutPageClient({ allProducts }: { allProducts: SanityPr
                             </div>
                         </div>
                         <Footer />
+                        <div className="h-16 flex-shrink-0 md:hidden" />
                     </main>
                 </div>
             </div>
