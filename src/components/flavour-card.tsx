@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { useState } from 'react';
 import { cn } from '@/lib/utils';
 import type { SanityFlavour } from '@/types';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface FlavourCardProps {
   flavour: SanityFlavour;
@@ -15,6 +16,7 @@ interface FlavourCardProps {
 
 export function FlavourCard({ flavour, onAddToCart, quantity }: FlavourCardProps) {
   const [isAnimating, setIsAnimating] = useState(false);
+  const isMobile = useIsMobile();
 
   const handleToggleCart = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -55,8 +57,10 @@ export function FlavourCard({ flavour, onAddToCart, quantity }: FlavourCardProps
             className={cn(
               "h-7 w-full rounded-[10px] md:rounded-full uppercase border-2 border-b-[3px] text-xs transition-colors duration-300",
               isInCart 
-                ? 'bg-custom-purple-dark border-custom-purple-dark text-white hover:bg-custom-purple-dark hover:text-white'
-                : 'bg-white border-custom-purple-dark text-custom-purple-dark hover:bg-custom-purple-dark hover:text-white'
+                ? 'bg-custom-purple-dark border-custom-purple-dark text-white'
+                : 'bg-white border-custom-purple-dark text-custom-purple-dark',
+              !isMobile && !isInCart && 'hover:bg-custom-purple-dark hover:text-white',
+              !isMobile && isInCart && 'hover:bg-custom-purple-dark/90'
             )}
           >
             {isInCart ? 'Added' : 'Add'}
