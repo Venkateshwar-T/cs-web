@@ -148,6 +148,9 @@ export function MobileCartItemCard({ item, product, onQuantityChange, onRemove, 
                                         })}
                                         </ul>
                                     </div>
+                                    <p className="text-xs text-center text-white/70 italic pb-4">
+                                        *Additional charges may apply for special flavours*
+                                    </p>
                                 </SheetContent>
                             </Sheet>
                         )}
