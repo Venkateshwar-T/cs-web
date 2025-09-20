@@ -86,10 +86,10 @@ export function CartItemCard({ item, product, onQuantityChange, onRemove, isRemo
                                         const price = flavourDetails?.price ?? 0;
 
                                         return (
-                                            <li key={index} className="flex justify-between items-center">
-                                                <span className="w-24 inline-block">{flavour}</span>
+                                            <li key={index} className="flex items-center gap-4">
+                                                <span>{flavour}</span>
                                                 {product.numberOfChocolates && <span className="text-xs text-black/70 font-medium">x{product.numberOfChocolates} Pieces</span>}
-                                                <span className="font-semibold text-right w-20">{price > 0 ? `+₹${price}` : '+₹0'}</span>
+                                                <span className="font-semibold">{price > 0 ? `+₹${price}` : '+₹0'}</span>
                                             </li>
                                         )
                                     })}
