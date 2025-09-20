@@ -18,6 +18,7 @@ import { StaticSparkleBackground } from '@/components/static-sparkle-background'
 import { cn } from '@/lib/utils';
 import type { Product, ProfileInfo } from '@/app/page';
 import { useAppContext } from '@/context/app-context';
+import type { SanityProduct } from '@/types';
 
 const allProducts: Product[] = Array.from({ length: 12 }).map((_, i) => ({
   id: i,
@@ -89,8 +90,12 @@ export default function AboutPage() {
     const handleHeaderNavigate = (view: 'about' | 'faq') => {
         router.push(`/${view}`);
     }
+    
+    const handleProductClick = (product: SanityProduct) => {
+      router.push(`/product/${product.slug.current}`);
+    };
 
-    const cartItemCount = Object.values(cart).reduce((acc, quantity) => acc + quantity, 0);
+    const cartItemCount = Object.values(cart).reduce((acc, quantity) => acc + quantity.quantity, 0);
 
     return (
         <>
@@ -150,12 +155,13 @@ export default function AboutPage() {
              <PopupsManager
                 isProfileOpen={isProfileOpen}
                 setIsProfileOpen={setIsProfileOpen}
-                allProducts={allProducts}
+                allProducts={[]}
                 likedProducts={likedProducts}
                 onLikeToggle={toggleLike}
                 cart={cart}
                 onAddToCart={updateCart}
                 onClearWishlist={clearWishlist}
+                onProductClick={handleProductClick}
             />
             <BottomNavbar activeView={'about'} onNavigate={handleNavigation} cartItemCount={cartItemCount} />
         </>

@@ -165,8 +165,32 @@ export function OrderItemCard({ order, isMobile = false, products, onProductClic
             <Separator className="my-2 bg-black/20" />
 
             <div className="flex justify-between items-center mt-2">
-                <p className="font-semibold">Total Items: {order.items.reduce((sum, item) => sum + item.quantity, 0)}</p>
-                <p className="text-xl font-bold">Total: ₹{order.total.toFixed(2)}</p>
+                <div>
+                  <p className="font-semibold">Total Items: {order.items.reduce((sum, item) => sum + item.quantity, 0)}</p>
+                  <p className="text-xl font-bold">Total: ₹{order.total.toFixed(2)}</p>
+                </div>
+                {onOrderAgain && (
+                    <AlertDialog>
+                      <AlertDialogTrigger asChild>
+                        <Button size="sm" className="bg-custom-purple-dark text-white rounded-full hover:bg-custom-purple-dark/90 h-9 px-4 text-sm">
+                            <RotateCcw className="mr-2 h-4 w-4" />
+                            Order Again
+                        </Button>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>Order Again?</AlertDialogTitle>
+                          <AlertDialogDescription>
+                            This will add all items from this order to your current cart.
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>Cancel</AlertDialogCancel>
+                          <AlertDialogAction onClick={onOrderAgain}>Confirm</AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
+                )}
             </div>
         </div>
     );
