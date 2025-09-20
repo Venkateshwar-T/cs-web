@@ -106,7 +106,7 @@ function OrderConfirmedPageComponent({ allProducts }: { allProducts: SanityProdu
             <ProcessingView />
           ) : (
             <>
-              <div className={cn("flex-grow flex flex-col", isMobile ? "px-4" : "md:px-32")}>
+              <div className={cn("flex flex-col", isMobile ? "px-4" : "md:px-32")}>
                 <OrderConfirmedView order={confirmedOrder} products={allProducts} />
               </div>
               <Footer />
