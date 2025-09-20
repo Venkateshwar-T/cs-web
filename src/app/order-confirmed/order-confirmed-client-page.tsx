@@ -11,7 +11,7 @@ import { BottomNavbar } from '@/components/bottom-navbar';
 import { PopupsManager } from '@/components/popups/popups-manager';
 import { OrderConfirmedView } from '@/components/order-confirmed-view';
 import { Footer } from '@/components/footer';
-import { useIsMobile } from '@/hooks/use-mobile';
+import { useIsMobile } from '@/hooks/use-is-mobile';
 import { StaticSparkleBackground } from '@/components/static-sparkle-background';
 import { Loader } from '@/components/loader';
 import { motion } from 'framer-motion';
@@ -110,6 +110,7 @@ function OrderConfirmedPageComponent({ allProducts }: { allProducts: SanityProdu
                 <OrderConfirmedView order={confirmedOrder} products={allProducts} />
               </div>
               <Footer />
+              <div className="h-16 flex-shrink-0 md:hidden" />
             </>
           )}
         </main>
