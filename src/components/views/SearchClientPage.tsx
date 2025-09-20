@@ -33,7 +33,7 @@ export default function SearchClientPage({ initialProducts, initialFilters }: Se
     updateCart, 
     clearCart, 
     likedProducts, 
-    toggleLike, _
+    toggleLike,
     clearWishlist,
     flavourSelection,
     setFlavourSelection 
