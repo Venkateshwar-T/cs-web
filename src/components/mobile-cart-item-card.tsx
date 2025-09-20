@@ -27,12 +27,6 @@ interface MobileCartItemCardProps {
     onProductClick: (product: SanityProduct) => void;
 }
 
-const selectedFlavours = [
-    { name: 'Roasted Almond', price: 100 },
-    { name: 'Fruit & Nut', price: 50 },
-    { name: 'Dark Chocolate', price: 75 },
-];
-
 export function MobileCartItemCard({ item, product, onQuantityChange, onRemove, isLastItem, onProductClick }: MobileCartItemCardProps) {
     const handleRemove = (e: React.MouseEvent) => {
         e.stopPropagation();
