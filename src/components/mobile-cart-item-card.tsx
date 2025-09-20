@@ -63,17 +63,18 @@ export function MobileCartItemCard({ item, product, onQuantityChange, onRemove, 
         >
             <div className="flex gap-3 items-center">
                 <div 
-                    className="w-1/4 flex-shrink-0 flex flex-col items-center gap-2 cursor-pointer"
-                    onClick={() => onProductClick(product)}
+                    className="w-1/4 flex-shrink-0 flex flex-col items-center gap-2"
                 >
-                    <Image
-                        src={product.images && product.images.length > 0 ? product.images[0] : "/placeholder.png"}
-                        alt={item.name}
-                        width={100}
-                        height={100}
-                        className="rounded-lg object-cover w-full aspect-square"
-                        data-ai-hint="chocolate box"
-                    />
+                    <div className="cursor-pointer" onClick={() => onProductClick(product)}>
+                      <Image
+                          src={product.images && product.images.length > 0 ? product.images[0] : "/placeholder.png"}
+                          alt={item.name}
+                          width={100}
+                          height={100}
+                          className="rounded-lg object-cover w-full aspect-square"
+                          data-ai-hint="chocolate box"
+                      />
+                    </div>
                     <div className="flex items-center justify-between w-full max-w-[100px] rounded-full text-black h-8 bg-gray-200 overflow-hidden">
                         <Button
                             size="icon"
