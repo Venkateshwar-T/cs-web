@@ -17,6 +17,7 @@ import { useToast } from "@/hooks/use-toast";
 import { signInWithGoogle, signInWithEmail } from '@/lib/firebase';
 import { useAppContext } from "@/context/app-context";
 import { cn } from '@/lib/utils';
+import { Loader } from './loader';
 
 interface LoginPopupProps {
     open: boolean;
@@ -27,6 +28,7 @@ interface LoginPopupProps {
 export function LoginPopup({ open, onOpenChange, onSignUpClick }: LoginPopupProps) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
   const { login, setAuthPopup } = useAppContext();
 
@@ -35,6 +37,7 @@ export function LoginPopup({ open, onOpenChange, onSignUpClick }: LoginPopupProp
       toast({ title: "Error", description: "Please enter email and password.", variant: "destructive" });
       return;
     }
+    setIsLoading(true);
     try {
       const userCredential = await signInWithEmail(email, password);
       login(userCredential.user);
@@ -42,10 +45,13 @@ export function LoginPopup({ open, onOpenChange, onSignUpClick }: LoginPopupProp
       toast({ title: "Success", description: "Logged in successfully!", variant: "success" });
     } catch (error: any) {
       toast({ title: "Login Failed", description: error.message, variant: "destructive" });
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleGoogleLogin = async () => {
+    setIsLoading(true);
     try {
       const userCredential = await signInWithGoogle();
       login(userCredential.user);
@@ -53,16 +59,24 @@ export function LoginPopup({ open, onOpenChange, onSignUpClick }: LoginPopupProp
       toast({ title: "Success", description: "Logged in successfully!", variant: "success" });
     } catch (error: any) {
       toast({ title: "Login Failed", description: error.message, variant: "destructive" });
+    } finally {
+      setIsLoading(false);
     }
   };
   
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={open} onOpenChange={(isOpen) => !isLoading && onOpenChange(isOpen)}>
       <DialogContent className={cn("p-0 w-[90vw] md:w-full max-w-sm md:max-w-md rounded-2xl md:rounded-[40px]")}>
         <DialogHeader>
           <DialogTitle className="sr-only">Login</DialogTitle>
         </DialogHeader>
         <AuthLayout>
+          {isLoading ? (
+            <div className="flex flex-col items-center justify-center gap-4 h-64">
+              <Loader />
+              <p className="text-white font-semibold">Signing you in...</p>
+            </div>
+          ) : (
             <div className="flex flex-col gap-2 md:gap-4 p-4 md:px-8 md:pb-8 w-full">
                 <h2 className="text-xl md:text-3xl font-medium text-white font-plex-sans self-start">Log In</h2>
                 
@@ -108,6 +122,7 @@ export function LoginPopup({ open, onOpenChange, onSignUpClick }: LoginPopupProp
                     Don’t Have an Account? <button onClick={onSignUpClick} className="font-bold text-custom-gold hover:underline">Sign Up</button>
                 </p>
             </div>
+          )}
         </AuthLayout>
       </DialogContent>
     </Dialog>
