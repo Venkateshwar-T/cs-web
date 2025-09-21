@@ -2,7 +2,7 @@
 // @/components/signup-popup.tsx
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Dialog,
   DialogContent,
@@ -50,6 +50,14 @@ export function SignUpPopup({ open, onOpenChange, onLoginClick }: SignUpPopupPro
   const [showPassword, setShowPassword] = useState(false);
   const { toast } = useToast();
   const { login, setAuthPopup } = useAppContext();
+
+  useEffect(() => {
+    if (!open) {
+      setEmail('');
+      setPassword('');
+      setShowPassword(false);
+    }
+  }, [open]);
 
   const handleEmailSignUp = async () => {
     if (!email || !password) {

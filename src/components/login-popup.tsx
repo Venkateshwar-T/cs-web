@@ -2,7 +2,7 @@
 // @/components/login-popup.tsx
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Dialog,
   DialogContent,
@@ -50,6 +50,14 @@ export function LoginPopup({ open, onOpenChange, onSignUpClick }: LoginPopupProp
   const [showPassword, setShowPassword] = useState(false);
   const { toast } = useToast();
   const { login, setAuthPopup } = useAppContext();
+
+  useEffect(() => {
+    if (!open) {
+      setEmail('');
+      setPassword('');
+      setShowPassword(false);
+    }
+  }, [open]);
 
   const handleEmailLogin = async () => {
     if (!email || !password) {
