@@ -71,11 +71,7 @@ export function UserActions({
     };
 
     const handleProfileClick = () => {
-      if (isAuthenticated) {
-        onProfileOpenChange(true);
-      } else {
-        setAuthPopup('login');
-      }
+      onProfileOpenChange(true);
     }
     
     return (

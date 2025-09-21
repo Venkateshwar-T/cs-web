@@ -23,6 +23,7 @@ import { useAppContext } from '@/context/app-context';
 import { Loader } from './loader';
 import type { OrderItem } from '@/context/app-context';
 import { useRouter } from 'next/navigation';
+import { EmptyState } from './empty-state';
 
 interface ProfilePopupProps {
   onClose: () => void;
@@ -52,7 +53,7 @@ export function ProfilePopup({
   const [isDialogVisible, setIsDialogVisible] = useState(false);
   const [pendingAction, setPendingAction] = useState<(() => void) | null>(null);
   
-  const { profileInfo, updateProfileInfo, isProfileLoaded } = useAppContext();
+  const { profileInfo, updateProfileInfo, isProfileLoaded, isAuthenticated, setAuthPopup } = useAppContext();
   const router = useRouter();
 
   const handleActionWithCheck = (action: () => void) => {
@@ -93,6 +94,10 @@ export function ProfilePopup({
   const handleProfileUpdate = (updatedProfile: Partial<ProfileInfo>) => {
     updateProfileInfo(updatedProfile);
   };
+  
+  const handleLoginClick = () => {
+    setAuthPopup('login');
+  }
 
   return (
     <>
@@ -112,11 +117,24 @@ export function ProfilePopup({
                   {!isProfileLoaded ? <div className="h-full w-full flex items-center justify-center"><Loader /></div> : (
                     <>
                       {activeTab === 'My Profile' && (
-                        <ProfileDetailsView 
-                          profile={profileInfo} 
-                          onHasChangesChange={setHasUnsavedChanges}
-                          onProfileUpdate={handleProfileUpdate}
-                        />
+                        isAuthenticated ? (
+                          <ProfileDetailsView 
+                            profile={profileInfo} 
+                            onHasChangesChange={setHasUnsavedChanges}
+                            onProfileUpdate={handleProfileUpdate}
+                          />
+                        ) : (
+                          <div className="h-full flex flex-col items-center justify-center">
+                            <EmptyState
+                              imageUrl="/icons/profile_drpdwn_btn.png"
+                              title="You're Not Logged In"
+                              description="Log in or create an account to view your profile."
+                              buttonText="Log In / Sign Up"
+                              onButtonClick={handleLoginClick}
+                              imageClassName="w-24 h-24"
+                            />
+                          </div>
+                        )
                       )}
                       {activeTab === 'My Wishlist' && (
                         <WishlistView
