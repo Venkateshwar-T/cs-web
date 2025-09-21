@@ -113,10 +113,25 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
     const unsubscribe = onAuthStateChanged((user) => {
       setUser(user);
       setIsAuthenticated(!!user);
+      if (user) {
+        // If the user's profile in local storage is still the default one,
+        // update it with info from their auth provider (e.g., Google).
+        setProfileInfo(prev => {
+          const isDefaultProfile = prev.email === defaultProfileInfo.email && prev.name === defaultProfileInfo.name;
+          if (isDefaultProfile || !prev.name || !prev.email) {
+            return {
+              ...prev,
+              name: user.displayName || prev.name,
+              email: user.email || prev.email,
+            }
+          }
+          return prev;
+        });
+      }
       setIsAuthLoaded(true);
     });
     return () => unsubscribe();
-  }, []);
+  }, [setProfileInfo]);
 
   const updateProfileInfo = useCallback((newInfo: Partial<ProfileInfo>) => {
     setProfileInfo(prev => ({ ...prev, ...newInfo }));
@@ -201,13 +216,22 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
   const login = useCallback((user: User) => {
     setUser(user);
     setIsAuthenticated(true);
-  }, []);
+     if (user) {
+        setProfileInfo(prev => ({
+          ...prev,
+          name: user.displayName || prev.name || '',
+          email: user.email || prev.email || '',
+        }));
+      }
+  }, [setProfileInfo]);
 
   const logout = useCallback(async () => {
     try {
       await signOutUser();
       setUser(null);
       setIsAuthenticated(false);
+      // Optional: Reset profile info to default on logout
+      // setProfileInfo(defaultProfileInfo);
       toast({
         title: "Logged Out",
         description: "You have been successfully logged out.",

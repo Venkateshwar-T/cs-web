@@ -1,3 +1,4 @@
+
 // @/components/profile-details-view.tsx
 'use client';
 
@@ -8,6 +9,8 @@ import { Eye, EyeOff } from 'lucide-react';
 import { Button } from './ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { useAppContext, type ProfileInfo } from '@/context/app-context';
+import Image from 'next/image';
+import { cn } from '@/lib/utils';
 
 interface ProfileDetailsViewProps {
   profile: ProfileInfo;
@@ -23,6 +26,10 @@ export function ProfileDetailsView({ profile, onHasChangesChange, onProfileUpdat
   const [password, setPassword] = useState('yourpassword'); // Example password
   const [showPassword, setShowPassword] = useState(false);
   const { toast } = useToast();
+
+  const isGoogleSignIn = user?.providerData.some(
+    (provider) => provider.providerId === 'google.com'
+  );
 
   useEffect(() => {
     const hasChanges = 
@@ -66,7 +73,15 @@ export function ProfileDetailsView({ profile, onHasChangesChange, onProfileUpdat
 
   return (
     <div className="p-8 text-white h-full flex flex-col items-center">
-      <h2 className="text-3xl font-normal font-poppins self-start mb-6">My Profile</h2>
+      <div className='flex w-full justify-between items-center'>
+        <h2 className="text-3xl font-normal font-poppins self-start mb-6">My Profile</h2>
+        {isGoogleSignIn && (
+            <div className="flex items-center gap-2 bg-white/10 text-white text-xs px-3 py-1.5 rounded-full mb-4">
+                <Image src="/icons/google.png" alt="Google" width={16} height={16} />
+                <span>Logged in with Google</span>
+            </div>
+        )}
+      </div>
       
       <Avatar className="w-24 h-24 mb-4">
         <AvatarImage src={user?.photoURL ?? "https://picsum.photos/200"} alt="User avatar" data-ai-hint="person portrait" onDragStart={(e) => e.preventDefault()}/>
@@ -99,7 +114,8 @@ export function ProfileDetailsView({ profile, onHasChangesChange, onProfileUpdat
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="bg-white border-white/20 text-black rounded-2xl h-12 text-base" 
+            className={cn("bg-white border-white/20 text-black rounded-2xl h-12 text-base", isGoogleSignIn && "text-gray-400")}
+            disabled={isGoogleSignIn}
           />
         </div>
         <div className="space-y-1">

@@ -9,6 +9,8 @@ import { Eye, EyeOff } from 'lucide-react';
 import { Button } from './ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { useAppContext, type ProfileInfo } from '@/context/app-context';
+import Image from 'next/image';
+import { cn } from '@/lib/utils';
 
 interface MyProfileTabProps {
   profile: ProfileInfo;
@@ -23,6 +25,10 @@ export function MyProfileTab({ profile, onProfileUpdate }: MyProfileTabProps) {
   const [password, setPassword] = useState('yourpassword');
   const [showPassword, setShowPassword] = useState(false);
   const { toast } = useToast();
+  
+  const isGoogleSignIn = user?.providerData.some(
+    (provider) => provider.providerId === 'google.com'
+  );
 
   const handleCancel = () => {
     setName(profile.name);
@@ -57,6 +63,13 @@ export function MyProfileTab({ profile, onProfileUpdate }: MyProfileTabProps) {
         <AvatarFallback>{profile.name.charAt(0).toUpperCase()}</AvatarFallback>
       </Avatar>
 
+      {isGoogleSignIn && (
+        <div className="flex items-center gap-2 bg-white/10 text-white text-xs px-3 py-1.5 rounded-full">
+            <Image src="/icons/google.png" alt="Google" width={16} height={16} />
+            <span>Logged in with Google</span>
+        </div>
+      )}
+
       <div className="w-full space-y-4 px-4">
         <div className="space-y-1">
           <label htmlFor="name" className="pl-3 text-sm font-medium">Name</label>
@@ -83,7 +96,8 @@ export function MyProfileTab({ profile, onProfileUpdate }: MyProfileTabProps) {
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="bg-white/10 border-white/20 text-white rounded-2xl h-12" 
+            className={cn("bg-white/10 border-white/20 text-white rounded-2xl h-12", isGoogleSignIn && "text-white/70")}
+            disabled={isGoogleSignIn}
           />
         </div>
         <div className="space-y-1">
