@@ -114,29 +114,32 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
     const unsubscribe = onAuthStateChanged((newUser) => {
       setUser(newUser);
       setIsAuthenticated(!!newUser);
-      if (newUser) {
-        // useLocalStorage will trigger a re-fetch of the profile info for the new user.
-        // We can pre-fill some data from the auth user object if the stored profile is empty/default.
-        setProfileInfo(prev => {
-           const isNewOrEmptyProfile = !prev.name || prev.name === 'Jane Doe';
-           const newName = isNewOrEmptyProfile ? (newUser.displayName || '') : prev.name;
-           const newEmail = newUser.email || prev.email;
-
-           // Only update if there are meaningful changes to avoid loops
-           if (newName !== prev.name || newEmail !== prev.email || (isNewOrEmptyProfile && !prev.phone)) {
-             return { ...prev, name: newName, email: newEmail, phone: prev.phone || '' };
-           }
-           return prev;
-        });
-
-      } else {
-        // When logged out, reset to default guest profile
-        setProfileInfo(defaultProfileInfo);
-      }
       setIsAuthLoaded(true);
     });
     return () => unsubscribe();
-  }, [setProfileInfo]);
+  }, []);
+
+  useEffect(() => {
+    if (user) {
+        // User is logged in, load their specific profile
+        const userProfileKey = `chocoSmileyProfile-${user.uid}`;
+        const storedProfile = localStorage.getItem(userProfileKey);
+        if (storedProfile) {
+            setProfileInfo(JSON.parse(storedProfile));
+        } else {
+            // New user or no profile yet, create one
+            setProfileInfo({
+                name: user.displayName || '',
+                email: user.email || '',
+                phone: user.phoneNumber || '',
+            });
+        }
+    } else {
+        // User is logged out, revert to default guest profile
+        setProfileInfo(defaultProfileInfo);
+    }
+  }, [user, setProfileInfo]);
+
 
   const updateProfileInfo = useCallback((newInfo: Partial<ProfileInfo>) => {
       setProfileInfo(prev => ({ ...prev, ...newInfo }));
@@ -219,17 +222,14 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
   }, [setCart]);
 
   const login = useCallback((loggedInUser: User) => {
-    setUser(loggedInUser);
-    setIsAuthenticated(true);
-    // The useEffect for onAuthStateChanged handles profile loading.
+    // This function is now mostly a placeholder as the onAuthStateChanged effect handles the logic.
+    // It can be used to manually trigger state updates if needed, but is generally not required.
   }, []);
 
   const logout = useCallback(async () => {
     try {
       await signOutUser();
-      setUser(null);
-      setIsAuthenticated(false);
-      setProfileInfo(defaultProfileInfo); // Explicitly reset profile on logout
+      // onAuthStateChanged will handle setting user to null and resetting profile.
       setAuthPopup(null); // Close any auth popups
       toast({
         title: "Logged Out",
@@ -242,7 +242,7 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
         variant: "destructive",
       });
     }
-  }, [setProfileInfo, toast]);
+  }, [toast]);
 
 
   const value: AppContextType = {
