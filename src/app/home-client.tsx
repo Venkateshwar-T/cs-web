@@ -17,8 +17,17 @@ import { Footer } from '@/components/footer';
 import { useAppContext } from '@/context/app-context';
 import type { SanityProduct } from '@/types';
 
+interface HomepageContent {
+  exploreCategories: { _key: string; name: string; imageUrl: string }[];
+  exploreFlavours: { _key: string; name: string; imageUrl: string }[];
+}
 
-export default function HomeClient({ allProducts }: { allProducts: SanityProduct[] }) {
+interface HomeClientProps extends HomepageContent {
+  allProducts: SanityProduct[];
+}
+
+
+export default function HomeClient({ allProducts, exploreCategories, exploreFlavours }: HomeClientProps) {
   const { cart, updateCart, likedProducts, toggleLike, clearWishlist } = useAppContext();
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const isMobile = useIsMobile();
@@ -110,7 +119,7 @@ export default function HomeClient({ allProducts }: { allProducts: SanityProduct
             />
           </div>
           <div className="mt-8 w-full flex-grow min-h-0">
-            <ExploreCategories />
+            <ExploreCategories exploreCategories={exploreCategories} exploreFlavours={exploreFlavours} />
           </div>
         </main>
         <BottomNavbar activeView={'home'} onNavigate={handleNavigation} cartItemCount={cartItemCount} />
@@ -130,4 +139,3 @@ export default function HomeClient({ allProducts }: { allProducts: SanityProduct
     </>
   );
 }
-
