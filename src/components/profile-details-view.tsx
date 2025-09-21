@@ -1,4 +1,3 @@
-
 // @/components/profile-details-view.tsx
 'use client';
 
@@ -11,6 +10,9 @@ import { useToast } from '@/hooks/use-toast';
 import { useAppContext, type ProfileInfo } from '@/context/app-context';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
+import { updateUserPassword } from '@/lib/firebase';
+import { Loader } from './loader';
+
 
 interface ProfileDetailsViewProps {
   profile: ProfileInfo;
@@ -25,6 +27,7 @@ export function ProfileDetailsView({ profile, onHasChangesChange, onProfileUpdat
   const [email, setEmail] = useState(profile.email);
   const [password, setPassword] = useState(''); // Default to empty
   const [showPassword, setShowPassword] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
   const { toast } = useToast();
 
   const isGoogleSignIn = user?.providerData.some(
@@ -60,16 +63,46 @@ export function ProfileDetailsView({ profile, onHasChangesChange, onProfileUpdat
     onHasChangesChange(false);
   };
 
-  const handleSave = () => {
-    const updatedProfile = { name, phone, email };
-    onProfileUpdate(updatedProfile);
-    onHasChangesChange(false);
-    toast({
-      title: "Success",
-      description: "Profile information updated successfully.",
-      variant: "success",
-    });
+  const handleSave = async () => {
+    setIsSaving(true);
+    let passwordChanged = false;
+    
+    try {
+      if (password && !isGoogleSignIn) {
+        await updateUserPassword(password);
+        passwordChanged = true;
+      }
+
+      const updatedProfile = { name, phone, email };
+      onProfileUpdate(updatedProfile);
+      onHasChangesChange(false);
+
+      toast({
+        title: "Success",
+        description: `Profile information updated successfully.${passwordChanged ? " Your password has been changed." : ""}`,
+        variant: "success",
+      });
+       setPassword(''); // Clear password field after successful save
+
+    } catch (error: any) {
+       toast({
+        title: "Update Failed",
+        description: error.message || "Could not update your profile. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+        setIsSaving(false);
+    }
   };
+
+  if (isSaving) {
+    return (
+      <div className="flex flex-col items-center justify-center h-full">
+        <Loader />
+        <p className="mt-4 text-white">Saving your details...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="p-8 text-white h-full flex flex-col items-center">
@@ -146,10 +179,11 @@ export function ProfileDetailsView({ profile, onHasChangesChange, onProfileUpdat
                 onClick={handleCancel}
                 variant="outline"
                 className="bg-transparent text-base text-white border-custom-gold border-2 rounded-full px-10 hover:bg-custom-gold hover:text-custom-purple-dark"
+                disabled={isSaving}
             >
                 Cancel
             </Button>
-            <Button onClick={handleSave} className="bg-custom-gold text-base text-custom-purple-dark rounded-full px-12 hover:bg-custom-gold/90">
+            <Button onClick={handleSave} className="bg-custom-gold text-base text-custom-purple-dark rounded-full px-12 hover:bg-custom-gold/90" disabled={isSaving}>
                 Save
             </Button>
         </div>

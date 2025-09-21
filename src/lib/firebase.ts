@@ -8,6 +8,7 @@ import {
   signInWithEmailAndPassword,
   signOut,
   onAuthStateChanged as onFirebaseAuthStateChanged,
+  updatePassword,
   type User
 } from 'firebase/auth';
 
@@ -45,5 +46,13 @@ export const signOutUser = () => {
 export const onAuthStateChanged = (callback: (user: User | null) => void) => {
     return onFirebaseAuthStateChanged(auth, callback);
 };
+
+export const updateUserPassword = (newPassword: string) => {
+  if (!auth.currentUser) {
+    throw new Error("User not authenticated.");
+  }
+  return updatePassword(auth.currentUser, newPassword);
+};
+
 
 export { auth };
