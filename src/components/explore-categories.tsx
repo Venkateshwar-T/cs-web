@@ -49,11 +49,11 @@ export function ExploreCategories({ exploreCategories, exploreFlavours }: Explor
     >
         <div className="bg-white/20 h-full rounded-t-[25px] md:rounded-t-[40px] px-4 md:px-12 flex flex-col">
             <div className="flex-grow overflow-y-auto no-scrollbar min-h-0">
-                <SectionTitle className="flex justify-center md:justify-start text-lg pt-4 md:text-2xl md:pl-8 mb-2 md:mb-4">
+                <SectionTitle className="flex justify-center md:justify-start text-lg pt-4 md:pt-6 md:text-2xl md:pl-8 mb-2 md:mb-6">
                     Explore Categories
                 </SectionTitle>
                 <motion.div 
-                    className="grid grid-cols-2 md:flex md:flex-row flex-1 justify-around items-center gap-4 md:gap-6 pt-1 pb-6 px-2"
+                    className="grid grid-cols-2 md:flex md:flex-row flex-1 justify-around items-center gap-4 md:gap-6 pt-1 pb-6 md:pb-12 px-2"
                     variants={containerVariants}
                     initial="hidden"
                     animate="visible"
@@ -65,7 +65,7 @@ export function ExploreCategories({ exploreCategories, exploreFlavours }: Explor
                         alt={category.name}
                         width={600}
                         height={400}
-                        className="w-full h-full object-cover rounded-[20px] ring-1 ring-custom-purple-dark"
+                        className="w-full h-full object-cover rounded-[20px] md:rounded-[40px] ring-1 ring-custom-purple-dark"
                         onDragStart={(e) => e.preventDefault()}
                         />
                         <div className="absolute inset-x-0 bottom-2 md:bottom-3 flex items-end justify-center">
@@ -79,19 +79,19 @@ export function ExploreCategories({ exploreCategories, exploreFlavours }: Explor
                     Explore Flavours
                 </SectionTitle>
                 <motion.div 
-                    className="flex flex-row md:flex-wrap overflow-x-auto no-scrollbar md:overflow-visible flex-1 md:justify-around items-center gap-4 md:gap-8 px-2 md:px-0 pb-4 pt-1"
+                    className="flex flex-row md:flex-wrap overflow-x-auto no-scrollbar md:overflow-visible flex-1 md:justify-around items-center gap-4 md:gap-8 px-2 md:px-0 pb-4 md:pb-6 pt-1"
                     variants={containerVariants}
                     initial="hidden"
                     animate="visible"
                 >
                     {(exploreFlavours || []).map((flavour) => (
-                    <motion.div key={flavour._key} className="w-24 md:flex-1 md:w-full max-w-xs md:max-w-44 flex-shrink-0 md:flex-shrink aspect-square md:aspect-[5/6] relative group" variants={itemVariants}>
+                    <motion.div key={flavour._key} className="w-24 md:flex-1 md:w-full max-w-xs md:max-w-48 flex-shrink-0 md:flex-shrink aspect-square md:aspect-[5/6] relative group" variants={itemVariants}>
                         <Image
                         src={flavour.imageUrl}
                         alt={flavour.name}
                         width={400}
                         height={400}
-                        className="w-full h-full object-cover rounded-[20px] ring-1 ring-custom-purple-dark"
+                        className="w-full h-full object-cover rounded-[20px] md:rounded-[40px] ring-1 ring-custom-purple-dark"
                         onDragStart={(e) => e.preventDefault()}
                         />
                         <div className="absolute inset-x-0 bottom-2 md:bottom-3 flex items-end justify-center">
