@@ -23,7 +23,7 @@ export function ProfileDetailsView({ profile, onHasChangesChange, onProfileUpdat
   const [name, setName] = useState(profile.name);
   const [phone, setPhone] = useState(profile.phone);
   const [email, setEmail] = useState(profile.email);
-  const [password, setPassword] = useState('yourpassword'); // Example password
+  const [password, setPassword] = useState(''); // Default to empty
   const [showPassword, setShowPassword] = useState(false);
   const { toast } = useToast();
 
@@ -36,7 +36,7 @@ export function ProfileDetailsView({ profile, onHasChangesChange, onProfileUpdat
       name !== profile.name || 
       phone !== profile.phone || 
       email !== profile.email || 
-      password !== 'yourpassword';
+      password !== '';
     onHasChangesChange(hasChanges);
   }, [name, phone, email, password, profile, onHasChangesChange]);
   
@@ -56,7 +56,7 @@ export function ProfileDetailsView({ profile, onHasChangesChange, onProfileUpdat
     setName(profile.name);
     setPhone(profile.phone);
     setEmail(profile.email);
-    setPassword('yourpassword');
+    setPassword('');
     onHasChangesChange(false);
   };
 
@@ -127,6 +127,7 @@ export function ProfileDetailsView({ profile, onHasChangesChange, onProfileUpdat
                       type={showPassword ? "text" : "password"} 
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
+                      placeholder="Enter new password to change"
                       className="bg-white border-white/20 text-black rounded-2xl h-12 text-base pr-10" 
                   />
                   <button
