@@ -1,3 +1,4 @@
+
 // @/components/signup-popup.tsx
 'use client';
 
@@ -15,6 +16,7 @@ import Image from "next/image";
 import { useToast } from "@/hooks/use-toast";
 import { signUpWithEmail, signInWithGoogle } from '@/lib/firebase';
 import { useAppContext } from "@/context/app-context";
+import { cn } from '@/lib/utils';
 
 
 interface SignUpPopupProps {
@@ -48,7 +50,12 @@ export function SignUpPopup({ open, onOpenChange, onLoginClick }: SignUpPopupPro
     try {
       const userCredential = await signInWithGoogle();
       login(userCredential.user);
-      setAuthPopup('completeDetails');
+      // Check if user has name and phone, if not, open complete details
+      if (!userCredential.user.displayName) {
+        setAuthPopup('completeDetails');
+      } else {
+        setAuthPopup(null);
+      }
       toast({ title: "Success", description: "Logged in successfully!", variant: "success" });
     } catch (error: any) {
       toast({ title: "Sign Up Failed", description: error.message, variant: "destructive" });
@@ -57,13 +64,13 @@ export function SignUpPopup({ open, onOpenChange, onLoginClick }: SignUpPopupPro
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="p-0 w-auto">
+      <DialogContent className={cn("p-0 w-full max-w-sm md:max-w-md md:rounded-[40px] rounded-2xl")}>
         <DialogHeader>
           <DialogTitle className="sr-only">Sign Up</DialogTitle>
         </DialogHeader>
         <AuthLayout>
-            <div className="flex flex-col gap-4 px-8 pb-8 w-96">
-                <h2 className="text-3xl font-medium text-white font-plex-sans self-start">Sign Up</h2>
+            <div className="flex flex-col gap-4 p-6 md:px-8 pb-8 w-full">
+                <h2 className="text-2xl md:text-3xl font-medium text-white font-plex-sans self-start">Sign Up</h2>
                 
                 <div className="space-y-1 text-left">
                     <label className="text-sm text-white font-plex-sans">Email or Phone</label>
@@ -71,7 +78,7 @@ export function SignUpPopup({ open, onOpenChange, onLoginClick }: SignUpPopupPro
                         placeholder="Enter your email or phone"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        className="bg-white rounded-2xl text-black placeholder:text-gray-400 placeholder:font-montserrat font-montserrat h-12"
+                        className="bg-white rounded-2xl text-black placeholder:text-gray-400 placeholder:font-montserrat font-montserrat h-10 md:h-12"
                     />
                 </div>
                 
@@ -82,7 +89,7 @@ export function SignUpPopup({ open, onOpenChange, onLoginClick }: SignUpPopupPro
                         placeholder="Enter your password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        className="bg-white rounded-2xl text-black placeholder:text-gray-400 placeholder:font-montserrat font-montserrat h-12"
+                        className="bg-white rounded-2xl text-black placeholder:text-gray-400 placeholder:font-montserrat font-montserrat h-10 md:h-12"
                     />
                 </div>
 
@@ -90,7 +97,7 @@ export function SignUpPopup({ open, onOpenChange, onLoginClick }: SignUpPopupPro
                     By continuing, you agree to Choco Smiley’s <a href="#" className="text-custom-gold hover:underline">Terms and Service</a> and acknowledge Choco Smiley’s <a href="#" className="text-custom-gold hover:underline">Privacy Policy</a>.
                 </p>
 
-                <Button onClick={handleEmailSignUp} className="w-full h-12 bg-custom-gold text-custom-purple-dark font-montserrat font-bold text-lg rounded-full hover:bg-custom-gold/90 mt-2">
+                <Button onClick={handleEmailSignUp} className="w-full h-10 md:h-12 bg-custom-gold text-custom-purple-dark font-montserrat font-bold text-base md:text-lg rounded-full hover:bg-custom-gold/90 mt-2">
                     Create Account
                 </Button>
 
@@ -100,8 +107,8 @@ export function SignUpPopup({ open, onOpenChange, onLoginClick }: SignUpPopupPro
                     <div className="h-px flex-grow bg-white/50"></div>
                 </div>
 
-                <Button variant="outline" onClick={handleGoogleSignUp} className="w-[60%] h-12 bg-white font-semibold text-black self-center rounded-full hover:bg-white/90 hover:text-black/90">
-                    <Image src="/icons/google.png" alt="Google" width={25} height={25} />
+                <Button variant="outline" onClick={handleGoogleSignUp} className="w-full md:w-[60%] h-10 md:h-12 bg-white font-semibold text-black self-center rounded-full hover:bg-white/90 hover:text-black/90 text-sm md:text-base">
+                    <Image src="/icons/google.png" alt="Google" width={25} height={25} className="w-5 h-5 md:w-6 md:h-6"/>
                     Sign up with Google
                 </Button>
                 

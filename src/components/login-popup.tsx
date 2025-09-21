@@ -1,3 +1,4 @@
+
 // @/components/login-popup.tsx
 'use client';
 
@@ -15,6 +16,7 @@ import Image from "next/image";
 import { useToast } from "@/hooks/use-toast";
 import { signInWithGoogle, signInWithEmail } from '@/lib/firebase';
 import { useAppContext } from "@/context/app-context";
+import { cn } from '@/lib/utils';
 
 interface LoginPopupProps {
     open: boolean;
@@ -56,13 +58,13 @@ export function LoginPopup({ open, onOpenChange, onSignUpClick }: LoginPopupProp
   
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="p-0 w-auto">
+      <DialogContent className={cn("p-0 w-full max-w-sm md:max-w-md md:rounded-[40px] rounded-2xl")}>
         <DialogHeader>
           <DialogTitle className="sr-only">Login</DialogTitle>
         </DialogHeader>
         <AuthLayout>
-            <div className="flex flex-col gap-4 px-8 pb-8 w-96">
-                <h2 className="text-3xl font-medium text-white font-plex-sans self-start">Log In</h2>
+            <div className="flex flex-col gap-4 p-6 md:px-8 pb-8 w-full">
+                <h2 className="text-2xl md:text-3xl font-medium text-white font-plex-sans self-start">Log In</h2>
                 
                 <div className="space-y-1 text-left">
                     <label className="text-sm text-white font-plex-sans">Email or Phone</label>
@@ -70,7 +72,7 @@ export function LoginPopup({ open, onOpenChange, onSignUpClick }: LoginPopupProp
                         placeholder="Enter your email or phone"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        className="bg-white rounded-2xl text-black placeholder:text-gray-400 placeholder:font-montserrat font-montserrat h-12"
+                        className="bg-white rounded-2xl text-black placeholder:text-gray-400 placeholder:font-montserrat font-montserrat h-10 md:h-12"
                     />
                 </div>
                 
@@ -81,13 +83,13 @@ export function LoginPopup({ open, onOpenChange, onSignUpClick }: LoginPopupProp
                         placeholder="Enter your password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        className="bg-white rounded-2xl text-black placeholder:text-gray-400 placeholder:font-montserrat font-montserrat h-12"
+                        className="bg-white rounded-2xl text-black placeholder:text-gray-400 placeholder:font-montserrat font-montserrat h-10 md:h-12"
                     />
                 </div>
 
                 <a href="#" className="text-sm text-white font-montserrat self-center hover:underline">Forgot Password?</a>
 
-                <Button onClick={handleEmailLogin} className="w-full h-12 bg-custom-gold text-custom-purple-dark font-montserrat font-bold text-lg rounded-full hover:bg-custom-gold/90 mt-2">
+                <Button onClick={handleEmailLogin} className="w-full h-10 md:h-12 bg-custom-gold text-custom-purple-dark font-montserrat font-bold text-base md:text-lg rounded-full hover:bg-custom-gold/90 mt-2">
                     Login
                 </Button>
 
@@ -97,8 +99,8 @@ export function LoginPopup({ open, onOpenChange, onSignUpClick }: LoginPopupProp
                     <div className="h-px flex-grow bg-white/50"></div>
                 </div>
 
-                <Button variant="outline" onClick={handleGoogleLogin} className="w-[60%] h-12 bg-white font-semibold text-black self-center rounded-full hover:bg-white/90 hover:text-black/90">
-                    <Image src="/icons/google.png" alt="Google" width={25} height={25} />
+                <Button variant="outline" onClick={handleGoogleLogin} className="w-full md:w-[60%] h-10 md:h-12 bg-white font-semibold text-black self-center rounded-full hover:bg-white/90 hover:text-black/90 text-sm md:text-base">
+                    <Image src="/icons/google.png" alt="Google" width={25} height={25} className="w-5 h-5 md:w-6 md:h-6" />
                     Sign in with Google
                 </Button>
                 
