@@ -38,11 +38,11 @@ export function ExploreCategories() {
   ];
 
   const flavourImages = [
-    { id: 1, src: "https://placehold.co/600x400.png", alt: "Flavour 1", hint: "dark chocolate" },
-    { id: 2, src: "https://placehold.co/600x400.png", alt: "Flavour 2", hint: "milk chocolate" },
-    { id: 3, src: "https://placehold.co/600x400.png", alt: "Flavour 3", hint: "white chocolate" },
-    { id: 4, src: "https://placehold.co/600x400.png", alt: "Flavour 4", hint: "caramel" },
-    { id: 5, src: "https://placehold.co/600x400.png", alt: "Flavour 5", hint: "hazelnut" },
+    { id: 1, src: "https://placehold.co/600x400.png", alt: "Flavour 1", hint: "dark chocolate", title: "Dark Chocolate" },
+    { id: 2, src: "https://placehold.co/600x400.png", alt: "Flavour 2", hint: "milk chocolate", title: "Milk Chocolate" },
+    { id: 3, src: "https://placehold.co/600x400.png", alt: "Flavour 3", hint: "white chocolate", title: "White Chocolate" },
+    { id: 4, src: "https://placehold.co/600x400.png-caramel", alt: "Flavour 4", hint: "caramel", title: "Caramel" },
+    { id: 5, src: "https://placehold.co/600x400.png", alt: "Flavour 5", hint: "hazelnut", title: "Hazelnut" },
   ];
 
   return (
@@ -91,7 +91,7 @@ export function ExploreCategories() {
                     animate="visible"
                 >
                     {flavourImages.map((image) => (
-                    <motion.div key={image.id} className="w-24 md:flex-1 md:w-full max-w-xs md:max-w-44 flex-shrink-0 md:flex-shrink aspect-square md:aspect-[5/6]" variants={itemVariants}>
+                    <motion.div key={image.id} className="w-24 md:flex-1 md:w-full max-w-xs md:max-w-44 flex-shrink-0 md:flex-shrink aspect-square md:aspect-[5/6] relative group" variants={itemVariants}>
                         <Image
                         src={image.src}
                         alt={image.alt}
@@ -101,6 +101,9 @@ export function ExploreCategories() {
                         className="w-full h-full object-cover rounded-[20px]"
                         onDragStart={(e) => e.preventDefault()}
                         />
+                        <div className="absolute inset-0 bg-black/30 rounded-[20px] flex items-center justify-center transition-opacity opacity-100 group-hover:opacity-100">
+                            <h3 className="text-white text-xs md:text-lg text-center">{image.title}</h3>
+                        </div>
                     </motion.div>
                     ))}
                 </motion.div>
