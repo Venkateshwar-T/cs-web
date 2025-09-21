@@ -36,7 +36,6 @@ export function ProfileSidebar({ activeTab, onTabChange, onLogout, onClose }: Pr
 
   const handleLogout = () => {
     onLogout();
-    onClose();
   };
   
   return (
