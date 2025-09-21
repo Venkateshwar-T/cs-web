@@ -2,25 +2,28 @@
 // @/hooks/use-local-storage.ts
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 
 // A custom hook to manage state with localStorage persistence.
 export function useLocalStorage<T>(key: string, initialValue: T): [T, (value: T | ((val: T) => T)) => void, boolean] {
   const [isLoaded, setIsLoaded] = useState(false);
   
+  // Memoize the initial value to prevent re-renders
+  const memoizedInitialValue = useMemo(() => initialValue, []);
+
   // Initialize state from localStorage or with the initial value.
   // This function is designed to run only on the client-side.
   const [storedValue, setStoredValue] = useState<T>(() => {
     // Check if running on the client
     if (typeof window === 'undefined') {
-      return initialValue;
+      return memoizedInitialValue;
     }
     try {
       const item = window.localStorage.getItem(key);
-      return item ? JSON.parse(item) : initialValue;
+      return item ? JSON.parse(item) : memoizedInitialValue;
     } catch (error) {
       console.error(`Error reading localStorage key "${key}":`, error);
-      return initialValue;
+      return memoizedInitialValue;
     }
   });
 
@@ -32,13 +35,13 @@ export function useLocalStorage<T>(key: string, initialValue: T): [T, (value: T 
             setStoredValue(JSON.parse(item));
         } else {
             // If no item, ensure we are on the initial value for that key
-            setStoredValue(initialValue);
+            setStoredValue(memoizedInitialValue);
         }
     } catch (error) {
         console.error(`Error hydrating localStorage key "${key}":`, error);
     }
     setIsLoaded(true);
-  }, [key, initialValue]);
+  }, [key, memoizedInitialValue]);
 
 
   // A wrapper for setStoredValue that also persists the new value to localStorage.

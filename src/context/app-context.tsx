@@ -10,9 +10,9 @@ import { onAuthStateChanged, signOutUser } from '@/lib/firebase';
 import type { User } from 'firebase/auth';
 
 const defaultProfileInfo: ProfileInfo = {
-    name: 'Jane Doe',
+    name: '',
     phone: '',
-    email: 'jane.doe@example.com',
+    email: '',
 };
 
 const WISHLIST_STORAGE_KEY = 'chocoSmileyWishlist';
@@ -120,12 +120,19 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
   }, []);
 
   useEffect(() => {
+    if (!isProfileLoaded) return; // Wait for profile to be loaded from localStorage
+
     if (user) {
         // User is logged in, check for existing profile
         const userProfileKey = `chocoSmileyProfile-${user.uid}`;
         const storedProfile = localStorage.getItem(userProfileKey);
+        
         if (storedProfile) {
-            // Do nothing, useLocalStorage has already loaded it.
+            const parsedProfile = JSON.parse(storedProfile);
+            // If the stored profile isn't the same as the one in state, update the state.
+            if (JSON.stringify(parsedProfile) !== JSON.stringify(profileInfo)) {
+              setProfileInfo(parsedProfile);
+            }
         } else {
             // New user or no profile yet, create one from auth details
             setProfileInfo({
@@ -136,12 +143,11 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
         }
     } else {
         // User is logged out, ensure we are using the guest profile
-        setProfileInfo(defaultProfileInfo);
+        if (JSON.stringify(profileInfo) !== JSON.stringify(defaultProfileInfo)) {
+            setProfileInfo(defaultProfileInfo);
+        }
     }
-  // isProfileLoaded is removed to avoid re-triggering when profile changes.
-  // setProfileInfo is stable due to useCallback in useLocalStorage.
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user, setProfileInfo]);
+  }, [user, isProfileLoaded, setProfileInfo, profileInfo]);
 
 
   const updateProfileInfo = useCallback((newInfo: Partial<ProfileInfo>) => {

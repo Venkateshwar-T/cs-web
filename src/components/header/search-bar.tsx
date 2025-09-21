@@ -2,7 +2,7 @@
 // @/components/header/search-bar.tsx
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
@@ -22,14 +22,14 @@ const textsToType = ["Corporate gifts", "Family presents", "Festive gifts", "Ann
 export function SearchBar({ activeView, isEnquireOpen, onSubmit, searchInput, onSearchInputChange }: SearchBarProps) {
     const [placeholder, setPlaceholder] = useState("");
 
-    useEffect(() => {
-        if (activeView !== 'home') return;
+    const type = useCallback(() => {
         let textIndex = 0;
         let charIndex = 0;
         let isDeleting = false;
         let timeoutId: NodeJS.Timeout;
 
-        const type = () => {
+        const performTyping = () => {
+            if (activeView !== 'home') return;
             const currentText = textsToType[textIndex];
             const displayedText = isDeleting
                 ? currentText.substring(0, charIndex - 1)
@@ -39,22 +39,27 @@ export function SearchBar({ activeView, isEnquireOpen, onSubmit, searchInput, on
 
             if (!isDeleting && displayedText === currentText) {
                 isDeleting = true;
-                timeoutId = setTimeout(type, 2000); 
+                timeoutId = setTimeout(performTyping, 2000); 
             } else if (isDeleting && displayedText === "") {
                 isDeleting = false;
                 charIndex = 0;
                 textIndex = (textIndex + 1) % textsToType.length;
-                timeoutId = setTimeout(type, 500);
+                timeoutId = setTimeout(performTyping, 500);
             } else {
                 charIndex = isDeleting ? charIndex - 1 : charIndex + 1;
-                timeoutId = setTimeout(type, isDeleting ? 100 : 150);
+                timeoutId = setTimeout(performTyping, isDeleting ? 100 : 150);
             }
         };
 
-        timeoutId = setTimeout(type, 200);
+        timeoutId = setTimeout(performTyping, 200);
 
         return () => clearTimeout(timeoutId);
     }, [activeView]);
+
+    useEffect(() => {
+        const cleanup = type();
+        return cleanup;
+    }, [type]);
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         onSubmit(e, searchInput);
