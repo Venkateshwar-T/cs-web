@@ -19,6 +19,22 @@ import { useAppContext } from "@/context/app-context";
 import { cn } from '@/lib/utils';
 import { Loader } from './loader';
 
+// Helper function to create user-friendly error messages
+const getAuthErrorMessage = (errorCode: string): string => {
+  switch (errorCode) {
+    case 'auth/email-already-in-use':
+      return 'This email address is already in use by another account.';
+    case 'auth/weak-password':
+      return 'The password is too weak. Please use a stronger password.';
+    case 'auth/invalid-email':
+      return 'The email address is not valid. Please enter a valid email.';
+    case 'auth/network-request-failed':
+      return 'Could not connect to the network. Please check your connection and try again.';
+    default:
+      return 'An unexpected error occurred. Please try again later.';
+  }
+};
+
 
 interface SignUpPopupProps {
     open: boolean;
@@ -45,7 +61,9 @@ export function SignUpPopup({ open, onOpenChange, onLoginClick }: SignUpPopupPro
       setAuthPopup('completeDetails');
       toast({ title: "Success", description: "Account created successfully!", variant: "success" });
     } catch (error: any) {
-      toast({ title: "Sign Up Failed", description: error.message, variant: "destructive" });
+      console.error("Firebase SignUp Error:", error); // Log the full error for developers
+      const friendlyMessage = getAuthErrorMessage(error.code);
+      toast({ title: "Sign Up Failed", description: friendlyMessage, variant: "destructive" });
     } finally {
       setIsLoading(false);
     }
@@ -64,7 +82,8 @@ export function SignUpPopup({ open, onOpenChange, onLoginClick }: SignUpPopupPro
       }
       toast({ title: "Success", description: "Logged in successfully!", variant: "success" });
     } catch (error: any) {
-      toast({ title: "Sign Up Failed", description: error.message, variant: "destructive" });
+      console.error("Google Sign-In Error:", error); // Log the full error for developers
+      toast({ title: "Sign Up Failed", description: "Could not sign up with Google. Please try again.", variant: "destructive" });
     } finally {
       setIsLoading(false);
     }

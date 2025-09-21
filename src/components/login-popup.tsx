@@ -19,6 +19,23 @@ import { useAppContext } from "@/context/app-context";
 import { cn } from '@/lib/utils';
 import { Loader } from './loader';
 
+// Helper function to create user-friendly error messages
+const getAuthErrorMessage = (errorCode: string): string => {
+  switch (errorCode) {
+    case 'auth/invalid-credential':
+    case 'auth/wrong-password':
+    case 'auth/user-not-found':
+      return 'Invalid email or password. Please check your credentials and try again.';
+    case 'auth/too-many-requests':
+      return 'Access to this account has been temporarily disabled due to many failed login attempts. You can reset your password or try again later.';
+    case 'auth/network-request-failed':
+      return 'Could not connect to the network. Please check your connection and try again.';
+    default:
+      return 'An unexpected error occurred. Please try again later.';
+  }
+};
+
+
 interface LoginPopupProps {
     open: boolean;
     onOpenChange: (open: boolean) => void;
@@ -44,7 +61,9 @@ export function LoginPopup({ open, onOpenChange, onSignUpClick }: LoginPopupProp
       setAuthPopup(null);
       toast({ title: "Success", description: "Logged in successfully!", variant: "success" });
     } catch (error: any) {
-      toast({ title: "Login Failed", description: error.message, variant: "destructive" });
+      console.error("Firebase Login Error:", error); // Log the full error for developers
+      const friendlyMessage = getAuthErrorMessage(error.code);
+      toast({ title: "Login Failed", description: friendlyMessage, variant: "destructive" });
     } finally {
       setIsLoading(false);
     }
@@ -58,7 +77,8 @@ export function LoginPopup({ open, onOpenChange, onSignUpClick }: LoginPopupProp
       setAuthPopup(null);
       toast({ title: "Success", description: "Logged in successfully!", variant: "success" });
     } catch (error: any) {
-      toast({ title: "Login Failed", description: error.message, variant: "destructive" });
+      console.error("Google Sign-In Error:", error); // Log the full error for developers
+      toast({ title: "Login Failed", description: "Could not sign in with Google. Please try again.", variant: "destructive" });
     } finally {
       setIsLoading(false);
     }
