@@ -138,7 +138,7 @@ export function PopupsManager({
           </div>
       )}
 
-      {isProfileOpen && (
+      {isProfileOpen && onLogout && (
           <div className="fixed inset-0 z-[60] flex items-center justify-center">
             <ProfilePopup 
               onClose={() => setIsProfileOpen(false)} 
@@ -149,7 +149,7 @@ export function PopupsManager({
               cart={cart || {}}
               onClearWishlist={onClearWishlist || (() => {})}
               onProductClick={onProductClick || (() => {})}
-              onLogout={onLogout || (() => {})}
+              onLogout={onLogout}
             />
           </div>
       )}

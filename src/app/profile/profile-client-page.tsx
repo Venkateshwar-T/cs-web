@@ -24,7 +24,6 @@ interface ProfileClientPageProps {
 }
 
 export default function ProfileClientPage({ allProducts }: ProfileClientPageProps) {
-  const [isProfileOpen, setIsProfileOpen] = useState(false);
   const router = useRouter();
   const isMobile = useIsMobile();
   const { 
@@ -41,6 +40,7 @@ export default function ProfileClientPage({ allProducts }: ProfileClientPageProp
     clearCart,
     logout
   } = useAppContext();
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
   
   if (!isProfileLoaded) {
     return (
