@@ -38,11 +38,11 @@ export function ExploreCategories() {
   ];
 
   const flavourImages = [
-    { id: 1, src: "https://placehold.co/600x400.png", alt: "Flavour 1", hint: "dark chocolate", title: "Dark Chocolate" },
-    { id: 2, src: "https://placehold.co/600x400.png", alt: "Flavour 2", hint: "milk chocolate", title: "Milk Chocolate" },
-    { id: 3, src: "https://placehold.co/600x400.png", alt: "Flavour 3", hint: "white chocolate", title: "White Chocolate" },
-    { id: 4, src: "https://placehold.co/600x400.png-caramel", alt: "Flavour 4", hint: "caramel", title: "Caramel" },
-    { id: 5, src: "https://placehold.co/600x400.png", alt: "Flavour 5", hint: "hazelnut", title: "Hazelnut" },
+    { id: 1, src: "https://picsum.photos/seed/flavour1/600/400", alt: "Flavour 1", hint: "dark chocolate", title: "Dark Chocolate" },
+    { id: 2, src: "https://picsum.photos/seed/flavour2/600/400", alt: "Flavour 2", hint: "milk chocolate", title: "Milk Chocolate" },
+    { id: 3, src: "https://picsum.photos/seed/flavour3/600/400", alt: "Flavour 3", hint: "white chocolate", title: "White Chocolate" },
+    { id: 4, src: "https://picsum.photos/seed/flavour4/600/400", alt: "Flavour 4", hint: "caramel", title: "Caramel" },
+    { id: 5, src: "https://picsum.photos/seed/flavour5/600/400", alt: "Flavour 5", hint: "hazelnut", title: "Hazelnut" },
   ];
 
   return (
