@@ -4,7 +4,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import type { ActiveView, ProfileInfo } from '@/app/page';
+import type { ActiveView } from '@/app/page';
 import type { SanityProduct } from '@/types';
 import { Header } from '@/components/header';
 import { BottomNavbar } from '@/components/bottom-navbar';
@@ -16,6 +16,7 @@ import { StaticSparkleBackground } from '@/components/static-sparkle-background'
 import { useAppContext } from '@/context/app-context';
 import { Loader } from '@/components/loader';
 import { EmptyState } from '@/components/empty-state';
+import type { ProfileInfo } from '@/context/app-context';
 
 interface ProfileClientPageProps {
   allProducts: SanityProduct[];
@@ -90,26 +91,26 @@ export default function ProfileClientPage({ allProducts }: ProfileClientPageProp
           "flex-grow flex flex-col transition-all duration-300 relative min-h-0 md:pb-0",
           "pt-24" 
         )}>
-          {isAuthenticated ? (
-            isMobile ? (
-              <ProfileMobileView 
-                profile={profileInfo}
-                onProfileUpdate={handleProfileUpdate}
-                products={allProducts}
-                likedProducts={likedProducts}
-                onLikeToggle={toggleLike}
-                onAddToCart={updateCart}
-                cart={cart}
-                onClearWishlist={clearWishlist}
-              />
-            ) : (
-              <div className="flex flex-col items-center justify-center h-full gap-4 text-center px-4">
-                <h2 className="text-2xl font-bold text-white">Desktop Profile View</h2>
-                <p className="text-white/70 max-w-xs">
-                  This is a placeholder for the desktop profile view.
-                </p>
-              </div>
-            )
+          {isMobile ? (
+            <ProfileMobileView 
+              profile={profileInfo}
+              onProfileUpdate={handleProfileUpdate}
+              products={allProducts}
+              likedProducts={likedProducts}
+              onLikeToggle={toggleLike}
+              onAddToCart={updateCart}
+              cart={cart}
+              onClearWishlist={clearWishlist}
+              isAuthenticated={isAuthenticated}
+              onLoginClick={handleLoginClick}
+            />
+          ) : isAuthenticated ? (
+            <div className="flex flex-col items-center justify-center h-full gap-4 text-center px-4">
+              <h2 className="text-2xl font-bold text-white">Desktop Profile View</h2>
+              <p className="text-white/70 max-w-xs">
+                This is a placeholder for the desktop profile view.
+              </p>
+            </div>
           ) : (
             <div className="flex-grow flex flex-col items-center justify-center h-full px-4 pb-24">
               <EmptyState 

@@ -1,8 +1,9 @@
+
 // @/components/profile-mobile-view.tsx
 'use client';
 
 import { useState } from 'react';
-import type { ProfileInfo } from '@/app/page';
+import type { ProfileInfo } from '@/context/app-context';
 import type { SanityProduct } from '@/types';
 import { cn } from '@/lib/utils';
 import { MyProfileTab } from './my-profile-tab';
@@ -10,6 +11,7 @@ import { WishlistView } from './wishlist-view';
 import { MyOrdersTab } from './my-orders-tab';
 import type { OrderItem } from '@/context/app-context';
 import { useRouter } from 'next/navigation';
+import { EmptyState } from './empty-state';
 
 interface ProfileMobileViewProps {
   profile: ProfileInfo;
@@ -20,6 +22,8 @@ interface ProfileMobileViewProps {
   onAddToCart: (productName: string, quantity: number) => void;
   cart: Record<string, OrderItem>;
   onClearWishlist: () => void;
+  isAuthenticated: boolean;
+  onLoginClick: () => void;
 }
 
 const tabs = ['My Profile', 'My Wishlist', 'My Orders'];
@@ -32,7 +36,9 @@ export function ProfileMobileView({
   onLikeToggle, 
   onAddToCart, 
   cart, 
-  onClearWishlist 
+  onClearWishlist,
+  isAuthenticated,
+  onLoginClick,
 }: ProfileMobileViewProps) {
   const [activeTab, setActiveTab] = useState('My Profile');
   const router = useRouter();
@@ -63,7 +69,20 @@ export function ProfileMobileView({
       </div>
       <div className={cn("flex-grow overflow-y-auto no-scrollbar", activeTab==='My Profile' && 'pt-6', activeTab==='My Wishlist' && 'pt-6')}>
         {activeTab === 'My Profile' && (
-          <MyProfileTab profile={profile} onProfileUpdate={onProfileUpdate} />
+          isAuthenticated ? (
+            <MyProfileTab profile={profile} onProfileUpdate={onProfileUpdate} />
+          ) : (
+             <div className="flex-grow flex flex-col items-center justify-center h-full px-4 pb-24">
+              <EmptyState 
+                imageUrl='/icons/profile_drpdwn_btn.png'
+                title="You're Not Logged In"
+                description="Log in or create an account to view your profile, orders, and wishlist."
+                buttonText="Log In / Sign Up"
+                onButtonClick={onLoginClick}
+                imageClassName='w-24 h-24'
+              />
+            </div>
+          )
         )}
         {activeTab === 'My Wishlist' && (
           <WishlistView
