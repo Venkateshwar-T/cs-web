@@ -22,8 +22,6 @@ import { useAppContext } from '@/context/app-context';
 interface ProfileSidebarProps {
   activeTab: string;
   onTabChange: (tab: string) => void;
-  onLogout: () => void;
-  onClose: () => void;
 }
 
 const mainSidebarItems = [
@@ -32,11 +30,11 @@ const mainSidebarItems = [
   { id: 'My Orders', label: 'My Orders', icon: <ListOrdered /> },
 ];
 
-export function ProfileSidebar({ activeTab, onTabChange, onLogout, onClose }: ProfileSidebarProps) {
-  const { isAuthenticated } = useAppContext();
+export function ProfileSidebar({ activeTab, onTabChange }: ProfileSidebarProps) {
+  const { logout, isAuthenticated, setAuthPopup } = useAppContext();
 
   const handleLogout = () => {
-    onLogout();
+    logout();
   };
   
   return (
