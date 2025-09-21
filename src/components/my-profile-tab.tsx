@@ -100,25 +100,27 @@ export function MyProfileTab({ profile, onProfileUpdate }: MyProfileTabProps) {
             disabled={isGoogleSignIn}
           />
         </div>
-        <div className="space-y-1">
-            <label htmlFor="password" className="pl-3 text-sm font-medium">Password</label>
-            <div className="relative">
-                <Input 
-                    id="password" 
-                    type={showPassword ? "text" : "password"} 
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="bg-white/10 border-white/20 text-white rounded-2xl h-12 pr-10" 
-                />
-                <button
-                    type="button"
-                    onClick={togglePasswordVisibility}
-                    className="absolute inset-y-0 right-0 flex items-center pr-3 text-white/70 hover:text-white"
-                >
-                    {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
-                </button>
-            </div>
-        </div>
+        {!isGoogleSignIn && (
+          <div className="space-y-1">
+              <label htmlFor="password" className="pl-3 text-sm font-medium">Password</label>
+              <div className="relative">
+                  <Input 
+                      id="password" 
+                      type={showPassword ? "text" : "password"} 
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      className="bg-white/10 border-white/20 text-white rounded-2xl h-12 pr-10" 
+                  />
+                  <button
+                      type="button"
+                      onClick={togglePasswordVisibility}
+                      className="absolute inset-y-0 right-0 flex items-center pr-3 text-white/70 hover:text-white"
+                  >
+                      {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                  </button>
+              </div>
+          </div>
+        )}
 
         <div className="flex items-center justify-center gap-4 pt-4">
             <Button 

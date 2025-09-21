@@ -118,25 +118,27 @@ export function ProfileDetailsView({ profile, onHasChangesChange, onProfileUpdat
             disabled={isGoogleSignIn}
           />
         </div>
-        <div className="space-y-1">
-            <label htmlFor="password" className="p-3 text-m font-medium">Password</label>
-            <div className="relative">
-                <Input 
-                    id="password" 
-                    type={showPassword ? "text" : "password"} 
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="bg-white border-white/20 text-black rounded-2xl h-12 text-base pr-10" 
-                />
-                <button
-                    type="button"
-                    onClick={togglePasswordVisibility}
-                    className="absolute inset-y-0 right-0 flex items-center pr-3 text-black/70 hover:text-black"
-                >
-                    {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
-                </button>
-            </div>
-        </div>
+        {!isGoogleSignIn && (
+          <div className="space-y-1">
+              <label htmlFor="password" className="p-3 text-m font-medium">Password</label>
+              <div className="relative">
+                  <Input 
+                      id="password" 
+                      type={showPassword ? "text" : "password"} 
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      className="bg-white border-white/20 text-black rounded-2xl h-12 text-base pr-10" 
+                  />
+                  <button
+                      type="button"
+                      onClick={togglePasswordVisibility}
+                      className="absolute inset-y-0 right-0 flex items-center pr-3 text-black/70 hover:text-black"
+                  >
+                      {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                  </button>
+              </div>
+          </div>
+        )}
 
         <div className="flex items-center justify-between gap-4 pt-4 pb-8">
             <Button 
