@@ -69,7 +69,7 @@ export function ExploreCategories({ exploreCategories, exploreFlavours }: Explor
                         onDragStart={(e) => e.preventDefault()}
                         />
                         <div className="absolute inset-x-0 bottom-2 md:bottom-3 flex items-end justify-center">
-                          <h3 className="text-white text-xs md:text-lg text-center font-plex-sans font-semibold [text-shadow:0_4px_2px_rgba(0,0,0,0.75)]">{category.name}</h3>
+                          <h3 className="text-white text-xs md:text-lg text-center font-plex-sans font-semibold [text-shadow:0_2px_1px_rgba(0,0,0,1)]">{category.name}</h3>
                         </div>
                     </motion.div>
                     ))}
@@ -95,7 +95,7 @@ export function ExploreCategories({ exploreCategories, exploreFlavours }: Explor
                         onDragStart={(e) => e.preventDefault()}
                         />
                         <div className="absolute inset-x-0 bottom-2 md:bottom-3 flex items-end justify-center">
-                            <h3 className="text-white text-xs md:text-lg text-center font-plex-sans font-semibold [text-shadow:0_4px_2px_rgba(0,0,0,0.75)]">{flavour.name}</h3>
+                            <h3 className="text-white text-xs md:text-lg text-center font-plex-sans font-semibold [text-shadow:0_2px_1px_rgba(0,0,0,1)]">{flavour.name}</h3>
                         </div>
                     </motion.div>
                     ))}
