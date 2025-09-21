@@ -96,6 +96,7 @@ export function ProfilePopup({
   };
   
   const handleLoginClick = () => {
+    onClose();
     setAuthPopup('login');
   }
 
