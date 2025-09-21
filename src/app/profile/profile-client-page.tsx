@@ -42,6 +42,14 @@ export default function ProfileClientPage({ allProducts }: ProfileClientPageProp
     logout
   } = useAppContext();
   
+  if (!isProfileLoaded) {
+    return (
+      <div className="flex h-screen w-full items-center justify-center bg-background">
+        <Loader />
+      </div>
+    )
+  }
+  
   const handleNavigation = (view: ActiveView) => {
     if (view === 'home') {
       router.push('/');
@@ -72,14 +80,6 @@ export default function ProfileClientPage({ allProducts }: ProfileClientPageProp
   }
 
   const cartItemCount = Object.values(cart).reduce((acc, item) => acc + item.quantity, 0);
-  
-  if (!isProfileLoaded) {
-    return (
-      <div className="flex h-screen w-full items-center justify-center bg-background">
-        <Loader />
-      </div>
-    )
-  }
 
   return (
     <>
