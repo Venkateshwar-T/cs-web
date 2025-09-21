@@ -2,7 +2,7 @@
 // @/components/my-profile-tab.tsx
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import { Eye, EyeOff } from 'lucide-react';
@@ -22,7 +22,7 @@ export function MyProfileTab({ profile, onProfileUpdate }: MyProfileTabProps) {
   const [name, setName] = useState(profile.name);
   const [phone, setPhone] = useState(profile.phone);
   const [email, setEmail] = useState(profile.email);
-  const [password, setPassword] = useState('yourpassword');
+  const [password, setPassword] = useState(''); // Default to empty
   const [showPassword, setShowPassword] = useState(false);
   const { toast } = useToast();
   
@@ -30,11 +30,19 @@ export function MyProfileTab({ profile, onProfileUpdate }: MyProfileTabProps) {
     (provider) => provider.providerId === 'google.com'
   );
 
+  // When the profile from context changes, update the local state.
+  useEffect(() => {
+    setName(profile.name || '');
+    setPhone(profile.phone || '');
+    setEmail(profile.email || '');
+  }, [profile]);
+
+
   const handleCancel = () => {
     setName(profile.name);
     setPhone(profile.phone);
     setEmail(profile.email);
-    setPassword('yourpassword');
+    setPassword('');
     toast({
       title: "Cancelled",
       description: "Your changes have been discarded.",
@@ -42,8 +50,11 @@ export function MyProfileTab({ profile, onProfileUpdate }: MyProfileTabProps) {
   };
 
   const handleSave = () => {
-    // Add validation logic here if needed
-    const updatedProfile = { name, phone, email };
+    const updatedProfile: Partial<ProfileInfo> = { name, phone };
+    if (!isGoogleSignIn) {
+      updatedProfile.email = email;
+    }
+    // Note: We don't save the password here. Password changes should go through a separate, secure flow.
     onProfileUpdate(updatedProfile);
     toast({
       title: "Success",
@@ -60,7 +71,7 @@ export function MyProfileTab({ profile, onProfileUpdate }: MyProfileTabProps) {
     <div className="flex flex-col items-center space-y-4">
       <Avatar className="w-24 h-24">
         <AvatarImage src={user?.photoURL ?? "https://picsum.photos/200"} alt="User avatar" data-ai-hint="person portrait" />
-        <AvatarFallback>{profile.name.charAt(0).toUpperCase()}</AvatarFallback>
+        <AvatarFallback>{name?.charAt(0).toUpperCase()}</AvatarFallback>
       </Avatar>
 
       {isGoogleSignIn && (
@@ -109,6 +120,7 @@ export function MyProfileTab({ profile, onProfileUpdate }: MyProfileTabProps) {
                       type={showPassword ? "text" : "password"} 
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
+                      placeholder="Enter new password to change"
                       className="bg-white/10 border-white/20 text-white rounded-2xl h-12 pr-10" 
                   />
                   <button

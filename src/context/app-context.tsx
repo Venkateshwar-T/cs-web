@@ -9,7 +9,12 @@ import { useToast } from '@/hooks/use-toast';
 import { onAuthStateChanged, signOutUser } from '@/lib/firebase';
 import type { User } from 'firebase/auth';
 
-const PROFILE_STORAGE_KEY = 'chocoSmileyProfile';
+const defaultProfileInfo: ProfileInfo = {
+    name: 'Jane Doe',
+    phone: '',
+    email: 'jane.doe@example.com',
+};
+
 const WISHLIST_STORAGE_KEY = 'chocoSmileyWishlist';
 const ORDERS_STORAGE_KEY = 'chocoSmileyOrders';
 const CART_STORAGE_KEY = 'chocoSmileyCart';
@@ -71,18 +76,19 @@ export type ProfileInfo = {
     email: string;
 };
 
-const defaultProfileInfo: ProfileInfo = {
-    name: 'Jane Doe',
-    phone: '',
-    email: 'jane.doe@example.com',
-};
-
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export function AppContextProvider({ children }: { children: ReactNode }) {
   const { toast } = useToast();
+  
+  const [user, setUser] = useState<User | null>(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthLoaded, setIsAuthLoaded] = useState(false);
+  
+  const profileStorageKey = user ? `chocoSmileyProfile-${user.uid}` : 'chocoSmileyProfile-guest';
+
   const [profileInfo, setProfileInfo, isProfileLoaded] = useLocalStorage<ProfileInfo>(
-    PROFILE_STORAGE_KEY,
+    profileStorageKey,
     defaultProfileInfo
   );
   
@@ -101,32 +107,30 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
     {}
   );
 
-  const [user, setUser] = useState<User | null>(null);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isAuthLoaded, setIsAuthLoaded] = useState(false);
-
-
   const [authPopup, setAuthPopup] = useState<AuthPopupType>(null);
   const [flavourSelection, setFlavourSelection] = useState<{ product: SanityProduct | null; isOpen: boolean }>({ product: null, isOpen: false });
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged((user) => {
-      setUser(user);
-      setIsAuthenticated(!!user);
-      if (user) {
-        // If the user's profile in local storage is still the default one,
-        // update it with info from their auth provider (e.g., Google).
+    const unsubscribe = onAuthStateChanged((newUser) => {
+      setUser(newUser);
+      setIsAuthenticated(!!newUser);
+      if (newUser) {
+        // When user changes, profileInfo from useLocalStorage will update automatically
+        // because the key changes. We might want to pre-fill from auth.
         setProfileInfo(prev => {
-          const isDefaultProfile = prev.email === defaultProfileInfo.email && prev.name === defaultProfileInfo.name;
-          if (isDefaultProfile || !prev.name || !prev.email) {
-            return {
-              ...prev,
-              name: user.displayName || prev.name,
-              email: user.email || prev.email,
-            }
-          }
-          return prev;
+           const isDefaultName = prev.name === 'Jane Doe' || !prev.name;
+           const newName = isDefaultName ? (newUser.displayName || '') : prev.name;
+           const newEmail = newUser.email || prev.email;
+
+           if (newName !== prev.name || newEmail !== prev.email) {
+             return { ...prev, name: newName, email: newEmail };
+           }
+           return prev;
         });
+
+      } else {
+        // When logged out, reset to default guest profile
+        setProfileInfo(defaultProfileInfo);
       }
       setIsAuthLoaded(true);
     });
@@ -134,8 +138,10 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
   }, [setProfileInfo]);
 
   const updateProfileInfo = useCallback((newInfo: Partial<ProfileInfo>) => {
-    setProfileInfo(prev => ({ ...prev, ...newInfo }));
-  }, [setProfileInfo]);
+    if (isAuthenticated) {
+      setProfileInfo(prev => ({ ...prev, ...newInfo }));
+    }
+  }, [setProfileInfo, isAuthenticated]);
 
   const toggleLike = useCallback((productId: string) => {
     setLikedProducts(prev => {
@@ -213,24 +219,19 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
     setCart({});
   }, [setCart]);
 
-  const login = useCallback((user: User) => {
-    setUser(user);
+  const login = useCallback((loggedInUser: User) => {
+    setUser(loggedInUser);
     setIsAuthenticated(true);
-     if (user) {
-        setProfileInfo(prev => ({
-          ...prev,
-          name: user.displayName || prev.name || '',
-          email: user.email || prev.email || '',
-        }));
-      }
-  }, [setProfileInfo]);
+    // The useEffect for onAuthStateChanged handles profile loading.
+  }, []);
 
   const logout = useCallback(async () => {
     try {
       await signOutUser();
       setUser(null);
       setIsAuthenticated(false);
-      setProfileInfo(defaultProfileInfo);
+      setProfileInfo(defaultProfileInfo); // Explicitly reset profile on logout
+      setAuthPopup(null); // Close any auth popups
       toast({
         title: "Logged Out",
         description: "You have been successfully logged out.",
