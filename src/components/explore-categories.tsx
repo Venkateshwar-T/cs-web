@@ -71,10 +71,10 @@ export function ExploreCategories() {
                         width={600}
                         height={400}
                         data-ai-hint={image.hint}
-                        className="w-full h-full object-cover rounded-[20px] ring-1 ring-purple-300/50"
+                        className="w-full h-full object-cover rounded-[20px] ring-2 ring-custom-purple-dark"
                         onDragStart={(e) => e.preventDefault()}
                         />
-                        <div className="absolute inset-0 rounded-[20px] flex items-end justify-center pb-2 md:pb-3">
+                        <div className="absolute inset-x-0 bottom-2 md:bottom-3 flex items-end justify-center">
                           <h3 className="text-white text-xs md:text-lg text-center font-plex-sans font-semibold [text-shadow:0_4px_8px_rgb(0_0_0_/_0.9)]">{image.title}</h3>
                         </div>
                     </motion.div>
@@ -98,10 +98,10 @@ export function ExploreCategories() {
                         width={400}
                         height={400}
                         data-ai-hint={image.hint}
-                        className="w-full h-full object-cover rounded-[20px] ring-1 ring-purple-300/50"
+                        className="w-full h-full object-cover rounded-[20px] ring-2 ring-custom-purple-dark"
                         onDragStart={(e) => e.preventDefault()}
                         />
-                        <div className="absolute inset-0 rounded-[20px] flex items-end justify-center pb-2 md:pb-3">
+                        <div className="absolute inset-x-0 bottom-2 md:bottom-3 flex items-end justify-center">
                             <h3 className="text-white text-xs md:text-lg text-center font-plex-sans font-semibold [text-shadow:0_4px_8px_rgb(0_0_0_/_0.9)]">{image.title}</h3>
                         </div>
                     </motion.div>
