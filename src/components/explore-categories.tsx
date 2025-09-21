@@ -74,7 +74,7 @@ export function ExploreCategories() {
                         className="w-full h-full object-cover rounded-[20px]"
                         onDragStart={(e) => e.preventDefault()}
                         />
-                        <div className="absolute inset-0 bg-black/30 rounded-[20px] flex items-center justify-center transition-opacity opacity-100 group-hover:opacity-100">
+                        <div className="absolute inset-0 bg-black/30 rounded-[20px] flex items-end justify-center pb-2 md:pb-3 transition-opacity opacity-100 group-hover:opacity-100">
                           <h3 className="text-white text-xs md:text-lg text-center">{image.title}</h3>
                         </div>
                     </motion.div>
@@ -101,7 +101,7 @@ export function ExploreCategories() {
                         className="w-full h-full object-cover rounded-[20px]"
                         onDragStart={(e) => e.preventDefault()}
                         />
-                        <div className="absolute inset-0 bg-black/30 rounded-[20px] flex items-center justify-center transition-opacity opacity-100 group-hover:opacity-100">
+                        <div className="absolute inset-0 bg-black/30 rounded-[20px] flex items-end justify-center pb-2 md:pb-3 transition-opacity opacity-100 group-hover:opacity-100">
                             <h3 className="text-white text-xs md:text-lg text-center">{image.title}</h3>
                         </div>
                     </motion.div>
