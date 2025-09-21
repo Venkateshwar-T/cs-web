@@ -75,7 +75,7 @@ export function ExploreCategories() {
                         onDragStart={(e) => e.preventDefault()}
                         />
                         <div className="absolute inset-0 bg-black/30 rounded-[20px] flex items-center justify-center transition-opacity opacity-100 group-hover:opacity-100">
-                          <h3 className="text-white text-lg font-bold">{image.title}</h3>
+                          <h3 className="text-white text-lg">{image.title}</h3>
                         </div>
                     </motion.div>
                     ))}
