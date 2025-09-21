@@ -53,7 +53,7 @@ export function PopupsManager({
   onProductClick,
 }: PopupsManagerProps) {
   const router = useRouter();
-  const { addOrder, clearCart: globalClearCart, authPopup, setAuthPopup, login, isAuthenticated, updateProfileInfo } = useAppContext();
+  const { addOrder, clearCart: globalClearCart, authPopup, setAuthPopup, isAuthenticated, updateProfileInfo } = useAppContext();
   const isAnyPopupVisible = isCartOpen || isProfileOpen || !!authPopup;
 
   const handleFinalizeOrder = () => {
@@ -115,11 +115,11 @@ export function PopupsManager({
 
   return (
     <>
-      {isAnyPopupVisible && <div className="fixed inset-0 z-40 bg-black/50" />}
+      {isAnyPopupVisible && <div className="fixed inset-0 z-50 bg-black/50" />}
       
       {isCartOpen && cart && onClearCart && onAddToCart && onToggleCartPopup && onProductClick && (
           <div 
-            className={cn("fixed inset-x-0 bottom-0 z-50 h-[82vh] data-[state=closed]:animate-slide-down-out data-[state=open]:animate-slide-up-in")}
+            className={cn("fixed inset-x-0 bottom-0 z-[60] h-[82vh] data-[state=closed]:animate-slide-down-out data-[state=open]:animate-slide-up-in")}
             data-state={isCartOpen ? 'open' : 'closed'}
           >
               <div className="h-full relative w-[80vw] left-1/2 -translate-x-1/2">
@@ -137,7 +137,7 @@ export function PopupsManager({
       )}
 
       {isProfileOpen && likedProducts && onLikeToggle && cart && onAddToCart && onClearWishlist && onProductClick && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center">
+          <div className="fixed inset-0 z-[60] flex items-center justify-center">
             <ProfilePopup 
               onClose={() => setIsProfileOpen(false)} 
               products={allProducts}

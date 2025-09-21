@@ -17,14 +17,13 @@ import { useAppContext } from '@/context/app-context';
 import { Loader } from '@/components/loader';
 import { EmptyState } from '@/components/empty-state';
 import type { ProfileInfo } from '@/context/app-context';
-import { ProfilePopup } from '@/components/profile-popup';
+import { PopupsManager } from '@/components/popups/popups-manager';
 
 interface ProfileClientPageProps {
   allProducts: SanityProduct[];
 }
 
 export default function ProfileClientPage({ allProducts }: ProfileClientPageProps) {
-  const [activeView, setActiveView] = useState<ActiveView>('profile');
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const router = useRouter();
   const isMobile = useIsMobile();
@@ -38,7 +37,8 @@ export default function ProfileClientPage({ allProducts }: ProfileClientPageProp
     toggleLike,
     clearWishlist,
     isAuthenticated,
-    setAuthPopup
+    setAuthPopup,
+    clearCart
   } = useAppContext();
   
   const handleNavigation = (view: ActiveView) => {
@@ -87,7 +87,7 @@ export default function ProfileClientPage({ allProducts }: ProfileClientPageProp
   return (
     <>
       {isMobile ? <StaticSparkleBackground /> : <SparkleBackground />}
-      <div className={cn("flex flex-col h-screen", isProfileOpen && 'opacity-50')}>
+      <div className={cn("flex flex-col h-screen", (isProfileOpen || !!useAppContext().authPopup) && 'opacity-50')}>
         <Header
           onProfileOpenChange={handleDesktopProfileClick}
           isContentScrolled={false}
@@ -133,20 +133,20 @@ export default function ProfileClientPage({ allProducts }: ProfileClientPageProp
             </div>
           )}
         </main>
-        <BottomNavbar activeView={activeView} onNavigate={handleNavigation} cartItemCount={cartItemCount} />
+        <BottomNavbar activeView={'profile'} onNavigate={handleNavigation} cartItemCount={cartItemCount} />
       </div>
-       {isProfileOpen && (
-        <ProfilePopup
-          onClose={() => setIsProfileOpen(false)}
-          products={allProducts}
+       <PopupsManager
+          isProfileOpen={isProfileOpen}
+          setIsProfileOpen={setIsProfileOpen}
+          allProducts={allProducts}
           likedProducts={likedProducts}
           onLikeToggle={toggleLike}
-          onAddToCart={updateCart}
           cart={cart}
+          onAddToCart={updateCart}
           onClearWishlist={clearWishlist}
           onProductClick={handleProductClick}
-        />
-      )}
+          onClearCart={clearCart}
+      />
     </>
   );
 }
