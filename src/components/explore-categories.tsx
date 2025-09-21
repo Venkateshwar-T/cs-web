@@ -71,7 +71,7 @@ export function ExploreCategories() {
                         width={600}
                         height={400}
                         data-ai-hint={image.hint}
-                        className="w-full h-full object-cover rounded-[20px]"
+                        className="w-full h-full object-cover rounded-[20px] ring-1 ring-purple-300/50"
                         onDragStart={(e) => e.preventDefault()}
                         />
                         <div className="absolute inset-0 rounded-[20px] flex items-end justify-center pb-2 md:pb-3">
@@ -98,7 +98,7 @@ export function ExploreCategories() {
                         width={400}
                         height={400}
                         data-ai-hint={image.hint}
-                        className="w-full h-full object-cover rounded-[20px]"
+                        className="w-full h-full object-cover rounded-[20px] ring-1 ring-purple-300/50"
                         onDragStart={(e) => e.preventDefault()}
                         />
                         <div className="absolute inset-0 rounded-[20px] flex items-end justify-center pb-2 md:pb-3">
