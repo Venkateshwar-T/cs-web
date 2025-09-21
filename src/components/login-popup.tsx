@@ -61,7 +61,6 @@ export function LoginPopup({ open, onOpenChange, onSignUpClick }: LoginPopupProp
       setAuthPopup(null);
       toast({ title: "Success", description: "Logged in successfully!", variant: "success" });
     } catch (error: any) {
-      console.error("Firebase Login Error:", error); // Log the full error for developers
       const friendlyMessage = getAuthErrorMessage(error.code);
       toast({ title: "Login Failed", description: friendlyMessage, variant: "destructive" });
     } finally {
@@ -77,7 +76,6 @@ export function LoginPopup({ open, onOpenChange, onSignUpClick }: LoginPopupProp
       setAuthPopup(null);
       toast({ title: "Success", description: "Logged in successfully!", variant: "success" });
     } catch (error: any) {
-      console.error("Google Sign-In Error:", error); // Log the full error for developers
       toast({ title: "Login Failed", description: "Could not sign in with Google. Please try again.", variant: "destructive" });
     } finally {
       setIsLoading(false);
