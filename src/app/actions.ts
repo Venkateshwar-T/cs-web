@@ -40,9 +40,9 @@ export async function handleGenerateVariations(prevState: FormState, formData: F
       variations: result.variations,
     };
   } catch (error) {
-    console.error(error);
+    console.error('Error generating testimonial variations:', error);
     return {
-      message: 'An unexpected error occurred while generating variations.',
+      message: 'We had trouble generating variations. Please try again later.',
       errors: null,
       variations: [],
     };
