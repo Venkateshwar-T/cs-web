@@ -38,7 +38,8 @@ export default function ProfileClientPage({ allProducts }: ProfileClientPageProp
     isAuthenticated,
     setAuthPopup,
     clearCart,
-    logout
+    logout,
+    authPopup,
   } = useAppContext();
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   
@@ -84,7 +85,7 @@ export default function ProfileClientPage({ allProducts }: ProfileClientPageProp
   return (
     <>
       {isMobile ? <StaticSparkleBackground /> : <SparkleBackground />}
-      <div className={cn("flex flex-col h-screen", (isProfileOpen || !!useAppContext().authPopup) && 'opacity-50')}>
+      <div className={cn("flex flex-col h-screen", (isProfileOpen || !!authPopup) && 'opacity-50')}>
         <Header
           onProfileOpenChange={handleDesktopProfileClick}
           isContentScrolled={false}
