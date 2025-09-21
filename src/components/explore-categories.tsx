@@ -65,7 +65,7 @@ export function ExploreCategories({ exploreCategories, exploreFlavours }: Explor
                         alt={category.name}
                         width={600}
                         height={400}
-                        className="w-full h-full object-cover rounded-[20px] ring-1 ring-inset ring-custom-purple-dark"
+                        className="w-full h-full object-cover rounded-[20px] ring-1 ring-custom-purple-dark"
                         onDragStart={(e) => e.preventDefault()}
                         />
                         <div className="absolute inset-x-0 bottom-2 md:bottom-3 flex items-end justify-center">
@@ -91,7 +91,7 @@ export function ExploreCategories({ exploreCategories, exploreFlavours }: Explor
                         alt={flavour.name}
                         width={400}
                         height={400}
-                        className="w-full h-full object-cover rounded-[20px] ring-1 ring-inset ring-custom-purple-dark"
+                        className="w-full h-full object-cover rounded-[20px] ring-1 ring-custom-purple-dark"
                         onDragStart={(e) => e.preventDefault()}
                         />
                         <div className="absolute inset-x-0 bottom-2 md:bottom-3 flex items-end justify-center">
