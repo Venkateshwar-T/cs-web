@@ -111,18 +111,19 @@ export function ProfileDetailsView({ profile, onHasChangesChange, onProfileUpdat
     <div className="p-8 text-white h-full flex flex-col items-center">
       <div className='flex w-full justify-between items-center'>
         <h2 className="text-3xl font-normal font-poppins self-start mb-6">My Profile</h2>
-        {isGoogleSignIn && (
-            <div className="flex items-center gap-2 bg-white/10 text-white text-xs px-3 py-1.5 rounded-full mb-4">
-                <Image src="/icons/google.png" alt="Google" width={16} height={16} />
-                <span>Logged in with Google</span>
-            </div>
-        )}
       </div>
       
       <Avatar className="w-24 h-24 mb-4">
         <AvatarImage src={user?.photoURL ?? "https://picsum.photos/200"} alt="User avatar" data-ai-hint="person portrait" onDragStart={(e) => e.preventDefault()}/>
         <AvatarFallback>{profile.name.charAt(0).toUpperCase()}</AvatarFallback>
       </Avatar>
+
+      {isGoogleSignIn && (
+        <div className="flex items-center gap-2 bg-white/10 text-white text-xs px-3 py-1.5 rounded-full mb-4">
+            <Image src="/icons/google.png" alt="Google" width={16} height={16} />
+            <span>Logged in with Google</span>
+        </div>
+      )}
 
       <div className="w-full max-w-xs space-y-3">
         <div className="space-y-1">
