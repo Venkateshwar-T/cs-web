@@ -58,16 +58,16 @@ export function LoginPopup({ open, onOpenChange, onSignUpClick }: LoginPopupProp
   
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className={cn("p-0 w-full max-w-sm md:max-w-md md:rounded-[40px] rounded-2xl")}>
+      <DialogContent className={cn("p-0 w-[90vw] md:w-full max-w-sm md:max-w-md rounded-2xl md:rounded-[40px]")}>
         <DialogHeader>
           <DialogTitle className="sr-only">Login</DialogTitle>
         </DialogHeader>
         <AuthLayout>
-            <div className="flex flex-col gap-4 p-6 md:px-8 pb-8 w-full">
-                <h2 className="text-2xl md:text-3xl font-medium text-white font-plex-sans self-start">Log In</h2>
+            <div className="flex flex-col gap-2 md:gap-4 p-4 md:px-8 md:pb-8 w-full">
+                <h2 className="text-xl md:text-3xl font-medium text-white font-plex-sans self-start">Log In</h2>
                 
                 <div className="space-y-1 text-left">
-                    <label className="text-sm text-white font-plex-sans">Email or Phone</label>
+                    <label className="pl-2 text-xs md:text-sm text-white font-plex-sans">Email or Phone</label>
                     <Input 
                         placeholder="Enter your email or phone"
                         value={email}
@@ -77,7 +77,7 @@ export function LoginPopup({ open, onOpenChange, onSignUpClick }: LoginPopupProp
                 </div>
                 
                 <div className="space-y-1 text-left">
-                    <label className="text-sm text-white font-plex-sans">Password</label>
+                    <label className="pl-2 text-xs md:text-sm text-white font-plex-sans">Password</label>
                     <Input 
                         type="password"
                         placeholder="Enter your password"
@@ -87,24 +87,24 @@ export function LoginPopup({ open, onOpenChange, onSignUpClick }: LoginPopupProp
                     />
                 </div>
 
-                <a href="#" className="text-sm text-white font-montserrat self-center hover:underline">Forgot Password?</a>
+                <a href="#" className="text-xs md:text-sm text-white font-montserrat self-center hover:underline">Forgot Password?</a>
 
-                <Button onClick={handleEmailLogin} className="w-full h-10 md:h-12 bg-custom-gold text-custom-purple-dark font-montserrat font-bold text-base md:text-lg rounded-full hover:bg-custom-gold/90 mt-2">
+                <Button onClick={handleEmailLogin} className="w-full h-10 md:h-12 bg-custom-gold text-custom-purple-dark font-montserrat font-bold text-base md:text-lg rounded-full hover:bg-custom-gold/90 mt-1 md:mt-2">
                     Login
                 </Button>
 
-                <div className="flex items-center gap-2 my-2">
+                <div className="flex items-center gap-2 my-1 md:my-2">
                     <div className="h-px flex-grow bg-white/50"></div>
-                    <span className="text-white text-sm">OR</span>
+                    <span className="text-white text-xs md:text-sm">OR</span>
                     <div className="h-px flex-grow bg-white/50"></div>
                 </div>
 
-                <Button variant="outline" onClick={handleGoogleLogin} className="w-full md:w-[60%] h-10 md:h-12 bg-white font-semibold text-black self-center rounded-full hover:bg-white/90 hover:text-black/90 text-sm md:text-base">
+                <Button variant="outline" onClick={handleGoogleLogin} className="w-full md:w-[60%] h-10 md:h-12 bg-white font-semibold text-black self-center rounded-full hover:bg-white/90 hover:text-black/90 text-sm md:text-base gap-2 md:gap-3">
                     <Image src="/icons/google.png" alt="Google" width={25} height={25} className="w-5 h-5 md:w-6 md:h-6" />
                     Sign in with Google
                 </Button>
                 
-                <p className="text-center text-sm text-white font-plex-sans mt-4">
+                <p className="text-center text-xs md:text-sm text-white font-plex-sans mt-2 md:mt-4">
                     Don’t Have an Account? <button onClick={onSignUpClick} className="font-bold text-custom-gold hover:underline">Sign Up</button>
                 </p>
             </div>
