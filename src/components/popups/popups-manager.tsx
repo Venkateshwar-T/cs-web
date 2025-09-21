@@ -27,6 +27,7 @@ interface PopupsManagerProps {
   onClearWishlist?: () => void;
   setIsProfileOpen: (isOpen: boolean) => void;
   onProductClick?: (product: SanityProduct) => void;
+  onLogout?: () => void;
 }
 
 function generateOrderId() {
@@ -51,6 +52,7 @@ export function PopupsManager({
   onClearWishlist,
   setIsProfileOpen,
   onProductClick,
+  onLogout,
 }: PopupsManagerProps) {
   const router = useRouter();
   const { addOrder, clearCart: globalClearCart, authPopup, setAuthPopup, isAuthenticated, updateProfileInfo } = useAppContext();
@@ -136,7 +138,7 @@ export function PopupsManager({
           </div>
       )}
 
-      {isProfileOpen && likedProducts && onLikeToggle && cart && onAddToCart && onClearWishlist && onProductClick && (
+      {isProfileOpen && likedProducts && onLikeToggle && cart && onAddToCart && onClearWishlist && onProductClick && onLogout && (
           <div className="fixed inset-0 z-[60] flex items-center justify-center">
             <ProfilePopup 
               onClose={() => setIsProfileOpen(false)} 
@@ -147,6 +149,7 @@ export function PopupsManager({
               cart={cart}
               onClearWishlist={onClearWishlist}
               onProductClick={onProductClick}
+              onLogout={onLogout}
             />
           </div>
       )}

@@ -38,7 +38,8 @@ export default function ProfileClientPage({ allProducts }: ProfileClientPageProp
     clearWishlist,
     isAuthenticated,
     setAuthPopup,
-    clearCart
+    clearCart,
+    logout
   } = useAppContext();
   
   const handleNavigation = (view: ActiveView) => {
@@ -146,6 +147,7 @@ export default function ProfileClientPage({ allProducts }: ProfileClientPageProp
           onClearWishlist={clearWishlist}
           onProductClick={handleProductClick}
           onClearCart={clearCart}
+          onLogout={logout}
       />
     </>
   );

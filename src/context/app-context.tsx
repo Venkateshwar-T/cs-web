@@ -230,8 +230,7 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
       await signOutUser();
       setUser(null);
       setIsAuthenticated(false);
-      // Optional: Reset profile info to default on logout
-      // setProfileInfo(defaultProfileInfo);
+      setProfileInfo(defaultProfileInfo);
       toast({
         title: "Logged Out",
         description: "You have been successfully logged out.",
@@ -244,7 +243,7 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
         variant: "destructive",
       });
     }
-  }, [toast]);
+  }, [setProfileInfo, toast]);
 
 
   const value: AppContextType = {
