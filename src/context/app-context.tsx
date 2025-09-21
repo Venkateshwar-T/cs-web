@@ -236,7 +236,6 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
         description: "You have been successfully logged out.",
       });
     } catch (error) {
-      console.error("Error logging out:", error);
       toast({
         title: "Logout Failed",
         description: "An error occurred while logging out. Please try again.",
