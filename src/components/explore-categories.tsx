@@ -47,7 +47,7 @@ export function ExploreCategories() {
 
   return (
     <motion.div 
-      className="bg-[#5D2B79] h-full rounded-t-[20px] md:rounded-t-[40px] mx-4 md:mx-32"
+      className="bg-[#5D2B79] h-full rounded-t-[25px] md:rounded-t-[40px] mx-4 md:mx-32"
       initial={{ opacity: 0, y: 50 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ type: 'spring', stiffness: 80, damping: 15 }}
@@ -58,7 +58,7 @@ export function ExploreCategories() {
                     Explore Categories
                 </SectionTitle>
                 <motion.div 
-                    className="grid grid-cols-2 md:flex md:flex-row flex-1 justify-around items-center gap-4 md:gap-8 pb-6"
+                    className="grid grid-cols-2 md:flex md:flex-row flex-1 justify-around items-center gap-4 md:gap-8 pb-6 px-2 md:px-0"
                     variants={containerVariants}
                     initial="hidden"
                     animate="visible"
@@ -71,7 +71,7 @@ export function ExploreCategories() {
                         width={600}
                         height={400}
                         data-ai-hint={image.hint}
-                        className="w-full h-full object-cover rounded-[20px] ring-1 ring-custom-purple-dark"
+                        className="w-full h-full object-cover rounded-[20px] ring-1 ring-inset ring-custom-purple-dark"
                         onDragStart={(e) => e.preventDefault()}
                         />
                         <div className="absolute inset-x-0 bottom-2 md:bottom-3 flex items-end justify-center">
@@ -81,11 +81,11 @@ export function ExploreCategories() {
                     ))}
                 </motion.div>
 
-                <SectionTitle className="flex justify-center md:justify-start pl-2 text-lg md:text-2xl md:pl-8 mb-2 md:mb-4 lg:mb-6">
+                <SectionTitle className="flex justify-center md:justify-start text-lg md:text-2xl md:pl-8 mb-2 md:mb-4 lg:mb-6">
                     Explore Flavours
                 </SectionTitle>
                 <motion.div 
-                    className="flex flex-row md:flex-wrap overflow-x-auto no-scrollbar md:overflow-visible flex-1 md:justify-around items-center gap-4 md:gap-8"
+                    className="flex flex-row md:flex-wrap overflow-x-auto no-scrollbar md:overflow-visible flex-1 md:justify-around items-center gap-4 md:gap-8 px-2 md:px-0"
                     variants={containerVariants}
                     initial="hidden"
                     animate="visible"
@@ -98,7 +98,7 @@ export function ExploreCategories() {
                         width={400}
                         height={400}
                         data-ai-hint={image.hint}
-                        className="w-full h-full object-cover rounded-[20px] ring-1 ring-custom-purple-dark"
+                        className="w-full h-full object-cover rounded-[20px] ring-1 ring-inset ring-custom-purple-dark"
                         onDragStart={(e) => e.preventDefault()}
                         />
                         <div className="absolute inset-x-0 bottom-2 md:bottom-3 flex items-end justify-center">
