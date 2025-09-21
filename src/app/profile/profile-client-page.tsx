@@ -68,12 +68,8 @@ export default function ProfileClientPage({ allProducts }: ProfileClientPageProp
   }
   
   const handleDesktopProfileClick = () => {
-      if (isAuthenticated) {
-        setIsProfileOpen(true);
-      } else {
-        setAuthPopup('login');
-      }
-    }
+    setIsProfileOpen(true);
+  }
 
   const cartItemCount = Object.values(cart).reduce((acc, item) => acc + item.quantity, 0);
   

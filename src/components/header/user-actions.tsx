@@ -1,3 +1,4 @@
+
 // @/components/header/user-actions.tsx
 'use client';
 
@@ -71,7 +72,11 @@ export function UserActions({
     };
 
     const handleProfileClick = () => {
-      onProfileOpenChange(true);
+      if (isAuthenticated) {
+        onProfileOpenChange(true);
+      } else {
+        setAuthPopup('login');
+      }
     }
     
     return (
@@ -146,7 +151,7 @@ export function UserActions({
                         </Link>
                     </div>
                     <div className="flex items-center gap-1 lg:gap-2">
-                        <button onClick={handleProfileClick} aria-label="Profile" className="ml-1 lg:ml-2">
+                        <button onClick={() => onProfileOpenChange(true)} aria-label="Profile" className="ml-1 lg:ml-2">
                             <Image src="/icons/profile_icon.png" alt="Profile" width={36} height={36} className="h-8 w-8 lg:h-9 lg:w-9 transition-colors hover:opacity-80" onDragStart={(e) => e.preventDefault()} />
                         </button>
                     </div>

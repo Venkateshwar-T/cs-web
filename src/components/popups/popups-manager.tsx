@@ -138,18 +138,18 @@ export function PopupsManager({
           </div>
       )}
 
-      {isProfileOpen && likedProducts && onLikeToggle && cart && onAddToCart && onClearWishlist && onProductClick && onLogout && (
+      {isProfileOpen && (
           <div className="fixed inset-0 z-[60] flex items-center justify-center">
             <ProfilePopup 
               onClose={() => setIsProfileOpen(false)} 
               products={allProducts}
-              likedProducts={likedProducts}
-              onLikeToggle={onLikeToggle}
-              onAddToCart={onAddToCart}
-              cart={cart}
-              onClearWishlist={onClearWishlist}
-              onProductClick={onProductClick}
-              onLogout={onLogout}
+              likedProducts={likedProducts || {}}
+              onLikeToggle={onLikeToggle || (() => {})}
+              onAddToCart={onAddToCart || (() => {})}
+              cart={cart || {}}
+              onClearWishlist={onClearWishlist || (() => {})}
+              onProductClick={onProductClick || (() => {})}
+              onLogout={onLogout || (() => {})}
             />
           </div>
       )}
