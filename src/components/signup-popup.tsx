@@ -18,6 +18,7 @@ import { signUpWithEmail, signInWithGoogle } from '@/lib/firebase';
 import { useAppContext } from "@/context/app-context";
 import { cn } from '@/lib/utils';
 import { Loader } from './loader';
+import { Eye, EyeOff } from 'lucide-react';
 
 // Helper function to create user-friendly error messages
 const getAuthErrorMessage = (errorCode: string): string => {
@@ -46,6 +47,7 @@ export function SignUpPopup({ open, onOpenChange, onLoginClick }: SignUpPopupPro
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const { toast } = useToast();
   const { login, setAuthPopup } = useAppContext();
 
@@ -115,13 +117,22 @@ export function SignUpPopup({ open, onOpenChange, onLoginClick }: SignUpPopupPro
                   
                   <div className="space-y-1 text-left">
                       <label className="pl-2 text-xs md:text-sm text-white font-plex-sans">Password</label>
-                      <Input 
-                          type="password"
-                          placeholder="Enter your password"
-                          value={password}
-                          onChange={(e) => setPassword(e.target.value)}
-                          className="bg-white rounded-2xl text-black placeholder:text-gray-400 placeholder:font-montserrat font-montserrat h-10 md:h-12"
-                      />
+                      <div className="relative">
+                        <Input 
+                            type={showPassword ? "text" : "password"}
+                            placeholder="Enter your password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            className="bg-white rounded-2xl text-black placeholder:text-gray-400 placeholder:font-montserrat font-montserrat h-10 md:h-12 pr-10"
+                        />
+                        <button
+                            type="button"
+                            onClick={() => setShowPassword(!showPassword)}
+                            className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 hover:text-black"
+                        >
+                            {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                        </button>
+                      </div>
                   </div>
 
                   <p className="text-[10px] md:text-xs text-white font-montserrat self-center text-center">
