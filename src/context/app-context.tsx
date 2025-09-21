@@ -115,15 +115,16 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
       setUser(newUser);
       setIsAuthenticated(!!newUser);
       if (newUser) {
-        // When user changes, profileInfo from useLocalStorage will update automatically
-        // because the key changes. We might want to pre-fill from auth.
+        // useLocalStorage will trigger a re-fetch of the profile info for the new user.
+        // We can pre-fill some data from the auth user object if the stored profile is empty/default.
         setProfileInfo(prev => {
-           const isDefaultName = prev.name === 'Jane Doe' || !prev.name;
-           const newName = isDefaultName ? (newUser.displayName || '') : prev.name;
+           const isNewOrEmptyProfile = !prev.name || prev.name === 'Jane Doe';
+           const newName = isNewOrEmptyProfile ? (newUser.displayName || '') : prev.name;
            const newEmail = newUser.email || prev.email;
 
-           if (newName !== prev.name || newEmail !== prev.email) {
-             return { ...prev, name: newName, email: newEmail };
+           // Only update if there are meaningful changes to avoid loops
+           if (newName !== prev.name || newEmail !== prev.email || (isNewOrEmptyProfile && !prev.phone)) {
+             return { ...prev, name: newName, email: newEmail, phone: prev.phone || '' };
            }
            return prev;
         });

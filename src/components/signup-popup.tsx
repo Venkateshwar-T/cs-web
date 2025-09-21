@@ -49,7 +49,7 @@ export function SignUpPopup({ open, onOpenChange, onLoginClick }: SignUpPopupPro
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const { toast } = useToast();
-  const { login, setAuthPopup } = useAppContext();
+  const { login, setAuthPopup, profileInfo } = useAppContext();
 
   useEffect(() => {
     if (!open) {
@@ -82,13 +82,20 @@ export function SignUpPopup({ open, onOpenChange, onLoginClick }: SignUpPopupPro
     setIsLoading(true);
     try {
       const userCredential = await signInWithGoogle();
-      login(userCredential.user);
-      // Check if user has name and phone, if not, open complete details
-      if (!userCredential.user.displayName) {
+      const user = userCredential.user;
+      login(user);
+      
+      // After login, the context will update profileInfo.
+      // We check if the details (especially phone) are missing.
+      const currentProfile = profileInfo;
+      const isNewUser = user.metadata.creationTime === user.metadata.lastSignInTime;
+
+      if (isNewUser || !currentProfile.phone) {
         setAuthPopup('completeDetails');
       } else {
         setAuthPopup(null);
       }
+
       toast({ title: "Success", description: "Logged in successfully!", variant: "success" });
     } catch (error: any) {
       toast({ title: "Sign Up Failed", description: "Could not sign up with Google. Please try again.", variant: "destructive" });
