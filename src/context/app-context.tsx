@@ -138,10 +138,8 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
   }, [setProfileInfo]);
 
   const updateProfileInfo = useCallback((newInfo: Partial<ProfileInfo>) => {
-    if (isAuthenticated) {
       setProfileInfo(prev => ({ ...prev, ...newInfo }));
-    }
-  }, [setProfileInfo, isAuthenticated]);
+  }, [setProfileInfo]);
 
   const toggleLike = useCallback((productId: string) => {
     setLikedProducts(prev => {

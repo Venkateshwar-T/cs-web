@@ -73,7 +73,10 @@ export function ProfileDetailsView({ profile, onHasChangesChange, onProfileUpdat
         passwordChanged = true;
       }
 
-      const updatedProfile = { name, phone, email };
+      const updatedProfile: Partial<ProfileInfo> = { name, phone };
+      if (!isGoogleSignIn) {
+        updatedProfile.email = email;
+      }
       onProfileUpdate(updatedProfile);
       onHasChangesChange(false);
 
