@@ -15,6 +15,7 @@ import { ProfileMobileView } from '@/components/profile-mobile-view';
 import { StaticSparkleBackground } from '@/components/static-sparkle-background';
 import { useAppContext } from '@/context/app-context';
 import { Loader } from '@/components/loader';
+import { EmptyState } from '@/components/empty-state';
 
 interface ProfileClientPageProps {
   allProducts: SanityProduct[];
@@ -33,7 +34,9 @@ export default function ProfileClientPage({ allProducts }: ProfileClientPageProp
     isProfileLoaded,
     likedProducts,
     toggleLike,
-    clearWishlist
+    clearWishlist,
+    isAuthenticated,
+    setAuthPopup
   } = useAppContext();
   
   const handleNavigation = (view: ActiveView) => {
@@ -56,6 +59,10 @@ export default function ProfileClientPage({ allProducts }: ProfileClientPageProp
   const handleProductClick = (product: SanityProduct) => {
     router.push(`/product/${product.slug.current}`);
   };
+  
+  const handleLoginClick = () => {
+    setAuthPopup('login');
+  }
 
   const cartItemCount = Object.values(cart).reduce((acc, item) => acc + item.quantity, 0);
   
@@ -83,23 +90,36 @@ export default function ProfileClientPage({ allProducts }: ProfileClientPageProp
           "flex-grow flex flex-col transition-all duration-300 relative min-h-0 md:pb-0",
           "pt-24" 
         )}>
-          {isMobile ? (
-            <ProfileMobileView 
-              profile={profileInfo}
-              onProfileUpdate={handleProfileUpdate}
-              products={allProducts}
-              likedProducts={likedProducts}
-              onLikeToggle={toggleLike}
-              onAddToCart={updateCart}
-              cart={cart}
-              onClearWishlist={clearWishlist}
-            />
+          {isAuthenticated ? (
+            isMobile ? (
+              <ProfileMobileView 
+                profile={profileInfo}
+                onProfileUpdate={handleProfileUpdate}
+                products={allProducts}
+                likedProducts={likedProducts}
+                onLikeToggle={toggleLike}
+                onAddToCart={updateCart}
+                cart={cart}
+                onClearWishlist={clearWishlist}
+              />
+            ) : (
+              <div className="flex flex-col items-center justify-center h-full gap-4 text-center px-4">
+                <h2 className="text-2xl font-bold text-white">Desktop Profile View</h2>
+                <p className="text-white/70 max-w-xs">
+                  This is a placeholder for the desktop profile view.
+                </p>
+              </div>
+            )
           ) : (
-            <div className="flex flex-col items-center justify-center h-full gap-4 text-center px-4">
-              <h2 className="text-2xl font-bold text-white">Desktop Profile View</h2>
-              <p className="text-white/70 max-w-xs">
-                This is a placeholder for the desktop profile view.
-              </p>
+            <div className="flex-grow flex flex-col items-center justify-center h-full px-4 pb-24">
+              <EmptyState 
+                imageUrl='/icons/profile_drpdwn_btn.png'
+                title="You're Not Logged In"
+                description="Log in or create an account to view your profile, orders, and wishlist."
+                buttonText="Log In / Sign Up"
+                onButtonClick={handleLoginClick}
+                imageClassName='w-24 h-24'
+              />
             </div>
           )}
         </main>
