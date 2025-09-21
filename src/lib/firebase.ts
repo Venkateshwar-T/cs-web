@@ -1,5 +1,6 @@
+
 // src/lib/firebase.ts
-import { initializeApp, getApps } from 'firebase/app';
+import { initializeApp, getApps, getApp, type FirebaseApp } from 'firebase/app';
 import {
   getAuth,
   GoogleAuthProvider,
@@ -21,38 +22,64 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID
 };
 
-// Initialize Firebase
-const apps = getApps();
-const app = !apps.length ? initializeApp(firebaseConfig) : apps[0];
-const auth = getAuth(app);
-const googleProvider = new GoogleAuthProvider();
+// Initialize Firebase on the client side
+function getClientApp() {
+  if (typeof window === 'undefined') {
+    return null; // Don't initialize on the server
+  }
+  if (getApps().length) {
+    return getApp();
+  }
+  return initializeApp(firebaseConfig);
+}
+
+function getClientAuth() {
+  const app = getClientApp();
+  return app ? getAuth(app) : null;
+}
 
 export const signInWithGoogle = () => {
+  const auth = getClientAuth();
+  if (!auth) throw new Error("Firebase auth not initialized");
+  const googleProvider = new GoogleAuthProvider();
   return signInWithPopup(auth, googleProvider);
 };
 
 export const signUpWithEmail = (email: string, password: string) => {
+  const auth = getClientAuth();
+  if (!auth) throw new Error("Firebase auth not initialized");
   return createUserWithEmailAndPassword(auth, email, password);
 };
 
 export const signInWithEmail = (email: string, password: string) => {
+  const auth = getClientAuth();
+  if (!auth) throw new Error("Firebase auth not initialized");
   return signInWithEmailAndPassword(auth, email, password);
 };
 
 export const signOutUser = () => {
+  const auth = getClientAuth();
+  if (!auth) throw new Error("Firebase auth not initialized");
   return signOut(auth);
 };
 
 export const onAuthStateChanged = (callback: (user: User | null) => void) => {
-    return onFirebaseAuthStateChanged(auth, callback);
+  const auth = getClientAuth();
+  if (!auth) {
+    callback(null);
+    return () => {};
+  }
+  return onFirebaseAuthStateChanged(auth, callback);
 };
 
 export const updateUserPassword = (newPassword: string) => {
-  if (!auth.currentUser) {
+  const auth = getClientAuth();
+  if (!auth?.currentUser) {
     throw new Error("User not authenticated.");
   }
   return updatePassword(auth.currentUser, newPassword);
 };
 
-
-export { auth };
+export function getFirebaseAuth() {
+    return getClientAuth();
+}

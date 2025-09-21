@@ -6,7 +6,7 @@ import { createContext, useContext, ReactNode, useCallback, useState, useEffect 
 import type { SanityProduct } from '@/types';
 import { useLocalStorage } from '@/hooks/use-local-storage';
 import { useToast } from '@/hooks/use-toast';
-import { onAuthStateChanged, signOutUser } from '@/lib/firebase';
+import { onAuthStateChanged, signOutUser, getFirebaseAuth } from '@/lib/firebase';
 import type { User } from 'firebase/auth';
 
 const defaultProfileInfo: ProfileInfo = {
@@ -111,12 +111,21 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
   const [flavourSelection, setFlavourSelection] = useState<{ product: SanityProduct | null; isOpen: boolean }>({ product: null, isOpen: false });
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged((newUser) => {
-      setUser(newUser);
-      setIsAuthenticated(!!newUser);
-      setIsAuthLoaded(true);
-    });
-    return () => unsubscribe();
+    // Ensure Firebase auth is initialized on the client before setting up listener
+    if (typeof window !== 'undefined') {
+        const auth = getFirebaseAuth();
+        if(auth) {
+            const unsubscribe = onAuthStateChanged((newUser) => {
+              setUser(newUser);
+              setIsAuthenticated(!!newUser);
+              setIsAuthLoaded(true);
+            });
+            return () => unsubscribe();
+        } else {
+            // Handle case where auth is not available (e.g. server-side)
+            setIsAuthLoaded(true);
+        }
+    }
   }, []);
 
   useEffect(() => {
