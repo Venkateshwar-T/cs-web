@@ -1,3 +1,4 @@
+
 // @/components/profile-sidebar.tsx
 'use client';
 
@@ -22,6 +23,7 @@ interface ProfileSidebarProps {
   activeTab: string;
   onTabChange: (tab: string) => void;
   onLogout: () => void;
+  onClose: () => void;
 }
 
 const mainSidebarItems = [
@@ -30,7 +32,7 @@ const mainSidebarItems = [
   { id: 'My Orders', label: 'My Orders', icon: <ListOrdered /> },
 ];
 
-export function ProfileSidebar({ activeTab, onTabChange, onLogout }: ProfileSidebarProps) {
+export function ProfileSidebar({ activeTab, onTabChange, onLogout, onClose }: ProfileSidebarProps) {
   const { isAuthenticated } = useAppContext();
 
   const handleLogout = () => {
