@@ -121,13 +121,13 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (user) {
-        // User is logged in, load their specific profile
+        // User is logged in, check for existing profile
         const userProfileKey = `chocoSmileyProfile-${user.uid}`;
         const storedProfile = localStorage.getItem(userProfileKey);
         if (storedProfile) {
-            setProfileInfo(JSON.parse(storedProfile));
+            // Do nothing, useLocalStorage has already loaded it.
         } else {
-            // New user or no profile yet, create one
+            // New user or no profile yet, create one from auth details
             setProfileInfo({
                 name: user.displayName || '',
                 email: user.email || '',
@@ -135,9 +135,12 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
             });
         }
     } else {
-        // User is logged out, revert to default guest profile
+        // User is logged out, ensure we are using the guest profile
         setProfileInfo(defaultProfileInfo);
     }
+  // isProfileLoaded is removed to avoid re-triggering when profile changes.
+  // setProfileInfo is stable due to useCallback in useLocalStorage.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, setProfileInfo]);
 
 

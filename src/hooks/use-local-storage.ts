@@ -1,3 +1,4 @@
+
 // @/hooks/use-local-storage.ts
 'use client';
 
@@ -23,22 +24,27 @@ export function useLocalStorage<T>(key: string, initialValue: T): [T, (value: T 
     }
   });
 
-  // This effect runs once on the client to confirm data is loaded.
+  // This effect runs once on the client to confirm data is loaded and hydrate from the correct key.
   useEffect(() => {
     try {
         const item = window.localStorage.getItem(key);
         if (item) {
             setStoredValue(JSON.parse(item));
+        } else {
+            // If no item, ensure we are on the initial value for that key
+            setStoredValue(initialValue);
         }
     } catch (error) {
         console.error(`Error hydrating localStorage key "${key}":`, error);
     }
     setIsLoaded(true);
-  }, [key]);
+  }, [key, initialValue]);
+
 
   // A wrapper for setStoredValue that also persists the new value to localStorage.
   const setValue = useCallback((value: T | ((val: T) => T)) => {
     try {
+      // Allow value to be a function so we have same API as useState
       const valueToStore = value instanceof Function ? value(storedValue) : value;
       setStoredValue(valueToStore);
       if (typeof window !== 'undefined') {
