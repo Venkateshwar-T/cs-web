@@ -31,10 +31,10 @@ const itemVariants = {
 
 export function ExploreCategories() {
   const categoryImages = [
-    { id: 1, src: "/categories/choco1.png", alt: "Category 1", hint: "chocolate gift" },
-    { id: 2, src: "/categories/choco2.png", alt: "Category 2", hint: "gift basket" },
-    { id: 3, src: "/categories/choco3.png", alt: "Category 3", hint: "artisan chocolate" },
-    { id: 4, src: "/categories/choco4.png", alt: "Category 4", hint: "luxury gifts" },
+    { id: 1, src: "/categories/choco1.png", alt: "Category 1", hint: "chocolate gift", title: "Gift Boxes" },
+    { id: 2, src: "/categories/choco2.png", alt: "Category 2", hint: "gift basket", title: "Hampers" },
+    { id: 3, src: "/categories/choco3.png", alt: "Category 3", hint: "artisan chocolate", title: "Artisanal Bars" },
+    { id: 4, src: "/categories/choco4.png", alt: "Category 4", hint: "luxury gifts", title: "Luxury Collection" },
   ];
 
   const flavourImages = [
@@ -64,7 +64,7 @@ export function ExploreCategories() {
                     animate="visible"
                 >
                     {categoryImages.map((image) => (
-                    <motion.div key={image.id} className="w-full aspect-[5/6]" variants={itemVariants}>
+                    <motion.div key={image.id} className="w-full aspect-[5/6] relative group" variants={itemVariants}>
                         <Image
                         src={image.src}
                         alt={image.alt}
@@ -74,6 +74,9 @@ export function ExploreCategories() {
                         className="w-full h-full object-cover rounded-[20px]"
                         onDragStart={(e) => e.preventDefault()}
                         />
+                        <div className="absolute inset-0 bg-black/30 rounded-[20px] flex items-center justify-center transition-opacity opacity-100 group-hover:opacity-100">
+                          <h3 className="text-white text-lg font-bold">{image.title}</h3>
+                        </div>
                     </motion.div>
                     ))}
                 </motion.div>
