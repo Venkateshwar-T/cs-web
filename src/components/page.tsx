@@ -13,7 +13,7 @@ import { SearchBar } from '@/components/header/search-bar';
 import { useToast } from "@/hooks/use-toast";
 import { StaticSparkleBackground } from '@/components/static-sparkle-background';
 import { Footer } from '@/components/footer';
-import { useAppContext } from '@/context/app-context';
+import { useAppContext, type ProfileInfo } from '@/context/app-context';
 import type { SanityProduct } from '@/types';
 
 
@@ -21,12 +21,6 @@ export type Product = {
   id: number;
   name: string;
 };
-
-export type ProfileInfo = {
-  name: string;
-  phone: string;
-  email: string;
-}
 
 export default function Home() {
   const { cart, updateCart, likedProducts, toggleLike, clearWishlist } = useAppContext();

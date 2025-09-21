@@ -2,16 +2,17 @@
 // @/context/app-context.tsx
 'use client';
 
-import { createContext, useContext, ReactNode, useCallback, useState } from 'react';
+import { createContext, useContext, ReactNode, useCallback, useState, useEffect } from 'react';
 import type { SanityProduct } from '@/types';
 import { useLocalStorage } from '@/hooks/use-local-storage';
 import { useToast } from '@/hooks/use-toast';
+import { onAuthStateChanged, signOutUser } from '@/lib/firebase';
+import type { User } from 'firebase/auth';
 
 const PROFILE_STORAGE_KEY = 'chocoSmileyProfile';
 const WISHLIST_STORAGE_KEY = 'chocoSmileyWishlist';
 const ORDERS_STORAGE_KEY = 'chocoSmileyOrders';
 const CART_STORAGE_KEY = 'chocoSmileyCart';
-const AUTH_STORAGE_KEY = 'chocoSmileyAuth';
 
 export type OrderItem = {
   name: string;
@@ -51,7 +52,8 @@ interface AppContextType {
   isCartLoaded: boolean;
 
   isAuthenticated: boolean;
-  login: () => void;
+  user: User | null;
+  login: (user: User) => void;
   logout: () => void;
   authPopup: AuthPopupType;
   setAuthPopup: (popup: AuthPopupType) => void;
@@ -62,6 +64,12 @@ interface AppContextType {
   };
   setFlavourSelection: (selection: { product: SanityProduct | null; isOpen: boolean }) => void;
 }
+
+export type ProfileInfo = {
+    name: string;
+    phone: string;
+    email: string;
+};
 
 const defaultProfileInfo: ProfileInfo = {
     name: 'Jane Doe',
@@ -93,14 +101,22 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
     {}
   );
 
-  const [isAuthenticated, setIsAuthenticated, isAuthLoaded] = useLocalStorage<boolean>(
-    AUTH_STORAGE_KEY,
-    false
-  );
+  const [user, setUser] = useState<User | null>(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthLoaded, setIsAuthLoaded] = useState(false);
+
 
   const [authPopup, setAuthPopup] = useState<AuthPopupType>(null);
   const [flavourSelection, setFlavourSelection] = useState<{ product: SanityProduct | null; isOpen: boolean }>({ product: null, isOpen: false });
 
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged((user) => {
+      setUser(user);
+      setIsAuthenticated(!!user);
+      setIsAuthLoaded(true);
+    });
+    return () => unsubscribe();
+  }, []);
 
   const updateProfileInfo = useCallback((newInfo: Partial<ProfileInfo>) => {
     setProfileInfo(prev => ({ ...prev, ...newInfo }));
@@ -182,13 +198,29 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
     setCart({});
   }, [setCart]);
 
-  const login = useCallback(() => {
+  const login = useCallback((user: User) => {
+    setUser(user);
     setIsAuthenticated(true);
-  }, [setIsAuthenticated]);
+  }, []);
 
-  const logout = useCallback(() => {
-    setIsAuthenticated(false);
-  }, [setIsAuthenticated]);
+  const logout = useCallback(async () => {
+    try {
+      await signOutUser();
+      setUser(null);
+      setIsAuthenticated(false);
+      toast({
+        title: "Logged Out",
+        description: "You have been successfully logged out.",
+      });
+    } catch (error) {
+      console.error("Error logging out:", error);
+      toast({
+        title: "Logout Failed",
+        description: "An error occurred while logging out. Please try again.",
+        variant: "destructive",
+      });
+    }
+  }, [toast]);
 
 
   const value: AppContextType = {
@@ -208,6 +240,7 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
     clearCart,
     isCartLoaded,
     isAuthenticated,
+    user,
     login,
     logout,
     authPopup,

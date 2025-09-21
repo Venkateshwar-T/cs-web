@@ -4,10 +4,10 @@
 import { useState, useEffect } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
-import type { ProfileInfo } from "@/app/page";
 import { Eye, EyeOff } from 'lucide-react';
 import { Button } from './ui/button';
 import { useToast } from '@/hooks/use-toast';
+import { useAppContext, type ProfileInfo } from '@/context/app-context';
 
 interface ProfileDetailsViewProps {
   profile: ProfileInfo;
@@ -16,6 +16,7 @@ interface ProfileDetailsViewProps {
 }
 
 export function ProfileDetailsView({ profile, onHasChangesChange, onProfileUpdate }: ProfileDetailsViewProps) {
+  const { user } = useAppContext();
   const [name, setName] = useState(profile.name);
   const [phone, setPhone] = useState(profile.phone);
   const [email, setEmail] = useState(profile.email);
@@ -68,7 +69,7 @@ export function ProfileDetailsView({ profile, onHasChangesChange, onProfileUpdat
       <h2 className="text-3xl font-normal font-poppins self-start mb-6">My Profile</h2>
       
       <Avatar className="w-24 h-24 mb-4">
-        <AvatarImage src="https://picsum.photos/200" alt="User avatar" data-ai-hint="person portrait" onDragStart={(e) => e.preventDefault()}/>
+        <AvatarImage src={user?.photoURL ?? "https://picsum.photos/200"} alt="User avatar" data-ai-hint="person portrait" onDragStart={(e) => e.preventDefault()}/>
         <AvatarFallback>{profile.name.charAt(0).toUpperCase()}</AvatarFallback>
       </Avatar>
 

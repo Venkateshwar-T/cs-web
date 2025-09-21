@@ -1,6 +1,7 @@
 // @/components/signup-popup.tsx
 'use client';
 
+import { useState } from 'react';
 import {
   Dialog,
   DialogContent,
@@ -11,15 +12,48 @@ import { AuthLayout } from "./ui/auth-layout";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import Image from "next/image";
+import { useToast } from "@/hooks/use-toast";
+import { signUpWithEmail, signInWithGoogle } from '@/lib/firebase';
+import { useAppContext } from "@/context/app-context";
+
 
 interface SignUpPopupProps {
     open: boolean;
     onOpenChange: (open: boolean) => void;
     onLoginClick: () => void;
-    onSignUpSuccess: () => void;
 }
 
-export function SignUpPopup({ open, onOpenChange, onLoginClick, onSignUpSuccess }: SignUpPopupProps) {
+export function SignUpPopup({ open, onOpenChange, onLoginClick }: SignUpPopupProps) {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const { toast } = useToast();
+  const { login, setAuthPopup } = useAppContext();
+
+  const handleEmailSignUp = async () => {
+    if (!email || !password) {
+      toast({ title: "Error", description: "Please enter email and password.", variant: "destructive" });
+      return;
+    }
+    try {
+      const userCredential = await signUpWithEmail(email, password);
+      login(userCredential.user);
+      setAuthPopup('completeDetails');
+      toast({ title: "Success", description: "Account created successfully!", variant: "success" });
+    } catch (error: any) {
+      toast({ title: "Sign Up Failed", description: error.message, variant: "destructive" });
+    }
+  };
+
+  const handleGoogleSignUp = async () => {
+    try {
+      const userCredential = await signInWithGoogle();
+      login(userCredential.user);
+      setAuthPopup('completeDetails');
+      toast({ title: "Success", description: "Logged in successfully!", variant: "success" });
+    } catch (error: any) {
+      toast({ title: "Sign Up Failed", description: error.message, variant: "destructive" });
+    }
+  };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -35,6 +69,8 @@ export function SignUpPopup({ open, onOpenChange, onLoginClick, onSignUpSuccess 
                     <label className="text-sm text-white font-plex-sans">Email or Phone</label>
                     <Input 
                         placeholder="Enter your email or phone"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
                         className="bg-white rounded-2xl text-black placeholder:text-gray-400 placeholder:font-montserrat font-montserrat h-12"
                     />
                 </div>
@@ -44,6 +80,8 @@ export function SignUpPopup({ open, onOpenChange, onLoginClick, onSignUpSuccess 
                     <Input 
                         type="password"
                         placeholder="Enter your password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
                         className="bg-white rounded-2xl text-black placeholder:text-gray-400 placeholder:font-montserrat font-montserrat h-12"
                     />
                 </div>
@@ -52,7 +90,7 @@ export function SignUpPopup({ open, onOpenChange, onLoginClick, onSignUpSuccess 
                     By continuing, you agree to Choco Smiley’s <a href="#" className="text-custom-gold hover:underline">Terms and Service</a> and acknowledge Choco Smiley’s <a href="#" className="text-custom-gold hover:underline">Privacy Policy</a>.
                 </p>
 
-                <Button onClick={onSignUpSuccess} className="w-full h-12 bg-custom-gold text-custom-purple-dark font-montserrat font-bold text-lg rounded-full hover:bg-custom-gold/90 mt-2">
+                <Button onClick={handleEmailSignUp} className="w-full h-12 bg-custom-gold text-custom-purple-dark font-montserrat font-bold text-lg rounded-full hover:bg-custom-gold/90 mt-2">
                     Create Account
                 </Button>
 
@@ -62,7 +100,7 @@ export function SignUpPopup({ open, onOpenChange, onLoginClick, onSignUpSuccess 
                     <div className="h-px flex-grow bg-white/50"></div>
                 </div>
 
-                <Button variant="outline" onClick={onSignUpSuccess} className="w-[60%] h-12 bg-white font-semibold text-black self-center rounded-full hover:bg-white/90 hover:text-black/90">
+                <Button variant="outline" onClick={handleGoogleSignUp} className="w-[60%] h-12 bg-white font-semibold text-black self-center rounded-full hover:bg-white/90 hover:text-black/90">
                     <Image src="/icons/google.png" alt="Google" width={25} height={25} />
                     Sign up with Google
                 </Button>

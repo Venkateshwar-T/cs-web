@@ -58,7 +58,7 @@ export function UserActions({
     const isMobile = useIsMobile();
     const [isEnquireSheetOpen, setIsEnquireSheetOpen] = useState(false);
     const router = useRouter();
-    const { logout, isAuthenticated } = useAppContext();
+    const { logout, isAuthenticated, setAuthPopup } = useAppContext();
 
     const handleMobileNav = (link: typeof navLinks[number]) => {
         if (link.href) {
@@ -69,6 +69,14 @@ export function UserActions({
     const handleLogout = () => {
         logout();
     };
+
+    const handleProfileClick = () => {
+      if (isAuthenticated) {
+        onProfileOpenChange(true);
+      } else {
+        setAuthPopup('login');
+      }
+    }
     
     return (
         <div className="flex items-center animate-slide-in-from-right" style={{ animationDuration: '0.5s' }}>
@@ -142,7 +150,7 @@ export function UserActions({
                         </Link>
                     </div>
                     <div className="flex items-center gap-1 lg:gap-2">
-                        <button onClick={() => onProfileOpenChange(true)} aria-label="Profile" className="ml-1 lg:ml-2">
+                        <button onClick={handleProfileClick} aria-label="Profile" className="ml-1 lg:ml-2">
                             <Image src="/icons/profile_icon.png" alt="Profile" width={36} height={36} className="h-8 w-8 lg:h-9 lg:w-9 transition-colors hover:opacity-80" onDragStart={(e) => e.preventDefault()} />
                         </button>
                     </div>

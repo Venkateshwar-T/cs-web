@@ -30,7 +30,7 @@ const mainSidebarItems = [
 ];
 
 export function ProfileSidebar({ activeTab, onTabChange }: ProfileSidebarProps) {
-  const { logout } = useAppContext();
+  const { logout, isAuthenticated } = useAppContext();
 
   const handleLogout = () => {
     logout();
@@ -62,32 +62,34 @@ export function ProfileSidebar({ activeTab, onTabChange }: ProfileSidebarProps) 
       </nav>
       
       <div className="px-6">
-         <AlertDialog>
-          <AlertDialogTrigger asChild>
-             <button
-              className={cn(
-                "flex items-center gap-4 w-full py-3 text-base font-medium transition-all duration-200 text-custom-purple-dark/70 hover:bg-custom-purple-dark/10 rounded-md"
-              )}
-            >
-              <div className="h-6 w-6 flex-shrink-0 text-red-600">
-                 <LogOut className="h-6 w-6" />
-              </div>
-              <span className="text-red-600">Log Out</span>
-            </button>
-          </AlertDialogTrigger>
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle>Are you sure you want to log out?</AlertDialogTitle>
-              <AlertDialogDescription>
-                You will be returned to the login page.
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel>Cancel</AlertDialogCancel>
-              <AlertDialogAction onClick={handleLogout}>Log Out</AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
+        {isAuthenticated && (
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <button
+                className={cn(
+                  "flex items-center gap-4 w-full py-3 text-base font-medium transition-all duration-200 text-custom-purple-dark/70 hover:bg-custom-purple-dark/10 rounded-md"
+                )}
+              >
+                <div className="h-6 w-6 flex-shrink-0 text-red-600">
+                  <LogOut className="h-6 w-6" />
+                </div>
+                <span className="text-red-600">Log Out</span>
+              </button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Are you sure you want to log out?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  You will be returned to the login page.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction onClick={handleLogout}>Log Out</AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+        )}
       </div>
     </div>
   );

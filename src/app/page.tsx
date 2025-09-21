@@ -7,6 +7,7 @@ import { Loader } from '@/components/loader';
 import HomeClient from './home-client';
 import Image from 'next/image';
 
+export type ActiveView = 'home' | 'search' | 'cart' | 'profile' | 'about' | 'faq' | 'order-confirmed' | 'product-detail';
 
 async function getAllProducts(): Promise<SanityProduct[]> {
     const query = `*[_type == "product"]{ ..., "images": images[].asset->url, availableFlavours[]->{ _id, name, "imageUrl": image.asset->url, "price": coalesce(price, 0) }, numberOfChocolates }`;
@@ -32,4 +33,3 @@ export default async function Home() {
         </Suspense>
     );
 }
-

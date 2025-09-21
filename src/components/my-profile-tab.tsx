@@ -5,10 +5,10 @@
 import { useState } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
-import type { ProfileInfo } from "@/app/page";
 import { Eye, EyeOff } from 'lucide-react';
 import { Button } from './ui/button';
 import { useToast } from '@/hooks/use-toast';
+import { useAppContext, type ProfileInfo } from '@/context/app-context';
 
 interface MyProfileTabProps {
   profile: ProfileInfo;
@@ -16,6 +16,7 @@ interface MyProfileTabProps {
 }
 
 export function MyProfileTab({ profile, onProfileUpdate }: MyProfileTabProps) {
+  const { user } = useAppContext();
   const [name, setName] = useState(profile.name);
   const [phone, setPhone] = useState(profile.phone);
   const [email, setEmail] = useState(profile.email);
@@ -52,7 +53,7 @@ export function MyProfileTab({ profile, onProfileUpdate }: MyProfileTabProps) {
   return (
     <div className="flex flex-col items-center space-y-4">
       <Avatar className="w-24 h-24">
-        <AvatarImage src="https://picsum.photos/200" alt="User avatar" data-ai-hint="person portrait" />
+        <AvatarImage src={user?.photoURL ?? "https://picsum.photos/200"} alt="User avatar" data-ai-hint="person portrait" />
         <AvatarFallback>{profile.name.charAt(0).toUpperCase()}</AvatarFallback>
       </Avatar>
 

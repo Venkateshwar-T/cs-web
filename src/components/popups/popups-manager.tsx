@@ -57,6 +57,10 @@ export function PopupsManager({
   const isAnyPopupVisible = isCartOpen || isProfileOpen || !!authPopup;
 
   const handleFinalizeOrder = () => {
+    if (!isAuthenticated) {
+      setAuthPopup('login');
+      return;
+    }
     if (!cart) return;
 
     const productsByName = allProducts.reduce((acc, product) => {
@@ -101,16 +105,6 @@ export function PopupsManager({
     const clearCartAction = onClearCart || globalClearCart;
     clearCartAction();
     router.push(`/order-confirmed?orderId=${newOrderId}`);
-  };
-
-  const handleLoginSuccess = () => {
-      login();
-      setAuthPopup(null);
-  };
-  
-  const handleSignUpSuccess = () => {
-      login();
-      setAuthPopup('completeDetails');
   };
 
   const handleDetailsConfirm = (name: string, phone: string) => {
@@ -161,13 +155,11 @@ export function PopupsManager({
         open={authPopup === 'login'} 
         onOpenChange={(open) => !open && setAuthPopup(null)}
         onSignUpClick={() => setAuthPopup('signup')}
-        onLoginSuccess={handleLoginSuccess}
       />
       <SignUpPopup
         open={authPopup === 'signup'}
         onOpenChange={(open) => !open && setAuthPopup(null)}
         onLoginClick={() => setAuthPopup('login')}
-        onSignUpSuccess={handleSignUpSuccess}
       />
       <CompleteDetailsPopup
         open={authPopup === 'completeDetails'}
