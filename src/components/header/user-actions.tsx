@@ -11,7 +11,7 @@ import { IoLogoFacebook, IoLogoWhatsapp } from "react-icons/io5";
 import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
-import type { ActiveView } from "@/app/page";
+import type { ActiveView } from '@/app/page';
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -71,11 +71,8 @@ export function UserActions({
     };
 
     const handleProfileClick = () => {
-      if (isAuthenticated) {
-        onProfileOpenChange(true);
-      } else {
-        setAuthPopup('login');
-      }
+      // Always open the profile popup, which will handle the auth state internally
+      onProfileOpenChange(true);
     }
     
     return (

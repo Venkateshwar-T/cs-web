@@ -1,4 +1,3 @@
-
 // @/components/profile-sidebar.tsx
 'use client';
 
@@ -22,6 +21,7 @@ import { useAppContext } from '@/context/app-context';
 interface ProfileSidebarProps {
   activeTab: string;
   onTabChange: (tab: string) => void;
+  onLogout: () => void;
 }
 
 const mainSidebarItems = [
@@ -30,13 +30,9 @@ const mainSidebarItems = [
   { id: 'My Orders', label: 'My Orders', icon: <ListOrdered /> },
 ];
 
-export function ProfileSidebar({ activeTab, onTabChange }: ProfileSidebarProps) {
-  const { logout, isAuthenticated, setAuthPopup } = useAppContext();
+export function ProfileSidebar({ activeTab, onTabChange, onLogout }: ProfileSidebarProps) {
+  const { isAuthenticated } = useAppContext();
 
-  const handleLogout = () => {
-    logout();
-  };
-  
   return (
     <div className="flex flex-col justify-between h-full bg-white pt-6 pb-4">
       <nav>
@@ -86,7 +82,7 @@ export function ProfileSidebar({ activeTab, onTabChange }: ProfileSidebarProps) 
               </AlertDialogHeader>
               <AlertDialogFooter>
                 <AlertDialogCancel>Cancel</AlertDialogCancel>
-                <AlertDialogAction onClick={handleLogout}>Log Out</AlertDialogAction>
+                <AlertDialogAction onClick={onLogout}>Log Out</AlertDialogAction>
               </AlertDialogFooter>
             </AlertDialogContent>
           </AlertDialog>

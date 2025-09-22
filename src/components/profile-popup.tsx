@@ -113,7 +113,7 @@ export function ProfilePopup({
           </button>
           <div className="flex h-full w-full">
               <div className="w-[25%] h-full bg-white">
-                  <ProfileSidebar activeTab={activeTab} onTabChange={handleTabChange} />
+                  <ProfileSidebar activeTab={activeTab} onTabChange={handleTabChange} onLogout={onLogout} />
               </div>
               <div className="w-[75%] h-full bg-custom-purple-dark overflow-y-auto no-scrollbar">
                   {!isProfileLoaded ? <div className="h-full w-full flex items-center justify-center"><Loader /></div> : (
