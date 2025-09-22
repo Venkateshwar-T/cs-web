@@ -1,3 +1,4 @@
+
 // src/components/search-results-details.tsx
 'use client';
 
@@ -229,7 +230,7 @@ export function SearchResultsDetails({
                       ))}
                   </div>
                 ) : (
-                  <div className="flex items-center justify-center h-full pt-16">
+                  <div className="flex items-center justify-center h-full">
                      <EmptyState
                         imageUrl="/icons/empty.png"
                         title="No Products Found"
