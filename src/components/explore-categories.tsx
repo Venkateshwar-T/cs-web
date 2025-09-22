@@ -51,11 +51,7 @@ export function ExploreCategories({ exploreCategories, exploreFlavours }: Explor
   };
 
   const handleFlavourClick = (flavourName: string) => {
-    const categoryKey = 'flavours-fillings';
-    const params = new URLSearchParams();
-    params.set('q','');
-    params.append(categoryKey, flavourName);
-    router.push(`/search?${params.toString()}`);
+    router.push(`/search?q=${encodeURIComponent(flavourName)}`);
   }
 
   return (
