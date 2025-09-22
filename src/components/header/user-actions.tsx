@@ -1,3 +1,4 @@
+
 // @/components/header/user-actions.tsx
 'use client';
 
@@ -215,7 +216,9 @@ export function UserActions({
                                     </AlertDialogHeader>
                                     <AlertDialogFooter>
                                       <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                      <AlertDialogAction onClick={handleLogout}>Log Out</AlertDialogAction>
+                                      <SheetClose asChild>
+                                        <AlertDialogAction onClick={handleLogout}>Log Out</AlertDialogAction>
+                                      </SheetClose>
                                     </AlertDialogFooter>
                                   </AlertDialogContent>
                                 </AlertDialog>
