@@ -8,13 +8,12 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogClose,
 } from "@/components/ui/dialog"
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
-import { X } from "lucide-react";
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
+import { useAppContext } from '@/context/app-context';
 
 interface CompleteDetailsPopupProps {
     open: boolean;
@@ -23,8 +22,9 @@ interface CompleteDetailsPopupProps {
 }
 
 export function CompleteDetailsPopup({ open, onOpenChange, onConfirm }: CompleteDetailsPopupProps) {
-  const [name, setName] = useState('');
-  const [phone, setPhone] = useState('');
+  const { profileInfo } = useAppContext();
+  const [name, setName] = useState(profileInfo.name || '');
+  const [phone, setPhone] = useState(profileInfo.phone || '');
   const { toast } = useToast();
 
   const handleConfirm = () => {
@@ -36,20 +36,18 @@ export function CompleteDetailsPopup({ open, onOpenChange, onConfirm }: Complete
       });
       return;
     }
-    // Handle successful confirmation (e.g., submit data)
     onConfirm(name, phone);
-    onOpenChange(false); // Close popup on success
+    onOpenChange(false);
   };
   
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className={cn("p-0 w-[90vw] max-w-sm bg-custom-purple-dark rounded-2xl md:rounded-[30px] border-2 border-custom-gold")}>
+      <DialogContent 
+        onInteractOutside={(e) => e.preventDefault()}
+        className={cn("p-0 w-[90vw] max-w-sm bg-custom-purple-dark rounded-2xl md:rounded-[30px] border-2 border-custom-gold")}
+      >
         <DialogHeader>
           <DialogTitle className="sr-only">Complete Your Details</DialogTitle>
-          <DialogClose className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground text-white">
-            <X className="h-5 w-5" />
-            <span className="sr-only">Close</span>
-          </DialogClose>
         </DialogHeader>
         <div className="flex flex-col gap-4 px-6 pt-10 pb-6 text-white">
             <h2 className="text-2xl md:text-3xl font-medium text-center font-plex-sans">Complete Your Details</h2>

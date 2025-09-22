@@ -49,7 +49,7 @@ export function LoginPopup({ open, onOpenChange, onSignUpClick }: LoginPopupProp
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const { toast } = useToast();
-  const { login, setAuthPopup } = useAppContext();
+  const { login } = useAppContext();
 
   useEffect(() => {
     if (!open) {
@@ -67,8 +67,7 @@ export function LoginPopup({ open, onOpenChange, onSignUpClick }: LoginPopupProp
     setIsLoading(true);
     try {
       const userCredential = await signInWithEmail(email, password);
-      login(userCredential.user);
-      setAuthPopup(null);
+      login(userCredential.user, false); // false because it's not a new user
       toast({ title: "Success", description: "Logged in successfully!", variant: "success" });
     } catch (error: any) {
       const friendlyMessage = getAuthErrorMessage(error.code);
@@ -83,15 +82,9 @@ export function LoginPopup({ open, onOpenChange, onSignUpClick }: LoginPopupProp
     try {
       const userCredential = await signInWithGoogle();
       const user = userCredential.user;
-      login(user);
-      
       const isNewUser = user.metadata.creationTime === user.metadata.lastSignInTime;
-
-      if (isNewUser || !user.displayName || !user.phoneNumber) {
-        setAuthPopup('completeDetails');
-      } else {
-        setAuthPopup(null);
-      }
+      
+      login(user, isNewUser);
 
       toast({ title: "Success", description: "Logged in successfully!", variant: "success" });
     } catch (error: any) {

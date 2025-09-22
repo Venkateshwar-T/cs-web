@@ -1,3 +1,4 @@
+
 // @/context/app-context.tsx
 'use client';
 
@@ -64,7 +65,7 @@ interface AppContextType {
 
   isAuthenticated: boolean;
   user: User | null;
-  login: (user: User) => void;
+  login: (user: User, isNewUser: boolean) => void;
   logout: () => void;
   authPopup: AuthPopupType;
   setAuthPopup: (popup: AuthPopupType) => void;
@@ -126,14 +127,9 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
             if (profile) {
               setProfileInfo(profile);
             } else {
-              // Create a profile for a new user
-              const newProfile: ProfileInfo = {
-                name: newUser.displayName || '',
-                email: newUser.email || '',
-                phone: newUser.phoneNumber || '',
-              };
-              await createUserProfile(newUser.uid, newProfile);
-              setProfileInfo(newProfile);
+              // This case might happen if Firestore profile creation failed before.
+              // We'll handle profile creation/checking inside the login function now.
+              console.warn("User is authenticated but profile not found in Firestore. It will be created/checked on login.")
             }
           } else {
             setProfileInfo(defaultProfileInfo);
@@ -237,8 +233,27 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
     setCart({});
   }, [setCart]);
 
-  const login = useCallback((loggedInUser: User) => {
-    // This is handled by onAuthStateChanged now
+  const login = useCallback(async (loggedInUser: User, isNewUser: boolean) => {
+    let profile = await getUserProfile(loggedInUser.uid);
+
+    if (isNewUser || !profile) {
+      profile = {
+        name: loggedInUser.displayName || '',
+        email: loggedInUser.email || '',
+        phone: loggedInUser.phoneNumber || '',
+      };
+      await createUserProfile(loggedInUser.uid, profile);
+      setProfileInfo(profile);
+      setAuthPopup('completeDetails');
+    } else {
+      setProfileInfo(profile);
+       // If it's an old user but their details are incomplete, still show the popup
+      if (!profile.name || !profile.phone) {
+        setAuthPopup('completeDetails');
+      } else {
+        setAuthPopup(null);
+      }
+    }
   }, []);
 
   const logout = useCallback(async () => {

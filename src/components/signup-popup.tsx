@@ -49,7 +49,7 @@ export function SignUpPopup({ open, onOpenChange, onLoginClick }: SignUpPopupPro
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const { toast } = useToast();
-  const { login, setAuthPopup, profileInfo } = useAppContext();
+  const { login } = useAppContext();
 
   useEffect(() => {
     if (!open) {
@@ -67,8 +67,7 @@ export function SignUpPopup({ open, onOpenChange, onLoginClick }: SignUpPopupPro
     setIsLoading(true);
     try {
       const userCredential = await signUpWithEmail(email, password);
-      login(userCredential.user);
-      setAuthPopup('completeDetails');
+      login(userCredential.user, true); // true because it's a new user
       toast({ title: "Success", description: "Account created successfully!", variant: "success" });
     } catch (error: any) {
       const friendlyMessage = getAuthErrorMessage(error.code);
@@ -83,18 +82,9 @@ export function SignUpPopup({ open, onOpenChange, onLoginClick }: SignUpPopupPro
     try {
       const userCredential = await signInWithGoogle();
       const user = userCredential.user;
-      login(user);
-      
-      // After login, the context will update profileInfo.
-      // We check if the details (especially phone) are missing.
       const isNewUser = user.metadata.creationTime === user.metadata.lastSignInTime;
-
-      // The profileInfo from context might not be updated yet, so we directly check.
-      if (isNewUser || !user.displayName || !user.phoneNumber) {
-        setAuthPopup('completeDetails');
-      } else {
-        setAuthPopup(null);
-      }
+      
+      login(user, isNewUser);
 
       toast({ title: "Success", description: "Logged in successfully!", variant: "success" });
     } catch (error: any) {
@@ -114,7 +104,7 @@ export function SignUpPopup({ open, onOpenChange, onLoginClick }: SignUpPopupPro
             {isLoading ? (
               <div className="flex flex-col items-center justify-center gap-4 h-64">
                 <Loader />
-                <p className="text-white font-semibold">Signing you in...</p>
+                <p className="text-white font-semibold">Creating your account...</p>
               </div>
             ) : (
               <div className="flex flex-col gap-2 md:gap-4 p-4 md:px-8 md:pb-8 w-full">
