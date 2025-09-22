@@ -1,4 +1,3 @@
-
 // src/lib/firebase.ts
 import { initializeApp, getApps, getApp, type FirebaseApp } from 'firebase/app';
 import {
@@ -12,9 +11,12 @@ import {
   updatePassword,
   type User
 } from 'firebase/auth';
+import { getFirestore, doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
+import type { ProfileInfo } from '@/context/app-context';
+
 
 // Initialize Firebase on the client side
-function getClientApp() {
+function getClientApp(): FirebaseApp | null {
   if (typeof window === 'undefined') {
     return null; // Don't initialize on the server
   }
@@ -22,7 +24,7 @@ function getClientApp() {
   if (getApps().length) {
     return getApp();
   }
-
+  
   const firebaseConfig = {
     apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
     authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
@@ -31,8 +33,8 @@ function getClientApp() {
     messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
     appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID
   };
-
-  // Check if all required config values are present
+  
+   // Check if all required config values are present
   if (
     !firebaseConfig.apiKey ||
     !firebaseConfig.authDomain ||
@@ -41,7 +43,7 @@ function getClientApp() {
     console.error("Firebase config is missing or invalid. Make sure all NEXT_PUBLIC_FIREBASE_ variables are set in your environment.");
     return null;
   }
-  
+
   return initializeApp(firebaseConfig);
 }
 
@@ -49,6 +51,12 @@ function getClientAuth() {
   const app = getClientApp();
   return app ? getAuth(app) : null;
 }
+
+function getClientFirestore() {
+    const app = getClientApp();
+    return app ? getFirestore(app) : null;
+}
+
 
 export const signInWithGoogle = () => {
   const auth = getClientAuth();
@@ -95,3 +103,29 @@ export const updateUserPassword = (newPassword: string) => {
 export function getFirebaseAuth() {
     return getClientAuth();
 }
+
+// Firestore user profile functions
+export const getUserProfile = async (uid: string): Promise<ProfileInfo | null> => {
+    const db = getClientFirestore();
+    if (!db) return null;
+    const userDocRef = doc(db, 'users', uid);
+    const userDocSnap = await getDoc(userDocRef);
+    if (userDocSnap.exists()) {
+        return userDocSnap.data() as ProfileInfo;
+    }
+    return null;
+};
+
+export const createUserProfile = async (uid: string, data: ProfileInfo): Promise<void> => {
+    const db = getClientFirestore();
+    if (!db) throw new Error("Firestore not initialized");
+    const userDocRef = doc(db, 'users', uid);
+    await setDoc(userDocRef, data);
+};
+
+export const updateUserProfile = async (uid: string, data: Partial<ProfileInfo>): Promise<void> => {
+    const db = getClientFirestore();
+    if (!db) throw new Error("Firestore not initialized");
+    const userDocRef = doc(db, 'users', uid);
+    await updateDoc(userDocRef, data);
+};

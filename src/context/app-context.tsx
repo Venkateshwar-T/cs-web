@@ -1,4 +1,3 @@
-
 // @/context/app-context.tsx
 'use client';
 
@@ -6,7 +5,14 @@ import { createContext, useContext, ReactNode, useCallback, useState, useEffect 
 import type { SanityProduct } from '@/types';
 import { useLocalStorage } from '@/hooks/use-local-storage';
 import { useToast } from '@/hooks/use-toast';
-import { onAuthStateChanged, signOutUser, getFirebaseAuth } from '@/lib/firebase';
+import {
+  onAuthStateChanged,
+  signOutUser,
+  getFirebaseAuth,
+  getUserProfile,
+  createUserProfile,
+  updateUserProfile,
+} from '@/lib/firebase';
 import type { User } from 'firebase/auth';
 
 const defaultProfileInfo: ProfileInfo = {
@@ -85,13 +91,9 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isAuthLoaded, setIsAuthLoaded] = useState(false);
   
-  const profileStorageKey = user ? `chocoSmileyProfile-${user.uid}` : 'chocoSmileyProfile-guest';
+  const [profileInfo, setProfileInfo] = useState<ProfileInfo>(defaultProfileInfo);
+  const [isProfileLoaded, setIsProfileLoaded] = useState(false);
 
-  const [profileInfo, setProfileInfo, isProfileLoaded] = useLocalStorage<ProfileInfo>(
-    profileStorageKey,
-    defaultProfileInfo
-  );
-  
   const [likedProducts, setLikedProducts, isWishlistLoaded] = useLocalStorage<Record<string, boolean>>(
     WISHLIST_STORAGE_KEY,
     {}
@@ -111,57 +113,57 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
   const [flavourSelection, setFlavourSelection] = useState<{ product: SanityProduct | null; isOpen: boolean }>({ product: null, isOpen: false });
 
   useEffect(() => {
-    // Ensure Firebase auth is initialized on the client before setting up listener
     if (typeof window !== 'undefined') {
-        const auth = getFirebaseAuth();
-        if(auth) {
-            const unsubscribe = onAuthStateChanged((newUser) => {
-              setUser(newUser);
-              setIsAuthenticated(!!newUser);
-              setIsAuthLoaded(true);
-            });
-            return () => unsubscribe();
-        } else {
-            // Handle case where auth is not available (e.g. server-side)
-            setIsAuthLoaded(true);
-        }
+      const auth = getFirebaseAuth();
+      if (auth) {
+        const unsubscribe = onAuthStateChanged(async (newUser) => {
+          setIsProfileLoaded(false);
+          setUser(newUser);
+          setIsAuthenticated(!!newUser);
+
+          if (newUser) {
+            let profile = await getUserProfile(newUser.uid);
+            if (profile) {
+              setProfileInfo(profile);
+            } else {
+              // Create a profile for a new user
+              const newProfile: ProfileInfo = {
+                name: newUser.displayName || '',
+                email: newUser.email || '',
+                phone: newUser.phoneNumber || '',
+              };
+              await createUserProfile(newUser.uid, newProfile);
+              setProfileInfo(newProfile);
+            }
+          } else {
+            setProfileInfo(defaultProfileInfo);
+          }
+          setIsProfileLoaded(true);
+          setIsAuthLoaded(true);
+        });
+        return () => unsubscribe();
+      } else {
+        setIsAuthLoaded(true);
+        setIsProfileLoaded(true);
+      }
     }
   }, []);
 
-  useEffect(() => {
-    if (!isProfileLoaded) return; // Wait for profile to be loaded from localStorage
-
+  const updateProfileInfo = useCallback(async (newInfo: Partial<ProfileInfo>) => {
     if (user) {
-        // User is logged in, check for existing profile
-        const userProfileKey = `chocoSmileyProfile-${user.uid}`;
-        const storedProfile = localStorage.getItem(userProfileKey);
-        
-        if (storedProfile) {
-            const parsedProfile = JSON.parse(storedProfile);
-            // If the stored profile isn't the same as the one in state, update the state.
-            if (JSON.stringify(parsedProfile) !== JSON.stringify(profileInfo)) {
-              setProfileInfo(parsedProfile);
-            }
-        } else {
-            // New user or no profile yet, create one from auth details
-            setProfileInfo({
-                name: user.displayName || '',
-                email: user.email || '',
-                phone: user.phoneNumber || '',
-            });
-        }
-    } else {
-        // User is logged out, ensure we are using the guest profile
-        if (JSON.stringify(profileInfo) !== JSON.stringify(defaultProfileInfo)) {
-            setProfileInfo(defaultProfileInfo);
-        }
+      try {
+        await updateUserProfile(user.uid, newInfo);
+        setProfileInfo(prev => ({ ...prev, ...newInfo }));
+      } catch (e) {
+        console.error("Error updating profile in Firestore:", e);
+        toast({
+          title: "Error",
+          description: "Could not save profile changes.",
+          variant: "destructive"
+        });
+      }
     }
-  }, [user, isProfileLoaded, setProfileInfo, profileInfo]);
-
-
-  const updateProfileInfo = useCallback((newInfo: Partial<ProfileInfo>) => {
-      setProfileInfo(prev => ({ ...prev, ...newInfo }));
-  }, [setProfileInfo]);
+  }, [user, toast]);
 
   const toggleLike = useCallback((productId: string) => {
     setLikedProducts(prev => {
@@ -197,7 +199,6 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
         newCart[productName] = {
           ...existingItem,
           quantity,
-          // Only update flavours if they are provided, otherwise keep existing ones
           flavours: flavours !== undefined ? flavours : existingItem.flavours,
         };
       }
@@ -213,13 +214,11 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
       const newCart = { ...prevCart };
       orderToReorder.items.forEach(item => {
         if (newCart[item.name]) {
-          // If item exists, add quantity and merge flavours (removing duplicates)
           newCart[item.name].quantity += item.quantity;
           const existingFlavours = newCart[item.name].flavours || [];
           const newFlavours = item.flavours || [];
           newCart[item.name].flavours = [...new Set([...existingFlavours, ...newFlavours])];
         } else {
-          // Otherwise, add the new item to the cart
           newCart[item.name] = { ...item };
         }
       });
@@ -234,21 +233,18 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
 
   }, [orders, setCart, toast]);
 
-
   const clearCart = useCallback(() => {
     setCart({});
   }, [setCart]);
 
   const login = useCallback((loggedInUser: User) => {
-    // This function is now mostly a placeholder as the onAuthStateChanged effect handles the logic.
-    // It can be used to manually trigger state updates if needed, but is generally not required.
+    // This is handled by onAuthStateChanged now
   }, []);
 
   const logout = useCallback(async () => {
     try {
       await signOutUser();
-      // onAuthStateChanged will handle setting user to null and resetting profile.
-      setAuthPopup(null); // Close any auth popups
+      setAuthPopup(null); 
       toast({
         title: "Logged Out",
         description: "You have been successfully logged out.",
@@ -261,7 +257,6 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
       });
     }
   }, [toast]);
-
 
   const value: AppContextType = {
     profileInfo,
