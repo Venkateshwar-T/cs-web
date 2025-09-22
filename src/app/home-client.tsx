@@ -16,6 +16,7 @@ import { StaticSparkleBackground } from '@/components/static-sparkle-background'
 import { Footer } from '@/components/footer';
 import { useAppContext } from '@/context/app-context';
 import type { SanityProduct } from '@/types';
+import { FlavourSelectionPopup } from '@/components/flavour-selection-popup';
 
 interface HomepageContent {
   exploreCategories: { _key: string; name: string; imageUrl: string }[];
@@ -28,7 +29,7 @@ interface HomeClientProps extends HomepageContent {
 
 
 export default function HomeClient({ allProducts, exploreCategories, exploreFlavours }: HomeClientProps) {
-  const { cart, updateCart, likedProducts, toggleLike, clearWishlist } = useAppContext();
+  const { cart, updateCart, likedProducts, toggleLike, clearWishlist, flavourSelection, setFlavourSelection } = useAppContext();
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const isMobile = useIsMobile();
   const router = useRouter();
@@ -84,6 +85,11 @@ export default function HomeClient({ allProducts, exploreCategories, exploreFlav
     router.push(`/product/${product.slug.current}`);
   };
 
+  const handleFlavourConfirm = (productName: string, flavours: string[]) => {
+    const prevQuantity = cart[productName]?.quantity || 0;
+    updateCart(productName, prevQuantity + 1, flavours);
+  };
+
   const cartItemCount = Object.values(cart).reduce((acc, item) => acc + item.quantity, 0);
   
   const mainContentClass = cn(
@@ -95,7 +101,7 @@ export default function HomeClient({ allProducts, exploreCategories, exploreFlav
       {isMobile ? <StaticSparkleBackground /> : <SparkleBackground />}
       <div className={cn(
         "flex flex-col h-screen",
-        isProfileOpen ? 'opacity-50' : ''
+        (isProfileOpen || flavourSelection.isOpen) ? 'opacity-50' : ''
       )}>
         <Header 
           onProfileOpenChange={setIsProfileOpen}
@@ -135,6 +141,12 @@ export default function HomeClient({ allProducts, exploreCategories, exploreFlav
         onAddToCart={updateCart}
         onClearWishlist={clearWishlist}
         onProductClick={handleProductClick}
+      />
+       <FlavourSelectionPopup
+        product={flavourSelection.product}
+        open={flavourSelection.isOpen}
+        onOpenChange={(isOpen) => setFlavourSelection({ product: null, isOpen })}
+        onConfirm={handleFlavourConfirm}
       />
     </>
   );
