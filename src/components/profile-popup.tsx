@@ -1,4 +1,3 @@
-
 // @/components/profile-popup.tsx
 'use client';
 
@@ -25,6 +24,8 @@ import { Loader } from './loader';
 import type { OrderItem } from '@/context/app-context';
 import { useRouter } from 'next/navigation';
 import { EmptyState } from './empty-state';
+import { ProductOrderDetailsPopup } from './product-order-details-popup';
+
 
 interface ProfilePopupProps {
   onClose: () => void;
@@ -54,8 +55,17 @@ export function ProfilePopup({
   const [isDialogVisible, setIsDialogVisible] = useState(false);
   const [pendingAction, setPendingAction] = useState<(() => void) | null>(null);
   
-  const { profileInfo, updateProfileInfo, isProfileLoaded, isAuthenticated, setAuthPopup } = useAppContext();
+  const { 
+    profileInfo, 
+    updateProfileInfo, 
+    isProfileLoaded, 
+    isAuthenticated, 
+    setAuthPopup,
+    reorderItem, 
+  } = useAppContext();
   const router = useRouter();
+
+  const [selectedProductDetails, setSelectedProductDetails] = useState<{product: SanityProduct, orderItem: OrderItem} | null>(null);
 
   const handleActionWithCheck = (action: () => void) => {
     if (hasUnsavedChanges) {
@@ -100,6 +110,15 @@ export function ProfilePopup({
     onClose();
     setAuthPopup('login');
   }
+
+  const handleViewProductFromOrder = (product: SanityProduct) => {
+    onClose();
+    router.push(`/product/${product.slug.current}`);
+  };
+
+  const handleOrderAgainFromPopup = (item: OrderItem) => {
+    reorderItem(item);
+  };
 
   return (
     <>
@@ -150,7 +169,10 @@ export function ProfilePopup({
                         />
                       )}
                       {activeTab === 'My Orders' && (
-                        <MyOrdersTab products={products} onProductClick={handleProductClickInPopup} />
+                        <MyOrdersTab 
+                          products={products} 
+                          onProductClick={(product, orderItem) => setSelectedProductDetails({ product, orderItem })}
+                        />
                       )}
                     </>
                   )}
@@ -171,6 +193,14 @@ export function ProfilePopup({
             </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+       <ProductOrderDetailsPopup
+        details={selectedProductDetails}
+        open={!!selectedProductDetails}
+        onOpenChange={(isOpen) => !isOpen && setSelectedProductDetails(null)}
+        onViewProduct={handleViewProductFromOrder}
+        onOrderAgain={handleOrderAgainFromPopup}
+      />
     </>
   );
 }

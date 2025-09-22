@@ -1,9 +1,8 @@
-
 // @/components/order-item-card.tsx
 'use client';
 
 import Image from 'next/image';
-import type { Order } from '@/context/app-context';
+import type { Order, OrderItem } from '@/context/app-context';
 import { cn } from '@/lib/utils';
 import { Badge } from './ui/badge';
 import { Separator } from './ui/separator';
@@ -26,7 +25,7 @@ interface OrderItemCardProps {
     order: Order;
     isMobile?: boolean;
     products: SanityProduct[];
-    onProductClick: (product: SanityProduct) => void;
+    onProductClick: (product: SanityProduct, orderItem: OrderItem) => void;
     onOrderAgain?: () => void;
 }
 
@@ -77,7 +76,7 @@ export function OrderItemCard({ order, isMobile = false, products, onProductClic
                         const product = productsByName[item.name];
                         if (!product) return null;
                          return (
-                            <div key={item.name} className="flex items-center gap-3 cursor-pointer" onClick={() => onProductClick(product)}>
+                            <div key={item.name} className="flex items-center gap-3 cursor-pointer" onClick={() => onProductClick(product, item)}>
                                 <Image
                                     src={product.images?.[0] || "/choco img.png"}
                                     alt={item.name}
@@ -144,7 +143,7 @@ export function OrderItemCard({ order, isMobile = false, products, onProductClic
                      const product = productsByName[item.name];
                      if (!product) return null;
                      return (
-                        <div key={item.name} className="flex items-center gap-4 cursor-pointer" onClick={() => onProductClick(product)}>
+                        <div key={item.name} className="flex items-center gap-4 cursor-pointer" onClick={() => onProductClick(product, item)}>
                             <Image
                                 src={product.images?.[0] || "/choco img.png"}
                                 alt={item.name}

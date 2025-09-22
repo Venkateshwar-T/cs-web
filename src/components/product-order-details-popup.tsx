@@ -1,4 +1,3 @@
-
 // @/components/product-order-details-popup.tsx
 'use client';
 
@@ -10,20 +9,33 @@ import {
   DialogClose,
 } from "@/components/ui/dialog"
 import { Button } from "./ui/button";
-import { X } from "lucide-react";
+import { X, RotateCcw, Eye } from "lucide-react";
 import type { SanityProduct } from "@/types";
 import type { OrderItem } from "@/context/app-context";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { Separator } from "./ui/separator";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 interface ProductOrderDetailsPopupProps {
     details: { product: SanityProduct; orderItem: OrderItem } | null;
     open: boolean;
     onOpenChange: (open: boolean) => void;
+    onViewProduct?: (product: SanityProduct) => void;
+    onOrderAgain?: (item: OrderItem) => void;
 }
 
-export function ProductOrderDetailsPopup({ details, open, onOpenChange }: ProductOrderDetailsPopupProps) {
+export function ProductOrderDetailsPopup({ details, open, onOpenChange, onViewProduct, onOrderAgain }: ProductOrderDetailsPopupProps) {
   if (!details) return null;
 
   const { product, orderItem } = details;
@@ -40,6 +52,20 @@ export function ProductOrderDetailsPopup({ details, open, onOpenChange }: Produc
   const itemPrice = (product.discountedPrice || 0) + flavourTotal;
   const finalPrice = itemPrice * orderItem.quantity;
   const subtitle = [product.weight, product.composition, product.packageType].filter(Boolean).join(' | ');
+
+  const handleViewClick = () => {
+    if (onViewProduct) {
+        onViewProduct(product);
+        onOpenChange(false);
+    }
+  }
+
+  const handleOrderAgainClick = () => {
+    if (onOrderAgain) {
+        onOrderAgain(orderItem);
+        onOpenChange(false);
+    }
+  }
 
 
   return (
@@ -88,15 +114,50 @@ export function ProductOrderDetailsPopup({ details, open, onOpenChange }: Produc
                 <span className="font-semibold text-base">Final Price Paid</span>
                 <span className="font-bold text-xl">₹{finalPrice.toFixed(2)}</span>
             </div>
+            
+            <div className="flex items-center justify-center gap-2 mt-2">
+                {onViewProduct && (
+                    <Button 
+                        onClick={handleViewClick}
+                        variant="outline"
+                        className="w-full bg-transparent text-sm text-white border-custom-gold border rounded-full hover:bg-custom-gold hover:text-custom-purple-dark"
+                    >
+                        <Eye className="mr-2 h-4 w-4" /> View Product
+                    </Button>
+                )}
+                 {onOrderAgain && (
+                    <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                            <Button className="w-full bg-custom-gold text-sm text-custom-purple-dark rounded-full hover:bg-custom-gold/90">
+                               <RotateCcw className="mr-2 h-4 w-4" /> Order Again
+                            </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                            <AlertDialogHeader>
+                                <AlertDialogTitle>Order this item again?</AlertDialogTitle>
+                                <AlertDialogDescription>
+                                This will add {orderItem.quantity} x {orderItem.name} to your cart.
+                                </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                <AlertDialogAction onClick={handleOrderAgainClick}>Confirm</AlertDialogAction>
+                            </AlertDialogFooter>
+                        </AlertDialogContent>
+                    </AlertDialog>
+                )}
+            </div>
 
-            <DialogClose asChild>
-                <Button 
-                    variant="outline"
-                    className="mt-4 w-full md:w-1/2 mx-auto bg-custom-gold text-sm text-custom-purple-dark rounded-full hover:bg-custom-gold/90"
-                >
-                    Close
-                </Button>
-            </DialogClose>
+            {!onViewProduct && !onOrderAgain && (
+                <DialogClose asChild>
+                    <Button 
+                        variant="outline"
+                        className="mt-4 w-full md:w-1/2 mx-auto bg-custom-gold text-sm text-custom-purple-dark rounded-full hover:bg-custom-gold/90"
+                    >
+                        Close
+                    </Button>
+                </DialogClose>
+            )}
         </div>
       </DialogContent>
     </Dialog>

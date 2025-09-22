@@ -1,4 +1,3 @@
-
 // @/components/my-orders-tab.tsx
 'use client';
 
@@ -8,7 +7,7 @@ import { EmptyState } from './empty-state';
 import { useRouter } from 'next/navigation';
 import { SectionTitle } from './section-title';
 import { Separator } from './ui/separator';
-import { useAppContext } from '@/context/app-context';
+import { useAppContext, type OrderItem } from '@/context/app-context';
 import { Loader } from './loader';
 import { Button } from './ui/button';
 import {
@@ -28,7 +27,7 @@ import type { SanityProduct } from '@/types';
 interface MyOrdersTabProps {
   isMobile?: boolean;
   products: SanityProduct[];
-  onProductClick: (product: SanityProduct) => void;
+  onProductClick: (product: SanityProduct, orderItem: OrderItem) => void;
 }
 
 export function MyOrdersTab({ isMobile = false, products, onProductClick }: MyOrdersTabProps) {

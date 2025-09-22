@@ -1,4 +1,3 @@
-
 // @/context/app-context.tsx
 'use client';
 
@@ -57,6 +56,7 @@ interface AppContextType {
   isOrdersLoaded: boolean;
   clearOrders: () => void;
   reorder: (orderId: string) => void;
+  reorderItem: (item: OrderItem) => void;
 
   cart: Cart;
   updateCart: (productName: string, quantity: number, flavours?: string[]) => void;
@@ -229,6 +229,26 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
 
   }, [orders, setCart, toast]);
 
+   const reorderItem = useCallback((item: OrderItem) => {
+    setCart(prevCart => {
+        const newCart = { ...prevCart };
+        if (newCart[item.name]) {
+            newCart[item.name].quantity += item.quantity;
+            const existingFlavours = newCart[item.name].flavours || [];
+            const newFlavours = item.flavours || [];
+            newCart[item.name].flavours = [...new Set([...existingFlavours, ...newFlavours])];
+        } else {
+            newCart[item.name] = { ...item };
+        }
+        return newCart;
+    });
+    toast({
+        title: "Item Added to Cart",
+        description: `${item.quantity} x ${item.name} has been added to your cart.`,
+        variant: "success",
+    });
+  }, [setCart, toast]);
+
   const clearCart = useCallback(() => {
     setCart({});
   }, [setCart]);
@@ -291,6 +311,7 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
     isOrdersLoaded,
     clearOrders,
     reorder,
+    reorderItem,
     cart,
     updateCart,
     clearCart,
