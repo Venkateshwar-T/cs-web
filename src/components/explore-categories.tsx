@@ -84,7 +84,6 @@ export function ExploreCategories({ exploreCategories, exploreFlavours }: Explor
                         className="w-full h-full object-cover rounded-[20px] md:rounded-[40px] ring-1 ring-custom-purple-dark"
                         onDragStart={(e) => e.preventDefault()}
                         />
-                        <div className="absolute inset-0 bg-black/20 rounded-[20px] md:rounded-[40px] group-hover:bg-black/40 transition-colors" />
                         <div className="absolute inset-x-0 bottom-2 md:bottom-3 flex items-end justify-center">
                           <h3 className="text-white text-xs md:text-lg text-center font-plex-sans font-semibold [text-shadow:0_2px_1px_rgba(0,0,0,1)]">{category.name}</h3>
                         </div>
