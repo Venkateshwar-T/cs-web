@@ -10,7 +10,7 @@ import type { SanityProduct } from '@/types';
 
 interface WishlistItemCardProps {
   product: SanityProduct;
-  onAddToCart: (productName: string, quantity: number) => void;
+  onAddToCart: () => void;
   onUnlike: () => void;
   isInCart: boolean;
   isUnliking: boolean;
@@ -24,7 +24,7 @@ export function WishlistItemCard({ product, onAddToCart, onUnlike, isInCart, isU
   
   const handleAddToCartClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    onAddToCart(product.name, isInCart ? 0 : 1);
+    onAddToCart();
   };
   
   const handleUnlikeClick = (e: React.MouseEvent) => {

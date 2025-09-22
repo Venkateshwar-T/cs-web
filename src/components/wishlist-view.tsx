@@ -57,9 +57,14 @@ export function WishlistView({
   const handleAddToCartFromWishlist = (product: SanityProduct) => {
     const isInCart = !!cart[product.name];
     if (isInCart) {
-      onAddToCart(product.name, 0); // Remove from cart
+      onAddToCart(product.name, 0); // Remove from cart if already added
     } else {
-      setFlavourSelection({ product, isOpen: true }); // Open flavour popup
+      const hasFlavours = product.availableFlavours && product.availableFlavours.length > 0;
+      if (hasFlavours) {
+        setFlavourSelection({ product, isOpen: true });
+      } else {
+        onAddToCart(product.name, 1); // Add directly if no flavours
+      }
     }
   };
 
