@@ -50,6 +50,14 @@ export function ExploreCategories({ exploreCategories, exploreFlavours }: Explor
     router.push(`/search?q=${encodeURIComponent(categoryName)}`);
   };
 
+  const handleFlavourClick = (flavourName: string) => {
+    const categoryKey = 'flavours-fillings';
+    const params = new URLSearchParams();
+    params.set('q','');
+    params.append(categoryKey, flavourName);
+    router.push(`/search?${params.toString()}`);
+  }
+
   return (
     <motion.div 
       className="bg-[#5D2B79] h-full rounded-t-[25px] md:rounded-t-[40px] mx-4 md:mx-32"
@@ -73,7 +81,7 @@ export function ExploreCategories({ exploreCategories, exploreFlavours }: Explor
                       key={category._key} 
                       className="w-full aspect-[5/6] relative group cursor-pointer" 
                       variants={itemVariants}
-                      whileHover={isMobile ? {} : { scale: 1.05 }}
+                      whileHover={isMobile ? {} : { scale: 1.02 }}
                       onClick={() => handleCategoryClick(category.name)}
                     >
                         <Image
@@ -101,7 +109,13 @@ export function ExploreCategories({ exploreCategories, exploreFlavours }: Explor
                     animate="visible"
                 >
                     {(exploreFlavours || []).map((flavour) => (
-                    <motion.div key={flavour._key} className="w-24 md:flex-1 md:w-full max-w-xs md:max-w-48 flex-shrink-0 md:flex-shrink aspect-square md:aspect-[5/6] relative group" variants={itemVariants}>
+                    <motion.div 
+                        key={flavour._key} 
+                        className="w-24 md:flex-1 md:w-full max-w-xs md:max-w-48 flex-shrink-0 md:flex-shrink aspect-square md:aspect-[5/6] relative group cursor-pointer" 
+                        variants={itemVariants}
+                        whileHover={isMobile ? {} : { scale: 1.02 }}
+                        onClick={() => handleFlavourClick(flavour.name)}
+                    >
                         <Image
                         src={flavour.imageUrl}
                         alt={flavour.name}
