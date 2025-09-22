@@ -1,4 +1,3 @@
-
 // @/components/popups/popups-manager.tsx
 'use client';
 
@@ -156,12 +155,20 @@ export function PopupsManager({
 
       <LoginPopup 
         open={authPopup === 'login'} 
-        onOpenChange={(open) => !open && setAuthPopup(null)}
+        onOpenChange={(open) => {
+            if (!open) {
+                setAuthPopup(null);
+            }
+        }}
         onSignUpClick={() => setAuthPopup('signup')}
       />
       <SignUpPopup
         open={authPopup === 'signup'}
-        onOpenChange={(open) => !open && setAuthPopup(null)}
+        onOpenChange={(open) => {
+            if (!open) {
+                setAuthPopup(null);
+            }
+        }}
         onLoginClick={() => setAuthPopup('login')}
       />
       <CompleteDetailsPopup
