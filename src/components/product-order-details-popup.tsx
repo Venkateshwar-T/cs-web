@@ -116,7 +116,7 @@ export function ProductOrderDetailsPopup({ details, open, onOpenChange, onViewPr
                 <span className="font-bold text-xl">₹{finalPrice.toFixed(2)}</span>
             </div>
             
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-2 mt-2">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-2 mt-4">
                 {onViewProduct && (
                     <Button 
                         onClick={handleViewClick}
@@ -153,7 +153,7 @@ export function ProductOrderDetailsPopup({ details, open, onOpenChange, onViewPr
                 <DialogClose asChild>
                     <Button 
                         variant="outline"
-                        className="mt-2 w-full md:w-1/2 mx-auto bg-custom-gold text-sm text-custom-purple-dark rounded-full hover:bg-custom-gold/90"
+                        className="mt-2 w-full md:w-1/2 mx-auto bg-custom-gold text-sm text-custom-purple-dark rounded-full hover:bg-custom-gold/90 hover:text-custom-purple-dark"
                     >
                         Close
                     </Button>
