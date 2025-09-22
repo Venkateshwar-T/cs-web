@@ -1,3 +1,4 @@
+
 // @/components/my-profile-tab.tsx
 'use client';
 
@@ -107,9 +108,12 @@ export function MyProfileTab({ profile, onProfileUpdate }: MyProfileTabProps) {
       </Avatar>
 
       {isGoogleSignIn && (
-        <div className="flex items-center gap-2 bg-white/10 text-white text-xs px-3 py-1.5 rounded-full">
-            <Image src="/icons/google.png" alt="Google" width={16} height={16} />
-            <span>Logged in with Google</span>
+        <div className="flex flex-col items-center gap-1">
+          <div className="flex items-center gap-2 bg-white/10 text-white text-xs px-3 py-1.5 rounded-full">
+              <Image src="/icons/google.png" alt="Google" width={16} height={16} />
+              <span>Logged in with Google</span>
+          </div>
+          <p className="text-sm text-white/80">{email}</p>
         </div>
       )}
 
@@ -132,17 +136,18 @@ export function MyProfileTab({ profile, onProfileUpdate }: MyProfileTabProps) {
             className="bg-white/10 border-white/20 text-white rounded-2xl h-12" 
           />
         </div>
-        <div className="space-y-1">
-          <label htmlFor="email" className="pl-3 text-sm font-medium">Email</label>
-          <Input 
-            id="email" 
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className={cn("bg-white/10 border-white/20 text-white rounded-2xl h-12", isGoogleSignIn && "text-white/70")}
-            disabled={isGoogleSignIn}
-          />
-        </div>
+        {!isGoogleSignIn && (
+          <div className="space-y-1">
+            <label htmlFor="email" className="pl-3 text-sm font-medium">Email</label>
+            <Input 
+              id="email" 
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="bg-white/10 border-white/20 text-white rounded-2xl h-12"
+            />
+          </div>
+        )}
         {!isGoogleSignIn && (
           <div className="space-y-1">
               <label htmlFor="password" className="pl-3 text-sm font-medium">Password</label>
