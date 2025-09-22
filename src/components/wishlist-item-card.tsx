@@ -78,7 +78,9 @@ export function WishlistItemCard({ product, onAddToCart, onUnlike, isInCart, isU
                     isInCart
                       ? 'bg-custom-purple-dark text-white'
                       : 'bg-transparent text-custom-purple-dark',
-                    !isMobile && (isInCart ? 'hover:bg-custom-purple-dark/90' : 'hover:bg-custom-purple-dark hover:text-white')
+                    isMobile
+                      ? (isInCart ? 'hover:bg-custom-purple-dark hover:text-white' : 'hover:bg-transparent hover:text-custom-purple-dark')
+                      : (isInCart ? 'hover:bg-custom-purple-dark/90' : 'hover:bg-custom-purple-dark hover:text-white')
                   )}
                 >
                   {isInCart ? 'ADDED' : 'ADD'}

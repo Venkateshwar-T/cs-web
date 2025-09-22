@@ -56,10 +56,12 @@ export function FlavourCard({ flavour, onAddToCart, quantity }: FlavourCardProps
             onClick={handleToggleCart}
             className={cn(
               "h-7 w-full rounded-[10px] md:rounded-full uppercase border-2 border-b-[3px] text-xs transition-colors duration-300",
-              isInCart 
+              isInCart
                 ? 'bg-custom-purple-dark border-custom-purple-dark text-white'
                 : 'bg-white border-custom-purple-dark text-custom-purple-dark',
-              !isMobile && (isInCart ? 'hover:bg-custom-purple-dark/90' : 'hover:bg-custom-purple-dark hover:text-white')
+              isMobile
+                ? (isInCart ? 'hover:bg-custom-purple-dark hover:text-white' : 'hover:bg-white hover:text-custom-purple-dark')
+                : (isInCart ? 'hover:bg-custom-purple-dark/90' : 'hover:bg-custom-purple-dark hover:text-white')
             )}
           >
             {isInCart ? 'Added' : 'Add'}
