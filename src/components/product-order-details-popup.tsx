@@ -101,7 +101,7 @@ export function ProductOrderDetailsPopup({ details, open, onOpenChange, onViewPr
             {(orderItem.flavours && orderItem.flavours.length > 0) && (
                 <div className="bg-white/10 rounded-lg p-3">
                     <h4 className="font-semibold text-sm mb-2">Flavours Selected</h4>
-                    <ul className="grid grid-cols-2 gap-x-4 gap-y-1 list-disc list-inside text-xs">
+                    <ul className="flex flex-col gap-x-4 gap-y-1 list-disc list-inside text-xs">
                         {orderItem.flavours.map((flavour) => (
                             <li key={flavour}>{flavour}</li>
                         ))}
@@ -153,7 +153,7 @@ export function ProductOrderDetailsPopup({ details, open, onOpenChange, onViewPr
                 <DialogClose asChild>
                     <Button 
                         variant="outline"
-                        className="mt-4 w-full md:w-1/2 mx-auto bg-custom-gold text-sm text-custom-purple-dark rounded-full hover:bg-custom-gold/90"
+                        className="mt-2 w-full md:w-1/2 mx-auto bg-custom-gold text-sm text-custom-purple-dark rounded-full hover:bg-custom-gold/90"
                     >
                         Close
                     </Button>
