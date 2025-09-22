@@ -156,17 +156,17 @@ export function PopupsManager({
 
       <LoginPopup 
         open={authPopup === 'login'} 
-        onOpenChange={(open) => !open && setAuthPopup(null)}
+        onOpenChange={(open) => !open && (() => setAuthPopup(null))}
         onSignUpClick={() => setAuthPopup('signup')}
       />
       <SignUpPopup
         open={authPopup === 'signup'}
-        onOpenChange={(open) => !open && setAuthPopup(null)}
+        onOpenChange={(open) => !open && (() => setAuthPopup(null))}
         onLoginClick={() => setAuthPopup('login')}
       />
       <CompleteDetailsPopup
         open={authPopup === 'completeDetails'}
-        onOpenChange={(open) => !open && setAuthPopup(null)}
+        onOpenChange={(open) => !open && (() => setAuthPopup(null))}
         onConfirm={handleDetailsConfirm}
       />
     </>
