@@ -31,6 +31,8 @@ import { EmptyState } from '@/components/empty-state';
 import { useAppContext } from '@/context/app-context';
 import type { SanityProduct } from '@/types';
 import { Loader } from '@/components/loader';
+import { useToast } from '@/hooks/use-toast';
+import { ToastAction } from '@/components/ui/toast';
 
 function generateOrderId() {
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
@@ -44,13 +46,14 @@ function generateOrderId() {
 export default function CartClientPage({ allProducts }: { allProducts: SanityProduct[] }) {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const router = useRouter();
-  const { cart, updateCart, clearCart, addOrder } = useAppContext();
+  const { cart, updateCart, clearCart, addOrder, isAuthenticated, setAuthPopup } = useAppContext();
   const [isLoading, setIsLoading] = useState(true);
   const isMobile = useIsMobile();
   const [lastScrollTop, setLastScrollTop] = useState(0);
   const [isHeaderVisible, setIsHeaderVisible] = useState(true);
   const [isSummaryVisible, setIsSummaryVisible] = useState(false);
   const summaryRef = useRef<HTMLDivElement>(null);
+  const { toast } = useToast();
   
   // Products are now passed as props, so we don't need to fetch them here.
   // We can set loading to false after the component mounts.
@@ -109,6 +112,15 @@ export default function CartClientPage({ allProducts }: { allProducts: SanityPro
   };
 
   const handleCheckout = () => {
+    if (!isAuthenticated) {
+      toast({
+        title: "Login Required",
+        description: "Please log in to place your order.",
+        action: <ToastAction altText="Login" onClick={() => setAuthPopup('login')}>Login</ToastAction>,
+      });
+      return;
+    }
+
     const productsByName = allProducts.reduce((acc, product) => {
         acc[product.name] = product;
         return acc;

@@ -1,3 +1,4 @@
+
 // @/components/popups/popups-manager.tsx
 'use client';
 
@@ -11,6 +12,8 @@ import { LoginPopup } from '../login-popup';
 import { SignUpPopup } from '../signup-popup';
 import { CompleteDetailsPopup } from '../complete-details-popup';
 import type { OrderItem } from '@/context/app-context';
+import { useToast } from '@/hooks/use-toast';
+import { ToastAction } from '@/components/ui/toast';
 
 
 interface PopupsManagerProps {
@@ -54,12 +57,17 @@ export function PopupsManager({
   onLogout,
 }: PopupsManagerProps) {
   const router = useRouter();
+  const { toast } = useToast();
   const { addOrder, clearCart: globalClearCart, authPopup, setAuthPopup, isAuthenticated, updateProfileInfo } = useAppContext();
   const isAnyPopupVisible = isCartOpen || isProfileOpen || !!authPopup;
 
   const handleFinalizeOrder = () => {
     if (!isAuthenticated) {
-      setAuthPopup('login');
+      toast({
+        title: "Login Required",
+        description: "Please log in to finalize your order.",
+        action: <ToastAction altText="Login" onClick={() => setAuthPopup('login')}>Login</ToastAction>,
+      });
       return;
     }
     if (!cart) return;
