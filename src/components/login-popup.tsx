@@ -82,8 +82,17 @@ export function LoginPopup({ open, onOpenChange, onSignUpClick }: LoginPopupProp
     setIsLoading(true);
     try {
       const userCredential = await signInWithGoogle();
-      login(userCredential.user);
-      setAuthPopup(null);
+      const user = userCredential.user;
+      login(user);
+      
+      const isNewUser = user.metadata.creationTime === user.metadata.lastSignInTime;
+
+      if (isNewUser || !user.displayName || !user.phoneNumber) {
+        setAuthPopup('completeDetails');
+      } else {
+        setAuthPopup(null);
+      }
+
       toast({ title: "Success", description: "Logged in successfully!", variant: "success" });
     } catch (error: any) {
       toast({ title: "Login Failed", description: "Could not sign in with Google. Please try again.", variant: "destructive" });
