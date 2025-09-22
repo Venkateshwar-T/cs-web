@@ -31,15 +31,19 @@ export function CompleteDetailsPopup({ open, onOpenChange, onConfirm }: Complete
     if (open) {
       setName(profileInfo.name || '');
       setPhone(profileInfo.phone || '');
+    } else {
+      // Clear fields when popup closes
+      setName('');
+      setPhone('');
     }
   }, [open, profileInfo]);
 
 
   const handleConfirm = () => {
-    if (!name.trim() || !phone.trim()) {
+    if (!name.trim() || !phone.trim() || phone.length !== 10) {
       toast({
-        title: "Missing Details",
-        description: "Please fill in both your name and phone number.",
+        title: "Missing or Invalid Details",
+        description: "Please fill in your full name and a valid 10-digit phone number.",
         variant: "destructive",
       });
       return;
@@ -47,9 +51,17 @@ export function CompleteDetailsPopup({ open, onOpenChange, onConfirm }: Complete
     onConfirm(name, phone);
     onOpenChange(false);
   };
+
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    // Allow only digits and limit to 10 characters
+    if (/^\d*$/.test(value) && value.length <= 10) {
+      setPhone(value);
+    }
+  };
   
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={open} onOpenChange={(isOpen) => !isOpen && onOpenChange(false)}>
       <DialogContent 
         onInteractOutside={(e) => e.preventDefault()}
         className={cn("p-0 w-[90vw] max-w-sm bg-custom-purple-dark rounded-2xl md:rounded-[30px] border-2 border-custom-gold")}
@@ -75,13 +87,16 @@ export function CompleteDetailsPopup({ open, onOpenChange, onConfirm }: Complete
             
             <div className="space-y-1 px-2 md:px-5 text-left">
                 <label className="pl-2 text-sm font-medium font-plex-sans">Phone Number</label>
-                <Input 
-                    type="tel"
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
-                    placeholder="Enter your phone number"
-                    className="bg-white rounded-2xl text-black placeholder:text-gray-400 placeholder:font-montserrat font-montserrat h-10 md:h-12"
-                />
+                 <div className="flex items-center bg-white rounded-2xl h-10 md:h-12 overflow-hidden">
+                    <span className="text-black font-montserrat px-3 border-r border-gray-300">+91</span>
+                    <Input 
+                        type="tel"
+                        value={phone}
+                        onChange={handlePhoneChange}
+                        placeholder="Enter your phone number"
+                        className="bg-transparent text-black placeholder:text-gray-400 placeholder:font-montserrat font-montserrat h-full border-none focus-visible:ring-0 focus-visible:ring-offset-0"
+                    />
+                </div>
             </div>
 
             <div className="flex items-center justify-center gap-4 mt-4">

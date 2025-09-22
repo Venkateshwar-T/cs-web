@@ -65,6 +65,14 @@ export function ProfileDetailsView({ profile, onHasChangesChange, onProfileUpdat
   };
 
   const handleSave = async () => {
+    if (phone.length !== 10) {
+      toast({
+        title: "Invalid Phone Number",
+        description: "Please enter a valid 10-digit phone number.",
+        variant: "destructive",
+      });
+      return;
+    }
     setIsSaving(true);
     let passwordChanged = false;
     
@@ -96,6 +104,13 @@ export function ProfileDetailsView({ profile, onHasChangesChange, onProfileUpdat
       });
     } finally {
         setIsSaving(false);
+    }
+  };
+
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    if (/^\d*$/.test(value) && value.length <= 10) {
+      setPhone(value);
     }
   };
 
@@ -141,12 +156,16 @@ export function ProfileDetailsView({ profile, onHasChangesChange, onProfileUpdat
         </div>
         <div className="space-y-1">
           <label htmlFor="phone" className="p-3 text-m font-medium">Phone Number</label>
-          <Input 
-            id="phone" 
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-            className="bg-white border-white/20 text-black rounded-2xl h-12 text-base" 
-          />
+          <div className="flex items-center bg-white border border-white/20 rounded-2xl h-12 overflow-hidden">
+              <span className="text-black font-montserrat px-3 border-r border-gray-300">+91</span>
+              <Input 
+                id="phone" 
+                type="tel"
+                value={phone}
+                onChange={handlePhoneChange}
+                className="bg-transparent border-none text-black h-full text-base focus-visible:ring-0 focus-visible:ring-offset-0" 
+              />
+          </div>
         </div>
         {!isGoogleSignIn && (
           <div className="space-y-1">
