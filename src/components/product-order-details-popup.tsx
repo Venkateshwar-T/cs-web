@@ -74,12 +74,12 @@ export function ProductOrderDetailsPopup({ details, open, onOpenChange, onViewPr
       <DialogContent className="justify-center p-0 w-[90vw] md:w-full max-w-md bg-custom-purple-dark border-2 border-custom-gold rounded-2xl md:rounded-[30px]">
         <DialogHeader>
           <DialogTitle className="sr-only">{product.name}</DialogTitle>
-          <DialogClose className="absolute right-3 top-3 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground text-white z-10">
+          <DialogClose className="absolute right-3 top-2 md:top-3 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground text-white z-10">
             <X className="h-5 w-5" />
             <span className="sr-only">Close</span>
           </DialogClose>
         </DialogHeader>
-        <div className="flex flex-col gap-4 p-6 md:p-8 text-white max-h-[80vh]">
+        <div className="flex flex-col gap-4 p-4 md:p-6 text-white max-h-[80vh]">
             <div className="flex flex-col md:flex-row items-center md:items-start gap-4">
                 <div className="w-2/5 md:w-1/3 flex-shrink-0">
                     <Image
@@ -87,7 +87,7 @@ export function ProductOrderDetailsPopup({ details, open, onOpenChange, onViewPr
                         alt={product.name}
                         width={200}
                         height={200}
-                        className="rounded-lg object-cover w-full aspect-square"
+                        className="rounded-xl md:rounded-3xl object-cover w-full aspect-square"
                         data-ai-hint="chocolate box"
                     />
                 </div>
@@ -109,14 +109,14 @@ export function ProductOrderDetailsPopup({ details, open, onOpenChange, onViewPr
                 </div>
             )}
 
-            <Separator className="bg-white/20 my-1" />
+            <Separator className="bg-white/20" />
 
             <div className="flex justify-between items-center bg-white/10 rounded-lg p-3">
                 <span className="font-semibold text-base">Final Price Paid</span>
                 <span className="font-bold text-xl">₹{finalPrice.toFixed(2)}</span>
             </div>
             
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-2 mt-4">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-2">
                 {onViewProduct && (
                     <Button 
                         onClick={handleViewClick}
@@ -153,7 +153,7 @@ export function ProductOrderDetailsPopup({ details, open, onOpenChange, onViewPr
                 <DialogClose asChild>
                     <Button 
                         variant="outline"
-                        className="mt-2 w-full md:w-1/2 mx-auto bg-custom-gold text-sm text-custom-purple-dark rounded-full hover:bg-custom-gold/90 hover:text-custom-purple-dark"
+                        className="w-full md:w-1/2 mx-auto bg-custom-gold text-sm text-custom-purple-dark rounded-full hover:bg-custom-gold/90 hover:text-custom-purple-dark"
                     >
                         Close
                     </Button>

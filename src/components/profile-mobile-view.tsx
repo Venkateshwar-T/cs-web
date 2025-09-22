@@ -70,7 +70,7 @@ export function ProfileMobileView({
                 key={tab}
                 onClick={() => setActiveTab(tab)}
                 className={cn(
-                  "py-3 px-2 text-sm font-medium transition-colors w-full",
+                  "py-2 px-2 text-sm font-medium transition-colors w-full",
                   activeTab === tab
                     ? 'text-custom-gold border-b-2 border-custom-gold'
                     : 'text-white/70 hover:text-white'
