@@ -56,6 +56,14 @@ export function CartItemCard({ item, product, onQuantityChange, onRemove, isRemo
         : 0;
         
     const itemPrice = (product.discountedPrice || 0) + flavourTotal;
+    
+    const sortedFlavours = item.flavours && availableFlavoursMap
+    ? [...item.flavours].sort((a, b) => {
+        const priceA = availableFlavoursMap[a]?.price || 0;
+        const priceB = availableFlavoursMap[b]?.price || 0;
+        return priceB - priceA;
+      })
+    : [];
 
 
     return (
@@ -84,12 +92,12 @@ export function CartItemCard({ item, product, onQuantityChange, onRemove, isRemo
                         <h3 className="font-bold text-xl pr-8">{item.name}</h3>
                         <p className="text-sm text-black/70">{subtitle}</p>
                         
-                        {item.flavours && item.flavours.length > 0 && (
+                        {sortedFlavours.length > 0 && (
                             <>
                                 <p className="font-bold mt-2">Your Selection</p>
                                 <p className="text-sm text-black/60 font-semibold">Flavours & Fillings</p>
                                 <ul className="list-disc list-inside text-sm mt-1 space-y-1 font-bold">
-                                    {item.flavours.map((flavour, index) => {
+                                    {sortedFlavours.map((flavour, index) => {
                                         const flavourDetails = availableFlavoursMap?.[flavour];
                                         const price = flavourDetails?.price ?? 0;
 

@@ -69,6 +69,14 @@ export function MobileCartItemCard({ item, product, onQuantityChange, onRemove, 
         
     const itemPrice = (product.discountedPrice || 0) + flavourTotal;
 
+    const sortedFlavours = item.flavours && availableFlavoursMap
+    ? [...item.flavours].sort((a, b) => {
+        const priceA = availableFlavoursMap[a]?.price || 0;
+        const priceB = availableFlavoursMap[b]?.price || 0;
+        return priceB - priceA;
+      })
+    : [];
+
     return (
         <div 
             className={cn(
@@ -123,7 +131,7 @@ export function MobileCartItemCard({ item, product, onQuantityChange, onRemove, 
                         </div>
                         <p className="text-xs text-black/80 truncate mt-0">{subtitle}</p>
                         
-                        {item.flavours && item.flavours.length > 0 && (
+                        {sortedFlavours.length > 0 && (
                             <Sheet open={isFlavourSheetOpen} onOpenChange={setIsFlavourSheetOpen}>
                                 <SheetTrigger asChild>
                                     <Button variant="ghost" className="h-auto p-2 mt-2 text-custom-purple-dark text-xs rounded-lg hover:text-custom-purple-dark hover:bg-black/5" onClick={(e) => e.stopPropagation()}>
@@ -140,7 +148,7 @@ export function MobileCartItemCard({ item, product, onQuantityChange, onRemove, 
                                     </SheetHeader>
                                     <div className="bg-white/10 rounded-lg p-4 m-4">
                                         <ul className="list-disc list-inside text-sm mt-1 space-y-2 font-medium">
-                                        {item.flavours.map((flavour, index) => {
+                                        {sortedFlavours.map((flavour, index) => {
                                             const flavourDetails = availableFlavoursMap?.[flavour];
                                             const price = flavourDetails?.price ?? 0;
                                             return (
