@@ -79,7 +79,7 @@ export function ProductOrderDetailsPopup({ details, open, onOpenChange, onViewPr
             <span className="sr-only">Close</span>
           </DialogClose>
         </DialogHeader>
-        <div className="flex flex-col gap-4 p-8 text-white max-h-[80vh]">
+        <div className="flex flex-col gap-4 p-6 md:p-8 text-white max-h-[80vh]">
             <div className="flex flex-col md:flex-row items-center md:items-start gap-4">
                 <div className="w-2/5 md:w-1/3 flex-shrink-0">
                     <Image
