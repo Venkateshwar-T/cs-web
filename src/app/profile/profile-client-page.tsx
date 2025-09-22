@@ -18,6 +18,7 @@ import { Loader } from '@/components/loader';
 import { EmptyState } from '@/components/empty-state';
 import type { ProfileInfo } from '@/context/app-context';
 import { PopupsManager } from '@/components/popups/popups-manager';
+import { FlavourSelectionPopup } from '@/components/flavour-selection-popup';
 
 interface ProfileClientPageProps {
   allProducts: SanityProduct[];
@@ -40,6 +41,8 @@ export default function ProfileClientPage({ allProducts }: ProfileClientPageProp
     clearCart,
     logout,
     authPopup,
+    flavourSelection,
+    setFlavourSelection,
   } = useAppContext();
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   
@@ -80,12 +83,17 @@ export default function ProfileClientPage({ allProducts }: ProfileClientPageProp
     setIsProfileOpen(true);
   }
 
+  const handleFlavourConfirm = (productName: string, flavours: string[]) => {
+    const prevQuantity = cart[productName]?.quantity || 0;
+    updateCart(productName, prevQuantity + 1, flavours);
+  };
+
   const cartItemCount = Object.values(cart).reduce((acc, item) => acc + item.quantity, 0);
 
   return (
     <>
       {isMobile ? <StaticSparkleBackground /> : <SparkleBackground />}
-      <div className={cn("flex flex-col h-screen", (isProfileOpen || !!authPopup) && 'opacity-50')}>
+      <div className={cn("flex flex-col h-screen", (isProfileOpen || !!authPopup || flavourSelection.isOpen) && 'opacity-50')}>
         <Header
           onProfileOpenChange={handleDesktopProfileClick}
           isContentScrolled={false}
@@ -145,6 +153,12 @@ export default function ProfileClientPage({ allProducts }: ProfileClientPageProp
           onProductClick={handleProductClick}
           onClearCart={clearCart}
           onLogout={logout}
+      />
+      <FlavourSelectionPopup
+        product={flavourSelection.product}
+        open={flavourSelection.isOpen}
+        onOpenChange={(isOpen) => setFlavourSelection({ product: null, isOpen })}
+        onConfirm={handleFlavourConfirm}
       />
     </>
   );
