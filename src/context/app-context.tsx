@@ -235,6 +235,7 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
 
   const login = useCallback(async (loggedInUser: User, isNewUser: boolean) => {
     let profile = await getUserProfile(loggedInUser.uid);
+    let needsDetails = false;
 
     if (isNewUser || !profile) {
       profile = {
@@ -243,16 +244,21 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
         phone: loggedInUser.phoneNumber || '',
       };
       await createUserProfile(loggedInUser.uid, profile);
-      setProfileInfo(profile);
-      setAuthPopup('completeDetails');
+      needsDetails = true;
     } else {
-      setProfileInfo(profile);
-       // If it's an old user but their details are incomplete, still show the popup
       if (!profile.name || !profile.phone) {
-        setAuthPopup('completeDetails');
-      } else {
-        setAuthPopup(null);
+        needsDetails = true;
       }
+    }
+    
+    setProfileInfo(profile);
+    setAuthPopup(null); // Close login/signup popup immediately
+
+    if (needsDetails) {
+       // Use a timeout to ensure the state update for closing the first popup has rendered
+      setTimeout(() => {
+        setAuthPopup('completeDetails');
+      }, 50);
     }
   }, []);
 

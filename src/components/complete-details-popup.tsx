@@ -2,7 +2,7 @@
 // @/components/complete-details-popup.tsx
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Dialog,
   DialogContent,
@@ -23,9 +23,17 @@ interface CompleteDetailsPopupProps {
 
 export function CompleteDetailsPopup({ open, onOpenChange, onConfirm }: CompleteDetailsPopupProps) {
   const { profileInfo } = useAppContext();
-  const [name, setName] = useState(profileInfo.name || '');
-  const [phone, setPhone] = useState(profileInfo.phone || '');
+  const [name, setName] = useState('');
+  const [phone, setPhone] = useState('');
   const { toast } = useToast();
+  
+  useEffect(() => {
+    if (open) {
+      setName(profileInfo.name || '');
+      setPhone(profileInfo.phone || '');
+    }
+  }, [open, profileInfo]);
+
 
   const handleConfirm = () => {
     if (!name.trim() || !phone.trim()) {
