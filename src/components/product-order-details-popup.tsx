@@ -115,7 +115,7 @@ export function ProductOrderDetailsPopup({ details, open, onOpenChange, onViewPr
                 <span className="font-bold text-xl">₹{finalPrice.toFixed(2)}</span>
             </div>
             
-            <div className="flex items-center justify-center gap-2 mt-2">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-2 mt-2">
                 {onViewProduct && (
                     <Button 
                         onClick={handleViewClick}
