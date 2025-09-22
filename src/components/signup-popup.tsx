@@ -87,10 +87,10 @@ export function SignUpPopup({ open, onOpenChange, onLoginClick }: SignUpPopupPro
       
       // After login, the context will update profileInfo.
       // We check if the details (especially phone) are missing.
-      const currentProfile = profileInfo;
       const isNewUser = user.metadata.creationTime === user.metadata.lastSignInTime;
 
-      if (isNewUser || !currentProfile.phone) {
+      // The profileInfo from context might not be updated yet, so we directly check.
+      if (isNewUser || !user.displayName || !user.phoneNumber) {
         setAuthPopup('completeDetails');
       } else {
         setAuthPopup(null);

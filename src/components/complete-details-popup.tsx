@@ -1,3 +1,4 @@
+
 // @/components/complete-details-popup.tsx
 'use client';
 
@@ -78,14 +79,6 @@ export function CompleteDetailsPopup({ open, onOpenChange, onConfirm }: Complete
             </div>
 
             <div className="flex items-center justify-center gap-4 mt-4">
-                <DialogClose asChild>
-                    <Button 
-                        variant="outline"
-                        className="bg-custom-purple-dark text-sm md:text-base text-white border-custom-gold border-2 rounded-full px-8 md:px-10 hover:bg-custom-gold hover:text-custom-purple-dark"
-                    >
-                        Cancel
-                    </Button>
-                </DialogClose>
                 <Button onClick={handleConfirm} className="bg-custom-gold text-sm md:text-base text-custom-purple-dark rounded-full px-8 md:px-10 hover:bg-custom-gold/90">
                     Confirm
                 </Button>
