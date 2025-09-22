@@ -115,7 +115,7 @@ export function ProfileDetailsView({ profile, onHasChangesChange, onProfileUpdat
       </div>
       
       <Avatar className="w-24 h-24 mb-4">
-        <AvatarImage src={user?.photoURL ?? "https://picsum.photos/200"} alt="User avatar" data-ai-hint="person portrait" onDragStart={(e) => e.preventDefault()}/>
+        <AvatarImage src={user?.photoURL ?? `https://ui-avatars.com/api/?name=${encodeURIComponent(name || email)}&background=random`} alt="User avatar" data-ai-hint="person portrait" onDragStart={(e) => e.preventDefault()}/>
         <AvatarFallback>{profile.name.charAt(0).toUpperCase()}</AvatarFallback>
       </Avatar>
 

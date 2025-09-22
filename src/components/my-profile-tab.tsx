@@ -103,7 +103,7 @@ export function MyProfileTab({ profile, onProfileUpdate }: MyProfileTabProps) {
   return (
     <div className="flex flex-col items-center space-y-4">
       <Avatar className="w-24 h-24">
-        <AvatarImage src={user?.photoURL ?? "https://picsum.photos/200"} alt="User avatar" data-ai-hint="person portrait" />
+        <AvatarImage src={user?.photoURL ?? `https://ui-avatars.com/api/?name=${encodeURIComponent(name || email)}&background=random`} alt="User avatar" data-ai-hint="person portrait" />
         <AvatarFallback>{name?.charAt(0).toUpperCase()}</AvatarFallback>
       </Avatar>
 
