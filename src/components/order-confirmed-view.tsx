@@ -1,3 +1,4 @@
+
 // @/components/order-confirmed-view.tsx
 'use client';
 
@@ -10,29 +11,13 @@ import { OrderSummaryItem } from './order-summary-item';
 import { motion } from 'framer-motion';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { cn } from '@/lib/utils';
-import type { Order } from '@/context/app-context';
+import type { Order, OrderItem } from '@/context/app-context';
 import type { SanityProduct } from '@/types';
-import { useRouter } from 'next/navigation';
-
-// Mock data for product prices - in a real app this would come from a database or state management
-const productPrices: Record<string, number> = {
-  'Diwali Collection Box 1': 799,
-  'Diwali Collection Box 2': 1199,
-  'Diwali Collection Box 3': 999,
-  'Diwali Collection Box 4': 899,
-  'Diwali Collection Box 5': 750,
-  'Diwali Collection Box 6': 1250,
-  'Diwali Collection Box 7': 600,
-  'Diwali Collection Box 8': 1500,
-  'Diwali Collection Box 9': 850,
-  'Diwali Collection Box 10': 950,
-  'Diwali Collection Box 11': 1100,
-  'Diwali Collection Box 12': 1300,
-};
 
 interface OrderConfirmedViewProps {
     order: Order;
     products: SanityProduct[];
+    onProductClick: (product: SanityProduct, orderItem: OrderItem) => void;
 }
 
 const containerVariants = {
@@ -59,9 +44,8 @@ const itemVariants = {
 };
 
 
-export function OrderConfirmedView({ order, products }: OrderConfirmedViewProps) {
+export function OrderConfirmedView({ order, products, onProductClick }: OrderConfirmedViewProps) {
     const isMobile = useIsMobile();
-    const router = useRouter();
     
     if (!order) {
         return null;
@@ -71,12 +55,6 @@ export function OrderConfirmedView({ order, products }: OrderConfirmedViewProps)
         acc[product.name] = product;
         return acc;
     }, {} as Record<string, SanityProduct>);
-    
-    const handleProductClick = (product: SanityProduct) => {
-        if (product?.slug?.current) {
-            router.push(`/product/${product.slug.current}`);
-        }
-    }
 
   return (
     <motion.div 
@@ -140,7 +118,7 @@ export function OrderConfirmedView({ order, products }: OrderConfirmedViewProps)
                               product={product}
                               quantity={item.quantity}
                               isMobile={isMobile}
-                              onClick={() => handleProductClick(product)}
+                              onClick={() => onProductClick(product, item)}
                           />
                           {index < order.items.length - 1 && <Separator className="bg-gray-200 my-2" />}
                         </Fragment>

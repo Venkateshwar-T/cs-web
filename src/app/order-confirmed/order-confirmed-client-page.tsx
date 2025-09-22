@@ -15,8 +15,9 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import { StaticSparkleBackground } from '@/components/static-sparkle-background';
 import { Loader } from '@/components/loader';
 import { motion } from 'framer-motion';
-import { useAppContext, type Order } from '@/context/app-context';
+import { useAppContext, type Order, type OrderItem } from '@/context/app-context';
 import type { SanityProduct } from '@/types';
+import { ProductOrderDetailsPopup } from '@/components/product-order-details-popup';
 
 const ProcessingView = () => (
     <div className="flex flex-col items-center justify-center h-full text-center gap-6">
@@ -44,6 +45,8 @@ function OrderConfirmedPageComponent({ allProducts }: { allProducts: SanityProdu
   const [isLoading, setIsLoading] = useState(true);
   const isMobile = useIsMobile();
   const [isContentScrolled, setIsContentScrolled] = useState(false);
+  const [selectedProductDetails, setSelectedProductDetails] = useState<{product: SanityProduct, orderItem: OrderItem} | null>(null);
+
 
   useEffect(() => {
     const orderId = searchParams.get('orderId');
@@ -71,8 +74,8 @@ function OrderConfirmedPageComponent({ allProducts }: { allProducts: SanityProdu
     router.push(`/search?q=${encodeURIComponent(query)}`);
   };
   
-  const handleProductClick = (product: SanityProduct) => {
-    router.push(`/product/${product.slug.current}`);
+  const handleProductClick = (product: SanityProduct, orderItem: OrderItem) => {
+    setSelectedProductDetails({product, orderItem});
   };
 
   const handleNavigation = (view: 'home' | 'cart' | 'profile') => {
@@ -86,7 +89,7 @@ function OrderConfirmedPageComponent({ allProducts }: { allProducts: SanityProdu
   return (
     <>
       {isMobile ? <StaticSparkleBackground /> : <SparkleBackground />}
-      <div className={cn("flex flex-col h-screen", isProfileOpen && 'opacity-50')}>
+      <div className={cn("flex flex-col h-screen", (isProfileOpen || !!selectedProductDetails) && 'opacity-50')}>
         <Header 
           onProfileOpenChange={setIsProfileOpen}
           isContentScrolled={isContentScrolled}
@@ -107,7 +110,7 @@ function OrderConfirmedPageComponent({ allProducts }: { allProducts: SanityProdu
           ) : (
             <>
               <div className={cn("flex flex-col", isMobile ? "px-4 pb-8" : "md:px-32 pb-12")}>
-                <OrderConfirmedView order={confirmedOrder} products={allProducts} />
+                <OrderConfirmedView order={confirmedOrder} products={allProducts} onProductClick={handleProductClick} />
               </div>
               <Footer />
               <div className="h-16 flex-shrink-0 md:hidden" />
@@ -126,8 +129,18 @@ function OrderConfirmedPageComponent({ allProducts }: { allProducts: SanityProdu
         cart={cart}
         onAddToCart={updateCart}
         onClearWishlist={clearWishlist}
-        onProductClick={handleProductClick}
+        onProductClick={(p) => router.push(`/product/${p.slug.current}`)}
       />
+
+      <ProductOrderDetailsPopup
+        details={selectedProductDetails}
+        open={!!selectedProductDetails}
+        onOpenChange={(isOpen) => {
+            if (!isOpen) {
+                setSelectedProductDetails(null);
+            }
+        }}
+       />
     </>
   );
 }
