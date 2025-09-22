@@ -1,3 +1,4 @@
+
 // @/components/profile-details-view.tsx
 'use client';
 
@@ -119,9 +120,12 @@ export function ProfileDetailsView({ profile, onHasChangesChange, onProfileUpdat
       </Avatar>
 
       {isGoogleSignIn && (
-        <div className="flex items-center gap-2 bg-white/10 text-white text-xs px-3 py-1.5 rounded-full mb-4">
-            <Image src="/icons/google.png" alt="Google" width={16} height={16} />
-            <span>Logged in with Google</span>
+        <div className="flex flex-col items-center gap-1 mb-4">
+            <div className="flex items-center gap-2 bg-white/10 text-white text-xs px-3 py-1.5 rounded-full">
+                <Image src="/icons/google.png" alt="Google" width={16} height={16} />
+                <span>Logged in with Google</span>
+            </div>
+            <p className="text-sm text-white/80">{email}</p>
         </div>
       )}
 
@@ -144,17 +148,18 @@ export function ProfileDetailsView({ profile, onHasChangesChange, onProfileUpdat
             className="bg-white border-white/20 text-black rounded-2xl h-12 text-base" 
           />
         </div>
-        <div className="space-y-1">
-          <label htmlFor="email" className="p-3 text-m font-medium">Email</label>
-          <Input 
-            id="email" 
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className={cn("bg-white border-white/20 text-black rounded-2xl h-12 text-base", isGoogleSignIn && "text-gray-400")}
-            disabled={isGoogleSignIn}
-          />
-        </div>
+        {!isGoogleSignIn && (
+          <div className="space-y-1">
+            <label htmlFor="email" className="p-3 text-m font-medium">Email</label>
+            <Input 
+              id="email" 
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="bg-white border-white/20 text-black rounded-2xl h-12 text-base"
+            />
+          </div>
+        )}
         {!isGoogleSignIn && (
           <div className="space-y-1">
               <label htmlFor="password" className="p-3 text-m font-medium">Password</label>
