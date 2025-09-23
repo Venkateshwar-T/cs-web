@@ -28,20 +28,12 @@ import {
 import { StaticSparkleBackground } from '@/components/static-sparkle-background';
 import { FloatingCartFinalizeButton } from '@/components/floating-cart-finalize-button';
 import { EmptyState } from '@/components/empty-state';
-import { useAppContext } from '@/context/app-context';
+import { useAppContext, type OrderItem } from '@/context/app-context';
 import type { SanityProduct } from '@/types';
 import { Loader } from '@/components/loader';
 import { useToast } from '@/hooks/use-toast';
 import { ToastAction } from '@/components/ui/toast';
 
-function generateOrderId() {
-    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    let result = 'CS';
-    for (let i = 0; i < 10; i++) {
-        result += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
-    return result;
-}
 
 export default function CartClientPage({ allProducts }: { allProducts: SanityProduct[] }) {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
@@ -55,8 +47,6 @@ export default function CartClientPage({ allProducts }: { allProducts: SanityPro
   const summaryRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
   
-  // Products are now passed as props, so we don't need to fetch them here.
-  // We can set loading to false after the component mounts.
   useEffect(() => {
     setIsLoading(false);
   }, []);
@@ -92,7 +82,6 @@ export default function CartClientPage({ allProducts }: { allProducts: SanityPro
     } else if (view === 'profile') {
       router.push('/profile');
     }
-    // If view is 'cart', do nothing as we are already on the page.
   };
   
   const handleProductClick = (product: SanityProduct) => {
@@ -111,7 +100,7 @@ export default function CartClientPage({ allProducts }: { allProducts: SanityPro
     handleQuantityChange(productName, 0);
   };
 
-  const handleCheckout = () => {
+  const handleCheckout = async () => {
     if (!isAuthenticated) {
       toast({
         title: "Login Required",
@@ -126,47 +115,54 @@ export default function CartClientPage({ allProducts }: { allProducts: SanityPro
         return acc;
     }, {} as Record<string, SanityProduct>);
     
-    const { subtotal, totalDiscount } = Object.entries(cart).reduce((acc, [productName, cartItem]) => {
-        const product = productsByName[productName];
-        if (product) {
-            const price = product.discountedPrice || 0;
-            const mrp = product.mrp || price;
-            let itemTotal = price * cartItem.quantity;
-            
-            // Add flavour prices
-            if (cartItem.flavours && product.availableFlavours) {
-                const flavourPrices = cartItem.flavours.reduce((flavourAcc, flavourName) => {
-                    const flavour = product.availableFlavours.find(f => f.name === flavourName);
-                    return flavourAcc + (flavour?.price || 0);
-                }, 0);
-                itemTotal += flavourPrices * cartItem.quantity;
-            }
+    const orderItems: OrderItem[] = Object.values(cart).map(cartItem => {
+      const product = productsByName[cartItem.name];
+      if (!product) return null;
 
-            acc.subtotal += itemTotal;
-            if (mrp > price) {
-                acc.totalDiscount += (mrp - price) * cartItem.quantity;
-            }
-        }
-        return acc;
-    }, { subtotal: 0, totalDiscount: 0 });
+      const flavoursWithPrices = (cartItem.flavours || [])
+        .map(flavourName => {
+            const flavour = product.availableFlavours?.find(f => f.name === flavourName);
+            return { name: flavourName, price: flavour?.price || 0 };
+        })
+        .filter(f => f !== null) as { name: string; price: number }[];
+
+      const totalFlavourPrice = flavoursWithPrices.reduce((acc, flavour) => acc + flavour.price, 0) * (product.numberOfChocolates || 1);
+
+      const finalProductPrice = (product.discountedPrice || 0) * cartItem.quantity;
+      const finalSubtotal = finalProductPrice + totalFlavourPrice;
+
+      return {
+        name: product.name,
+        quantity: cartItem.quantity,
+        flavours: flavoursWithPrices,
+        mrp: product.mrp,
+        finalProductPrice: finalProductPrice,
+        finalSubtotal: finalSubtotal,
+        coverImage: product.images?.[0] || '/placeholder.png'
+      };
+    }).filter((item): item is OrderItem => item !== null);
+
+    const subtotal = orderItems.reduce((acc, item) => acc + (item.finalSubtotal || 0), 0);
+    const totalMrp = orderItems.reduce((acc, item) => acc + (item.mrp || (item.finalProductPrice || 0) / item.quantity) * item.quantity, 0)
+    const totalDiscount = totalMrp > subtotal ? totalMrp - subtotal : 0;
     
-    const subtotalAfterDiscount = subtotal; // subtotal is now with flavour prices
     const gstRate = 0.18;
-    const gstAmount = subtotalAfterDiscount * gstRate;
-    const total = subtotalAfterDiscount + gstAmount;
-    
-    const newOrderId = generateOrderId();
+    const gstAmount = subtotal * gstRate;
+    const total = subtotal + gstAmount;
 
-    addOrder({
-        id: newOrderId,
+    const newOrderId = await addOrder({
         date: new Date().toISOString(),
-        items: Object.values(cart),
+        items: orderItems,
         status: 'Order Requested',
         total: total > 0 ? total : 0,
+        totalDiscount: totalDiscount,
+        gstPercentage: gstRate * 100,
     });
 
-    clearCart();
-    router.push(`/order-confirmed?orderId=${newOrderId}`);
+    if (newOrderId) {
+      clearCart();
+      router.push(`/order-confirmed?orderId=${newOrderId}`);
+    }
   };
   
   const handleScroll = (event: UIEvent<HTMLDivElement>) => {
@@ -311,3 +307,5 @@ export default function CartClientPage({ allProducts }: { allProducts: SanityPro
     </>
   );
 }
+
+    

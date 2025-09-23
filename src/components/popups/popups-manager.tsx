@@ -68,8 +68,6 @@ export function PopupsManager({
       return acc;
     }, {} as Record<string, SanityProduct>);
     
-    let totalMrp = 0;
-    
     const orderItems: OrderItem[] = Object.values(cart).map(cartItem => {
       const product = productsByName[cartItem.name];
       if (!product) return null;
@@ -85,8 +83,6 @@ export function PopupsManager({
 
       const finalProductPrice = (product.discountedPrice || 0) * cartItem.quantity;
       const finalSubtotal = finalProductPrice + totalFlavourPrice;
-      
-      totalMrp += (product.mrp || product.discountedPrice || 0) * cartItem.quantity;
 
       return {
         name: product.name,
@@ -100,11 +96,12 @@ export function PopupsManager({
     }).filter((item): item is OrderItem => item !== null);
 
     const subtotal = orderItems.reduce((acc, item) => acc + (item.finalSubtotal || 0), 0);
+    const totalMrp = orderItems.reduce((acc, item) => acc + (item.mrp || (item.finalProductPrice || 0) / item.quantity) * item.quantity, 0)
+    const totalDiscount = totalMrp > subtotal ? totalMrp - subtotal : 0;
+    
     const gstRate = 0.18;
     const gstAmount = subtotal * gstRate;
     const total = subtotal + gstAmount;
-    const totalDiscount = totalMrp > subtotal ? totalMrp - subtotal : 0;
-
 
     const newOrderId = await addOrder({
         date: new Date().toISOString(),
@@ -195,3 +192,5 @@ export function PopupsManager({
     </>
   );
 }
+
+    
