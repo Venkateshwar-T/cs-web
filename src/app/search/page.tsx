@@ -117,14 +117,17 @@ const LoadingFallback = () => (
 );
 
 
-// The new Server Component page
-export default async function SearchPage({ searchParams }: { searchParams: { [key: string]: string | string[] | undefined } }) {
+async function SearchResults({ searchParams }: { searchParams: { [key: string]: string | string[] | undefined } }) {
     const filters = await getFilters();
     const products = await getFilteredProducts(searchParams, filters);
 
+    return <SearchClientPage initialProducts={products} initialFilters={filters} />;
+}
+
+export default function SearchPage({ searchParams }: { searchParams: { [key: string]: string | string[] | undefined } }) {
     return (
         <Suspense fallback={<LoadingFallback />}>
-            <SearchClientPage initialProducts={products} initialFilters={filters} />
+            <SearchResults searchParams={searchParams} />
         </Suspense>
     );
 }
