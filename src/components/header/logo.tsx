@@ -1,3 +1,4 @@
+
 // @/components/header/logo.tsx
 'use client';
 
@@ -21,6 +22,7 @@ export function Logo({ onLogoClick, isEnquireOpen }: LogoProps) {
                     height={70}
                     className={cn("w-28 sm:w-32 md:w-36 lg:w-44", isEnquireOpen && "opacity-50")}
                     onDragStart={(e) => e.preventDefault()}
+                    priority
                 />
             </Link>
             <Image 

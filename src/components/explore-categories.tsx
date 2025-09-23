@@ -72,7 +72,7 @@ export function ExploreCategories({ exploreCategories, exploreFlavours }: Explor
                     initial="hidden"
                     animate="visible"
                 >
-                    {(exploreCategories || []).map((category) => (
+                    {(exploreCategories || []).map((category, index) => (
                     <motion.div 
                       key={category._key} 
                       className="w-full aspect-[5/6] relative group cursor-pointer" 
@@ -87,6 +87,7 @@ export function ExploreCategories({ exploreCategories, exploreFlavours }: Explor
                         height={400}
                         className="w-full h-full object-cover rounded-[20px] md:rounded-[40px] ring-1 ring-custom-purple-dark"
                         onDragStart={(e) => e.preventDefault()}
+                        priority={index === 0}
                         />
                         <div className="absolute inset-x-0 bottom-2 md:bottom-3 flex items-end justify-center">
                           <h3 className="text-white text-xs md:text-lg text-center font-plex-sans font-semibold [text-shadow:0_2px_1px_rgba(0,0,0,1)]">{category.name}</h3>
