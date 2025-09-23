@@ -3,7 +3,7 @@
 
 import { Suspense } from 'react';
 import { client } from '@/lib/sanity';
-import SearchClientPage from '@/components/views/SearchClientPage'; // We'll create this next
+import SearchClientPage from '@/components/views/SearchClientPage';
 import type { SanityProduct, StructuredFilter } from '@/types';
 import Image from 'next/image';
 import { Loader } from '@/components/loader';
@@ -117,17 +117,13 @@ const LoadingFallback = () => (
 );
 
 
-async function SearchResults({ searchParams }: { searchParams: { [key: string]: string | string[] | undefined } }) {
+export default async function SearchPage({ searchParams }: { searchParams: { [key: string]: string | string[] | undefined } }) {
     const filters = await getFilters();
     const products = await getFilteredProducts(searchParams, filters);
 
-    return <SearchClientPage initialProducts={products} initialFilters={filters} />;
-}
-
-export default function SearchPage({ searchParams }: { searchParams: { [key: string]: string | string[] | undefined } }) {
     return (
         <Suspense fallback={<LoadingFallback />}>
-            <SearchResults searchParams={searchParams} />
+            <SearchClientPage initialProducts={products} initialFilters={filters} />
         </Suspense>
     );
 }
