@@ -1,4 +1,3 @@
-
 // @/components/product-order-details-popup.tsx
 'use client';
 
@@ -27,53 +26,38 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { useAppContext } from "@/context/app-context";
 
 interface ProductOrderDetailsPopupProps {
-    details: { product: SanityProduct; orderItem: OrderItem } | null;
+    details: { orderItem: OrderItem } | null;
     open: boolean;
     onOpenChange: (open: boolean) => void;
-    onViewProduct?: (product: SanityProduct) => void;
-    onOrderAgain?: (item: OrderItem) => void;
+    onViewProduct?: (productName: string) => void;
 }
 
-export function ProductOrderDetailsPopup({ details, open, onOpenChange, onViewProduct, onOrderAgain }: ProductOrderDetailsPopupProps) {
+export function ProductOrderDetailsPopup({ details, open, onOpenChange, onViewProduct }: ProductOrderDetailsPopupProps) {
+  const { reorderItem } = useAppContext();
   if (!details) return null;
 
-  const { product, orderItem } = details;
-
-  const availableFlavoursMap = product.availableFlavours?.reduce((acc, flavour) => {
-      acc[flavour.name] = flavour;
-      return acc;
-  }, {} as Record<string, NonNullable<SanityProduct['availableFlavours']>[number]>);
-  
-  const flavourTotal = (orderItem.flavours && availableFlavoursMap)
-      ? orderItem.flavours.reduce((acc, flavourName) => acc + (availableFlavoursMap[flavourName]?.price || 0), 0)
-      : 0;
-      
-  const itemPrice = (product.discountedPrice || 0) + flavourTotal;
-  const finalPrice = itemPrice * orderItem.quantity;
-  const subtitle = [product.weight, product.composition, product.packageType].filter(Boolean).join(' | ');
+  const { orderItem } = details;
 
   const handleViewClick = () => {
     if (onViewProduct) {
-        onViewProduct(product);
+        onViewProduct(orderItem.name);
         onOpenChange(false);
     }
   }
 
   const handleOrderAgainClick = () => {
-    if (onOrderAgain) {
-        onOrderAgain(orderItem);
-        onOpenChange(false);
-    }
+    reorderItem(orderItem);
+    onOpenChange(false);
   }
-
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="justify-center p-0 w-[90vw] md:w-full max-w-md bg-custom-purple-dark border-2 border-custom-gold rounded-2xl md:rounded-[30px]">
         <DialogHeader>
-          <DialogTitle className="sr-only">{product.name}</DialogTitle>
+          <DialogTitle className="sr-only">{orderItem.name}</DialogTitle>
           <DialogClose className="absolute right-3 top-2 md:top-3 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground text-white z-10">
             <X className="h-5 w-5" />
             <span className="sr-only">Close</span>
@@ -83,8 +67,8 @@ export function ProductOrderDetailsPopup({ details, open, onOpenChange, onViewPr
             <div className="flex flex-col md:flex-row items-center md:items-start gap-4">
                 <div className="w-2/5 md:w-1/3 flex-shrink-0">
                     <Image
-                        src={product.images?.[0] || '/placeholder.png'}
-                        alt={product.name}
+                        src={orderItem.coverImage || '/placeholder.png'}
+                        alt={orderItem.name}
                         width={200}
                         height={200}
                         className="rounded-xl md:rounded-3xl object-cover w-full aspect-square"
@@ -92,9 +76,8 @@ export function ProductOrderDetailsPopup({ details, open, onOpenChange, onViewPr
                     />
                 </div>
                 <div className="w-full md:w-2/3 flex flex-col gap-1 text-center md:text-left">
-                    <h3 className="font-bold text-lg leading-tight">{product.name}</h3>
-                    <p className="text-xs text-white/80">{subtitle}</p>
-                    <p className="text-xs text-white/70">Quantity: {orderItem.quantity}</p>
+                    <h3 className="font-bold text-lg leading-tight">{orderItem.name}</h3>
+                    <p className="text-xs text-white/80">{orderItem.finalProductPrice?.toFixed(2)} x {orderItem.quantity}</p>
                 </div>
             </div>
 
@@ -113,7 +96,7 @@ export function ProductOrderDetailsPopup({ details, open, onOpenChange, onViewPr
 
             <div className="flex justify-between items-center bg-white/10 rounded-lg p-3">
                 <span className="font-semibold text-base">Final Price Paid</span>
-                <span className="font-bold text-xl">₹{finalPrice.toFixed(2)}</span>
+                <span className="font-bold text-xl">₹{orderItem.finalSubtotal?.toFixed(2) || '0.00'}</span>
             </div>
             
             <div className="flex flex-col sm:flex-row items-center justify-center gap-2">
@@ -126,30 +109,28 @@ export function ProductOrderDetailsPopup({ details, open, onOpenChange, onViewPr
                         <Eye className="mr-2 h-4 w-4" /> View Product
                     </Button>
                 )}
-                 {onOrderAgain && (
-                    <AlertDialog>
-                        <AlertDialogTrigger asChild>
-                            <Button className="w-full bg-custom-gold text-sm text-custom-purple-dark rounded-full hover:bg-custom-gold/90">
-                               <RotateCcw className="mr-2 h-4 w-4" /> Order Again
-                            </Button>
-                        </AlertDialogTrigger>
-                        <AlertDialogContent>
-                            <AlertDialogHeader>
-                                <AlertDialogTitle>Order this item again?</AlertDialogTitle>
-                                <AlertDialogDescription>
-                                This will add {orderItem.quantity} x {orderItem.name} to your cart.
-                                </AlertDialogDescription>
-                            </AlertDialogHeader>
-                            <AlertDialogFooter>
-                                <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                <AlertDialogAction onClick={handleOrderAgainClick}>Confirm</AlertDialogAction>
-                            </AlertDialogFooter>
-                        </AlertDialogContent>
-                    </AlertDialog>
-                )}
+                <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                        <Button className="w-full bg-custom-gold text-sm text-custom-purple-dark rounded-full hover:bg-custom-gold/90">
+                           <RotateCcw className="mr-2 h-4 w-4" /> Order Again
+                        </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                        <AlertDialogHeader>
+                            <AlertDialogTitle>Order this item again?</AlertDialogTitle>
+                            <AlertDialogDescription>
+                            This will add {orderItem.quantity} x {orderItem.name} to your cart.
+                            </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                            <AlertDialogAction onClick={handleOrderAgainClick}>Confirm</AlertDialogAction>
+                        </AlertDialogFooter>
+                    </AlertDialogContent>
+                </AlertDialog>
             </div>
 
-            {!onViewProduct && !onOrderAgain && (
+            {!onViewProduct && (
                 <DialogClose asChild>
                     <Button 
                         variant="outline"

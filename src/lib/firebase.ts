@@ -11,8 +11,8 @@ import {
   updatePassword,
   type User
 } from 'firebase/auth';
-import { getFirestore, doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
-import type { ProfileInfo } from '@/context/app-context';
+import { getFirestore, doc, getDoc, setDoc, updateDoc, collection, addDoc, getDocs, query, orderBy } from 'firebase/firestore';
+import type { ProfileInfo, Order } from '@/context/app-context';
 
 
 // Initialize Firebase on the client side
@@ -128,4 +128,27 @@ export const updateUserProfile = async (uid: string, data: Partial<ProfileInfo>)
     if (!db) throw new Error("Firestore not initialized");
     const userDocRef = doc(db, 'users', uid);
     await updateDoc(userDocRef, data);
+};
+
+export const addUserOrder = async (uid: string, orderData: Omit<Order, 'id'>): Promise<string> => {
+    const db = getClientFirestore();
+    if (!db) throw new Error("Firestore not initialized");
+    const ordersCollectionRef = collection(db, 'users', uid, 'orders');
+    const docRef = await addDoc(ordersCollectionRef, {
+        ...orderData,
+        id: '' // Firestore will generate an ID, we'll update it later
+    });
+    // Now update the document with its own ID
+    await updateDoc(docRef, { id: docRef.id });
+    return docRef.id;
+};
+
+
+export const getUserOrders = async (uid: string): Promise<Order[]> => {
+    const db = getClientFirestore();
+    if (!db) return [];
+    const ordersCollectionRef = collection(db, 'users', uid, 'orders');
+    const q = query(ordersCollectionRef, orderBy('date', 'desc'));
+    const querySnapshot = await getDocs(q);
+    return querySnapshot.docs.map(doc => doc.data() as Order);
 };

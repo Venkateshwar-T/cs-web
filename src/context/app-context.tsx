@@ -12,6 +12,8 @@ import {
   getUserProfile,
   createUserProfile,
   updateUserProfile,
+  addUserOrder,
+  getUserOrders,
 } from '@/lib/firebase';
 import type { User } from 'firebase/auth';
 
@@ -22,13 +24,16 @@ const defaultProfileInfo: ProfileInfo = {
 };
 
 const WISHLIST_STORAGE_KEY = 'chocoSmileyWishlist';
-const ORDERS_STORAGE_KEY = 'chocoSmileyOrders';
 const CART_STORAGE_KEY = 'chocoSmileyCart';
 
 export type OrderItem = {
   name: string;
   quantity: number;
   flavours?: string[];
+  mrp?: number;
+  finalProductPrice?: number;
+  finalSubtotal?: number;
+  coverImage?: string;
 };
 
 export type Order = {
@@ -52,7 +57,7 @@ interface AppContextType {
   clearWishlist: () => void;
   
   orders: Order[];
-  addOrder: (newOrder: Order) => void;
+  addOrder: (newOrder: Omit<Order, 'id'>) => Promise<string | null>;
   isOrdersLoaded: boolean;
   clearOrders: () => void;
   reorder: (orderId: string) => void;
@@ -100,10 +105,9 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
     {}
   );
   
-  const [orders, setOrders, isOrdersLoaded] = useLocalStorage<Order[]>(
-    ORDERS_STORAGE_KEY,
-    []
-  );
+  const [orders, setOrders] = useState<Order[]>([]);
+  const [isOrdersLoaded, setIsOrdersLoaded] = useState(false);
+
 
   const [cart, setCart, isCartLoaded] = useLocalStorage<Cart>(
     CART_STORAGE_KEY,
@@ -126,13 +130,14 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
             let profile = await getUserProfile(newUser.uid);
             if (profile) {
               setProfileInfo(profile);
-            } else {
-              // This case might happen if Firestore profile creation failed before.
-              // We'll handle profile creation/checking inside the login function now.
-              console.warn("User is authenticated but profile not found in Firestore. It will be created/checked on login.")
             }
+            const userOrders = await getUserOrders(newUser.uid);
+            setOrders(userOrders);
+            setIsOrdersLoaded(true);
           } else {
             setProfileInfo(defaultProfileInfo);
+            setOrders([]);
+            setIsOrdersLoaded(true);
           }
           setIsProfileLoaded(true);
           setIsAuthLoaded(true);
@@ -141,6 +146,7 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
       } else {
         setIsAuthLoaded(true);
         setIsProfileLoaded(true);
+        setIsOrdersLoaded(true);
       }
     }
   }, []);
@@ -177,13 +183,30 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
     setLikedProducts({});
   }, [setLikedProducts]);
 
-  const addOrder = useCallback((newOrder: Order) => {
-    setOrders(prevOrders => [newOrder, ...prevOrders]);
-  }, [setOrders]);
+  const addOrder = useCallback(async (newOrder: Omit<Order, 'id'>): Promise<string | null> => {
+    if (user) {
+      try {
+        const newOrderId = await addUserOrder(user.uid, newOrder);
+        setOrders(prevOrders => [{ ...newOrder, id: newOrderId }, ...prevOrders]);
+        return newOrderId;
+      } catch (error) {
+        console.error("Error adding order:", error);
+        toast({
+          title: "Order Failed",
+          description: "There was a problem saving your order. Please try again.",
+          variant: "destructive"
+        });
+        return null;
+      }
+    }
+    return null;
+  }, [user, toast]);
 
   const clearOrders = useCallback(() => {
+    // This should ideally also clear from Firestore, but for now we'll just clear local state.
+    // A more robust implementation would call a server function.
     setOrders([]);
-  }, [setOrders]);
+  }, []);
 
   const updateCart = useCallback((productName: string, quantity: number, flavours?: string[]) => {
     setCart(prevCart => {

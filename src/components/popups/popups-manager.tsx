@@ -1,4 +1,3 @@
-
 // @/components/popups/popups-manager.tsx
 'use client';
 
@@ -32,15 +31,6 @@ interface PopupsManagerProps {
   onLogout?: () => void;
 }
 
-function generateOrderId() {
-    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    let result = 'CS';
-    for (let i = 0; i < 10; i++) {
-        result += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
-    return result;
-}
-
 export function PopupsManager({
   isCartOpen,
   isProfileOpen,
@@ -61,7 +51,7 @@ export function PopupsManager({
   const { addOrder, clearCart: globalClearCart, authPopup, setAuthPopup, isAuthenticated, updateProfileInfo } = useAppContext();
   const isAnyPopupVisible = isCartOpen || isProfileOpen || !!authPopup;
 
-  const handleFinalizeOrder = () => {
+  const handleFinalizeOrder = async () => {
     if (!isAuthenticated) {
       toast({
         title: "Login Required",
@@ -76,44 +66,51 @@ export function PopupsManager({
       acc[product.name] = product;
       return acc;
     }, {} as Record<string, SanityProduct>);
-
-    const newOrderId = generateOrderId();
-    const { subtotal } = Object.entries(cart).reduce((acc, [productName, cartItem]) => {
-        const product = productsByName[productName];
-        if (product) {
-            const price = product.discountedPrice || 0;
-            let itemTotal = price * cartItem.quantity;
-
-            if (cartItem.flavours && product.availableFlavours) {
-                const flavourPrices = cartItem.flavours.reduce((flavourAcc, flavourName) => {
-                    const flavour = product.availableFlavours.find(f => f.name === flavourName);
-                    return flavourAcc + (flavour?.price || 0);
-                }, 0);
-                itemTotal += flavourPrices * cartItem.quantity;
-            }
-            acc.subtotal += itemTotal;
-        }
-        return acc;
-    }, { subtotal: 0 });
     
-    const subtotalAfterDiscount = subtotal;
-    const gstRate = 0.18;
-    const gstAmount = subtotalAfterDiscount * gstRate;
-    const total = subtotalAfterDiscount + gstAmount;
+    const orderItems: OrderItem[] = Object.values(cart).map(cartItem => {
+      const product = productsByName[cartItem.name];
+      if (!product) return null;
 
-    addOrder({
-        id: newOrderId,
+      const flavourTotal = (cartItem.flavours && product.availableFlavours)
+        ? cartItem.flavours.reduce((acc, flavourName) => {
+            const flavour = product.availableFlavours.find(f => f.name === flavourName);
+            return acc + (flavour?.price || 0);
+          }, 0)
+        : 0;
+
+      const finalProductPrice = (product.discountedPrice || 0) + flavourTotal;
+      const finalSubtotal = finalProductPrice * cartItem.quantity;
+
+      return {
+        name: product.name,
+        quantity: cartItem.quantity,
+        flavours: cartItem.flavours || [],
+        mrp: product.mrp,
+        finalProductPrice: finalProductPrice,
+        finalSubtotal: finalSubtotal,
+        coverImage: product.images?.[0] || '/placeholder.png'
+      };
+    }).filter((item): item is OrderItem => item !== null);
+
+    const subtotal = orderItems.reduce((acc, item) => acc + (item.finalSubtotal || 0), 0);
+    const gstRate = 0.18;
+    const gstAmount = subtotal * gstRate;
+    const total = subtotal + gstAmount;
+
+    const newOrderId = await addOrder({
         date: new Date().toISOString(),
-        items: Object.values(cart),
+        items: orderItems,
         status: 'Order Requested',
         total: total > 0 ? total : 0,
     });
 
-    if(onToggleCartPopup) onToggleCartPopup();
-    
-    const clearCartAction = onClearCart || globalClearCart;
-    clearCartAction();
-    router.push(`/order-confirmed?orderId=${newOrderId}`);
+    if (newOrderId) {
+      if(onToggleCartPopup) onToggleCartPopup();
+      
+      const clearCartAction = onClearCart || globalClearCart;
+      clearCartAction();
+      router.push(`/order-confirmed?orderId=${newOrderId}`);
+    }
   };
 
   const handleDetailsConfirm = (name: string, phone: string) => {

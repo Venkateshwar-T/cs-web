@@ -45,20 +45,23 @@ export function ProfileMobileView({
   const router = useRouter();
   const { reorderItem } = useAppContext();
 
-  const [selectedProductDetails, setSelectedProductDetails] = useState<{product: SanityProduct, orderItem: OrderItem} | null>(null);
+  const [selectedProductDetails, setSelectedProductDetails] = useState<{orderItem: OrderItem } | null>(null);
+
+  const productsByName = products.reduce((acc, p) => {
+    if (p) acc[p.name] = p;
+    return acc;
+  }, {} as Record<string, SanityProduct>);
   
   const handleProductClick = (product: SanityProduct) => {
     router.push(`/product/${product.slug.current}`);
   };
 
-  const handleViewProductFromOrder = (product: SanityProduct) => {
-    router.push(`/product/${product.slug.current}`);
+  const handleViewProductFromOrder = (productName: string) => {
+    const product = productsByName[productName];
+    if (product) {
+      router.push(`/product/${product.slug.current}`);
+    }
   };
-
-  const handleOrderAgainFromPopup = (item: OrderItem) => {
-    reorderItem(item);
-  };
-
 
   return (
     <>
@@ -114,7 +117,7 @@ export function ProfileMobileView({
             <MyOrdersTab 
               isMobile={true} 
               products={products} 
-              onProductClick={(product, orderItem) => setSelectedProductDetails({ product, orderItem })}
+              onProductClick={(orderItem) => setSelectedProductDetails({ orderItem })}
             />
           )}
         </div>
@@ -124,7 +127,6 @@ export function ProfileMobileView({
         open={!!selectedProductDetails}
         onOpenChange={(isOpen) => !isOpen && setSelectedProductDetails(null)}
         onViewProduct={handleViewProductFromOrder}
-        onOrderAgain={handleOrderAgainFromPopup}
       />
     </>
   );

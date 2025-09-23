@@ -24,12 +24,11 @@ import { RotateCcw } from 'lucide-react';
 interface OrderItemCardProps {
     order: Order;
     isMobile?: boolean;
-    products: SanityProduct[];
-    onProductClick: (product: SanityProduct, orderItem: OrderItem) => void;
+    onProductClick: (orderItem: OrderItem) => void;
     onOrderAgain?: () => void;
 }
 
-export function OrderItemCard({ order, isMobile = false, products, onProductClick, onOrderAgain }: OrderItemCardProps) {
+export function OrderItemCard({ order, isMobile = false, onProductClick, onOrderAgain }: OrderItemCardProps) {
     const orderDate = new Date(order.date);
     const formattedDate = orderDate.toLocaleDateString('en-US', {
         year: 'numeric',
@@ -41,13 +40,6 @@ export function OrderItemCard({ order, isMobile = false, products, onProductClic
         minute: '2-digit',
         hour12: true,
     });
-    
-    const productsByName = products.reduce((acc, product) => {
-        if(product) {
-            acc[product.name] = product;
-        }
-        return acc;
-    }, {} as Record<string, SanityProduct>);
     
     const statusVariant = (status: Order['status']) => {
         switch (status) {
@@ -72,26 +64,22 @@ export function OrderItemCard({ order, isMobile = false, products, onProductClic
                  </div>
                  <Separator className="bg-black/10 my-2" />
                  <div className="space-y-2">
-                    {order.items.map(item => {
-                        const product = productsByName[item.name];
-                        if (!product) return null;
-                         return (
-                            <div key={item.name} className="flex items-center gap-3 cursor-pointer" onClick={() => onProductClick(product, item)}>
-                                <Image
-                                    src={product.images?.[0] || "/choco img.png"}
-                                    alt={item.name}
-                                    width={48}
-                                    height={48}
-                                    className="rounded-md flex-shrink-0"
-                                    data-ai-hint="chocolate box"
-                                />
-                                <div className="flex-grow">
-                                    <p className="text-sm font-semibold truncate">{item.name}</p>
-                                    <p className="text-xs text-black/60">Quantity: {item.quantity}</p>
-                                </div>
+                    {order.items.map(item => (
+                        <div key={item.name} className="flex items-center gap-3 cursor-pointer" onClick={() => onProductClick(item)}>
+                            <Image
+                                src={item.coverImage || "/placeholder.png"}
+                                alt={item.name}
+                                width={48}
+                                height={48}
+                                className="rounded-md flex-shrink-0"
+                                data-ai-hint="chocolate box"
+                            />
+                            <div className="flex-grow">
+                                <p className="text-sm font-semibold truncate">{item.name}</p>
+                                <p className="text-xs text-black/60">Quantity: {item.quantity}</p>
                             </div>
-                         )
-                    })}
+                        </div>
+                    ))}
                  </div>
                  <Separator className="bg-black/10 my-2" />
                  <div className="flex justify-between items-center">
@@ -139,26 +127,22 @@ export function OrderItemCard({ order, isMobile = false, products, onProductClic
             <Separator className="my-2 bg-black/20" />
             
             <div className="space-y-3 max-h-48 overflow-y-auto custom-scrollbar pr-2">
-                {order.items.map(item => {
-                     const product = productsByName[item.name];
-                     if (!product) return null;
-                     return (
-                        <div key={item.name} className="flex items-center gap-4 cursor-pointer" onClick={() => onProductClick(product, item)}>
-                            <Image
-                                src={product.images?.[0] || "/choco img.png"}
-                                alt={item.name}
-                                width={56}
-                                height={56}
-                                className="rounded-md flex-shrink-0"
-                                data-ai-hint="chocolate box"
-                            />
-                            <div className="flex-grow">
-                                <p className="font-bold truncate">{item.name}</p>
-                                <p className="text-sm text-black/60">Quantity: {item.quantity}</p>
-                            </div>
+                {order.items.map(item => (
+                    <div key={item.name} className="flex items-center gap-4 cursor-pointer" onClick={() => onProductClick(item)}>
+                        <Image
+                            src={item.coverImage || "/placeholder.png"}
+                            alt={item.name}
+                            width={56}
+                            height={56}
+                            className="rounded-md flex-shrink-0"
+                            data-ai-hint="chocolate box"
+                        />
+                        <div className="flex-grow">
+                            <p className="font-bold truncate">{item.name}</p>
+                            <p className="text-sm text-black/60">Quantity: {item.quantity}</p>
                         </div>
-                    )
-                })}
+                    </div>
+                ))}
             </div>
 
             <Separator className="my-2 bg-black/20" />

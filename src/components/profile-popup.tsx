@@ -61,11 +61,15 @@ export function ProfilePopup({
     isProfileLoaded, 
     isAuthenticated, 
     setAuthPopup,
-    reorderItem, 
   } = useAppContext();
   const router = useRouter();
 
-  const [selectedProductDetails, setSelectedProductDetails] = useState<{product: SanityProduct, orderItem: OrderItem} | null>(null);
+  const [selectedProductDetails, setSelectedProductDetails] = useState<{orderItem: OrderItem } | null>(null);
+  
+  const productsByName = products.reduce((acc, p) => {
+    if (p) acc[p.name] = p;
+    return acc;
+  }, {} as Record<string, SanityProduct>);
 
   const handleActionWithCheck = (action: () => void) => {
     if (hasUnsavedChanges) {
@@ -111,13 +115,12 @@ export function ProfilePopup({
     setAuthPopup('login');
   }
 
-  const handleViewProductFromOrder = (product: SanityProduct) => {
-    onClose();
-    router.push(`/product/${product.slug.current}`);
-  };
-
-  const handleOrderAgainFromPopup = (item: OrderItem) => {
-    reorderItem(item);
+  const handleViewProductFromOrder = (productName: string) => {
+    const product = productsByName[productName];
+    if (product) {
+      onClose();
+      router.push(`/product/${product.slug.current}`);
+    }
   };
 
   return (
@@ -171,7 +174,7 @@ export function ProfilePopup({
                       {activeTab === 'My Orders' && (
                         <MyOrdersTab 
                           products={products} 
-                          onProductClick={(product, orderItem) => setSelectedProductDetails({ product, orderItem })}
+                          onProductClick={(orderItem) => setSelectedProductDetails({ orderItem })}
                         />
                       )}
                     </>
@@ -199,7 +202,6 @@ export function ProfilePopup({
         open={!!selectedProductDetails}
         onOpenChange={(isOpen) => !isOpen && setSelectedProductDetails(null)}
         onViewProduct={handleViewProductFromOrder}
-        onOrderAgain={handleOrderAgainFromPopup}
       />
     </>
   );
