@@ -50,9 +50,9 @@ export function WishlistItemCard({ product, onAddToCart, onUnlike, isInCart, isU
             <Image
               src={product.images && product.images.length > 0 ? product.images[0] : "/placeholder.png"}
               alt={product.name}
-              layout="fill"
-              objectFit="cover"
-              className="rounded-lg"
+              fill
+              sizes="(max-width: 768px) 25vw, 10vw"
+              className="rounded-lg object-cover"
               onDragStart={(e) => e.preventDefault()}
             />
           </div>
@@ -106,9 +106,9 @@ export function WishlistItemCard({ product, onAddToCart, onUnlike, isInCart, isU
           <Image
             src={product.images && product.images.length > 0 ? product.images[0] : "/placeholder.png"}
             alt={product.name}
-            layout="fill"
-            objectFit="cover"
-            className="rounded-lg"
+            fill
+            sizes="(max-width: 768px) 25vw, 15vw"
+            className="rounded-lg object-cover"
             onDragStart={(e) => e.preventDefault()}
           />
         </div>

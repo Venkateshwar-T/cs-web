@@ -24,9 +24,9 @@ export function OrderSummaryItem({ product, quantity, isMobile = false, onClick 
                 <Image
                     src={product.images?.[0] || "/choco img.png"}
                     alt={product.name}
-                    layout="fill"
-                    objectFit="cover"
-                    className="rounded-md"
+                    fill
+                    sizes="(max-width: 768px) 10vw, 5vw"
+                    className="rounded-md object-cover"
                     onDragStart={(e) => e.preventDefault()}
                 />
             </div>

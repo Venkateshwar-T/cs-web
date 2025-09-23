@@ -162,10 +162,10 @@ export function ProductCard({ product, onAddToCart, onRemoveFromCart, quantity, 
                 key={currentImageUrl}
                 src={currentImageUrl}
                 alt={product.name}
-                layout="fill"
-                objectFit="cover"
+                fill
+                sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
                 className={cn(
-                  "rounded-t-lg md:rounded-t-2xl",
+                  "rounded-t-lg md:rounded-t-2xl object-cover",
                   !isMobile && "group-hover:scale-110"
                 )}
               />

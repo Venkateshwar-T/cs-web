@@ -41,9 +41,9 @@ export function FlavourCard({ flavour, onAddToCart, quantity }: FlavourCardProps
         <Image
           src={flavour.imageUrl}
           alt={flavour.name}
-          layout="fill"
-          objectFit="cover"
-          className="rounded-full"
+          fill
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          className="rounded-full object-cover"
           data-ai-hint={flavour.name}
           onDragStart={(e) => e.preventDefault()}
         />

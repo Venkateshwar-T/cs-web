@@ -46,9 +46,9 @@ export function MobileImageGallery({ product, onImageExpandChange }: MobileImage
                     <Image
                         src={images.length > 0 ? images[activeIndex] : '/placeholder.png'}
                         alt={product.name}
-                        layout="fill"
-                        objectFit="cover"
-                        className="rounded-xl"
+                        fill
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        className="rounded-xl object-cover"
                         onDragStart={(e) => e.preventDefault()}
                     />
                      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/30 rounded-xl">
@@ -95,9 +95,9 @@ export function MobileImageGallery({ product, onImageExpandChange }: MobileImage
                             <Image
                                 src={image}
                                 alt={`${product.name} thumbnail ${index + 1}`}
-                                layout="fill"
-                                objectFit="cover"
-                                className="rounded-md"
+                                fill
+                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                className="rounded-md object-cover"
                                 onDragStart={(e) => e.preventDefault()}
                             />
                         </button>
