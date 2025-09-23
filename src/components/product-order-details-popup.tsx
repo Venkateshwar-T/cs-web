@@ -34,10 +34,9 @@ interface ProductOrderDetailsPopupProps {
     open: boolean;
     onOpenChange: (open: boolean) => void;
     onViewProduct?: (productName: string) => void;
-    onOrderAgain?: (item: OrderItem) => void;
 }
 
-export function ProductOrderDetailsPopup({ details, open, onOpenChange, onViewProduct, onOrderAgain }: ProductOrderDetailsPopupProps) {
+export function ProductOrderDetailsPopup({ details, open, onOpenChange, onViewProduct }: ProductOrderDetailsPopupProps) {
   const { reorderItem } = useAppContext();
   if (!details) return null;
 
@@ -80,7 +79,7 @@ export function ProductOrderDetailsPopup({ details, open, onOpenChange, onViewPr
                 </div>
                 <div className="w-full md:w-2/3 flex flex-col gap-1 text-center md:text-left">
                     <h3 className="font-bold text-lg leading-tight">{orderItem.name}</h3>
-                    <p className="text-xs text-white/80">{((orderItem.finalSubtotal || 0) / orderItem.quantity).toFixed(2)} x {orderItem.quantity}</p>
+                    <p className="text-xs text-white/80">{((orderItem.finalProductPrice || 0) / orderItem.quantity).toFixed(2)} x {orderItem.quantity}</p>
                 </div>
             </div>
 
@@ -103,48 +102,46 @@ export function ProductOrderDetailsPopup({ details, open, onOpenChange, onViewPr
             </div>
             
             <div className="flex flex-col sm:flex-row items-center justify-center gap-2">
-                {onViewProduct && (
-                    <Button 
-                        onClick={handleViewClick}
-                        variant="outline"
-                        className="w-full bg-transparent text-sm text-white border-custom-gold border rounded-full hover:bg-custom-gold hover:text-custom-purple-dark"
-                    >
-                        <Eye className="mr-2 h-4 w-4" /> View Product
-                    </Button>
-                )}
-                {onViewProduct && (
-                    <AlertDialog>
-                        <AlertDialogTrigger asChild>
-                            <Button className="w-full bg-custom-gold text-sm text-custom-purple-dark rounded-full hover:bg-custom-gold/90">
-                               <RotateCcw className="mr-2 h-4 w-4" /> Order Again
-                            </Button>
-                        </AlertDialogTrigger>
-                        <AlertDialogContent>
-                            <AlertDialogHeader>
-                                <AlertDialogTitle>Order this item again?</AlertDialogTitle>
-                                <AlertDialogDescription>
-                                This will add {orderItem.quantity} x {orderItem.name} to your cart.
-                                </AlertDialogDescription>
-                            </AlertDialogHeader>
-                            <AlertDialogFooter>
-                                <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                <AlertDialogAction onClick={handleOrderAgainClick}>Confirm</AlertDialogAction>
-                            </AlertDialogFooter>
-                        </AlertDialogContent>
-                    </AlertDialog>
+                {onViewProduct ? (
+                    <>
+                        <Button 
+                            onClick={handleViewClick}
+                            variant="outline"
+                            className="w-full bg-transparent text-sm text-white border-custom-gold border rounded-full hover:bg-custom-gold hover:text-custom-purple-dark"
+                        >
+                            <Eye className="mr-2 h-4 w-4" /> View Product
+                        </Button>
+                        <AlertDialog>
+                            <AlertDialogTrigger asChild>
+                                <Button className="w-full bg-custom-gold text-sm text-custom-purple-dark rounded-full hover:bg-custom-gold/90">
+                                   <RotateCcw className="mr-2 h-4 w-4" /> Order Again
+                                </Button>
+                            </AlertDialogTrigger>
+                            <AlertDialogContent>
+                                <AlertDialogHeader>
+                                    <AlertDialogTitle>Order this item again?</AlertDialogTitle>
+                                    <AlertDialogDescription>
+                                    This will add {orderItem.quantity} x {orderItem.name} to your cart.
+                                    </AlertDialogDescription>
+                                </AlertDialogHeader>
+                                <AlertDialogFooter>
+                                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                    <AlertDialogAction onClick={handleOrderAgainClick}>Confirm</AlertDialogAction>
+                                </AlertDialogFooter>
+                            </AlertDialogContent>
+                        </AlertDialog>
+                    </>
+                ) : (
+                    <DialogClose asChild>
+                        <Button 
+                            variant="outline"
+                            className="w-full mx-auto bg-custom-gold text-sm text-custom-purple-dark rounded-full hover:bg-custom-gold/90 hover:text-custom-purple-dark"
+                        >
+                            Close
+                        </Button>
+                    </DialogClose>
                 )}
             </div>
-
-            {!onViewProduct && (
-                <DialogClose asChild>
-                    <Button 
-                        variant="outline"
-                        className="w-full mx-auto bg-custom-gold text-sm text-custom-purple-dark rounded-full hover:bg-custom-gold/90 hover:text-custom-purple-dark"
-                    >
-                        Close
-                    </Button>
-                </DialogClose>
-            )}
         </div>
       </DialogContent>
     </Dialog>
