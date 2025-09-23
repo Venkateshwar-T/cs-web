@@ -67,12 +67,12 @@ export function CompleteDetailsPopup({ open, onOpenChange, onConfirm }: Complete
         className={cn("p-0 w-[90vw] max-w-sm bg-custom-purple-dark rounded-2xl md:rounded-[30px] border-2 border-custom-gold")}
       >
         <DialogHeader>
-          <DialogTitle className="sr-only">Complete Your Details</DialogTitle>
+          <DialogTitle className="sr-only">One Last Step!</DialogTitle>
         </DialogHeader>
         <div className="flex flex-col gap-4 px-6 pt-10 pb-6 text-white">
-            <h2 className="text-2xl md:text-3xl font-medium text-center font-plex-sans">Complete Your Details</h2>
+            <h2 className="text-2xl md:text-3xl font-medium text-center font-plex-sans">One Last Step!</h2>
             <p className="text-xs md:text-sm px-4 md:px-6 mt-2 text-center text-white/80">
-                Just one more step! Please provide your details so our team can get in touch to confirm your order and arrange for payment.
+                To finalize your order, our team needs your details to get in touch for payment and confirmation. Your sweet treats are almost on their way!
             </p>
             
             <div className="space-y-1 px-2 md:px-5 text-left">
@@ -101,7 +101,7 @@ export function CompleteDetailsPopup({ open, onOpenChange, onConfirm }: Complete
 
             <div className="flex items-center justify-center gap-4 mt-4">
                 <Button onClick={handleConfirm} className="bg-custom-gold text-sm md:text-base text-custom-purple-dark rounded-full px-8 md:px-10 hover:bg-custom-gold/90">
-                    Confirm
+                    Confirm Details
                 </Button>
             </div>
         </div>
