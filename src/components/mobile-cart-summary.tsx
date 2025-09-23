@@ -5,11 +5,10 @@
 import * as React from 'react';
 import { Button } from './ui/button';
 import { cn } from '@/lib/utils';
-import type { OrderItem } from '@/context/app-context';
 import type { SanityProduct } from '@/types';
 
 interface MobileCartSummaryProps {
-  cart: Record<string, OrderItem>;
+  cart: Record<string, { name: string; quantity: number; flavours?: string[] }>;
   allProducts: SanityProduct[];
   onCheckout: () => void;
 }
@@ -34,35 +33,28 @@ export const MobileCartSummary = React.forwardRef<HTMLDivElement, MobileCartSumm
         return null;
     }
 
-    const { subtotal, totalDiscount } = Object.entries(cart).reduce((acc, [productName, cartItem]) => {
-        const product = productsByName[productName];
+    let subtotal = 0;
+    let totalMrp = 0;
+
+    cartItems.forEach(item => {
+        const product = productsByName[item.name];
         if (product) {
-            const price = product.discountedPrice || 0;
-            const mrp = product.mrp || price;
-            let itemTotal = price * cartItem.quantity;
-            
-            if (cartItem.flavours && product.availableFlavours) {
-                const flavourPrices = cartItem.flavours.reduce((flavourAcc, flavourName) => {
-                    const flavour = product.availableFlavours.find(f => f.name === flavourName);
-                    return flavourAcc + (flavour?.price || 0);
-                }, 0);
-                itemTotal += flavourPrices * cartItem.quantity;
-            }
-            
-            acc.subtotal += itemTotal;
+            const finalProductPrice = (product.discountedPrice || 0) * item.quantity;
+            const totalFlavourPrice = (item.flavours || [])
+                .reduce((acc, flavourName) => {
+                    const flavour = product.availableFlavours?.find(f => f.name === flavourName);
+                    return acc + (flavour?.price || 0);
+                }, 0) * (product.numberOfChocolates || 1);
 
-            if (mrp > price) {
-                acc.totalDiscount += (mrp - price) * cartItem.quantity;
-            }
+            subtotal += finalProductPrice + totalFlavourPrice;
+            totalMrp += (product.mrp || product.discountedPrice || 0) * item.quantity;
         }
-        return acc;
-    }, { subtotal: 0, totalDiscount: 0 });
+    });
 
-    const subtotalAfterDiscount = subtotal;
+    const totalDiscount = totalMrp > subtotal ? totalMrp - subtotal : 0;
     const gstRate = 0.18;
-    const gstAmount = subtotalAfterDiscount * gstRate;
-    const rawTotal = subtotalAfterDiscount + gstAmount;
-    const total = rawTotal > 0 ? rawTotal : 0;
+    const gstAmount = subtotal * gstRate;
+    const total = subtotal + gstAmount;
 
     return (
       <div ref={ref} className="mt-6 bg-white/80 rounded-2xl p-4 shadow-lg text-black">
@@ -73,22 +65,21 @@ export const MobileCartSummary = React.forwardRef<HTMLDivElement, MobileCartSumm
                   {cartItems.map((item) => {
                     const product = productsByName[item.name];
                     if (!product) return null;
-                    const price = product.discountedPrice || 0;
                     
-                    let itemTotal = price;
-                    if (item.flavours && product.availableFlavours) {
-                        const flavourPrices = item.flavours.reduce((flavourAcc, flavourName) => {
-                            const flavour = product.availableFlavours.find(f => f.name === flavourName);
-                            return flavourAcc + (flavour?.price || 0);
-                        }, 0);
-                        itemTotal += flavourPrices;
-                    }
+                    const finalProductPrice = (product.discountedPrice || 0) * item.quantity;
+                    const totalFlavourPrice = (item.flavours || [])
+                        .reduce((acc, flavourName) => {
+                            const flavour = product.availableFlavours?.find(f => f.name === flavourName);
+                            return acc + (flavour?.price || 0);
+                        }, 0) * (product.numberOfChocolates || 1);
+                    
+                    const itemTotal = finalProductPrice + totalFlavourPrice;
 
                     return (
                         <div key={item.name} className="flex justify-between items-center text-sm">
                             <span className="font-medium w-2/3 truncate pr-2">{item.name}</span>
                             <span className="text-black/60">x{item.quantity}</span>
-                            <span className="font-semibold w-1/4 text-right">₹{(itemTotal * item.quantity).toFixed(2)}</span>
+                            <span className="font-semibold w-1/4 text-right">₹{itemTotal.toFixed(2)}</span>
                         </div>
                     )
                   })}
@@ -102,7 +93,7 @@ export const MobileCartSummary = React.forwardRef<HTMLDivElement, MobileCartSumm
               />
               <SummaryRow 
                   label="Subtotal"
-                  value={`₹${subtotalAfterDiscount > 0 ? subtotalAfterDiscount.toFixed(2) : '0.00'}`}
+                  value={`₹${subtotal > 0 ? subtotal.toFixed(2) : '0.00'}`}
               />
               <SummaryRow 
                   label={<>GST + Taxes <span className="font-normal text-black/60">(18%)</span></>}

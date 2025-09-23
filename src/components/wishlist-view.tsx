@@ -21,15 +21,14 @@ import {
 } from "@/components/ui/alert-dialog"
 import { EmptyState } from './empty-state';
 import { useRouter } from 'next/navigation';
-import type { OrderItem } from '@/context/app-context';
 import { useAppContext } from '@/context/app-context';
 
 interface WishlistViewProps {
   products: SanityProduct[];
   likedProducts: Record<string, boolean>;
   onLikeToggle: (productId: string) => void;
-  onAddToCart: (productName: string, quantity: number) => void;
-  cart: Record<string, OrderItem>;
+  onAddToCart: (productName: string, quantity: number, flavours?: string[]) => void;
+  cart: Record<string, { name: string; quantity: number; flavours?: string[] }>;
   onClearWishlist: () => void;
   isMobile?: boolean;
   onProductClick: (product: SanityProduct) => void;

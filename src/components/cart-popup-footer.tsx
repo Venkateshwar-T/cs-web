@@ -4,11 +4,10 @@
 
 import { Button } from './ui/button';
 import { cn } from '@/lib/utils';
-import type { OrderItem } from '@/context/app-context';
 import type { SanityProduct } from '@/types';
 
 interface CartPopupFooterProps {
-    cart: Record<string, OrderItem>;
+    cart: Record<string, { name: string; quantity: number; flavours?: string[] }>;
     onFinalizeOrder: () => void;
     allProducts: SanityProduct[];
 }
@@ -20,31 +19,28 @@ export function CartPopupFooter({ cart, onFinalizeOrder, allProducts }: CartPopu
         return acc;
     }, {} as Record<string, SanityProduct>);
     
-    const { subtotal, totalOriginalPrice } = Object.entries(cart).reduce((acc, [productName, cartItem]) => {
-        const product = productsByName[productName];
+    let subtotal = 0;
+    let totalOriginalPrice = 0;
+
+    Object.values(cart).forEach(cartItem => {
+        const product = productsByName[cartItem.name];
         if (product) {
-            const price = product.discountedPrice || 0;
-            const mrp = product.mrp || price;
-            let itemTotal = price * cartItem.quantity;
+            const finalProductPrice = (product.discountedPrice || 0) * cartItem.quantity;
             
-            if (cartItem.flavours && product.availableFlavours) {
-                const flavourPrices = cartItem.flavours.reduce((flavourAcc, flavourName) => {
-                    const flavour = product.availableFlavours.find(f => f.name === flavourName);
-                    return flavourAcc + (flavour?.price || 0);
-                }, 0);
-                itemTotal += flavourPrices * cartItem.quantity;
-            }
+            const totalFlavourPrice = (cartItem.flavours || [])
+              .reduce((acc, flavourName) => {
+                  const flavour = product.availableFlavours?.find(f => f.name === flavourName);
+                  return acc + (flavour?.price || 0);
+              }, 0) * (product.numberOfChocolates || 1);
 
-            acc.subtotal += itemTotal;
-            acc.totalOriginalPrice += mrp * cartItem.quantity;
+            subtotal += finalProductPrice + totalFlavourPrice;
+            totalOriginalPrice += (product.mrp || product.discountedPrice || 0) * cartItem.quantity;
         }
-        return acc;
-    }, { subtotal: 0, totalOriginalPrice: 0 });
+    });
 
-    const subtotalAfterDiscount = subtotal;
     const gstRate = 0.18;
-    const gstAmount = subtotalAfterDiscount * gstRate;
-    const total = subtotalAfterDiscount + gstAmount;
+    const gstAmount = subtotal * gstRate;
+    const total = subtotal + gstAmount;
 
     return (
         <div className="relative bottom-0 left-0 right-0 md:h-[8%] lg:h-[11%] lg:w-[96%]">

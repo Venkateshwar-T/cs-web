@@ -1,3 +1,4 @@
+
 // @/components/profile-mobile-view.tsx
 'use client';
 
@@ -20,8 +21,8 @@ interface ProfileMobileViewProps {
   products: SanityProduct[];
   likedProducts: Record<string, boolean>;
   onLikeToggle: (productId: string) => void;
-  onAddToCart: (productName: string, quantity: number) => void;
-  cart: Record<string, OrderItem>;
+  onAddToCart: (productName: string, quantity: number, flavours?: string[]) => void;
+  cart: Record<string, { name: string; quantity: number; flavours?: string[] }>;
   onClearWishlist: () => void;
   isAuthenticated: boolean;
   onLoginClick: () => void;

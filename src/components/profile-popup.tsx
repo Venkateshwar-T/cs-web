@@ -1,3 +1,4 @@
+
 // @/components/profile-popup.tsx
 'use client';
 
@@ -32,8 +33,8 @@ interface ProfilePopupProps {
   products: SanityProduct[];
   likedProducts: Record<string, boolean>;
   onLikeToggle: (productId: string) => void;
-  onAddToCart: (productName: string, quantity: number) => void;
-  cart: Record<string, OrderItem>;
+  onAddToCart: (productName: string, quantity: number, flavours?: string[]) => void;
+  cart: Record<string, { name: string; quantity: number; flavours?: string[] }>;
   onClearWishlist: () => void;
   onProductClick: (product: SanityProduct) => void;
   onLogout: () => void;

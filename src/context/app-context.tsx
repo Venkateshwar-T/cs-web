@@ -1,3 +1,4 @@
+
 // @/context/app-context.tsx
 'use client';
 
@@ -29,7 +30,7 @@ const CART_STORAGE_KEY = 'chocoSmileyCart';
 export type OrderItem = {
   name: string;
   quantity: number;
-  flavours?: string[];
+  flavours?: { name: string, price: number }[];
   mrp?: number;
   finalProductPrice?: number;
   finalSubtotal?: number;
@@ -42,9 +43,15 @@ export type Order = {
   items: OrderItem[];
   status: 'Order Requested' | 'In Progress' | 'Completed' | 'Cancelled';
   total: number;
+  totalDiscount?: number;
+  gstPercentage?: number;
 };
 
-type Cart = Record<string, OrderItem>;
+type Cart = Record<string, {
+  name: string;
+  quantity: number;
+  flavours?: string[];
+}>;
 type AuthPopupType = 'login' | 'signup' | 'completeDetails' | null;
 
 interface AppContextType {
@@ -232,13 +239,17 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
     setCart(prevCart => {
       const newCart = { ...prevCart };
       orderToReorder.items.forEach(item => {
+        const itemFlavours = item.flavours?.map(f => f.name) || [];
         if (newCart[item.name]) {
           newCart[item.name].quantity += item.quantity;
           const existingFlavours = newCart[item.name].flavours || [];
-          const newFlavours = item.flavours || [];
-          newCart[item.name].flavours = [...new Set([...existingFlavours, ...newFlavours])];
+          newCart[item.name].flavours = [...new Set([...existingFlavours, ...itemFlavours])];
         } else {
-          newCart[item.name] = { ...item };
+          newCart[item.name] = { 
+            name: item.name,
+            quantity: item.quantity,
+            flavours: itemFlavours,
+          };
         }
       });
       return newCart;
@@ -255,13 +266,17 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
    const reorderItem = useCallback((item: OrderItem) => {
     setCart(prevCart => {
         const newCart = { ...prevCart };
+        const itemFlavours = item.flavours?.map(f => f.name) || [];
         if (newCart[item.name]) {
             newCart[item.name].quantity += item.quantity;
             const existingFlavours = newCart[item.name].flavours || [];
-            const newFlavours = item.flavours || [];
-            newCart[item.name].flavours = [...new Set([...existingFlavours, ...newFlavours])];
+            newCart[item.name].flavours = [...new Set([...existingFlavours, ...itemFlavours])];
         } else {
-            newCart[item.name] = { ...item };
+            newCart[item.name] = { 
+              name: item.name,
+              quantity: item.quantity,
+              flavours: itemFlavours
+            };
         }
         return newCart;
     });

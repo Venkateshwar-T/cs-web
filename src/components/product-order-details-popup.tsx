@@ -1,3 +1,4 @@
+
 // @/components/product-order-details-popup.tsx
 'use client';
 
@@ -51,10 +52,8 @@ export function ProductOrderDetailsPopup({ details, open, onOpenChange, onViewPr
   
 
   const handleOrderAgainClick = () => {
-    if (onOrderAgain) {
-        onOrderAgain(orderItem);
-        onOpenChange(false);
-    }
+    reorderItem(orderItem);
+    onOpenChange(false);
   }
 
   return (
@@ -81,7 +80,7 @@ export function ProductOrderDetailsPopup({ details, open, onOpenChange, onViewPr
                 </div>
                 <div className="w-full md:w-2/3 flex flex-col gap-1 text-center md:text-left">
                     <h3 className="font-bold text-lg leading-tight">{orderItem.name}</h3>
-                    <p className="text-xs text-white/80">{orderItem.finalProductPrice?.toFixed(2)} x {orderItem.quantity}</p>
+                    <p className="text-xs text-white/80">{((orderItem.finalSubtotal || 0) / orderItem.quantity).toFixed(2)} x {orderItem.quantity}</p>
                 </div>
             </div>
 
@@ -90,7 +89,7 @@ export function ProductOrderDetailsPopup({ details, open, onOpenChange, onViewPr
                     <h4 className="font-semibold text-sm mb-2">Flavours Selected</h4>
                     <ul className="flex flex-col gap-x-4 gap-y-1 list-disc list-inside text-xs">
                         {orderItem.flavours.map((flavour) => (
-                            <li key={flavour}>{flavour}</li>
+                            <li key={flavour.name}>{flavour.name} (+₹{flavour.price})</li>
                         ))}
                     </ul>
                 </div>
@@ -113,7 +112,7 @@ export function ProductOrderDetailsPopup({ details, open, onOpenChange, onViewPr
                         <Eye className="mr-2 h-4 w-4" /> View Product
                     </Button>
                 )}
-                {onViewProduct && !onOrderAgain && (
+                {onViewProduct && (
                     <AlertDialog>
                         <AlertDialogTrigger asChild>
                             <Button className="w-full bg-custom-gold text-sm text-custom-purple-dark rounded-full hover:bg-custom-gold/90">
@@ -136,7 +135,7 @@ export function ProductOrderDetailsPopup({ details, open, onOpenChange, onViewPr
                 )}
             </div>
 
-            {!onViewProduct && !onOrderAgain && (
+            {!onViewProduct && (
                 <DialogClose asChild>
                     <Button 
                         variant="outline"

@@ -1,3 +1,4 @@
+
 // @/components/cart-item-card.tsx
 'use client';
 
@@ -6,12 +7,11 @@ import { Plus, Minus } from 'lucide-react';
 import { Button } from './ui/button';
 import { FaTrash } from 'react-icons/fa';
 import { cn } from '@/lib/utils';
-import type { OrderItem } from '@/context/app-context';
 import type { SanityProduct } from '@/types';
 import { useRouter } from 'next/navigation';
 
 interface CartItemCardProps {
-    item: OrderItem;
+    item: { name: string; quantity: number; flavours?: string[] };
     product: SanityProduct;
     onQuantityChange: (productName: string, quantity: number, flavours?: string[]) => void;
     onRemove: (productName: string) => void;
@@ -51,11 +51,11 @@ export function CartItemCard({ item, product, onQuantityChange, onRemove, isRemo
         return acc;
     }, {} as Record<string, typeof product.availableFlavours[number]>);
     
-    const flavourTotal = (item.flavours && availableFlavoursMap)
-        ? item.flavours.reduce((acc, flavourName) => acc + (availableFlavoursMap[flavourName]?.price || 0), 0)
+    const totalFlavourPrice = (item.flavours && availableFlavoursMap)
+        ? item.flavours.reduce((acc, flavourName) => acc + (availableFlavoursMap[flavourName]?.price || 0), 0) * (product.numberOfChocolates || 1)
         : 0;
         
-    const itemPrice = (product.discountedPrice || 0) + flavourTotal;
+    const itemPrice = ((product.discountedPrice || 0) * item.quantity) + totalFlavourPrice;
     
     const sortedFlavours = item.flavours && availableFlavoursMap
     ? [...item.flavours].sort((a, b) => {
@@ -143,10 +143,10 @@ export function CartItemCard({ item, product, onQuantityChange, onRemove, isRemo
                     </div>
                     <div className="flex items-end gap-4 pt-4">
                         <div className="flex flex-col items-center">
-                            {product.mrp && <p className="text-sm line-through text-gray-500 font-bold">₹{product.mrp}</p>}
+                            {product.mrp && <p className="text-sm line-through text-gray-500 font-bold">₹{product.mrp * item.quantity}</p>}
                             {discountPercentage && <p className="text-sm text-custom-purple-dark font-semibold">{discountPercentage}% OFF</p>}
                         </div>
-                        {<p className="font-bold text-2xl">₹{itemPrice}</p>}
+                        {<p className="font-bold text-2xl">₹{itemPrice.toFixed(2)}</p>}
                     </div>
                 </div>
 

@@ -1,3 +1,4 @@
+
 // @/components/popups/popups-manager.tsx
 'use client';
 
@@ -20,7 +21,7 @@ interface PopupsManagerProps {
   isProfileOpen: boolean;
   likedProducts?: Record<string, boolean>;
   onLikeToggle?: (productId: string) => void;
-  cart?: Record<string, OrderItem>;
+  cart?: Record<string, { name: string; quantity: number; flavours?: string[] }>;
   onAddToCart?: (productName: string, quantity: number, flavours?: string[]) => void;
   onToggleCartPopup?: () => void;
   onClearCart?: () => void;
@@ -67,24 +68,30 @@ export function PopupsManager({
       return acc;
     }, {} as Record<string, SanityProduct>);
     
+    let totalMrp = 0;
+    
     const orderItems: OrderItem[] = Object.values(cart).map(cartItem => {
       const product = productsByName[cartItem.name];
       if (!product) return null;
 
-      const flavourTotal = (cartItem.flavours && product.availableFlavours)
-        ? cartItem.flavours.reduce((acc, flavourName) => {
-            const flavour = product.availableFlavours.find(f => f.name === flavourName);
-            return acc + (flavour?.price || 0);
-          }, 0)
-        : 0;
+      const flavoursWithPrices = (cartItem.flavours || [])
+        .map(flavourName => {
+            const flavour = product.availableFlavours?.find(f => f.name === flavourName);
+            return { name: flavourName, price: flavour?.price || 0 };
+        })
+        .filter(f => f !== null) as { name: string; price: number }[];
 
-      const finalProductPrice = (product.discountedPrice || 0) + flavourTotal;
-      const finalSubtotal = finalProductPrice * cartItem.quantity;
+      const totalFlavourPrice = flavoursWithPrices.reduce((acc, flavour) => acc + flavour.price, 0) * (product.numberOfChocolates || 1);
+
+      const finalProductPrice = (product.discountedPrice || 0) * cartItem.quantity;
+      const finalSubtotal = finalProductPrice + totalFlavourPrice;
+      
+      totalMrp += (product.mrp || product.discountedPrice || 0) * cartItem.quantity;
 
       return {
         name: product.name,
         quantity: cartItem.quantity,
-        flavours: cartItem.flavours || [],
+        flavours: flavoursWithPrices,
         mrp: product.mrp,
         finalProductPrice: finalProductPrice,
         finalSubtotal: finalSubtotal,
@@ -96,12 +103,16 @@ export function PopupsManager({
     const gstRate = 0.18;
     const gstAmount = subtotal * gstRate;
     const total = subtotal + gstAmount;
+    const totalDiscount = totalMrp > subtotal ? totalMrp - subtotal : 0;
+
 
     const newOrderId = await addOrder({
         date: new Date().toISOString(),
         items: orderItems,
         status: 'Order Requested',
         total: total > 0 ? total : 0,
+        totalDiscount: totalDiscount,
+        gstPercentage: gstRate * 100,
     });
 
     if (newOrderId) {

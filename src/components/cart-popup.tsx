@@ -1,3 +1,4 @@
+
 // @/components/cart-popup.tsx
 'use client';
 
@@ -21,13 +22,12 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
-import type { OrderItem } from '@/context/app-context';
 import type { SanityProduct } from '@/types';
 import { EmptyState } from './empty-state';
 
 interface CartPopupProps {
   onClose: () => void;
-  cart: Record<string, OrderItem>;
+  cart: Record<string, { name: string; quantity: number; flavours?: string[] }>;
   allProducts: SanityProduct[];
   onClearCart: () => void;
   onFinalizeOrder: () => void;
