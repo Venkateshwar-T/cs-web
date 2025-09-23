@@ -33,9 +33,10 @@ interface ProductOrderDetailsPopupProps {
     open: boolean;
     onOpenChange: (open: boolean) => void;
     onViewProduct?: (productName: string) => void;
+    onOrderAgain?: (item: OrderItem) => void;
 }
 
-export function ProductOrderDetailsPopup({ details, open, onOpenChange, onViewProduct }: ProductOrderDetailsPopupProps) {
+export function ProductOrderDetailsPopup({ details, open, onOpenChange, onViewProduct, onOrderAgain }: ProductOrderDetailsPopupProps) {
   const { reorderItem } = useAppContext();
   if (!details) return null;
 
@@ -47,10 +48,13 @@ export function ProductOrderDetailsPopup({ details, open, onOpenChange, onViewPr
         onOpenChange(false);
     }
   }
+  
 
   const handleOrderAgainClick = () => {
-    reorderItem(orderItem);
-    onOpenChange(false);
+    if (onOrderAgain) {
+        onOrderAgain(orderItem);
+        onOpenChange(false);
+    }
   }
 
   return (
@@ -109,32 +113,34 @@ export function ProductOrderDetailsPopup({ details, open, onOpenChange, onViewPr
                         <Eye className="mr-2 h-4 w-4" /> View Product
                     </Button>
                 )}
-                <AlertDialog>
-                    <AlertDialogTrigger asChild>
-                        <Button className="w-full bg-custom-gold text-sm text-custom-purple-dark rounded-full hover:bg-custom-gold/90">
-                           <RotateCcw className="mr-2 h-4 w-4" /> Order Again
-                        </Button>
-                    </AlertDialogTrigger>
-                    <AlertDialogContent>
-                        <AlertDialogHeader>
-                            <AlertDialogTitle>Order this item again?</AlertDialogTitle>
-                            <AlertDialogDescription>
-                            This will add {orderItem.quantity} x {orderItem.name} to your cart.
-                            </AlertDialogDescription>
-                        </AlertDialogHeader>
-                        <AlertDialogFooter>
-                            <AlertDialogCancel>Cancel</AlertDialogCancel>
-                            <AlertDialogAction onClick={handleOrderAgainClick}>Confirm</AlertDialogAction>
-                        </AlertDialogFooter>
-                    </AlertDialogContent>
-                </AlertDialog>
+                {onViewProduct && !onOrderAgain && (
+                    <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                            <Button className="w-full bg-custom-gold text-sm text-custom-purple-dark rounded-full hover:bg-custom-gold/90">
+                               <RotateCcw className="mr-2 h-4 w-4" /> Order Again
+                            </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                            <AlertDialogHeader>
+                                <AlertDialogTitle>Order this item again?</AlertDialogTitle>
+                                <AlertDialogDescription>
+                                This will add {orderItem.quantity} x {orderItem.name} to your cart.
+                                </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                <AlertDialogAction onClick={handleOrderAgainClick}>Confirm</AlertDialogAction>
+                            </AlertDialogFooter>
+                        </AlertDialogContent>
+                    </AlertDialog>
+                )}
             </div>
 
-            {!onViewProduct && (
+            {!onViewProduct && !onOrderAgain && (
                 <DialogClose asChild>
                     <Button 
                         variant="outline"
-                        className="w-full md:w-1/2 mx-auto bg-custom-gold text-sm text-custom-purple-dark rounded-full hover:bg-custom-gold/90 hover:text-custom-purple-dark"
+                        className="w-full mx-auto bg-custom-gold text-sm text-custom-purple-dark rounded-full hover:bg-custom-gold/90 hover:text-custom-purple-dark"
                     >
                         Close
                     </Button>
