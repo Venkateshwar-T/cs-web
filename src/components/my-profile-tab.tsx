@@ -13,6 +13,7 @@ import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import { updateUserPassword } from '@/lib/firebase';
 import { Loader } from './loader';
+import { Textarea } from './ui/textarea';
 
 
 interface MyProfileTabProps {
@@ -25,6 +26,7 @@ export function MyProfileTab({ profile, onProfileUpdate }: MyProfileTabProps) {
   const [name, setName] = useState(profile.name);
   const [phone, setPhone] = useState(profile.phone);
   const [email, setEmail] = useState(profile.email);
+  const [address, setAddress] = useState(profile.address);
   const [password, setPassword] = useState(''); // Default to empty
   const [showPassword, setShowPassword] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -39,6 +41,7 @@ export function MyProfileTab({ profile, onProfileUpdate }: MyProfileTabProps) {
     setName(profile.name || '');
     setPhone(profile.phone || '');
     setEmail(profile.email || '');
+    setAddress(profile.address || '');
   }, [profile]);
 
 
@@ -46,6 +49,7 @@ export function MyProfileTab({ profile, onProfileUpdate }: MyProfileTabProps) {
     setName(profile.name);
     setPhone(profile.phone);
     setEmail(profile.email);
+    setAddress(profile.address);
     setPassword('');
     toast({
       title: "Cancelled",
@@ -54,10 +58,10 @@ export function MyProfileTab({ profile, onProfileUpdate }: MyProfileTabProps) {
   };
 
   const handleSave = async () => {
-     if (phone.length !== 10) {
+     if (phone.length !== 10 || !address.trim()) {
       toast({
-        title: "Invalid Phone Number",
-        description: "Please enter a valid 10-digit phone number.",
+        title: "Invalid Details",
+        description: "Please enter a valid 10-digit phone number and your address.",
         variant: "destructive",
       });
       return;
@@ -71,7 +75,7 @@ export function MyProfileTab({ profile, onProfileUpdate }: MyProfileTabProps) {
         passwordChanged = true;
       }
 
-      const updatedProfile: Partial<ProfileInfo> = { name, phone };
+      const updatedProfile: Partial<ProfileInfo> = { name, phone, address };
        if (!isGoogleSignIn) {
         updatedProfile.email = email;
       }
@@ -154,6 +158,15 @@ export function MyProfileTab({ profile, onProfileUpdate }: MyProfileTabProps) {
                 className="bg-transparent border-none text-white h-full focus-visible:ring-0 focus-visible:ring-offset-0" 
             />
           </div>
+        </div>
+        <div className="space-y-1">
+          <label htmlFor="address" className="pl-3 text-sm font-medium">Address</label>
+          <Textarea
+            id="address"
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
+            className="bg-white/10 border-white/20 text-white rounded-2xl h-24"
+          />
         </div>
         {!isGoogleSignIn && (
           <div className="space-y-1">

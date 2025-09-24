@@ -121,8 +121,8 @@ export function PopupsManager({
     }
   };
 
-  const handleDetailsConfirm = (name: string, phone: string) => {
-    updateProfileInfo({ name, phone });
+  const handleDetailsConfirm = (name: string, phone: string, address: string) => {
+    updateProfileInfo({ name, phone, address });
     setAuthPopup(null);
   };
 

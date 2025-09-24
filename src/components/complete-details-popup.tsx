@@ -14,41 +14,45 @@ import { Button } from "./ui/button";
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import { useAppContext } from '@/context/app-context';
+import { Textarea } from './ui/textarea';
 
 interface CompleteDetailsPopupProps {
     open: boolean;
     onOpenChange: (open: boolean) => void;
-    onConfirm: (name: string, phone: string) => void;
+    onConfirm: (name: string, phone: string, address: string) => void;
 }
 
 export function CompleteDetailsPopup({ open, onOpenChange, onConfirm }: CompleteDetailsPopupProps) {
   const { profileInfo } = useAppContext();
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
+  const [address, setAddress] = useState('');
   const { toast } = useToast();
   
   useEffect(() => {
     if (open) {
       setName(profileInfo.name || '');
       setPhone(profileInfo.phone || '');
+      setAddress(profileInfo.address || '');
     } else {
       // Clear fields when popup closes
       setName('');
       setPhone('');
+      setAddress('');
     }
   }, [open, profileInfo]);
 
 
   const handleConfirm = () => {
-    if (!name.trim() || !phone.trim() || phone.length !== 10) {
+    if (!name.trim() || !phone.trim() || phone.length !== 10 || !address.trim()) {
       toast({
         title: "Missing or Invalid Details",
-        description: "Please fill in your full name and a valid 10-digit phone number.",
+        description: "Please fill in your full name, a valid 10-digit phone number, and your address.",
         variant: "destructive",
       });
       return;
     }
-    onConfirm(name, phone);
+    onConfirm(name, phone, address);
     onOpenChange(false);
   };
 
@@ -97,6 +101,16 @@ export function CompleteDetailsPopup({ open, onOpenChange, onConfirm }: Complete
                         className="bg-transparent text-black placeholder:text-gray-400 placeholder:font-montserrat font-montserrat h-full border-none focus-visible:ring-0 focus-visible:ring-offset-0"
                     />
                 </div>
+            </div>
+
+            <div className="space-y-1 px-2 md:px-5 text-left">
+                <label className="pl-2 text-sm font-medium font-plex-sans">Address</label>
+                <Textarea 
+                    value={address}
+                    onChange={(e) => setAddress(e.target.value)}
+                    placeholder="Enter your full address"
+                    className="bg-white rounded-2xl text-black placeholder:text-gray-400 placeholder:font-montserrat font-montserrat h-24"
+                />
             </div>
 
             <div className="flex items-center justify-center gap-4 mt-4">

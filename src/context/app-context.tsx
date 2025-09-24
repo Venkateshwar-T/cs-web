@@ -25,6 +25,7 @@ const defaultProfileInfo: ProfileInfo = {
     name: '',
     phone: '',
     email: '',
+    address: '',
 };
 
 const WISHLIST_STORAGE_KEY = 'chocoSmileyWishlist';
@@ -113,6 +114,7 @@ export type ProfileInfo = {
     name: string;
     phone: string;
     email: string;
+    address: string;
 };
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -337,11 +339,12 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
         name: loggedInUser.displayName || '',
         email: loggedInUser.email || '',
         phone: loggedInUser.phoneNumber || '',
+        address: '',
       };
       await createUserProfile(loggedInUser.uid, profile);
       needsDetails = true;
     } else {
-      if (!profile.name || !profile.phone) {
+      if (!profile.name || !profile.phone || !profile.address) {
         needsDetails = true;
       }
     }

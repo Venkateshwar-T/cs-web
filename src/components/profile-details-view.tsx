@@ -13,6 +13,7 @@ import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import { updateUserPassword } from '@/lib/firebase';
 import { Loader } from './loader';
+import { Textarea } from './ui/textarea';
 
 
 interface ProfileDetailsViewProps {
@@ -26,6 +27,7 @@ export function ProfileDetailsView({ profile, onHasChangesChange, onProfileUpdat
   const [name, setName] = useState(profile.name);
   const [phone, setPhone] = useState(profile.phone);
   const [email, setEmail] = useState(profile.email);
+  const [address, setAddress] = useState(profile.address);
   const [password, setPassword] = useState(''); // Default to empty
   const [showPassword, setShowPassword] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -40,15 +42,17 @@ export function ProfileDetailsView({ profile, onHasChangesChange, onProfileUpdat
       name !== profile.name || 
       phone !== profile.phone || 
       email !== profile.email || 
+      address !== profile.address ||
       password !== '';
     onHasChangesChange(hasChanges);
-  }, [name, phone, email, password, profile, onHasChangesChange]);
+  }, [name, phone, email, address, password, profile, onHasChangesChange]);
   
   // When the profile prop changes from the parent, update the local state
   useEffect(() => {
     setName(profile.name);
     setPhone(profile.phone);
     setEmail(profile.email);
+    setAddress(profile.address);
   }, [profile]);
 
 
@@ -60,15 +64,16 @@ export function ProfileDetailsView({ profile, onHasChangesChange, onProfileUpdat
     setName(profile.name);
     setPhone(profile.phone);
     setEmail(profile.email);
+    setAddress(profile.address);
     setPassword('');
     onHasChangesChange(false);
   };
 
   const handleSave = async () => {
-    if (phone.length !== 10) {
+    if (phone.length !== 10 || !address.trim()) {
       toast({
-        title: "Invalid Phone Number",
-        description: "Please enter a valid 10-digit phone number.",
+        title: "Invalid Details",
+        description: "Please enter a valid 10-digit phone number and your address.",
         variant: "destructive",
       });
       return;
@@ -82,7 +87,7 @@ export function ProfileDetailsView({ profile, onHasChangesChange, onProfileUpdat
         passwordChanged = true;
       }
 
-      const updatedProfile: Partial<ProfileInfo> = { name, phone };
+      const updatedProfile: Partial<ProfileInfo> = { name, phone, address };
       if (!isGoogleSignIn) {
         updatedProfile.email = email;
       }
@@ -144,7 +149,7 @@ export function ProfileDetailsView({ profile, onHasChangesChange, onProfileUpdat
         </div>
       )}
 
-      <div className="w-full max-w-xs space-y-3">
+      <div className="w-full max-w-sm space-y-3">
         <div className="space-y-1">
           <label htmlFor="name" className="pl-3 text-m font-medium">Name</label>
           <Input 
@@ -166,6 +171,15 @@ export function ProfileDetailsView({ profile, onHasChangesChange, onProfileUpdat
                 className="bg-transparent border-none text-black h-full text-base focus-visible:ring-0 focus-visible:ring-offset-0" 
               />
           </div>
+        </div>
+        <div className="space-y-1">
+          <label htmlFor="address" className="pl-3 text-m font-medium">Address</label>
+          <Textarea 
+            id="address" 
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
+            className="bg-white border-white/20 text-black rounded-2xl h-24 text-base"
+          />
         </div>
         {!isGoogleSignIn && (
           <div className="space-y-1">
