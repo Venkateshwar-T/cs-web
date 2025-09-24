@@ -1,4 +1,4 @@
-
+// @/components/product-popup-footer.tsx
 'use client';
 
 import { Button } from './ui/button';
@@ -8,7 +8,7 @@ import { Plus, Minus } from 'lucide-react';
 
 interface ProductPopupFooterProps {
     product: SanityProduct;
-    onAddToCart: (productName: string, quantity: number, animate?: boolean) => void;
+    onAddToCart: (productName: string, quantity: number, flavours?: string[]) => void;
     quantity: number;
     onToggleCartPopup: () => void;
 }
@@ -16,20 +16,20 @@ interface ProductPopupFooterProps {
 export function ProductPopupFooter({ product, onAddToCart, quantity, onToggleCartPopup }: ProductPopupFooterProps) {
 
     const handleAddToCartClick = () => {
-        onAddToCart(product.name, 1, false);
+        onAddToCart(product.name, 1);
     };
 
     const handleIncrement = () => {
-        onAddToCart(product.name, quantity + 1, false);
+        onAddToCart(product.name, quantity + 1);
     };
 
     const handleDecrement = () => {
-        onAddToCart(product.name, quantity - 1, false);
+        onAddToCart(product.name, quantity - 1);
     };
 
     const handleBuyNow = () => {
         if (quantity === 0) {
-            onAddToCart(product.name, 1, false);
+            onAddToCart(product.name, 1);
         }
         onToggleCartPopup();
     };

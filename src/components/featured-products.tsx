@@ -8,14 +8,13 @@ import { useRouter } from 'next/navigation';
 import { ChevronRight } from 'lucide-react';
 import { Button } from './ui/button';
 import { cn } from '@/lib/utils';
-import type { OrderItem } from '@/context/app-context';
 
 interface FeaturedProductsProps {
   products: SanityProduct[];
   onProductClick: (product: SanityProduct) => void;
   onAddToCart: (product: SanityProduct) => void;
   onRemoveFromCart: (product: SanityProduct) => void;
-  cart: Record<string, OrderItem>;
+  cart: Record<string, { name: string; quantity: number; flavours?: string[] }>;
   likedProducts: Record<string, boolean>;
   onLikeToggle: (productId: string) => void;
   isMobile?: boolean;
