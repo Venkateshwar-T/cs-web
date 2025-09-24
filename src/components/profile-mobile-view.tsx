@@ -9,10 +9,8 @@ import { cn } from '@/lib/utils';
 import { MyProfileTab } from './my-profile-tab';
 import { WishlistView } from './wishlist-view';
 import { MyOrdersTab } from './my-orders-tab';
-import type { OrderItem } from '@/context/app-context';
 import { useRouter } from 'next/navigation';
 import { EmptyState } from './empty-state';
-import { ProductOrderDetailsPopup } from './product-order-details-popup';
 import { useAppContext } from '@/context/app-context';
 
 interface ProfileMobileViewProps {
@@ -44,16 +42,9 @@ export function ProfileMobileView({
 }: ProfileMobileViewProps) {
   const [activeTab, setActiveTab] = useState('My Profile');
   const router = useRouter();
-  const { reorderItem } = useAppContext();
-
-  const [selectedProductDetails, setSelectedProductDetails] = useState<{orderItem: OrderItem } | null>(null);
   
   const handleProductClick = (product: SanityProduct) => {
     router.push(`/product/${product.slug.current}`);
-  };
-
-  const handleViewProductFromOrder = (product: SanityProduct) => {
-      handleProductClick(product);
   };
 
   return (
@@ -109,23 +100,11 @@ export function ProfileMobileView({
           {activeTab === 'My Orders' && (
             <MyOrdersTab 
               isMobile={true} 
-              products={products} 
-              onProductClick={(product, orderItem) => setSelectedProductDetails({ orderItem })}
+              products={products}
             />
           )}
         </div>
       </div>
-       <ProductOrderDetailsPopup
-        details={selectedProductDetails}
-        open={!!selectedProductDetails}
-        onOpenChange={(isOpen) => !isOpen && setSelectedProductDetails(null)}
-        onViewProduct={(productName) => {
-          const product = products.find(p => p.name === productName);
-          if (product) {
-            handleProductClick(product);
-          }
-        }}
-      />
     </>
   );
 }

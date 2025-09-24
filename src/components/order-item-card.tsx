@@ -26,11 +26,10 @@ interface OrderItemCardProps {
     order: Order;
     products: SanityProduct[];
     isMobile?: boolean;
-    onProductClick: (product: SanityProduct, orderItem: OrderItem) => void;
     onOrderAgain?: () => void;
 }
 
-export function OrderItemCard({ order, products, isMobile = false, onProductClick, onOrderAgain }: OrderItemCardProps) {
+export function OrderItemCard({ order, products, isMobile = false, onOrderAgain }: OrderItemCardProps) {
     const { isAuthenticated } = useAppContext();
 
     const orderDate = new Date(order.date);
@@ -38,11 +37,6 @@ export function OrderItemCard({ order, products, isMobile = false, onProductClic
         year: 'numeric',
         month: 'long',
         day: 'numeric',
-    });
-    const formattedTime = orderDate.toLocaleTimeString('en-US', {
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: true,
     });
     
     const statusVariant = (status: Order['status']): "success" | "destructive" | "default" => {
@@ -59,122 +53,54 @@ export function OrderItemCard({ order, products, isMobile = false, onProductClic
     }, {} as Record<string, SanityProduct>);
 
 
-    if (isMobile) {
-        return (
-            <div className={cn(
-                "w-full bg-white p-3 text-black relative overflow-hidden rounded-2xl"
-            )}>
-                 <div className="flex justify-between items-center mb-2">
-                    <div>
-                        <p className="text-xs text-black/70">Order ID: {order.id}</p>
-                        <p className="text-xs text-black/70">{formattedDate}</p>
-                        <p className="text-xs text-black/70">{formattedTime}</p>
-                    </div>
-                     <Badge variant={statusVariant(order.status)}>{order.status}</Badge>
-                 </div>
-                 <Separator className="bg-black/10 my-2" />
-                 <div className="space-y-2">
-                    {order.items.map((item: OrderItem) => {
-                      const product = productsByName[item.name];
-                      if (!product) return null;
-                      return (
-                        <div key={item.name} className="flex items-center gap-3 cursor-pointer" onClick={() => onProductClick(product, item)}>
-                            <Image
-                                src={item.coverImage || "/placeholder.png"}
-                                alt={item.name}
-                                width={48}
-                                height={48}
-                                className="rounded-md flex-shrink-0"
-                                data-ai-hint="chocolate box"
-                            />
-                            <div className="flex-grow">
-                                <p className="text-sm font-semibold truncate">{item.name}</p>
-                                <p className="text-xs text-black/60">Quantity: {item.quantity}</p>
-                            </div>
-                        </div>
-                      )
-                    })}
-                 </div>
-                 <Separator className="bg-black/10 my-2" />
-                 <div className="flex justify-between items-center">
-                    <div className="flex flex-col">
-                        <p className="text-xs font-medium">Total Items: {order.items.reduce((sum, item) => sum + item.quantity, 0)}</p>
-                        <p className="text-base font-bold">₹{order.total.toFixed(2)}</p>
-                    </div>
-                    {isAuthenticated && onOrderAgain && (
-                         <AlertDialog>
-                          <AlertDialogTrigger asChild>
-                            <Button size="sm" className="bg-custom-purple-dark text-white rounded-full hover:bg-custom-purple-dark/90 h-8 px-4 text-xs">
-                                <RotateCcw className="mr-2 h-3 w-3" />
-                                Order Again
-                            </Button>
-                          </AlertDialogTrigger>
-                          <AlertDialogContent>
-                            <AlertDialogHeader>
-                              <AlertDialogTitle>Order Again?</AlertDialogTitle>
-                              <AlertDialogDescription>
-                                This will add all items from this order to your current cart.
-                              </AlertDialogDescription>
-                            </AlertDialogHeader>
-                            <AlertDialogFooter>
-                              <AlertDialogCancel>Cancel</AlertDialogCancel>
-                              <AlertDialogAction onClick={onOrderAgain}>Confirm</AlertDialogAction>
-                            </AlertDialogFooter>
-                          </AlertDialogContent>
-                        </AlertDialog>
-                    )}
-                 </div>
-            </div>
-        )
-    }
-
     return (
-        <div className="bg-white/90 p-4 text-black w-full relative overflow-hidden rounded-2xl">
-            <div className="flex justify-between items-start mb-2">
-                <div>
-                    <p className="text-sm text-black/70">Order ID: <span className="font-semibold">{order.id}</span></p>
-                    <p className="text-sm text-black/70">Date: <span className="font-semibold">{formattedDate} at {formattedTime}</span></p>
-                </div>
+        <div className="bg-white/90 p-3 md:p-4 text-black w-full relative overflow-hidden rounded-xl md:rounded-2xl shadow-md">
+            <div className="flex justify-between items-center mb-3">
                 <Badge variant={statusVariant(order.status)}>{order.status}</Badge>
+                <div className="text-right">
+                    <p className="text-xs text-black/70">ID: {order.id}</p>
+                    <p className="text-xs text-black/70">{formattedDate}</p>
+                </div>
             </div>
             
-            <Separator className="my-2 bg-black/20" />
-            
-            <div className="space-y-3 max-h-48 overflow-y-auto custom-scrollbar pr-2">
+            <Separator className="bg-black/10" />
+
+            <div className="divide-y divide-black/10">
                 {order.items.map((item: OrderItem) => {
                     const product = productsByName[item.name];
                     if (!product) return null;
                     return (
-                        <div key={item.name} className="flex items-center gap-4 cursor-pointer" onClick={() => onProductClick(product, item)}>
+                        <div key={item.name} className="flex items-center gap-3 md:gap-4 py-3">
                             <Image
                                 src={item.coverImage || "/placeholder.png"}
                                 alt={item.name}
-                                width={56}
-                                height={56}
-                                className="rounded-md flex-shrink-0"
+                                width={isMobile ? 56 : 72}
+                                height={isMobile ? 56 : 72}
+                                className="rounded-md flex-shrink-0 object-cover aspect-square"
                                 data-ai-hint="chocolate box"
                             />
-                            <div className="flex-grow">
-                                <p className="font-bold truncate">{item.name}</p>
-                                <p className="text-sm text-black/60">Quantity: {item.quantity}</p>
+                            <div className="flex-grow min-w-0">
+                                <p className="font-bold truncate text-sm md:text-base">{item.name}</p>
+                                <p className="text-xs text-black/60">Qty: {item.quantity}</p>
+                                <p className="text-sm md:text-base font-semibold text-custom-purple-dark">₹{item.finalSubtotal?.toFixed(2)}</p>
                             </div>
                         </div>
                     )
                 })}
             </div>
 
-            <Separator className="my-2 bg-black/20" />
+            <Separator className="bg-black/10" />
 
-            <div className="flex justify-between items-center mt-2">
+            <div className="flex justify-between items-center mt-3">
                 <div>
-                  <p className="font-semibold">Total Items: {order.items.reduce((sum, item) => sum + item.quantity, 0)}</p>
-                  <p className="text-xl font-bold">Total: ₹{order.total.toFixed(2)}</p>
+                  <p className="text-xs text-black/70">Total Paid:</p>
+                  <p className="text-base md:text-lg font-bold">₹{order.total.toFixed(2)}</p>
                 </div>
                 {isAuthenticated && onOrderAgain && (
                     <AlertDialog>
                       <AlertDialogTrigger asChild>
-                        <Button size="sm" className="bg-custom-purple-dark text-white rounded-full hover:bg-custom-purple-dark/90 h-9 px-4 text-sm">
-                            <RotateCcw className="mr-2 h-4 w-4" />
+                        <Button size={isMobile ? 'sm' : 'default'} className="bg-custom-purple-dark text-white rounded-full hover:bg-custom-purple-dark/90 h-8 md:h-9 px-3 md:px-4 text-xs md:text-sm">
+                            <RotateCcw className="mr-2 h-3 w-3 md:h-4 md:w-4" />
                             Order Again
                         </Button>
                       </AlertDialogTrigger>

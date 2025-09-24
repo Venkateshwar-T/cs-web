@@ -3,7 +3,6 @@
 'use client';
 
 import { OrderItemCard } from './order-item-card';
-import { ListOrdered } from 'lucide-react';
 import { EmptyState } from './empty-state';
 import { useRouter } from 'next/navigation';
 import { SectionTitle } from './section-title';
@@ -28,10 +27,9 @@ import type { SanityProduct } from '@/types';
 interface MyOrdersTabProps {
   isMobile?: boolean;
   products: SanityProduct[];
-  onProductClick: (product: SanityProduct, orderItem: OrderItem) => void;
 }
 
-export function MyOrdersTab({ isMobile = false, products, onProductClick }: MyOrdersTabProps) {
+export function MyOrdersTab({ isMobile = false, products }: MyOrdersTabProps) {
     const { orders, isOrdersLoaded, clearOrders, reorder, isAuthenticated } = useAppContext();
     const router = useRouter();
 
@@ -67,7 +65,7 @@ export function MyOrdersTab({ isMobile = false, products, onProductClick }: MyOr
     if (isMobile) {
         return (
             <div className="flex flex-col h-full text-white">
-                 {orders.length > 0 && latestOrder ? (
+                 {orders.length > 0 ? (
                     <div className="bg-transparent rounded-2xl flex flex-col">
                         <div className="flex justify-between items-center px-2 pt-4">
                            <SectionTitle className="text-base text-white pb-2 pl-0 mb-0">Latest Order</SectionTitle>
@@ -96,17 +94,16 @@ export function MyOrdersTab({ isMobile = false, products, onProductClick }: MyOr
                               </AlertDialogContent>
                             </AlertDialog>
                         </div>
-                        <div className="overflow-y-auto no-scrollbar py-4">
-                           <div className='space-y-4'>
+                        <div className="overflow-y-auto no-scrollbar py-4 space-y-4">
+                          {latestOrder && (
                             <OrderItemCard 
                                 key={latestOrder.id} 
                                 order={latestOrder} 
                                 isMobile={true} 
-                                onProductClick={onProductClick}
                                 onOrderAgain={() => reorder(latestOrder.id)}
                                 products={products}
-                              />
-                           </div>
+                            />
+                          )}
                             
                             {pastOrders.length > 0 && (
                               <>
@@ -118,7 +115,6 @@ export function MyOrdersTab({ isMobile = false, products, onProductClick }: MyOr
                                       key={order.id} 
                                       order={order} 
                                       isMobile={true} 
-                                      onProductClick={onProductClick}
                                       onOrderAgain={() => reorder(order.id)}
                                       products={products}
                                     />
@@ -174,10 +170,14 @@ export function MyOrdersTab({ isMobile = false, products, onProductClick }: MyOr
                 </AlertDialog>
               )}
             </div>
-             {orders.length > 0 && latestOrder ? (
-                <div className="flex-grow overflow-y-auto no-scrollbar">
-                    <SectionTitle className="text-xl text-white/90 pl-3 mb-2">Latest Order</SectionTitle>
-                    <OrderItemCard key={latestOrder.id} order={latestOrder} products={products} onProductClick={onProductClick} onOrderAgain={() => reorder(latestOrder.id)} />
+             {orders.length > 0 ? (
+                <div className="flex-grow overflow-y-auto pr-2 custom-scrollbar space-y-4">
+                    {latestOrder && (
+                      <>
+                        <SectionTitle className="text-xl text-white/90 pl-3 mb-2">Latest Order</SectionTitle>
+                        <OrderItemCard key={latestOrder.id} order={latestOrder} products={products} onOrderAgain={() => reorder(latestOrder.id)} />
+                      </>
+                    )}
 
                     {pastOrders.length > 0 && (
                       <>
@@ -185,7 +185,7 @@ export function MyOrdersTab({ isMobile = false, products, onProductClick }: MyOr
                         <SectionTitle className="text-xl text-white/90 pl-3 mb-2">Past Orders</SectionTitle>
                         <div className="space-y-4">
                           {pastOrders.map(order => (
-                              <OrderItemCard key={order.id} order={order} products={products} onProductClick={onProductClick} onOrderAgain={() => reorder(order.id)} />
+                              <OrderItemCard key={order.id} order={order} products={products} onOrderAgain={() => reorder(order.id)} />
                           ))}
                         </div>
                       </>

@@ -22,10 +22,7 @@ import {
 } from "@/components/ui/alert-dialog"
 import { useAppContext } from '@/context/app-context';
 import { Loader } from './loader';
-import type { OrderItem } from '@/context/app-context';
-import { useRouter } from 'next/navigation';
 import { EmptyState } from './empty-state';
-import { ProductOrderDetailsPopup } from './product-order-details-popup';
 
 
 interface ProfilePopupProps {
@@ -63,9 +60,6 @@ export function ProfilePopup({
     isAuthenticated, 
     setAuthPopup,
   } = useAppContext();
-  const router = useRouter();
-
-  const [selectedProductDetails, setSelectedProductDetails] = useState<{orderItem: OrderItem } | null>(null);
 
   const handleActionWithCheck = (action: () => void) => {
     if (hasUnsavedChanges) {
@@ -110,14 +104,6 @@ export function ProfilePopup({
     onClose();
     setAuthPopup('login');
   }
-
-  const handleViewProductFromOrder = (productName: string) => {
-    const product = products.find(p => p.name === productName);
-    if (product) {
-      onClose();
-      router.push(`/product/${product.slug.current}`);
-    }
-  };
 
   return (
     <>
@@ -170,7 +156,6 @@ export function ProfilePopup({
                       {activeTab === 'My Orders' && (
                         <MyOrdersTab 
                           products={products} 
-                          onProductClick={(product, orderItem) => setSelectedProductDetails({ orderItem })}
                         />
                       )}
                     </>
@@ -192,13 +177,6 @@ export function ProfilePopup({
             </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-
-       <ProductOrderDetailsPopup
-        details={selectedProductDetails}
-        open={!!selectedProductDetails}
-        onOpenChange={(isOpen) => !isOpen && setSelectedProductDetails(null)}
-        onViewProduct={handleViewProductFromOrder}
-      />
     </>
   );
 }
