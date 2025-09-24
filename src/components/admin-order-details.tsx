@@ -148,7 +148,7 @@ const OrderDetailsContent = ({ order }: { order: Order }) => {
 
             <Separator className="bg-white/20" />
 
-             <div className="flex flex-col items-center justify-center gap-2 mt-2">
+             <div className="flex flex-col items-center justify-center gap-2 mb-8">
                 <p className="text-sm text-white/80">Order Status</p>
                 <div className="flex flex-col items-center gap-2 w-full">
                     {statusOptions.map((status) => (
