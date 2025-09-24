@@ -104,15 +104,23 @@ export default function ProductDetailClientPage({ product, featuredProducts }: P
       setTimeout(() => setIsCartButtonExpanded(false), 1500);
     }
   };
+
+  const handleRemoveFromCart = (product: SanityProduct) => {
+    const prevQuantity = cart[product.name]?.quantity || 0;
+    if (prevQuantity > 0) {
+      updateCart(product.name, prevQuantity - 1);
+    }
+  };
   
   const handleFlavourAddToCart = (productName: string, flavourName: string) => {
     const itemInCart = cart[productName];
-    const newFlavours = itemInCart?.flavours ? [...itemInCart.flavours] : [];
+    const newFlavours = itemInCart?.flavours ? [...(itemInCart.flavours as string[])] : [];
     
-    if (newFlavours.includes(flavourName)) {
+    const flavourIndex = newFlavours.indexOf(flavourName);
+    
+    if (flavourIndex > -1) {
       // Remove flavour
-      const index = newFlavours.indexOf(flavourName);
-      newFlavours.splice(index, 1);
+      newFlavours.splice(flavourIndex, 1);
     } else {
       // Add flavour
       newFlavours.push(flavourName);
@@ -197,6 +205,7 @@ export default function ProductDetailClientPage({ product, featuredProducts }: P
                     products={featuredProducts}
                     onProductClick={handleProductClick}
                     onAddToCart={(prod) => setFlavourSelection({ product: prod, isOpen: true })}
+                    onRemoveFromCart={handleRemoveFromCart}
                     cart={cart}
                     likedProducts={likedProducts}
                     onLikeToggle={toggleLike}
@@ -273,6 +282,7 @@ export default function ProductDetailClientPage({ product, featuredProducts }: P
                   products={featuredProducts}
                   onProductClick={handleProductClick}
                   onAddToCart={(prod) => setFlavourSelection({ product: prod, isOpen: true })}
+                  onRemoveFromCart={handleRemoveFromCart}
                   cart={cart}
                   likedProducts={likedProducts}
                   onLikeToggle={toggleLike}

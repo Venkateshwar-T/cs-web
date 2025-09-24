@@ -14,6 +14,7 @@ interface FeaturedProductsProps {
   products: SanityProduct[];
   onProductClick: (product: SanityProduct) => void;
   onAddToCart: (product: SanityProduct) => void;
+  onRemoveFromCart: (product: SanityProduct) => void;
   cart: Record<string, OrderItem>;
   likedProducts: Record<string, boolean>;
   onLikeToggle: (productId: string) => void;
@@ -24,6 +25,7 @@ export function FeaturedProducts({
   products,
   onProductClick,
   onAddToCart,
+  onRemoveFromCart,
   cart,
   likedProducts,
   onLikeToggle,
@@ -53,6 +55,7 @@ export function FeaturedProducts({
               product={product}
               onProductClick={onProductClick}
               onAddToCart={onAddToCart}
+              onRemoveFromCart={onRemoveFromCart}
               quantity={cart[product.name]?.quantity || 0}
               isLiked={!!likedProducts[product._id]}
               onLikeToggle={onLikeToggle}
