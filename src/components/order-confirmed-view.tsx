@@ -11,8 +11,7 @@ import { OrderSummaryItem } from './order-summary-item';
 import { motion } from 'framer-motion';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { cn } from '@/lib/utils';
-import type { Order, OrderItem } from '@/context/app-context';
-import type { SanityProduct } from '@/types';
+import type { Order, OrderItem, SanityProduct } from '@/types';
 
 interface OrderConfirmedViewProps {
     order: Order;
@@ -109,7 +108,7 @@ export function OrderConfirmedView({ order, products, onProductClick }: OrderCon
                   "flex-grow overflow-y-auto min-h-0 pr-2 always-visible-scrollbar",
                   isMobile ? "max-h-full" : "max-h-[25vh]"
                 )}>
-                    {order.items.map((item, index) => {
+                    {order.items.map((item: OrderItem, index: number) => {
                        const product = productsByName[item.name];
                        if (!product) return null;
                        return (
