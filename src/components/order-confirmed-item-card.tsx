@@ -1,4 +1,3 @@
-
 // @/components/order-confirmed-item-card.tsx
 'use client';
 
@@ -21,7 +20,7 @@ export function OrderConfirmedItemCard({ item, product, isMobile, onClick }: Ord
 
   return (
     <div 
-      className={cn("bg-white/5 w-full flex flex-col text-white rounded-lg p-3 cursor-pointer hover:bg-white/10 transition-colors")}
+      className={cn("bg-gray-100 w-full flex flex-col text-black rounded-lg p-3 cursor-pointer hover:bg-gray-200 transition-colors")}
       onClick={onClick}
     >
         <div className={cn("flex items-start gap-3", isMobile ? "" : "md:gap-4")}>
@@ -36,11 +35,11 @@ export function OrderConfirmedItemCard({ item, product, isMobile, onClick }: Ord
             </div>
             <div className="flex-grow min-w-0">
                 <h4 className={cn("font-bold truncate", isMobile ? "text-sm" : "text-base")}>{item.name}</h4>
-                <p className={cn("text-white/80", isMobile ? "text-xs" : "text-sm")}>
+                <p className={cn("text-black/70", isMobile ? "text-xs" : "text-sm")}>
                     {`₹${pricePerItem.toFixed(2)} x ${item.quantity}`}
                 </p>
                 {itemDiscount > 0 && (
-                    <p className={cn("text-green-400 font-medium", isMobile ? "text-xs" : "text-sm")}>
+                    <p className={cn("text-green-600 font-medium", isMobile ? "text-xs" : "text-sm")}>
                         You saved ₹{itemDiscount.toFixed(2)}
                     </p>
                 )}
@@ -52,12 +51,12 @@ export function OrderConfirmedItemCard({ item, product, isMobile, onClick }: Ord
 
         {item.flavours && item.flavours.length > 0 && (
             <>
-                <Separator className="bg-white/20 my-2" />
+                <Separator className="bg-black/10 my-2" />
                 <div className="pl-2">
-                    <p className={cn("font-semibold text-white/90 mb-1", isMobile ? "text-xs" : "text-sm")}>Flavours Selected:</p>
+                    <p className={cn("font-semibold text-black/80 mb-1", isMobile ? "text-xs" : "text-sm")}>Flavours Selected:</p>
                     <ul className="space-y-0.5">
                         {item.flavours.map(flavour => (
-                            <li key={flavour.name} className={cn("flex justify-between text-white/80", isMobile ? "text-xs" : "text-sm")}>
+                            <li key={flavour.name} className={cn("flex justify-between text-black/70", isMobile ? "text-xs" : "text-sm")}>
                                 <span>{flavour.name}</span>
                                 <span>+₹{flavour.price.toFixed(2)}</span>
                             </li>

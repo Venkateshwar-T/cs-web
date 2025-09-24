@@ -1,4 +1,3 @@
-
 // @/components/order-confirmed-summary.tsx
 'use client';
 
@@ -17,8 +16,8 @@ interface OrderConfirmedSummaryProps {
 
 const SummaryRow = ({ label, value, valueClass }: { label: string, value: string, valueClass?: string }) => (
     <div className="flex justify-between items-center text-sm">
-        <span className="text-white/80">{label}</span>
-        <span className={cn("font-medium text-white", valueClass)}>{value}</span>
+        <span className="text-black/70">{label}</span>
+        <span className={cn("font-medium text-black", valueClass)}>{value}</span>
     </div>
 );
 
@@ -35,17 +34,14 @@ export function OrderConfirmedSummary({ order, products, isMobile, onProductClic
     const totalMrp = subtotal + discount;
 
     return (
-        <div className="bg-white/10 w-full rounded-2xl md:rounded-3xl text-white p-4 md:p-6 flex flex-col">
+        <div className="bg-white w-full rounded-2xl md:rounded-3xl text-black p-4 md:p-6 flex flex-col">
             <div className="flex justify-between items-center flex-shrink-0">
-                <h3 className="font-bold text-sm md:text-xl">Your Order Summary</h3>
+                <h3 className="font-bold text-lg md:text-xl text-black">Your Order Summary</h3>
             </div>
-            <Separator className="bg-white/20 my-2 md:my-3" />
+            <Separator className="bg-black/10 my-2 md:my-3" />
 
             {/* Items List */}
-            <div className={cn(
-              "flex-grow overflow-y-auto min-h-0 pr-2 space-y-2 always-visible-scrollbar",
-              isMobile ? "max-h-full" : "max-h-[25vh]"
-            )}>
+            <div className="flex-grow min-h-0 space-y-2">
                 {order.items.map((item: OrderItem) => {
                    const product = productsByName[item.name];
                    if (!product) return null;
@@ -60,15 +56,15 @@ export function OrderConfirmedSummary({ order, products, isMobile, onProductClic
                 )})}
             </div>
 
-            <Separator className="bg-white/20 my-2 md:my-3" />
+            <Separator className="bg-black/10 my-2 md:my-3" />
             
             {/* Financial Breakdown */}
             <div className="space-y-1.5 flex-shrink-0">
                 <SummaryRow label="Total MRP" value={`₹${totalMrp.toFixed(2)}`} />
-                <SummaryRow label="Discount" value={`- ₹${discount.toFixed(2)}`} valueClass="text-green-400" />
+                <SummaryRow label="Discount" value={`- ₹${discount.toFixed(2)}`} valueClass="text-green-600" />
                 <SummaryRow label="Subtotal" value={`₹${subtotal.toFixed(2)}`} />
                 <SummaryRow label={`GST (${order.gstPercentage}%)`} value={`+ ₹${gstAmount.toFixed(2)}`} />
-                <Separator className="bg-white/40 my-2" />
+                <Separator className="bg-black/20 my-2" />
                 <div className="flex justify-between items-center text-base md:text-lg font-bold">
                     <span>Grand Total</span>
                     <span>₹{order.total.toFixed(2)}</span>
