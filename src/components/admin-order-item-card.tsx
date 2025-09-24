@@ -30,7 +30,7 @@ export function AdminOrderItemCard({ order, onClick }: AdminOrderItemCardProps) 
             case 'Completed': return 'bg-green-600';
             case 'Cancelled': return 'bg-red-600';
             case 'In Progress': return 'bg-blue-500';
-            default: return 'bg-yellow-500';
+            default: return 'bg-yellow-500 text-black';
         }
     };
     
@@ -57,29 +57,12 @@ export function AdminOrderItemCard({ order, onClick }: AdminOrderItemCardProps) 
 
                 {/* Items Summary */}
                 <div className="md:col-span-2">
-                     <div className="flex -space-x-4">
-                        {order.items.slice(0, 4).map(item => (
-                            <div key={item.name} className="relative h-10 w-10">
-                                <Image
-                                    src={item.coverImage || "/placeholder.png"}
-                                    alt={item.name}
-                                    width={40}
-                                    height={40}
-                                    className="rounded-full border-2 border-custom-purple-dark object-cover"
-                                    data-ai-hint="chocolate box"
-                                />
-                                {item.quantity > 1 && (
-                                    <span className="absolute -bottom-1 -right-1 text-[10px] bg-custom-gold text-black rounded-full h-4 w-4 flex items-center justify-center font-bold">
-                                        {item.quantity}
-                                    </span>
-                                )}
+                     <div className="max-h-20 overflow-y-auto custom-scrollbar pr-2">
+                        {order.items.map(item => (
+                            <div key={item.name} className="text-sm text-white/90">
+                               <span className="font-semibold">{item.quantity}x</span> {item.name}
                             </div>
                         ))}
-                        {order.items.length > 4 && (
-                             <div className="h-10 w-10 rounded-full bg-custom-purple-dark border-2 border-white/50 flex items-center justify-center">
-                                <span className="text-xs font-bold">+{order.items.length - 4}</span>
-                             </div>
-                        )}
                     </div>
                 </div>
 
@@ -89,7 +72,7 @@ export function AdminOrderItemCard({ order, onClick }: AdminOrderItemCardProps) 
                     <div onClick={(e) => e.stopPropagation()}>
                         <Select onValueChange={handleStatusChange} defaultValue={order.status}>
                           <SelectTrigger className={cn(
-                            "w-full md:w-[130px] h-8 text-xs rounded-full border-none focus:ring-0 focus:ring-offset-0",
+                            "w-full md:w-[140px] h-8 text-xs rounded-full border-none focus:ring-0 focus:ring-offset-0",
                              statusVariant(order.status)
                           )}>
                             <SelectValue placeholder="Status" />
