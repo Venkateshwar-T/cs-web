@@ -24,7 +24,7 @@ interface SearchViewProps {
   isSortSheetOpen: boolean;
   onSortSheetOpenChange: (open: boolean) => void;
   onScroll: (event: UIEvent<HTMLDivElement>) => void;
-  isMobile: boolean;
+  isMobile: boolean | undefined;
   onProductClick: (product: SanityProduct) => void;
   cart: Record<string, OrderItem>;
   likedProducts: Record<string, boolean>; // Sanity ID (_id) is a string

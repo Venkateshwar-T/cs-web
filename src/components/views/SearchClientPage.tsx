@@ -27,6 +27,7 @@ export default function SearchClientPage({ initialProducts, initialFilters }: Se
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const query = searchParams.get('q') || '';
+  const sortQuery = searchParams.get('sort') || 'featured';
   
   const { 
     cart, 
@@ -42,7 +43,7 @@ export default function SearchClientPage({ initialProducts, initialFilters }: Se
   const [isNewSearch, setIsNewSearch] = useState(true);
   const [cartMessage, setCartMessage] = useState('');
   const [isCartButtonExpanded, setIsCartButtonExpanded] = useState(false);
-  const [sortOption, setSortOption] = useState("featured");
+  const [sortOption, setSortOption] = useState(sortQuery);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isFilterSheetOpen, setIsFilterSheetOpen] = useState(false);
@@ -111,7 +112,7 @@ export default function SearchClientPage({ initialProducts, initialFilters }: Se
   const getActiveFilters = () => {
     const active: { type: string, value: string, label: string }[] = [];
     for (const [key, value] of searchParams.entries()) {
-      if (key !== 'q' && key !== 'minPrice' && key !== 'maxPrice') {
+      if (key !== 'q' && key !== 'minPrice' && key !== 'maxPrice' && key !== 'sort') {
         active.push({ type: key, value: value, label: value });
       }
     }
@@ -134,10 +135,13 @@ export default function SearchClientPage({ initialProducts, initialFilters }: Se
   const handleToggleCartPopup = () => setIsCartOpen(p => !p);
 
   const handleSortChange = (value: string) => {
-    setIsSearching(true);
     setSortOption(value);
-    setIsSortSheetOpen(false);
-    setTimeout(() => setIsSearching(false), 500);
+    const params = new URLSearchParams(searchParams.toString());
+    params.set('sort', value);
+    router.push(`${pathname}?${params.toString()}`);
+    if (isMobile) {
+      setIsSortSheetOpen(false);
+    }
   };
   
   const handleNavigation = (view: 'home' | 'cart' | 'profile') => {

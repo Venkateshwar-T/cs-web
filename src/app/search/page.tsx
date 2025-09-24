@@ -1,4 +1,5 @@
 
+
 // src/app/search/page.tsx
 
 import { Suspense } from 'react';
@@ -33,11 +34,12 @@ function formatCategoryTitleToKey(title: string) {
     return title.toLowerCase().replace(/ & /g, '-').replace(/ /g, '-');
 }
 
-// Fetches products from Sanity based on URL filters
+// Fetches products from Sanity based on URL filters and sorting
 async function getFilteredProducts(searchParams: { [key: string]: string | string[] | undefined }, allFilters: StructuredFilter[]): Promise<SanityProduct[]> {
     const filters: string[] = [];
     const params: { [key: string]: any } = {};
     const queryTerm = searchParams.q as string;
+    const sortOption = searchParams.sort as string;
 
     if (queryTerm) {
         filters.push(`(name match $queryTerm || tags[] match $queryTerm)`);
@@ -86,7 +88,25 @@ async function getFilteredProducts(searchParams: { [key: string]: string | strin
     });
 
     const filterClause = filters.length > 0 ? `&& ${filters.join(' && ')}` : '';
-    const productQuery = `*[_type == "product" ${filterClause}]{
+    
+    let sortClause = '';
+    switch (sortOption) {
+        case 'price-low-to-high':
+            sortClause = 'order(discountedPrice asc)';
+            break;
+        case 'price-high-to-low':
+            sortClause = 'order(discountedPrice desc)';
+            break;
+        case 'new-arrivals':
+            sortClause = 'order(_createdAt desc)';
+            break;
+        case 'featured':
+        default:
+            sortClause = 'order(_createdAt desc)'; // Default to new arrivals for featured
+            break;
+    }
+
+    const productQuery = `*[_type == "product" ${filterClause}] | ${sortClause}{
         _id, name, slug, mrp, discountedPrice, weight, packageType, composition, "images": images[].asset->url, "filterOptions": filterOptions[]->{title, "category": category->title},
         availableFlavours[]->{
             _id,
