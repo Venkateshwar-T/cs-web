@@ -54,14 +54,13 @@ export function AnimatedSearchBar({
   
   const handleCloseClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    if (isSearchingOnAbout) {
+    if (searchInput) {
       onSearchInputChange("");
+      inputRef.current?.focus(); // Keep focus after clearing
     } else {
       onExpandedChange(false);
     }
   };
-
-  const showCloseButton = searchInput && activeView !== 'search';
 
   if (!isExpanded) return null;
 
@@ -86,16 +85,14 @@ export function AnimatedSearchBar({
                     className="w-full bg-transparent outline-none text-black placeholder:text-gray-500 text-base md:text-lg"
                     onClick={(e) => e.stopPropagation()}
                 />
-                {showCloseButton && (
-                  <button
-                      type="button"
-                      onClick={handleCloseClick}
-                      className="p-2 hover:bg-gray-200 rounded-full"
-                      aria-label="Close search"
-                  >
-                      <X size={20} />
-                  </button>
-                )}
+                <button
+                    type="button"
+                    onClick={handleCloseClick}
+                    className="p-2 hover:bg-gray-200 rounded-full"
+                    aria-label="Clear or close search"
+                >
+                    <X size={20} />
+                </button>
             </div>
         </div>
       </div>

@@ -116,7 +116,7 @@ export default function HomeClient({ allProducts, exploreCategories, exploreFlav
           isSearchingOnAbout={false}
         />
         <main className={mainContentClass}>
-          <div className='w-full pt-32'>
+          <div className='w-full mt-20 md:mt-20'>
             <SearchBar
               activeView={'home'}
               isEnquireOpen={false}
@@ -125,7 +125,7 @@ export default function HomeClient({ allProducts, exploreCategories, exploreFlav
               onSearchInputChange={setSearchInput}
             />
           </div>
-          <div className="mt-8 w-full flex-grow min-h-0">
+          <div className="mt-8 md:mt-20 w-full flex-grow min-h-0">
             <ExploreCategories exploreCategories={exploreCategories} exploreFlavours={exploreFlavours} />
           </div>
         </main>

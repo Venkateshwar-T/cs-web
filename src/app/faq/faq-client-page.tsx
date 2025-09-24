@@ -77,7 +77,7 @@ export default function FaqPageClient({ children, allProducts }: { children: Rea
             onScroll={handleScroll}
             className={cn(
                 "flex-grow flex flex-col overflow-y-auto no-scrollbar transition-all duration-300",
-                isMobile ? (isHeaderVisible ? "pt-24" : "pt-0") : "pt-36"
+                isMobile ? "pt-24" : "pt-36"
             )}
             >
               {children}

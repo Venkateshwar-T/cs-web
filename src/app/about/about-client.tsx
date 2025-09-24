@@ -128,7 +128,7 @@ export default function AboutPageClient({ allProducts }: { allProducts: SanityPr
                     />
                     <main onScroll={handleScroll} className={cn(
                       "flex-grow flex flex-col overflow-y-auto no-scrollbar transition-all duration-300", 
-                      isMobile ? (isHeaderVisible ? "pt-24" : "pt-0") : "pt-36"
+                      isMobile ? "pt-24" : "pt-36"
                     )}>
                         <div className="bg-[#5D2B79] rounded-[20px] md:rounded-[40px] mt-8 mb-8 mx-4 md:mx-32 animate-fade-in flex flex-col" style={{ animationDuration: '0.5s', animationDelay: '0.2s', animationFillMode: 'both' }}>
                             <div className="bg-white/10 rounded-[20px] md:rounded-[40px] py-8 px-6 md:py-10 md:px-24">
