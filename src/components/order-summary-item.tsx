@@ -1,3 +1,4 @@
+
 // @/components/order-summary-item.tsx
 'use client';
 
@@ -16,7 +17,7 @@ export function OrderSummaryItem({ product, quantity, isMobile = false, onClick 
   const price = product?.discountedPrice || 0;
   return (
     <div 
-      className={cn("bg-white w-full flex items-center justify-between text-black", onClick && "cursor-pointer", isMobile ? "p-0" : "p-1")}
+      className={cn("bg-transparent w-full flex items-center justify-between text-black", onClick && "cursor-pointer", isMobile ? "p-0" : "p-1")}
       onClick={onClick}
     >
         <div className="flex items-center gap-2 md:gap-3">

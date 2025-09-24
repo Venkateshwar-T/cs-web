@@ -6,8 +6,7 @@ import { Fragment } from 'react';
 import { Button } from './ui/button';
 import { Phone } from 'lucide-react';
 import { IoLogoWhatsapp } from 'react-icons/io5';
-import { Separator } from './ui/separator';
-import { OrderSummaryItem } from './order-summary-item';
+import { OrderConfirmedSummary } from './order-confirmed-summary';
 import { motion } from 'framer-motion';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { cn } from '@/lib/utils';
@@ -50,11 +49,6 @@ export function OrderConfirmedView({ order, products, onProductClick }: OrderCon
         return null;
     }
     
-    const productsByName = products.reduce((acc, product) => {
-        acc[product.name] = product;
-        return acc;
-    }, {} as Record<string, SanityProduct>);
-
   return (
     <motion.div 
       initial={{ opacity: 0 }}
@@ -98,31 +92,13 @@ export function OrderConfirmedView({ order, products, onProductClick }: OrderCon
                 </Button>
             </motion.div>
 
-            <motion.div variants={itemVariants} className="bg-white w-full rounded-2xl md:rounded-3xl mt-2 text-black p-4 md:p-6 flex flex-col">
-                <div className="flex justify-between items-center flex-shrink-0">
-                    <h3 className="font-bold text-sm md:text-xl">Order Summary</h3>
-                    <p className="font-bold text-sm md:text-xl">Total: ₹{order.total > 0 ? order.total.toFixed(2) : '0.00'}</p>
-                </div>
-                <Separator className="bg-gray-200 my-2" />
-                <div className={cn(
-                  "flex-grow overflow-y-auto min-h-0 pr-2 always-visible-scrollbar",
-                  isMobile ? "max-h-full" : "max-h-[25vh]"
-                )}>
-                    {order.items.map((item: OrderItem, index: number) => {
-                       const product = productsByName[item.name];
-                       if (!product) return null;
-                       return (
-                        <Fragment key={item.name}>
-                          <OrderSummaryItem
-                              product={product}
-                              quantity={item.quantity}
-                              isMobile={isMobile}
-                              onClick={() => onProductClick(product, item)}
-                          />
-                          {index < order.items.length - 1 && <Separator className="bg-gray-200 my-2" />}
-                        </Fragment>
-                    )})}
-                </div>
+            <motion.div variants={itemVariants} className="w-full mt-2">
+                <OrderConfirmedSummary 
+                    order={order}
+                    products={products}
+                    isMobile={isMobile ?? false}
+                    onProductClick={onProductClick}
+                />
             </motion.div>
         </motion.div>
     </motion.div>
