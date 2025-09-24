@@ -89,9 +89,9 @@ export function FilterControls({
         }
     }, [minPrice, maxPrice, isSliderDisabled]);
 
-    const handleSliderCommit = (value: [number, number]) => {
+    const handleSliderCommit = (value: number[]) => {
         if (!isSliderDisabled) {
-            onPriceRangeChange(value);
+            onPriceRangeChange(value as [number, number]);
         }
     };
     
@@ -132,7 +132,7 @@ export function FilterControls({
                             </p>
                             <Slider
                                 value={sliderValue}
-                                onValueChange={setSliderValue}
+                                onValueChange={(value) => setSliderValue(value as [number, number])}
                                 onValueCommit={handleSliderCommit}
                                 max={3000}
                                 step={100}
