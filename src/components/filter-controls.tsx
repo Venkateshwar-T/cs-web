@@ -1,3 +1,4 @@
+
 // @/components/filter-controls.tsx
 'use client';
 
@@ -41,6 +42,7 @@ interface FilterControlsProps {
     isMobile?: boolean;
     searchParams: ReadonlyURLSearchParams;
     selectedFilters: Record<string, string[]>;
+    selectedPriceRanges: string[];
     onFilterChange: (categoryKey: string, optionTitle: string, checked: boolean) => void;
     onPriceRangeChange: (range: [number, number]) => void;
     onPriceCheckboxChange: (range: string, isChecked: boolean) => void;
@@ -64,20 +66,20 @@ export function FilterControls({
     isMobile = false,
     searchParams,
     selectedFilters,
+    selectedPriceRanges,
     onFilterChange,
     onPriceRangeChange,
     onPriceCheckboxChange
 }: FilterControlsProps) {
     const minPrice = searchParams.get('minPrice');
     const maxPrice = searchParams.get('maxPrice');
-    const priceRanges = searchParams.getAll('priceRange');
     
     const [sliderValue, setSliderValue] = useState<[number, number]>([
         minPrice ? Number(minPrice) : 0,
         maxPrice ? Number(maxPrice) : 3000
     ]);
     
-    const isSliderDisabled = priceRanges.length > 0;
+    const isSliderDisabled = selectedPriceRanges.length > 0;
 
     useEffect(() => {
         if (!isSliderDisabled) {
@@ -147,7 +149,7 @@ export function FilterControls({
                                         key={option.id}
                                         id={`${isMobile ? 'mobile-' : ''}${option.id}`}
                                         label={option.title}
-                                        checked={priceRanges.includes(rangeString)}
+                                        checked={selectedPriceRanges.includes(rangeString)}
                                         onCheckedChange={(checked) => handleCheckboxChange(rangeString, !!checked)}
                                     />
                                 );

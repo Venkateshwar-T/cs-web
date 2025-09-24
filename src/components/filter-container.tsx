@@ -1,3 +1,4 @@
+
 // @/components/filter-container.tsx
 'use client';
 
@@ -19,8 +20,10 @@ export function FilterContainer({ filters, isMobile = false }: FilterContainerPr
     const router = useRouter();
     const searchParams = useSearchParams();
 
-    // Local state to hold the current selections for instant UI feedback
+    // Local state for instant UI feedback on Sanity filters
     const [selectedFilters, setSelectedFilters] = useState<Record<string, string[]>>({});
+    // Local state for instant UI feedback on price checkboxes
+    const [selectedPriceRanges, setSelectedPriceRanges] = useState<string[]>([]);
 
     // Sync local state with URL search params when they change
     useEffect(() => {
@@ -32,13 +35,12 @@ export function FilterContainer({ filters, isMobile = false }: FilterContainerPr
                 newSelectedFilters[categoryKey] = values;
             }
         });
-        // Also sync price ranges
-        const priceRanges = searchParams.getAll('priceRange');
-        if (priceRanges.length > 0) {
-            newSelectedFilters['priceRange'] = priceRanges;
-        }
-
         setSelectedFilters(newSelectedFilters);
+
+        // Also sync price ranges for price checkboxes
+        const priceRanges = searchParams.getAll('priceRange');
+        setSelectedPriceRanges(priceRanges);
+
     }, [searchParams, filters]);
 
     const handleFilterChange = useCallback((categoryKey: string, optionTitle: string, checked: boolean) => {
@@ -80,6 +82,10 @@ export function FilterContainer({ filters, isMobile = false }: FilterContainerPr
         params.delete('priceRange'); // Clear checkbox selections
         params.set('minPrice', range[0].toString());
         params.set('maxPrice', range[1].toString());
+
+        // Optimistic UI update for price checkboxes
+        setSelectedPriceRanges([]);
+
         router.replace(`?${params.toString()}`, { scroll: false });
     }, [router, searchParams]);
 
@@ -90,30 +96,23 @@ export function FilterContainer({ filters, isMobile = false }: FilterContainerPr
         params.delete('maxPrice');
         
         const existingRanges = params.getAll('priceRange');
+        
+        let newRanges: string[];
         if (isChecked) {
             if (!existingRanges.includes(rangeString)) {
-                params.append('priceRange', rangeString);
+                newRanges = [...existingRanges, rangeString];
+            } else {
+                newRanges = existingRanges;
             }
         } else {
-            const newRanges = existingRanges.filter(r => r !== rangeString);
-            params.delete('priceRange');
-            newRanges.forEach(r => params.append('priceRange', r));
+            newRanges = existingRanges.filter(r => r !== rangeString);
         }
+
+        params.delete('priceRange');
+        newRanges.forEach(r => params.append('priceRange', r));
         
         // Optimistic UI update
-        setSelectedFilters(prev => {
-            const newValues = isChecked 
-                ? [...(prev['priceRange'] || []), rangeString]
-                : (prev['priceRange'] || []).filter(v => v !== rangeString);
-            
-            const newState = { ...prev };
-            if (newValues.length > 0) {
-                newState['priceRange'] = newValues;
-            } else {
-                delete newState['priceRange'];
-            }
-            return newState;
-        });
+        setSelectedPriceRanges(newRanges);
 
         router.replace(`?${params.toString()}`, { scroll: false });
     }, [router, searchParams]);
@@ -124,6 +123,7 @@ export function FilterContainer({ filters, isMobile = false }: FilterContainerPr
             isMobile={isMobile}
             searchParams={searchParams}
             selectedFilters={selectedFilters}
+            selectedPriceRanges={selectedPriceRanges}
             onFilterChange={handleFilterChange}
             onPriceRangeChange={handlePriceRangeChange}
             onPriceCheckboxChange={handlePriceCheckboxChange}
