@@ -1,3 +1,4 @@
+
 // @/context/app-context.tsx
 'use client';
 
@@ -20,6 +21,11 @@ import {
 import type { User } from 'firebase/auth';
 import type { Order } from '@/types';
 
+export type CartItem = {
+  name: string;
+  quantity: number;
+  flavours?: string[];
+};
 
 const defaultProfileInfo: ProfileInfo = {
     name: '',
@@ -41,11 +47,7 @@ export type OrderItem = {
   coverImage?: string;
 };
 
-type Cart = Record<string, {
-  name: string;
-  quantity: number;
-  flavours?: string[];
-}>;
+export type Cart = Record<string, CartItem>;
 type AuthPopupType = 'login' | 'signup' | 'completeDetails' | null;
 
 interface AppContextType {

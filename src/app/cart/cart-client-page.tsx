@@ -28,7 +28,7 @@ import {
 import { StaticSparkleBackground } from '@/components/static-sparkle-background';
 import { FloatingCartFinalizeButton } from '@/components/floating-cart-finalize-button';
 import { EmptyState } from '@/components/empty-state';
-import { useAppContext, type OrderItem } from '@/context/app-context';
+import { useAppContext, type CartItem, type OrderItem } from '@/context/app-context';
 import type { SanityProduct } from '@/types';
 import { Loader } from '@/components/loader';
 import { useToast } from '@/hooks/use-toast';
@@ -115,7 +115,7 @@ export default function CartClientPage({ allProducts }: { allProducts: SanityPro
         return acc;
     }, {} as Record<string, SanityProduct>);
     
-    const orderItems: OrderItem[] = Object.values(cart).map(cartItem => {
+    const mappedItems = Object.values(cart).map(cartItem => {
       const product = productsByName[cartItem.name];
       if (!product) return null;
 
@@ -140,7 +140,9 @@ export default function CartClientPage({ allProducts }: { allProducts: SanityPro
         finalSubtotal: finalSubtotal,
         coverImage: product.images?.[0] || '/placeholder.png'
       };
-    }).filter((item): item is OrderItem => item !== null);
+    });
+
+    const orderItems: OrderItem[] = mappedItems.filter((item): item is OrderItem => item !== null);
 
     const subtotal = orderItems.reduce((acc, item) => acc + (item.finalSubtotal || 0), 0);
     const totalMrp = orderItems.reduce((acc, item) => acc + (item.mrp || (item.finalProductPrice || 0) / item.quantity) * item.quantity, 0)

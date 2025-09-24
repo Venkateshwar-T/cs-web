@@ -1,13 +1,14 @@
+
 // @/components/floating-cart-finalize-button.tsx
 'use client';
 
 import { Button } from './ui/button';
 import { cn } from '@/lib/utils';
-import type { OrderItem } from '@/context/app-context';
+import type { Cart } from '@/context/app-context';
 import type { SanityProduct } from '@/types';
 
 interface FloatingCartFinalizeButtonProps {
-    cart: Record<string, OrderItem>;
+    cart: Cart;
     allProducts: SanityProduct[];
     onCheckout: () => void;
     isVisible: boolean;
