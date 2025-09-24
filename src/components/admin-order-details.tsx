@@ -1,3 +1,4 @@
+
 // @/components/admin-order-details.tsx
 'use client';
 
@@ -60,8 +61,8 @@ const OrderDetailsContent = ({ order }: { order: Order }) => {
         switch (status) {
           case 'Completed': return 'bg-green-600 text-white';
           case 'Cancelled': return 'bg-red-600 text-white';
-          case 'In Progress': return 'bg-blue-500 text-white';
-          default: return 'bg-yellow-500 text-black';
+          case 'In Progress': return 'bg-custom-gold text-custom-purple-dark';
+          default: return 'bg-custom-gold text-custom-purple-dark';
         }
       }
       return 'bg-white/10 text-white/70 hover:bg-white/20 hover:text-white';
@@ -145,7 +146,7 @@ const OrderDetailsContent = ({ order }: { order: Order }) => {
 
              <div className="flex flex-col items-center justify-center gap-2 mt-2">
                 <p className="text-sm text-white/80">Order Status</p>
-                <div className="flex flex-wrap justify-center gap-2">
+                <div className="flex flex-col items-center gap-2">
                     {statusOptions.map((status) => (
                         <Button
                             key={status}
