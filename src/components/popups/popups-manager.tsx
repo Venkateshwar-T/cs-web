@@ -11,7 +11,7 @@ import { useAppContext } from '@/context/app-context';
 import { LoginPopup } from '../login-popup';
 import { SignUpPopup } from '../signup-popup';
 import { CompleteDetailsPopup } from '../complete-details-popup';
-import type { OrderItem } from '@/context/app-context';
+import type { OrderItem } from '@/types';
 import { useToast } from '@/hooks/use-toast';
 import { ToastAction } from '@/components/ui/toast';
 
@@ -68,7 +68,7 @@ export function PopupsManager({
       return acc;
     }, {} as Record<string, SanityProduct>);
     
-    const orderItems: OrderItem[] = Object.values(cart).map(cartItem => {
+    const mappedItems = Object.values(cart).map(cartItem => {
       const product = productsByName[cartItem.name];
       if (!product) return null;
 
@@ -93,7 +93,9 @@ export function PopupsManager({
         finalSubtotal: finalSubtotal,
         coverImage: product.images?.[0] || '/placeholder.png'
       };
-    }).filter((item): item is OrderItem => item !== null);
+    });
+
+    const orderItems: OrderItem[] = mappedItems.filter((item): item is OrderItem => item !== null);
 
     const subtotal = orderItems.reduce((acc, item) => acc + (item.finalSubtotal || 0), 0);
     const totalMrp = orderItems.reduce((acc, item) => acc + (item.mrp || (item.finalProductPrice || 0) / item.quantity) * item.quantity, 0)
