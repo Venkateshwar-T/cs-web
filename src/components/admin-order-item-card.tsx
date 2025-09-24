@@ -27,10 +27,10 @@ export function AdminOrderItemCard({ order, onClick }: AdminOrderItemCardProps) 
     
     const statusVariant = (status: Order['status']) => {
         switch (status) {
-            case 'Completed': return 'bg-green-600';
-            case 'Cancelled': return 'bg-red-600';
-            case 'In Progress': return 'bg-blue-500';
-            default: return 'bg-yellow-500 text-black';
+            case 'Completed': return 'bg-green-600 text-white';
+            case 'Cancelled': return 'bg-red-600 text-white';
+            case 'In Progress': return 'bg-blue-500 text-white';
+            default: return 'bg-custom-gold text-custom-purple-dark';
         }
     };
     

@@ -152,7 +152,7 @@ const OrderDetailsContent = ({ order }: { order: Order }) => {
                             key={status}
                             onClick={() => handleStatusChange(status)}
                             className={cn(
-                                "text-xs h-8 px-3 rounded-full border-none focus:ring-0 focus:ring-offset-0 transition-all duration-200",
+                                "text-xs h-8 px-3 rounded-full border-none focus:ring-0 focus:ring-offset-0 transition-all duration-200 w-1/2",
                                 getStatusVariant(status, order.status === status)
                             )}
                         >
