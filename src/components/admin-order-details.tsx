@@ -179,7 +179,7 @@ export function AdminOrderDetails({ order, open, onOpenChange }: AdminOrderDetai
   if (isMobile) {
     return (
       <Sheet open={open} onOpenChange={onOpenChange}>
-        <SheetContent side="bottom" className="bg-custom-purple-dark text-white border-t-2 border-custom-gold rounded-t-3xl h-[95vh] p-0">
+        <SheetContent side="bottom" className="bg-custom-purple-dark text-white border-t-2 border-custom-gold rounded-t-3xl h-[90vh] p-0">
           <SheetHeader className="p-4 border-b border-white/20 text-center">
             <SheetTitle className="text-white text-lg">Order Details</SheetTitle>
             
