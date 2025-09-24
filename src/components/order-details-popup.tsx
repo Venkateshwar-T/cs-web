@@ -76,7 +76,7 @@ const OrderDetailsContent = ({ order }: { order: Order }) => {
                 <div className="space-y-3 bg-white/5 p-3 rounded-lg max-h-64 overflow-y-auto custom-scrollbar">
                     {order.items.map(item => (
                         <div key={item.name} className="flex flex-col">
-                            <p className="font-bold mb-2 text-base">{item.name}</p>
+                            <p className="font-bold mb-2 text-base md:hidden">{item.name}</p>
                             <div className="flex gap-3 items-start">
                                 <Image
                                     src={item.coverImage || "/placeholder.png"}
@@ -86,24 +86,24 @@ const OrderDetailsContent = ({ order }: { order: Order }) => {
                                     className="rounded-md flex-shrink-0 object-cover aspect-square w-16 h-16"
                                 />
                                 <div className="flex-grow min-w-0">
+                                    <p className="font-bold text-base hidden md:block">{item.name}</p>
                                     <p className="text-xs text-white/70">Qty: {item.quantity} | MRP: ₹{item.mrp?.toFixed(2)}</p>
                                     <p className="text-xs text-green-400">Discount: -₹{((item.mrp || 0) * item.quantity - (item.finalProductPrice || 0)).toFixed(2)}</p>
-
-                                    {item.flavours && item.flavours.length > 0 && (
-                                        <div className="text-xs text-white/60 mt-1">
-                                            <p className="font-semibold">Flavours:</p>
-                                            <ul className="list-disc list-inside">
-                                                {item.flavours.map(f => (
-                                                    <li key={f.name}>{f.name} (x{order.items.find(i => i.name === item.name)?.quantity || 1}) (+₹{f.price.toFixed(2)})</li>
-                                                ))}
-                                            </ul>
-                                        </div>
-                                    )}
                                 </div>
                                 <div className='text-right flex-shrink-0'>
                                     <p className="text-sm font-semibold">₹{item.finalSubtotal?.toFixed(2)}</p>
                                 </div>
                             </div>
+                             {item.flavours && item.flavours.length > 0 && (
+                                <div className="text-xs text-white/60 mt-2 pl-2">
+                                    <p className="font-semibold mb-1">Flavours:</p>
+                                    <ul className="list-disc list-inside space-y-1">
+                                        {item.flavours.map(f => (
+                                            <li key={f.name}>{f.name} (x{order.items.find(i => i.name === item.name)?.quantity || 1}) (+₹{f.price.toFixed(2)})</li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            )}
                         </div>
                     ))}
                 </div>
