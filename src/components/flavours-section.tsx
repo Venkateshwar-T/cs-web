@@ -8,12 +8,17 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from './ui/button';
 import { cn } from '@/lib/utils';
 import type { SanityFlavour, SanityProduct } from '@/types';
-import type { OrderItem } from '@/context/app-context';
+
+type Cart = Record<string, {
+  name: string;
+  quantity: number;
+  flavours?: string[];
+}>;
 
 interface FlavoursSectionProps {
   product: SanityProduct;
   onAddToCart: (productName: string, flavourName: string) => void;
-  cart: Record<string, OrderItem>;
+  cart: Cart;
   isMobile?: boolean;
 }
 
@@ -23,7 +28,7 @@ export function FlavoursSection({ product, onAddToCart, cart, isMobile = false }
   const [canScrollRight, setCanScrollRight] = useState(false);
   
   const availableFlavours = product.availableFlavours || [];
-  const selectedFlavourNamesForProduct = (cart[product.name]?.flavours || []).map(f => f.name);
+  const selectedFlavourNamesForProduct = cart[product.name]?.flavours || [];
 
 
   useEffect(() => {

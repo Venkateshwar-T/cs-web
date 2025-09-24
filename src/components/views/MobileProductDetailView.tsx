@@ -11,7 +11,12 @@ import { MobileImageGallery } from '../mobile-image-gallery';
 import { ProductDetails } from '../product-details';
 import { FlavoursSection } from '../flavours-section';
 import { Separator } from '../ui/separator';
-import type { OrderItem } from '@/context/app-context';
+
+type Cart = Record<string, {
+  name: string;
+  quantity: number;
+  flavours?: string[];
+}>;
 
 const FloatingPriceBox = ({ product, productQuantity, onAddToCart, onBuyNow, className }: { product: SanityProduct, productQuantity: number, onAddToCart: any, onBuyNow: any, className?: string }) => {
     const handleAddToCartClick = () => {
@@ -144,8 +149,8 @@ const InlinePriceBox = ({ product, productQuantity, onAddToCart, onBuyNow, class
 interface MobileProductDetailViewProps {
   product: SanityProduct;
   onClose: () => void;
-  onAddToCart: (name: string, quantity: number, animate?: boolean) => void;
-  cart: Record<string, OrderItem>;
+  onAddToCart: (name: string, quantity: number, flavours?: string[]) => void;
+  cart: Cart;
   onBuyNow: () => void;
   isLiked: boolean;
   onLikeToggle: (productId: string) => void;

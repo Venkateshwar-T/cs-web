@@ -24,6 +24,7 @@ import { ImageGallery } from '../image-gallery';
 import { FlavoursSection } from '../flavours-section';
 import { FlavourSelectionPopup } from '../flavour-selection-popup';
 import { Loader } from '../loader';
+import type { ActiveView } from '@/app/page';
 
 interface ProductDetailClientPageProps {
   product: SanityProduct;
@@ -77,16 +78,14 @@ export default function ProductDetailClientPage({ product, featuredProducts }: P
     router.push(`/search?q=${encodeURIComponent(query)}`);
   };
 
-  const handleAddToCart = (productName: string, quantity: number, animate: boolean = true) => {
+  const handleAddToCart = (productName: string, quantity: number, flavours?: string[]) => {
     const prevQuantity = cart[productName]?.quantity || 0;
     
-    // If quantity is decreasing, just update the cart
     if (quantity < prevQuantity) {
-      updateCart(productName, quantity);
+      updateCart(productName, quantity, flavours);
       return;
     }
 
-    // If quantity is increasing from 0, open flavour selection
     if (quantity > 0 && prevQuantity === 0) {
       const productToSelect = featuredProducts.find(p => p.name === productName) || product;
       if (productToSelect) {
@@ -95,15 +94,15 @@ export default function ProductDetailClientPage({ product, featuredProducts }: P
       }
     }
 
-    // Otherwise (for increasing quantity of existing item), update directly
-    updateCart(productName, quantity);
+    updateCart(productName, quantity, flavours);
 
-    if (animate && quantity > prevQuantity) {
+    if (quantity > prevQuantity) {
       setCartMessage(`${quantity - prevQuantity} added`);
       setIsCartButtonExpanded(true);
       setTimeout(() => setIsCartButtonExpanded(false), 1500);
     }
   };
+
 
   const handleRemoveFromCart = (product: SanityProduct) => {
     const prevQuantity = cart[product.name]?.quantity || 0;
@@ -114,21 +113,16 @@ export default function ProductDetailClientPage({ product, featuredProducts }: P
   
   const handleFlavourAddToCart = (productName: string, flavourName: string) => {
     const itemInCart = cart[productName];
-    const newFlavours = itemInCart?.flavours ? [...(itemInCart.flavours as string[])] : [];
+    const newFlavours = itemInCart?.flavours ? [...itemInCart.flavours] : [];
     
     const flavourIndex = newFlavours.indexOf(flavourName);
     
     if (flavourIndex > -1) {
-      // Remove flavour
       newFlavours.splice(flavourIndex, 1);
     } else {
-      // Add flavour
       newFlavours.push(flavourName);
     }
-
-    // If there are any flavours left, update the cart item.
-    // If all flavours are removed for a product that was only in the cart for its flavours,
-    // you might want to remove the product from the cart entirely.
+    
     if (newFlavours.length > 0 || itemInCart) {
         updateCart(productName, itemInCart?.quantity || 1, newFlavours);
     }
@@ -148,7 +142,7 @@ export default function ProductDetailClientPage({ product, featuredProducts }: P
     }
   };
 
-  const handleNavigation = (view: 'home' | 'cart' | 'profile') => {
+  const handleNavigation = (view: ActiveView) => {
     if (view === 'cart') router.push('/cart');
     else if (view === 'profile') router.push('/profile');
     else router.push('/');
@@ -216,7 +210,7 @@ export default function ProductDetailClientPage({ product, featuredProducts }: P
             </div>
           </main>
         </div>
-        <BottomNavbar activeView={'search'} onNavigate={handleNavigation} cartItemCount={cartItemCount} />
+        <BottomNavbar activeView={'product-detail'} onNavigate={handleNavigation} cartItemCount={cartItemCount} />
          <FlavourSelectionPopup
             product={flavourSelection.product}
             open={flavourSelection.isOpen}
@@ -236,7 +230,7 @@ export default function ProductDetailClientPage({ product, featuredProducts }: P
           isContentScrolled={isScrolled}
           onReset={() => router.push('/')}
           onNavigate={(view) => router.push(`/${view}`)}
-          activeView={'search'}
+          activeView={'product-detail'}
           isUsingAnimatedSearch={true}
           onSearchSubmit={handleSearchSubmit}
           searchInput={searchInput}
@@ -293,7 +287,7 @@ export default function ProductDetailClientPage({ product, featuredProducts }: P
       </div>
       
       <FloatingCartButton
-        activeView={'search'}
+        activeView={'product-detail'}
         isSearchingOnAbout={true}
         isCartOpen={isCartOpen}
         onToggleCart={handleToggleCartPopup}
@@ -316,7 +310,7 @@ export default function ProductDetailClientPage({ product, featuredProducts }: P
         onClearWishlist={clearWishlist}
         onProductClick={handleProductClick}
       />
-      <BottomNavbar activeView={'search'} onNavigate={handleNavigation} cartItemCount={cartItemCount} />
+      <BottomNavbar activeView={'product-detail'} onNavigate={handleNavigation} cartItemCount={cartItemCount} />
       <FlavourSelectionPopup
         product={flavourSelection.product}
         open={flavourSelection.isOpen}
