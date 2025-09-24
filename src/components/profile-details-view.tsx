@@ -31,6 +31,7 @@ export function ProfileDetailsView({ profile, onHasChangesChange, onProfileUpdat
   const [password, setPassword] = useState(''); // Default to empty
   const [showPassword, setShowPassword] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const [hasChanges, setHasChanges] = useState(false);
   const { toast } = useToast();
 
   const isGoogleSignIn = user?.providerData.some(
@@ -38,21 +39,23 @@ export function ProfileDetailsView({ profile, onHasChangesChange, onProfileUpdat
   );
 
   useEffect(() => {
-    const hasChanges = 
+    const changes = 
       name !== profile.name || 
       phone !== profile.phone || 
       email !== profile.email || 
       address !== profile.address ||
       password !== '';
-    onHasChangesChange(hasChanges);
+    setHasChanges(changes);
+    onHasChangesChange(changes);
   }, [name, phone, email, address, password, profile, onHasChangesChange]);
   
   // When the profile prop changes from the parent, update the local state
   useEffect(() => {
-    setName(profile.name);
-    setPhone(profile.phone);
-    setEmail(profile.email);
-    setAddress(profile.address);
+    setName(profile.name || '');
+    setPhone(profile.phone || '');
+    setEmail(profile.email || '');
+    setAddress(profile.address || '');
+    setPassword('');
   }, [profile]);
 
 
@@ -66,7 +69,6 @@ export function ProfileDetailsView({ profile, onHasChangesChange, onProfileUpdat
     setEmail(profile.email);
     setAddress(profile.address);
     setPassword('');
-    onHasChangesChange(false);
   };
 
   const handleSave = async () => {
@@ -92,8 +94,7 @@ export function ProfileDetailsView({ profile, onHasChangesChange, onProfileUpdat
         updatedProfile.email = email;
       }
       onProfileUpdate(updatedProfile);
-      onHasChangesChange(false);
-
+      
       toast({
         title: "Success",
         description: `Profile information updated successfully.${passwordChanged ? " Your password has been changed." : ""}`,
@@ -220,12 +221,12 @@ export function ProfileDetailsView({ profile, onHasChangesChange, onProfileUpdat
             <Button 
                 onClick={handleCancel}
                 variant="outline"
-                className="bg-transparent text-base text-white border-custom-gold border-2 rounded-full px-10 hover:bg-custom-gold hover:text-custom-purple-dark"
-                disabled={isSaving}
+                className="bg-transparent text-base text-white border-custom-gold border-2 rounded-full px-10 hover:bg-custom-gold hover:text-custom-purple-dark disabled:opacity-50 disabled:bg-transparent disabled:text-white disabled:hover:text-custom-purple-dark"
+                disabled={!hasChanges || isSaving}
             >
                 Cancel
             </Button>
-            <Button onClick={handleSave} className="bg-custom-gold text-base text-custom-purple-dark rounded-full px-12 hover:bg-custom-gold/90" disabled={isSaving}>
+            <Button onClick={handleSave} className="bg-custom-gold text-base text-custom-purple-dark rounded-full px-12 hover:bg-custom-gold/90 disabled:opacity-50" disabled={!hasChanges || isSaving}>
                 Save
             </Button>
         </div>

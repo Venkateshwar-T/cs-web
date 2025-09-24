@@ -25,16 +25,26 @@ export function MyProfileTab({ profile, onProfileUpdate }: MyProfileTabProps) {
   const { user } = useAppContext();
   const [name, setName] = useState(profile.name);
   const [phone, setPhone] = useState(profile.phone);
-  const [email, setEmail] = useState(profile.email);
+  const [email, setEmail] useState(profile.email);
   const [address, setAddress] = useState(profile.address);
   const [password, setPassword] = useState(''); // Default to empty
   const [showPassword, setShowPassword] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const [hasChanges, setHasChanges] = useState(false);
   const { toast } = useToast();
   
   const isGoogleSignIn = user?.providerData.some(
     (provider) => provider.providerId === 'google.com'
   );
+
+  useEffect(() => {
+    const changes = name !== profile.name || 
+                     phone !== profile.phone || 
+                     email !== profile.email || 
+                     address !== profile.address || 
+                     password !== '';
+    setHasChanges(changes);
+  }, [name, phone, email, address, password, profile]);
 
   // When the profile from context changes, update the local state.
   useEffect(() => {
@@ -42,6 +52,7 @@ export function MyProfileTab({ profile, onProfileUpdate }: MyProfileTabProps) {
     setPhone(profile.phone || '');
     setEmail(profile.email || '');
     setAddress(profile.address || '');
+    setPassword('');
   }, [profile]);
 
 
@@ -51,10 +62,6 @@ export function MyProfileTab({ profile, onProfileUpdate }: MyProfileTabProps) {
     setEmail(profile.email);
     setAddress(profile.address);
     setPassword('');
-    toast({
-      title: "Cancelled",
-      description: "Your changes have been discarded.",
-    });
   };
 
   const handleSave = async () => {
@@ -207,12 +214,12 @@ export function MyProfileTab({ profile, onProfileUpdate }: MyProfileTabProps) {
             <Button 
                 onClick={handleCancel}
                 variant="outline"
-                className="bg-transparent text-base text-white border-custom-gold border rounded-full px-10 hover:bg-custom-gold hover:text-custom-purple-dark"
-                disabled={isSaving}
+                className="bg-transparent text-base text-white border-custom-gold border rounded-full px-10 hover:bg-custom-gold hover:text-custom-purple-dark disabled:opacity-50 disabled:bg-transparent disabled:text-white disabled:hover:text-custom-purple-dark"
+                disabled={!hasChanges || isSaving}
             >
                 Cancel
             </Button>
-            <Button onClick={handleSave} className="bg-custom-gold text-base text-custom-purple-dark rounded-full px-12 hover:bg-custom-gold/90" disabled={isSaving}>
+            <Button onClick={handleSave} className="bg-custom-gold text-base text-custom-purple-dark rounded-full px-12 hover:bg-custom-gold/90 disabled:opacity-50" disabled={!hasChanges || isSaving}>
                 Save
             </Button>
         </div>
