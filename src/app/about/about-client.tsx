@@ -18,6 +18,7 @@ import { StaticSparkleBackground } from '@/components/static-sparkle-background'
 import { cn } from '@/lib/utils';
 import { useAppContext } from '@/context/app-context';
 import type { SanityProduct } from '@/types';
+import type { ActiveView } from '@/app/page';
 
 
 const containerVariants = {
@@ -92,14 +93,14 @@ export default function AboutPageClient({ allProducts }: { allProducts: SanityPr
       setLastScrollTop(currentScrollTop <= 0 ? 0 : currentScrollTop);
     };
 
-    const handleNavigation = (view: 'home' | 'cart' | 'profile' | 'faq') => {
+    const handleNavigation = (view: ActiveView) => {
         if (view === 'home') router.push('/');
         else if (view === 'cart') router.push('/cart');
         else if (view === 'profile') router.push('/profile');
         else if (view === 'faq') router.push('/faq');
     };
 
-    const handleHeaderNavigate = (view: 'about' | 'faq') => {
+    const handleHeaderNavigate = (view: 'about' | 'faq' | 'admin') => {
         router.push(`/${view}`);
     }
     

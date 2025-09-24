@@ -14,6 +14,7 @@ import { PopupsManager } from '@/components/popups/popups-manager';
 import { useAppContext } from '@/context/app-context';
 import type { SanityProduct } from '@/types';
 import { BottomNavbar } from '@/components/bottom-navbar';
+import type { ActiveView } from '@/app/page';
 
 export default function FaqPageClient({ children, allProducts }: { children: React.ReactNode, allProducts: SanityProduct[] }) {
   const isMobile = useIsMobile();
@@ -23,7 +24,7 @@ export default function FaqPageClient({ children, allProducts }: { children: Rea
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const { cart, updateCart, likedProducts, toggleLike, clearWishlist } = useAppContext();
 
-  const handleHeaderNavigate = (view: 'about' | 'faq') => {
+  const handleHeaderNavigate = (view: 'about' | 'faq' | 'admin') => {
     router.push(`/${view}`);
   };
 
@@ -49,7 +50,7 @@ export default function FaqPageClient({ children, allProducts }: { children: Rea
     router.push(`/product/${product.slug.current}`);
   };
 
-  const handleNavigation = (view: 'home' | 'cart' | 'profile' | 'faq') => {
+  const handleNavigation = (view: ActiveView) => {
       if (view === 'home') router.push('/');
       else if (view === 'cart') router.push('/cart');
       else if (view === 'profile') router.push('/profile');

@@ -88,7 +88,7 @@ export default function CartClientPage({ allProducts }: { allProducts: SanityPro
     router.push(`/product/${product.slug.current}`);
   };
 
-  const handleHeaderNavigate = (view: 'about' | 'faq') => {
+  const handleHeaderNavigate = (view: 'about' | 'faq' | 'admin') => {
     router.push(`/${view}`);
   }
 

@@ -63,7 +63,7 @@ export default function ProfileClientPage({ allProducts }: ProfileClientPageProp
     // If view is 'profile', do nothing as we are already on the page.
   };
 
-  const handleHeaderNavigate = (view: 'about' | 'faq') => {
+  const handleHeaderNavigate = (view: 'about' | 'faq' | 'admin') => {
     router.push(`/${view}`);
   }
 

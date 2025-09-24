@@ -17,6 +17,7 @@ import { Footer } from '@/components/footer';
 import { useAppContext } from '@/context/app-context';
 import type { SanityProduct } from '@/types';
 import { FlavourSelectionPopup } from '@/components/flavour-selection-popup';
+import type { ActiveView } from '@/app/page';
 
 interface HomepageContent {
   exploreCategories: { _key: string; name: string; imageUrl: string }[];
@@ -67,7 +68,7 @@ export default function HomeClient({ allProducts, exploreCategories, exploreFlav
     router.push('/');
   };
 
-  const handleNavigation = (view: 'home' | 'cart' | 'profile') => {
+  const handleNavigation = (view: ActiveView) => {
     if (view === 'cart') {
       router.push('/cart');
     } else if (view === 'profile') {
@@ -77,7 +78,7 @@ export default function HomeClient({ allProducts, exploreCategories, exploreFlav
     }
   };
   
-  const handleHeaderNavigate = (view: 'about' | 'faq') => {
+  const handleHeaderNavigate = (view: 'about' | 'faq' | 'admin') => {
     router.push(`/${view}`);
   };
   
