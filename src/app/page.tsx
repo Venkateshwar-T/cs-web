@@ -7,7 +7,7 @@ import { Loader } from '@/components/loader';
 import HomeClient from './home-client';
 import Image from 'next/image';
 
-export type ActiveView = 'home' | 'search' | 'cart' | 'profile' | 'about' | 'faq' | 'order-confirmed' | 'product-detail';
+export type ActiveView = 'home' | 'search' | 'cart' | 'profile' | 'about' | 'faq' | 'order-confirmed' | 'product-detail' | 'admin';
 
 interface HomepageContent {
   exploreCategories: { _key: string; name: string; imageUrl: string }[];

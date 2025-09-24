@@ -1,3 +1,4 @@
+
 // src/lib/firebase.ts
 import { initializeApp, getApps, getApp, type FirebaseApp } from 'firebase/app';
 import {
@@ -11,7 +12,7 @@ import {
   updatePassword,
   type User
 } from 'firebase/auth';
-import { getFirestore, doc, getDoc, setDoc, updateDoc, collection, addDoc, getDocs, query, orderBy } from 'firebase/firestore';
+import { getFirestore, doc, getDoc, setDoc, updateDoc, collection, addDoc, getDocs, query, orderBy, collectionGroup } from 'firebase/firestore';
 import type { ProfileInfo, Order } from '@/context/app-context';
 
 
@@ -151,4 +152,12 @@ export const getUserOrders = async (uid: string): Promise<Order[]> => {
     const q = query(ordersCollectionRef, orderBy('date', 'desc'));
     const querySnapshot = await getDocs(q);
     return querySnapshot.docs.map(doc => doc.data() as Order);
+};
+
+export const getAllOrders = async (): Promise<Order[]> => {
+    const db = getClientFirestore();
+    if (!db) return [];
+    const ordersQuery = query(collectionGroup(db, 'orders'), orderBy('date', 'desc'));
+    const querySnapshot = await getDocs(ordersQuery);
+    return querySnapshot.docs.map(doc => ({...doc.data(), id: doc.id} as Order));
 };

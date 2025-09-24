@@ -15,6 +15,7 @@ import {
   updateUserProfile,
   addUserOrder,
   getUserOrders,
+  getAllOrders,
 } from '@/lib/firebase';
 import type { User } from 'firebase/auth';
 
@@ -69,6 +70,9 @@ interface AppContextType {
   clearOrders: () => void;
   reorder: (orderId: string) => void;
   reorderItem: (item: OrderItem) => void;
+  
+  allOrders: Order[];
+  isAllOrdersLoaded: boolean;
 
   cart: Cart;
   updateCart: (productName: string, quantity: number, flavours?: string[]) => void;
@@ -117,6 +121,9 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
   const [orders, setOrders] = useState<Order[]>([]);
   const [isOrdersLoaded, setIsOrdersLoaded] = useState(false);
 
+  const [allOrders, setAllOrders] = useState<Order[]>([]);
+  const [isAllOrdersLoaded, setIsAllOrdersLoaded] = useState(false);
+
 
   const [cart, setCart, isCartLoaded] = useLocalStorage<Cart>(
     CART_STORAGE_KEY,
@@ -133,8 +140,9 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
         const unsubscribe = onAuthStateChanged(async (newUser) => {
           setIsProfileLoaded(false);
           setUser(newUser);
+          const newIsAdmin = newUser?.email === process.env.NEXT_PUBLIC_ADMIN_EMAIL;
           setIsAuthenticated(!!newUser);
-          setIsAdmin(newUser?.email === process.env.NEXT_PUBLIC_ADMIN_EMAIL);
+          setIsAdmin(newIsAdmin);
 
           if (newUser) {
             let profile = await getUserProfile(newUser.uid);
@@ -144,10 +152,19 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
             const userOrders = await getUserOrders(newUser.uid);
             setOrders(userOrders);
             setIsOrdersLoaded(true);
+            
+            if (newIsAdmin) {
+              const allUserOrders = await getAllOrders();
+              setAllOrders(allUserOrders);
+            }
+            setIsAllOrdersLoaded(true);
+
           } else {
             setProfileInfo(defaultProfileInfo);
             setOrders([]);
+            setAllOrders([]);
             setIsOrdersLoaded(true);
+            setIsAllOrdersLoaded(true);
           }
           setIsProfileLoaded(true);
           setIsAuthLoaded(true);
@@ -157,6 +174,7 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
         setIsAuthLoaded(true);
         setIsProfileLoaded(true);
         setIsOrdersLoaded(true);
+        setIsAllOrdersLoaded(true);
       }
     }
   }, []);
@@ -351,8 +369,10 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
     addOrder,
     isOrdersLoaded,
     clearOrders,
-reorder,
+    reorder,
     reorderItem,
+    allOrders,
+    isAllOrdersLoaded,
     cart,
     updateCart,
     clearCart,
