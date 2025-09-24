@@ -37,7 +37,7 @@ const DetailRow = ({ icon, label, value }: { icon: React.ReactNode, label: strin
         <div className="flex-shrink-0 text-white/70 mt-0.5">{icon}</div>
         <div>
             <p className="text-xs text-white/70">{label}</p>
-            <p className="font-semibold">{value}</p>
+            <div className="font-semibold">{value}</div>
         </div>
     </div>
 );
@@ -77,11 +77,18 @@ const OrderDetailsContent = ({ order }: { order: Order }) => {
 
 
     return (
-        <div className="flex flex-col gap-4 p-4 md:p-6 text-white max-h-[85vh] overflow-y-auto custom-scrollbar">
+        <div className="flex flex-col gap-4 p-4 md:p-0 text-white max-h-[85vh] overflow-y-auto custom-scrollbar">
             <div className="grid grid-cols-1 sm:grid-cols-1 gap-4">
                 <DetailRow icon={<User size={16} />} label="Customer Name" value={order.customerName} />
                 <DetailRow icon={<Mail size={16} />} label="Email" value={order.customerEmail} />
-                <DetailRow icon={<Phone size={16} />} label="Phone" value={order.customerPhone} />
+                <DetailRow icon={<Phone size={16} />} label="Phone" value={
+                    <div className="flex items-center gap-2">
+                        <span>{order.customerPhone}</span>
+                         <a href={`tel:${order.customerPhone}`} className="text-white hover:text-custom-gold md:hidden">
+                            <Phone size={16} />
+                        </a>
+                    </div>
+                } />
                 <DetailRow icon={<Home size={16} />} label="Address" value={order.address || 'Not Provided'} />
                 <Separator className="bg-white/20" />
                 <div>
@@ -108,7 +115,7 @@ const OrderDetailsContent = ({ order }: { order: Order }) => {
                                 height={64}
                                 className="rounded-md flex-shrink-0 object-cover aspect-square"
                             />
-                            <div className="flex-grow">
+                            <div className="flex-grow min-w-0">
                                 <p className="font-bold truncate">{item.name}</p>
                                 <p className="text-xs text-white/70">Qty: {item.quantity} | Price: ₹{((item.finalProductPrice || 0) / item.quantity).toFixed(2)}</p>
                                 {item.flavours && item.flavours.length > 0 && (
@@ -120,7 +127,7 @@ const OrderDetailsContent = ({ order }: { order: Order }) => {
                                     </div>
                                 )}
                             </div>
-                            <div className='text-right'>
+                            <div className='text-right flex-shrink-0'>
                                 <p className="text-sm font-semibold">₹{item.finalSubtotal?.toFixed(2)}</p>
                                 {item.mrp && item.finalProductPrice && <p className="text-xs text-green-400">-{((item.mrp || 0) * item.quantity - (item.finalProductPrice || 0)).toFixed(2)}</p>}
                             </div>
@@ -146,13 +153,13 @@ const OrderDetailsContent = ({ order }: { order: Order }) => {
 
              <div className="flex flex-col items-center justify-center gap-2 mt-2">
                 <p className="text-sm text-white/80">Order Status</p>
-                <div className="flex flex-wrap justify-center gap-2">
+                <div className="flex flex-col items-center gap-2 w-full">
                     {statusOptions.map((status) => (
                         <Button
                             key={status}
                             onClick={() => handleStatusChange(status)}
                             className={cn(
-                                "text-xs h-8 px-3 rounded-full border-none focus:ring-0 focus:ring-offset-0 transition-all duration-200 w-1/2",
+                                "text-xs h-8 px-3 rounded-full border-none focus:ring-0 focus:ring-offset-0 transition-all duration-200 w-1/2 max-w-48",
                                 getStatusVariant(status, order.status === status)
                             )}
                         >
@@ -188,8 +195,8 @@ export function AdminOrderDetails({ order, open, onOpenChange }: AdminOrderDetai
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="justify-center p-0 w-[90vw] md:w-full max-w-md bg-custom-purple-dark border-2 border-custom-gold rounded-2xl md:rounded-[30px]">
-        <DialogHeader className="p-4 md:p-6 border-b border-white/20 text-center">
+      <DialogContent className="justify-center p-6 w-[90vw] md:w-full max-w-md bg-custom-purple-dark border-2 border-custom-gold rounded-2xl md:rounded-[30px]">
+        <DialogHeader className="p-0 text-center mb-4">
           <DialogTitle className="text-white text-lg md:text-xl">Order Details</DialogTitle>
           <DialogClose className="absolute right-3 top-2 md:top-3 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground text-white z-10">
             <X className="h-5 w-5" />
