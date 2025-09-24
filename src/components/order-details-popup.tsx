@@ -75,32 +75,34 @@ const OrderDetailsContent = ({ order }: { order: Order }) => {
                 <h4 className="font-bold mb-2">Order Items</h4>
                 <div className="space-y-3 bg-white/5 p-3 rounded-lg max-h-64 overflow-y-auto custom-scrollbar">
                     {order.items.map(item => (
-                        <div key={item.name} className="flex gap-3">
-                            <Image
-                                src={item.coverImage || "/placeholder.png"}
-                                alt={item.name}
-                                width={64}
-                                height={64}
-                                className="rounded-md flex-shrink-0 object-cover aspect-square"
-                            />
-                            <div className="flex-grow min-w-0">
-                                <p className="font-bold truncate">{item.name}</p>
-                                <p className="text-xs text-white/70">Qty: {item.quantity} | MRP: ₹{item.mrp?.toFixed(2)}</p>
-                                <p className="text-xs text-green-400">Discount: -₹{((item.mrp || 0) * item.quantity - (item.finalProductPrice || 0)).toFixed(2)}</p>
+                        <div key={item.name} className="flex flex-col">
+                            <p className="font-bold mb-2">{item.name}</p>
+                            <div className="flex gap-3 items-start">
+                                <Image
+                                    src={item.coverImage || "/placeholder.png"}
+                                    alt={item.name}
+                                    width={64}
+                                    height={64}
+                                    className="rounded-md flex-shrink-0 object-cover aspect-square w-16 h-16"
+                                />
+                                <div className="flex-grow min-w-0">
+                                    <p className="text-xs text-white/70">Qty: {item.quantity} | MRP: ₹{item.mrp?.toFixed(2)}</p>
+                                    <p className="text-xs text-green-400">Discount: -₹{((item.mrp || 0) * item.quantity - (item.finalProductPrice || 0)).toFixed(2)}</p>
 
-                                {item.flavours && item.flavours.length > 0 && (
-                                    <div className="text-xs text-white/60 mt-1">
-                                        <p className="font-semibold">Flavours:</p>
-                                        <ul className="list-disc list-inside">
-                                            {item.flavours.map(f => (
-                                                <li key={f.name}>{f.name} (x{order.items.find(i => i.name === item.name)?.quantity || 1}) (+₹{f.price.toFixed(2)})</li>
-                                            ))}
-                                        </ul>
-                                    </div>
-                                )}
-                            </div>
-                            <div className='text-right flex-shrink-0'>
-                                <p className="text-sm font-semibold">₹{item.finalSubtotal?.toFixed(2)}</p>
+                                    {item.flavours && item.flavours.length > 0 && (
+                                        <div className="text-xs text-white/60 mt-1">
+                                            <p className="font-semibold">Flavours:</p>
+                                            <ul className="list-disc list-inside">
+                                                {item.flavours.map(f => (
+                                                    <li key={f.name}>{f.name} (x{order.items.find(i => i.name === item.name)?.quantity || 1}) (+₹{f.price.toFixed(2)})</li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                    )}
+                                </div>
+                                <div className='text-right flex-shrink-0'>
+                                    <p className="text-sm font-semibold">₹{item.finalSubtotal?.toFixed(2)}</p>
+                                </div>
                             </div>
                         </div>
                     ))}
