@@ -1,3 +1,4 @@
+
 // @/components/order-details-popup.tsx
 'use client';
 
@@ -13,6 +14,7 @@ import {
   SheetContent,
   SheetHeader,
   SheetTitle,
+  SheetClose,
 } from "@/components/ui/sheet"
 import { X, Calendar, Hash, Tag } from "lucide-react";
 import type { Order } from "@/types";
