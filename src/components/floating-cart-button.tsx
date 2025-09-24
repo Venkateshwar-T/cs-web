@@ -6,7 +6,6 @@ import { X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import type { ActiveView } from '@/app/page';
-import type { OrderItem } from '@/context/app-context';
 
 interface FloatingCartButtonProps {
   activeView: ActiveView;
@@ -15,7 +14,7 @@ interface FloatingCartButtonProps {
   onToggleCart: () => void;
   isCartButtonExpanded: boolean;
   cartMessage: string;
-  cart: Record<string, OrderItem>;
+  cart: Record<string, { name: string; quantity: number; flavours?: string[] }>;
 }
 
 export function FloatingCartButton({
