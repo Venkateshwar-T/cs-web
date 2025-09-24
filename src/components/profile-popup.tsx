@@ -154,9 +154,7 @@ export function ProfilePopup({
                         />
                       )}
                       {activeTab === 'My Orders' && (
-                        <MyOrdersTab 
-                          products={products} 
-                        />
+                        <MyOrdersTab />
                       )}
                     </>
                   )}

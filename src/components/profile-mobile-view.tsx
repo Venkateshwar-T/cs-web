@@ -11,7 +11,6 @@ import { WishlistView } from './wishlist-view';
 import { MyOrdersTab } from './my-orders-tab';
 import { useRouter } from 'next/navigation';
 import { EmptyState } from './empty-state';
-import { useAppContext } from '@/context/app-context';
 
 interface ProfileMobileViewProps {
   profile: ProfileInfo;
@@ -100,7 +99,6 @@ export function ProfileMobileView({
           {activeTab === 'My Orders' && (
             <MyOrdersTab 
               isMobile={true} 
-              products={products}
             />
           )}
         </div>

@@ -1,19 +1,18 @@
-
 // @/components/order-item-card.tsx
 'use client';
 
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import { Badge } from './ui/badge';
-import { Separator } from './ui/separator';
 import type { Order } from '@/types';
 
 interface OrderItemCardProps {
     order: Order;
     isMobile?: boolean;
+    onClick: () => void;
 }
 
-export function OrderItemCard({ order, isMobile = false }: OrderItemCardProps) {
+export function OrderItemCard({ order, isMobile = false, onClick }: OrderItemCardProps) {
     const orderDate = new Date(order.date);
     const formattedDate = orderDate.toLocaleDateString('en-US', {
         month: 'short',
@@ -35,7 +34,9 @@ export function OrderItemCard({ order, isMobile = false }: OrderItemCardProps) {
     };
 
     return (
-        <div className="bg-white/90 p-3 md:p-4 text-black w-full relative overflow-hidden rounded-xl md:rounded-2xl shadow-md">
+        <button 
+            onClick={onClick}
+            className="bg-white/90 p-3 md:p-4 text-black w-full relative overflow-hidden rounded-xl md:rounded-2xl shadow-md text-left transition-transform hover:scale-[1.02]">
             <div className="flex justify-between items-start mb-3">
                  <div className="flex flex-col">
                     <p className="text-xs text-black/70">{formattedDate} at {formattedTime}</p>
@@ -43,8 +44,6 @@ export function OrderItemCard({ order, isMobile = false }: OrderItemCardProps) {
                 </div>
                 <Badge variant={statusVariant(order.status)}>{order.status}</Badge>
             </div>
-            
-            <Separator className="bg-black/10" />
 
             <div className="flex items-center gap-2 mt-3 overflow-x-auto no-scrollbar pb-1">
                 {order.items.map((item, index) => (
@@ -65,6 +64,6 @@ export function OrderItemCard({ order, isMobile = false }: OrderItemCardProps) {
                     </div>
                 ))}
             </div>
-        </div>
+        </button>
     );
 }
