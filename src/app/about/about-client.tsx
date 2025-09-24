@@ -142,19 +142,19 @@ export default function AboutPageClient({ allProducts }: { allProducts: SanityPr
                                   initial="hidden"
                                   animate="visible"
                                 >
-                                    <AboutSection title="Handcrafted with Passion" icon={<Heart />} isMobile={isMobile}>
+                                    <AboutSection title="Handcrafted with Passion" icon={<Heart />} isMobile={!!isMobile}>
                                         Every single chocolate is a labor of love. We meticulously craft each piece by hand, ensuring that every detail is perfect, from the rich flavors to the elegant presentation.
                                     </AboutSection>
                                     
-                                    <AboutSection title="Pure & Wholesome" icon={<Leaf />} isMobile={isMobile}>
+                                    <AboutSection title="Pure & Wholesome" icon={<Leaf />} isMobile={!!isMobile}>
                                         Your trust is our top priority. That’s why all ChocoSmiley products are 100% vegetarian and eggless. We use only the finest ingredients for a delightful and guilt-free indulgence.
                                     </AboutSection>
                                     
-                                    <AboutSection title="The Art of Gifting" icon={<Gift />} isMobile={isMobile}>
+                                    <AboutSection title="The Art of Gifting" icon={<Gift />} isMobile={!!isMobile}>
                                         We believe the perfect gift is personal. Our customizable boxes allow you to hand-pick every flavor, ensuring your gift is as unique as the person receiving it.
                                     </AboutSection>
                                     
-                                    <AboutSection title="Join Our Story" icon={<Sparkles />} isMobile={isMobile}>
+                                    <AboutSection title="Join Our Story" icon={<Sparkles />} isMobile={!!isMobile}>
                                         Thank you for being a part of our journey. We are excited to help you craft your perfect gift and spread a little more happiness in the world, one chocolate at a time.
                                     </AboutSection>
                                 </motion.div>
