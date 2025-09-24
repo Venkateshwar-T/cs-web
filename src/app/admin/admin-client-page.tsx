@@ -12,6 +12,7 @@ import { useAppContext, type Order } from '@/context/app-context';
 import { Loader } from '@/components/loader';
 import { EmptyState } from '@/components/empty-state';
 import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 import { Search, Filter } from 'lucide-react';
 import { AdminOrderItemCard } from '@/components/admin-order-item-card';
 import { AdminOrderDetails } from '@/components/admin-order-details';
@@ -22,8 +23,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 
 type StatusFilter = Order['status'] | 'All';
+
+const statusOptions: StatusFilter[] = ['All', 'Order Requested', 'In Progress', 'Completed', 'Cancelled'];
 
 export default function AdminClientPage() {
   const router = useRouter();
@@ -32,6 +42,7 @@ export default function AdminClientPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
   const [statusFilter, setStatusFilter] = useState<StatusFilter>('All');
+  const [isFilterSheetOpen, setIsFilterSheetOpen] = useState(false);
 
   const filteredOrders = useMemo(() => {
     return allOrders.filter(order => {
@@ -47,6 +58,11 @@ export default function AdminClientPage() {
       return statusMatch && searchMatch;
     });
   }, [allOrders, searchTerm, statusFilter]);
+
+  const handleStatusSelect = (status: StatusFilter) => {
+    setStatusFilter(status);
+    setIsFilterSheetOpen(false);
+  }
 
   if (!isAllOrdersLoaded) {
     return (
@@ -94,27 +110,55 @@ export default function AdminClientPage() {
                   placeholder="Search by Product or Customer..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-10 h-12 rounded-full bg-white/10 border-white/20 text-white placeholder:text-gray-400"
+                  className="w-full pl-10 pr-10 h-12 rounded-full bg-white/10 border-white/20 text-white placeholder:text-gray-400"
                 />
-              </div>
-              <div className="relative flex items-center gap-2">
-                 <Filter className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400 md:hidden" />
-                 <Select value={statusFilter} onValueChange={(value) => setStatusFilter(value as StatusFilter)}>
-                    <SelectTrigger className="w-full md:w-[200px] h-12 rounded-full bg-white/10 border-white/20 text-white pl-10 md:pl-4">
-                      <div className='flex items-center gap-2'>
-                        <Filter className="h-5 w-5 text-gray-400 hidden md:block" />
-                        <SelectValue placeholder="Filter by status" />
+                 {isMobile && (
+                  <Sheet open={isFilterSheetOpen} onOpenChange={setIsFilterSheetOpen}>
+                    <SheetTrigger asChild>
+                       <Button variant="ghost" size="icon" className="absolute right-2 top-1/2 -translate-y-1/2 h-8 w-8 text-gray-400 hover:bg-white/20 hover:text-white">
+                          <Filter className="h-5 w-5" />
+                        </Button>
+                    </SheetTrigger>
+                    <SheetContent side="bottom" className="bg-custom-purple-dark text-white border-t-2 border-custom-gold rounded-t-3xl h-auto p-0">
+                      <SheetHeader className="p-4 border-b border-white/20">
+                        <SheetTitle className="text-white text-center">Filter by Status</SheetTitle>
+                      </SheetHeader>
+                      <div className="flex flex-col p-4">
+                        {statusOptions.map(option => (
+                          <Button
+                            key={option}
+                            variant="ghost"
+                            onClick={() => handleStatusSelect(option)}
+                            className={cn(
+                              "justify-start text-base py-3 h-auto",
+                              statusFilter === option && "font-bold text-custom-gold"
+                            )}
+                          >
+                            {option === 'All' ? 'All Statuses' : option}
+                          </Button>
+                        ))}
                       </div>
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="All">All Statuses</SelectItem>
-                      <SelectItem value="Order Requested">Order Requested</SelectItem>
-                      <SelectItem value="In Progress">In Progress</SelectItem>
-                      <SelectItem value="Completed">Completed</SelectItem>
-                      <SelectItem value="Cancelled">Cancelled</SelectItem>
-                    </SelectContent>
-                  </Select>
+                    </SheetContent>
+                  </Sheet>
+                )}
               </div>
+              {!isMobile && (
+                  <Select value={statusFilter} onValueChange={(value) => setStatusFilter(value as StatusFilter)}>
+                      <SelectTrigger className="w-full md:w-[200px] h-12 rounded-full bg-white/10 border-white/20 text-white">
+                        <div className='flex items-center gap-2'>
+                          <Filter className="h-5 w-5 text-gray-400" />
+                          <SelectValue placeholder="Filter by status" />
+                        </div>
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="All">All Statuses</SelectItem>
+                        <SelectItem value="Order Requested">Order Requested</SelectItem>
+                        <SelectItem value="In Progress">In Progress</SelectItem>
+                        <SelectItem value="Completed">Completed</SelectItem>
+                        <SelectItem value="Cancelled">Cancelled</SelectItem>
+                      </SelectContent>
+                    </Select>
+              )}
             </div>
 
             {filteredOrders.length > 0 ? (
