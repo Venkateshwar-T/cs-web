@@ -1,4 +1,3 @@
-
 // src/components/search-results-details.tsx
 'use client';
 
@@ -20,7 +19,12 @@ import { FilterContainer } from "./filter-container";
 import type { SanityProduct, StructuredFilter } from '@/types';
 import { EmptyState } from "./empty-state";
 import { useRouter } from "next/navigation";
-import type { OrderItem } from "@/context/app-context";
+
+type Cart = Record<string, {
+  name: string;
+  quantity: number;
+  flavours?: string[];
+}>;
 
 
 interface SearchResultsDetailsProps {
@@ -39,7 +43,7 @@ interface SearchResultsDetailsProps {
   onScroll: (event: UIEvent<HTMLDivElement>) => void;
   isMobile: boolean;
   onProductClick: (product: SanityProduct) => void;
-  cart: Record<string, OrderItem>;
+  cart: Cart;
   likedProducts: Record<string, boolean>;
   onLikeToggle: (productId: string) => void;
   onAddToCart: (productName: string, quantity: number) => void;

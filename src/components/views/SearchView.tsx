@@ -93,7 +93,7 @@ export function SearchView({
           isSortSheetOpen={isSortSheetOpen}
           onSortSheetOpenChange={onSortSheetOpenChange}
           onScroll={onScroll}
-          isMobile={isMobile}
+          isMobile={isMobile ?? false}
           onProductClick={onProductClick}
           cart={cart}
           likedProducts={likedProducts}
