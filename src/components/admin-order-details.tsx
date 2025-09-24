@@ -72,13 +72,13 @@ const OrderDetailsContent = ({ order }: { order: Order }) => {
 
     return (
         <div className="flex flex-col gap-4 p-4 md:p-6 text-white max-h-[85vh] overflow-y-auto custom-scrollbar">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-1 gap-4">
                 <DetailRow icon={<User size={16} />} label="Customer Name" value={order.customerName} />
-                <DetailRow icon={<Mail size={16} />} label="Email" value={order.customerEmail} />
                 <DetailRow icon={<Phone size={16} />} label="Phone" value={order.customerPhone} />
+                <DetailRow icon={<Mail size={16} />} label="Email" value={order.customerEmail} />
                 <DetailRow icon={<Home size={16} />} label="Address" value={order.address || 'Not Provided'} />
                 <DetailRow icon={<FileText size={16} />} label="Order ID" value={order.id} />
-                <div className="sm:col-span-2">
+                <div>
                     <p className="text-xs text-white/70">Date & Time</p>
                     <p className="font-semibold">{formattedDate} at {formattedTime}</p>
                 </div>
