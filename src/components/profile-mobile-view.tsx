@@ -1,3 +1,4 @@
+
 // @/components/profile-mobile-view.tsx
 'use client';
 
@@ -52,7 +53,7 @@ export function ProfileMobileView({
   };
 
   const handleViewProductFromOrder = (product: SanityProduct) => {
-      onProductClick(product);
+      handleProductClick(product);
   };
 
   return (

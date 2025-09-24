@@ -145,5 +145,5 @@ export function ProductOrderDetailsPopup({ details, open, onOpenChange, onViewPr
         </div>
       </DialogContent>
     </Dialog>
-  )
+  );
 }
