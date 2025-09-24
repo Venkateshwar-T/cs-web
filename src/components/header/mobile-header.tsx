@@ -10,7 +10,7 @@ import type { ActiveView } from "@/app/page";
 interface MobileHeaderProps {
     isVisible: boolean;
     onProfileOpenChange: (isOpen: boolean) => void;
-    onNavigate: (view: 'about' | 'faq') => void;
+    onNavigate: (view: 'about' | 'faq' | 'admin') => void;
     activeView: ActiveView;
 }
 
