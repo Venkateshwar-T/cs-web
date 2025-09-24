@@ -95,7 +95,7 @@ export function PopupsManager({
       };
     });
 
-    const orderItems: OrderItem[] = mappedItems.filter((item): item is OrderItem => item !== null);
+    const orderItems: OrderItem[] = mappedItems.filter(item => item !== null);
 
     const subtotal = orderItems.reduce((acc, item) => acc + (item.finalSubtotal || 0), 0);
     const totalMrp = orderItems.reduce((acc, item) => acc + (item.mrp || (item.finalProductPrice || 0) / item.quantity) * item.quantity, 0)
