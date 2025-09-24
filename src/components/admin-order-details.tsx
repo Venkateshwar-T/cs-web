@@ -16,7 +16,7 @@ import {
   SheetClose,
 } from "@/components/ui/sheet"
 import { Button } from "./ui/button";
-import { X, User, Mail, Phone, Home, ShoppingCart, Percent, FileText } from "lucide-react";
+import { X, User, Mail, Phone, Home, ShoppingCart, Percent } from "lucide-react";
 import type { Order } from "@/types";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
@@ -83,7 +83,10 @@ const OrderDetailsContent = ({ order }: { order: Order }) => {
                 <DetailRow icon={<Phone size={16} />} label="Phone" value={order.customerPhone} />
                 <DetailRow icon={<Home size={16} />} label="Address" value={order.address || 'Not Provided'} />
                 <Separator className="bg-white/20" />
-                <DetailRow icon={<FileText size={16} />} label="Order ID" value={order.id} />
+                <div>
+                    <p className="text-xs text-white/70">Order ID</p>
+                    <p className="font-semibold">{order.id}</p>
+                </div>
                 <div>
                     <p className="text-xs text-white/70">Date & Time</p>
                     <p className="font-semibold">{formattedDate} at {formattedTime}</p>
@@ -142,13 +145,13 @@ const OrderDetailsContent = ({ order }: { order: Order }) => {
 
              <div className="flex flex-col items-center justify-center gap-2 mt-2">
                 <p className="text-sm text-white/80">Order Status</p>
-                <div className="flex flex-wrap justify-center gap-2">
+                <div className="flex flex-col items-center gap-2">
                     {statusOptions.map((status) => (
                         <Button
                             key={status}
                             onClick={() => handleStatusChange(status)}
                             className={cn(
-                                "text-xs h-8 px-3 rounded-full border-none focus:ring-0 focus:ring-offset-0 transition-all duration-200",
+                                "text-xs h-8 px-3 rounded-full border-none focus:ring-0 focus:ring-offset-0 transition-all duration-200 w-36",
                                 getStatusVariant(status, order.status === status)
                             )}
                         >
