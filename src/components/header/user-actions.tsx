@@ -82,7 +82,7 @@ export function UserActions({
         <div className="flex items-center animate-slide-in-from-right" style={{ animationDuration: '0.5s' }}>
             {/* Desktop Actions */}
             <div className="hidden md:flex items-center gap-1">
-                { !isAnimatedSearchExpanded && (
+                { (activeView === 'about' || activeView === 'faq') && !isAnimatedSearchExpanded && (
                      <div className={cn(
                         "flex items-center gap-1",
                         isEnquireOpen && "opacity-50"

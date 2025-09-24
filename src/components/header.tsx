@@ -59,7 +59,10 @@ export function Header({
   };
   
   const handleAnimatedSearchToggle = () => {
-    setIsAnimatedSearchExpanded(prev => !prev);
+    // This toggle is only for the about/faq pages
+    if (activeView === 'about' || activeView === 'faq') {
+       setIsAnimatedSearchExpanded(prev => !prev);
+    }
   };
   
   const handleLogoClick = () => {
@@ -111,7 +114,7 @@ export function Header({
           </div>
           
           <div className="hidden md:flex flex-1 justify-center px-4">
-             {(activeView === 'search' || activeView === 'order-confirmed') ? (
+             {(activeView === 'search' || activeView === 'order-confirmed' || activeView === 'product-detail') ? (
                 <div className={cn("w-full max-w-sm md:max-w-md lg:max-w-lg xl:max-w-2xl", isEnquireOpen && 'opacity-50 pointer-events-none')}>
                   <AnimatedSearchBar 
                       onSearchSubmit={onSearchSubmit}
@@ -133,7 +136,7 @@ export function Header({
             )}
           </div>
           
-          {isAnimatedSearchExpanded && activeView !== 'search' && activeView !== 'order-confirmed' && (
+          {isAnimatedSearchExpanded && (activeView === 'about' || activeView === 'faq') && (
              <div className={cn(
                 "absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-lg px-4",
                 isEnquireOpen && "opacity-50 pointer-events-none"
