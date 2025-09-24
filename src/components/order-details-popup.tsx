@@ -63,7 +63,7 @@ const OrderDetailsContent = ({ order }: { order: Order }) => {
 
     return (
         <div className="flex flex-col gap-4 p-4 md:p-6 text-white max-h-[85vh] overflow-y-auto custom-scrollbar">
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4">
                 <DetailRow icon={<Hash size={16} />} label="Order ID" value={order.id} />
                 <DetailRow icon={<Calendar size={16} />} label="Date & Time" value={`${formattedDate} at ${formattedTime}`} />
                 <DetailRow icon={<Tag size={16} />} label="Order Status" value={<Badge variant={statusVariant(order.status)}>{order.status}</Badge>} />
@@ -76,7 +76,7 @@ const OrderDetailsContent = ({ order }: { order: Order }) => {
                 <div className="space-y-3 bg-white/5 p-3 rounded-lg max-h-64 overflow-y-auto custom-scrollbar">
                     {order.items.map(item => (
                         <div key={item.name} className="flex flex-col">
-                            <p className="font-bold mb-2">{item.name}</p>
+                            <p className="font-bold mb-2 text-base">{item.name}</p>
                             <div className="flex gap-3 items-start">
                                 <Image
                                     src={item.coverImage || "/placeholder.png"}
