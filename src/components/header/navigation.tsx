@@ -6,10 +6,11 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { useRouter } from 'next/navigation';
 import type { ActiveView } from '@/app/page';
+import { useAppContext } from "@/context/app-context";
 
 interface NavigationProps {
   isEnquireOpen: boolean;
-  onNavigate: (view: 'about' | 'faq') => void;
+  onNavigate: (view: 'about' | 'faq' | 'admin') => void;
   activeView: ActiveView;
 }
 
@@ -21,12 +22,13 @@ const navLinks = [
 
 export function Navigation({ isEnquireOpen, onNavigate, activeView }: NavigationProps) {
     const router = useRouter();
+    const { isAdmin } = useAppContext();
 
-    const handleClick = (link: typeof navLinks[number]) => {
+    const handleClick = (link: typeof navLinks[number] | {id: 'admin', label: 'Admin', href: '/admin'}) => {
         if (link.href) {
             router.push(link.href);
         } else {
-            onNavigate(link.id as 'about' | 'faq');
+            onNavigate(link.id as 'about' | 'faq' | 'admin');
         }
     };
 
@@ -50,6 +52,18 @@ export function Navigation({ isEnquireOpen, onNavigate, activeView }: Navigation
                     </button>
                 )
             })}
+             {isAdmin && (
+                <button
+                    onClick={() => handleClick({ id: "admin", label: "Admin", href: "/admin" })}
+                    className={cn(
+                        "transition-colors hover:text-custom-gold", 
+                        isEnquireOpen && "opacity-50",
+                        activeView === 'admin' ? "text-custom-gold font-base" : "text-foreground/80"
+                    )}
+                >
+                    Admin
+                </button>
+            )}
         </nav>
     );
 }

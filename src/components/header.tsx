@@ -16,7 +16,7 @@ interface HeaderProps {
   onProfileOpenChange: (isOpen: boolean) => void;
   isContentScrolled: boolean;
   onReset: () => void;
-  onNavigate: (view: 'about' | 'faq') => void;
+  onNavigate: (view: 'about' | 'faq' | 'admin') => void;
   activeView: ActiveView;
   onSearchSubmit?: (query: string) => void;
   isSearchingOnAbout?: boolean;

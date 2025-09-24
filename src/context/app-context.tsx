@@ -77,6 +77,7 @@ interface AppContextType {
 
   isAuthenticated: boolean;
   user: User | null;
+  isAdmin: boolean;
   login: (user: User, isNewUser: boolean) => void;
   logout: () => void;
   authPopup: AuthPopupType;
@@ -103,6 +104,7 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isAuthLoaded, setIsAuthLoaded] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   
   const [profileInfo, setProfileInfo] = useState<ProfileInfo>(defaultProfileInfo);
   const [isProfileLoaded, setIsProfileLoaded] = useState(false);
@@ -132,6 +134,7 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
           setIsProfileLoaded(false);
           setUser(newUser);
           setIsAuthenticated(!!newUser);
+          setIsAdmin(newUser?.email === process.env.NEXT_PUBLIC_ADMIN_EMAIL);
 
           if (newUser) {
             let profile = await getUserProfile(newUser.uid);
@@ -348,7 +351,7 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
     addOrder,
     isOrdersLoaded,
     clearOrders,
-    reorder,
+reorder,
     reorderItem,
     cart,
     updateCart,
@@ -356,6 +359,7 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
     isCartLoaded,
     isAuthenticated,
     user,
+    isAdmin,
     login,
     logout,
     authPopup,

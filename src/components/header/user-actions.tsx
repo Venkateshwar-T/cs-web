@@ -6,7 +6,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { Menu, Phone, Search, Info, HelpCircle, LogOut } from "lucide-react";
+import { Menu, Phone, Search, Info, HelpCircle, LogOut, Shield } from "lucide-react";
 import { AiOutlineInstagram } from "react-icons/ai";
 import { IoLogoFacebook, IoLogoWhatsapp } from "react-icons/io5";
 import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet";
@@ -34,7 +34,7 @@ interface UserActionsProps {
     isEnquireOpen: boolean;
     onEnquireOpenChange: (isOpen: boolean) => void;
     onProfileOpenChange: (isOpen: boolean) => void;
-    onNavigate: (view: 'about' | 'faq') => void;
+    onNavigate: (view: 'about' | 'faq' | 'admin') => void;
     activeView: ActiveView;
     onAnimatedSearchToggle: () => void;
     isAnimatedSearchExpanded: boolean;
@@ -45,6 +45,8 @@ const navLinks = [
     { id: "about", label: "About", href: "/about", icon: Info },
     { id: "faq", label: "FAQ", href: "/faq", icon: HelpCircle },
 ] as const;
+
+const adminLink = { id: "admin", label: "Admin", href: "/admin", icon: Shield };
 
 export function UserActions({ 
     isEnquireOpen, 
@@ -59,9 +61,9 @@ export function UserActions({
     const isMobile = useIsMobile();
     const [isEnquireSheetOpen, setIsEnquireSheetOpen] = useState(false);
     const router = useRouter();
-    const { logout, isAuthenticated, setAuthPopup } = useAppContext();
+    const { logout, isAuthenticated, isAdmin, setAuthPopup } = useAppContext();
 
-    const handleMobileNav = (link: typeof navLinks[number]) => {
+    const handleMobileNav = (link: typeof navLinks[number] | typeof adminLink) => {
         if (link.href) {
             router.push(link.href);
         }
@@ -196,6 +198,20 @@ export function UserActions({
                                     </SheetClose>
                                 )
                             })}
+                            {isAdmin && (
+                                <SheetClose asChild>
+                                    <button
+                                        onClick={() => handleMobileNav(adminLink)}
+                                        className={cn(
+                                            "transition-colors hover:text-custom-gold text-left flex items-center gap-3", 
+                                            activeView === 'admin' ? "text-custom-gold font-semibold" : "text-foreground/80"
+                                        )}
+                                    >
+                                        <adminLink.icon className="h-5 w-5" />
+                                        <span>{adminLink.label}</span>
+                                    </button>
+                                </SheetClose>
+                            )}
                            </nav>
                            {isAuthenticated && (
                             <>
