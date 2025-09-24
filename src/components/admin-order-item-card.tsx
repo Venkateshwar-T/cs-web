@@ -40,10 +40,23 @@ export function AdminOrderItemCard({ order, onClick }: AdminOrderItemCardProps) 
         }
     };
 
+    const handleCardClick = (e: React.MouseEvent<HTMLDivElement>) => {
+        // Prevent card click if the click target is inside the filter dropdown trigger
+        const target = e.target as HTMLElement;
+        if (target.closest('[data-radix-collection-item]')) {
+             // This is a more reliable way to detect clicks on the filter trigger
+            return;
+        }
+        if (target.closest('[data-radix-select-trigger]')) {
+            return;
+        }
+        onClick();
+    }
+
 
     return (
         <div 
-            onClick={onClick}
+            onClick={handleCardClick}
             className={cn(
             "w-full bg-white/10 p-4 text-white relative overflow-hidden rounded-2xl border border-white/20 hover:bg-white/20 transition-colors cursor-pointer"
         )}>
