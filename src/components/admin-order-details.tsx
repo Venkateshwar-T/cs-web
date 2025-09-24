@@ -22,7 +22,6 @@ import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { Separator } from "./ui/separator";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { useAppContext } from "@/context/app-context";
 
 
@@ -54,17 +53,23 @@ const OrderDetailsContent = ({ order }: { order: Order }) => {
     const gstAmount = order.total - subtotal;
     const discountPercentage = order.totalDiscount && (subtotal + order.totalDiscount) > 0 ? ((order.totalDiscount / (subtotal + order.totalDiscount)) * 100) : 0;
 
-    const statusVariant = (status: Order['status']) => {
+    const statusOptions: Order['status'][] = ['Order Requested', 'In Progress', 'Completed', 'Cancelled'];
+
+    const getStatusVariant = (status: Order['status'], isActive: boolean) => {
+      if (isActive) {
         switch (status) {
-            case 'Completed': return 'bg-green-600';
-            case 'Cancelled': return 'bg-red-600';
-            case 'In Progress': return 'bg-blue-500';
-            default: return 'bg-yellow-500 text-black';
+          case 'Completed': return 'bg-green-600 text-white';
+          case 'Cancelled': return 'bg-red-600 text-white';
+          case 'In Progress': return 'bg-blue-500 text-white';
+          default: return 'bg-yellow-500 text-black';
         }
+      }
+      return 'bg-white/10 text-white/70 hover:bg-white/20 hover:text-white';
     };
 
+
     const handleStatusChange = (newStatus: Order['status']) => {
-        if (order.id && order.uid) {
+        if (order.id && order.uid && newStatus !== order.status) {
             updateOrderStatus(order.uid, order.id, newStatus);
         }
     };
@@ -74,9 +79,10 @@ const OrderDetailsContent = ({ order }: { order: Order }) => {
         <div className="flex flex-col gap-4 p-4 md:p-6 text-white max-h-[85vh] overflow-y-auto custom-scrollbar">
             <div className="grid grid-cols-1 sm:grid-cols-1 gap-4">
                 <DetailRow icon={<User size={16} />} label="Customer Name" value={order.customerName} />
-                <DetailRow icon={<Phone size={16} />} label="Phone" value={order.customerPhone} />
                 <DetailRow icon={<Mail size={16} />} label="Email" value={order.customerEmail} />
+                <DetailRow icon={<Phone size={16} />} label="Phone" value={order.customerPhone} />
                 <DetailRow icon={<Home size={16} />} label="Address" value={order.address || 'Not Provided'} />
+                <Separator className="bg-white/20" />
                 <DetailRow icon={<FileText size={16} />} label="Order ID" value={order.id} />
                 <div>
                     <p className="text-xs text-white/70">Date & Time</p>
@@ -88,7 +94,7 @@ const OrderDetailsContent = ({ order }: { order: Order }) => {
 
             <div>
                 <h4 className="font-bold mb-2 flex items-center gap-2"><ShoppingCart size={18} /> Order Items</h4>
-                <div className="space-y-3 bg-white/5 p-3 rounded-lg">
+                <div className="space-y-3 bg-white/5 p-3 rounded-lg max-h-48 overflow-y-auto custom-scrollbar">
                     {order.items.map(item => (
                         <div key={item.name} className="flex gap-3">
                             <Image
@@ -131,23 +137,25 @@ const OrderDetailsContent = ({ order }: { order: Order }) => {
                     <div className="flex justify-between font-bold text-base"><span className="text-white/80">Total:</span> <span className="text-custom-gold">₹{order.total.toFixed(2)}</span></div>
                 </div>
             </div>
-            
-             <div className="flex items-center justify-center gap-4 mt-4">
-                <p className="text-sm text-white/80">Order Status:</p>
-                <Select onValueChange={handleStatusChange} defaultValue={order.status}>
-                    <SelectTrigger className={cn(
-                        "w-[180px] h-9 text-sm rounded-full border-none focus:ring-0 focus:ring-offset-0",
-                        statusVariant(order.status)
-                    )}>
-                        <SelectValue placeholder="Status" />
-                    </SelectTrigger>
-                    <SelectContent>
-                        <SelectItem value="Order Requested">Order Requested</SelectItem>
-                        <SelectItem value="In Progress">In Progress</SelectItem>
-                        <SelectItem value="Completed">Completed</SelectItem>
-                        <SelectItem value="Cancelled">Cancelled</SelectItem>
-                    </SelectContent>
-                </Select>
+
+            <Separator className="bg-white/20" />
+
+             <div className="flex flex-col items-center justify-center gap-2 mt-2">
+                <p className="text-sm text-white/80">Order Status</p>
+                <div className="flex flex-wrap justify-center gap-2">
+                    {statusOptions.map((status) => (
+                        <Button
+                            key={status}
+                            onClick={() => handleStatusChange(status)}
+                            className={cn(
+                                "text-xs h-8 px-3 rounded-full border-none focus:ring-0 focus:ring-offset-0 transition-all duration-200",
+                                getStatusVariant(status, order.status === status)
+                            )}
+                        >
+                            {status}
+                        </Button>
+                    ))}
+                </div>
             </div>
 
         </div>
@@ -178,7 +186,7 @@ export function AdminOrderDetails({ order, open, onOpenChange }: AdminOrderDetai
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="justify-center p-0 w-[90vw] md:w-full max-w-lg bg-custom-purple-dark border-2 border-custom-gold rounded-2xl md:rounded-[30px]">
+      <DialogContent className="justify-center p-0 w-[90vw] md:w-full max-w-md bg-custom-purple-dark border-2 border-custom-gold rounded-2xl md:rounded-[30px]">
         <DialogHeader className="p-4 md:p-6 border-b border-white/20 text-center">
           <DialogTitle className="text-white text-lg md:text-xl">Order Details</DialogTitle>
           <DialogClose className="absolute right-3 top-2 md:top-3 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground text-white z-10">
