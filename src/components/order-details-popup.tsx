@@ -1,3 +1,4 @@
+
 // @/components/order-details-popup.tsx
 'use client';
 
@@ -75,7 +76,7 @@ const OrderDetailsContent = ({ order }: { order: Order }) => {
                 <div className="bg-white/5 p-3 rounded-lg space-y-3">
                     {order.items.map((item, index) => (
                         <React.Fragment key={item.name}>
-                            <div className="flex flex-col">
+                             <div className="flex flex-col">
                                 <p className="font-bold text-base mb-2">{item.name}</p>
                                 <div className="flex gap-3 items-start">
                                     <Image
@@ -153,15 +154,15 @@ export function OrderDetailsPopup({ order, open, onOpenChange }: OrderDetailsPop
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="justify-center p-0 w-[90vw] md:w-full max-w-lg bg-custom-purple-dark border-2 border-custom-gold rounded-2xl md:rounded-[30px]">
-        <DialogHeader className="p-4 text-center border-b border-white/20">
+      <DialogContent className="justify-center h-[90vh] max-w-sm bg-custom-purple-dark border-2 border-custom-gold rounded-2xl rounded-[30px]">
+        <DialogHeader className="p-4 text-center border-b border-white/20 no-scrollbar">
           <DialogTitle className="text-white text-lg md:text-xl">Order Details</DialogTitle>
           <DialogClose className="absolute right-3 top-3 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground text-white z-10">
             <X className="h-5 w-5" />
             <span className="sr-only">Close</span>
           </DialogClose>
         </DialogHeader>
-        <div className="overflow-y-auto">
+        <div className="overflow-y-auto no-scrollbar">
           <OrderDetailsContent order={order} />
         </div>
       </DialogContent>
