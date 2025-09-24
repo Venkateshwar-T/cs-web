@@ -61,7 +61,7 @@ const OrderDetailsContent = ({ order }: { order: Order }) => {
         switch (status) {
           case 'Completed': return 'bg-green-600 text-white';
           case 'Cancelled': return 'bg-red-600 text-white';
-          case 'In Progress': return 'bg-custom-gold text-custom-purple-dark';
+          case 'In Progress': return 'bg-blue-500 text-white';
           default: return 'bg-custom-gold text-custom-purple-dark';
         }
       }
@@ -146,13 +146,13 @@ const OrderDetailsContent = ({ order }: { order: Order }) => {
 
              <div className="flex flex-col items-center justify-center gap-2 mt-2">
                 <p className="text-sm text-white/80">Order Status</p>
-                <div className="flex flex-col items-center gap-2">
+                <div className="flex flex-wrap justify-center gap-2">
                     {statusOptions.map((status) => (
                         <Button
                             key={status}
                             onClick={() => handleStatusChange(status)}
                             className={cn(
-                                "text-xs h-8 px-3 rounded-full border-none focus:ring-0 focus:ring-offset-0 transition-all duration-200 w-36",
+                                "text-xs h-8 px-3 rounded-full border-none focus:ring-0 focus:ring-offset-0 transition-all duration-200",
                                 getStatusVariant(status, order.status === status)
                             )}
                         >
