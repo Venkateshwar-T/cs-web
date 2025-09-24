@@ -23,6 +23,7 @@ export default function FaqPageClient({ children, allProducts }: { children: Rea
   const [isHeaderVisible, setIsHeaderVisible] = useState(true);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const { cart, updateCart, likedProducts, toggleLike, clearWishlist } = useAppContext();
+  const [isContentScrolled, setIsContentScrolled] = useState(false);
 
   const handleHeaderNavigate = (view: 'about' | 'faq' | 'admin') => {
     router.push(`/${view}`);
@@ -30,6 +31,7 @@ export default function FaqPageClient({ children, allProducts }: { children: Rea
 
   const handleScroll = (event: UIEvent<HTMLDivElement>) => {
       if (!isMobile) {
+        setIsContentScrolled(event.currentTarget.scrollTop > 0);
         return;
       }
 
@@ -66,7 +68,7 @@ export default function FaqPageClient({ children, allProducts }: { children: Rea
         <div className="flex flex-col h-screen">
             <Header
             onProfileOpenChange={setIsProfileOpen}
-            isContentScrolled={isMobile ? true : !isHeaderVisible}
+            isContentScrolled={isMobile ? true : isContentScrolled}
             onReset={() => router.push('/')}
             onNavigate={handleHeaderNavigate}
             activeView={'faq'}
@@ -75,7 +77,7 @@ export default function FaqPageClient({ children, allProducts }: { children: Rea
             onScroll={handleScroll}
             className={cn(
                 "flex-grow flex flex-col overflow-y-auto no-scrollbar transition-all duration-300",
-                isMobile ? "pt-24" : "pt-36"
+                isMobile ? (isHeaderVisible ? "pt-24" : "pt-0") : "pt-36"
             )}
             >
               {children}
