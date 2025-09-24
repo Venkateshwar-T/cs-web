@@ -1,3 +1,4 @@
+
 // @/components/mobile-cart-item-card.tsx
 'use client';
 
@@ -14,7 +15,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import type { OrderItem } from '@/context/app-context';
-import type { SanityProduct } from '@/types';
+import type { SanityProduct, SanityFlavour } from '@/types';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
@@ -61,18 +62,18 @@ export function MobileCartItemCard({ item, product, onQuantityChange, onRemove, 
     const availableFlavoursMap = product.availableFlavours?.reduce((acc, flavour) => {
         acc[flavour.name] = flavour;
         return acc;
-    }, {} as Record<string, typeof product.availableFlavours[number]>);
+    }, {} as Record<string, SanityFlavour>);
     
     const flavourTotal = (item.flavours && availableFlavoursMap)
-        ? item.flavours.reduce((acc, flavourName) => acc + (availableFlavoursMap[flavourName]?.price || 0), 0)
+        ? item.flavours.reduce((acc, flavour) => acc + (flavour?.price || 0), 0)
         : 0;
         
     const itemPrice = (product.discountedPrice || 0) + flavourTotal;
 
     const sortedFlavours = item.flavours && availableFlavoursMap
     ? [...item.flavours].sort((a, b) => {
-        const priceA = availableFlavoursMap[a]?.price || 0;
-        const priceB = availableFlavoursMap[b]?.price || 0;
+        const priceA = a?.price || 0;
+        const priceB = b?.price || 0;
         return priceB - priceA;
       })
     : [];
@@ -149,11 +150,10 @@ export function MobileCartItemCard({ item, product, onQuantityChange, onRemove, 
                                     <div className="bg-white/10 rounded-lg p-4 m-4">
                                         <ul className="list-disc list-inside text-sm mt-1 space-y-2 font-medium">
                                         {sortedFlavours.map((flavour, index) => {
-                                            const flavourDetails = availableFlavoursMap?.[flavour];
-                                            const price = flavourDetails?.price ?? 0;
+                                            const price = flavour?.price ?? 0;
                                             return (
                                                 <li key={index} className="flex justify-between items-center">
-                                                    <span className="w-24 inline-block">{flavour}</span>
+                                                    <span className="w-24 inline-block">{flavour.name}</span>
                                                     {product.numberOfChocolates && <span className="text-xs text-white/70 font-medium">x{product.numberOfChocolates} Pieces</span>}
                                                     <span className="font-semibold text-right w-20">{price > 0 ? `+₹${price}` : '+₹0'}</span>
                                                 </li>
