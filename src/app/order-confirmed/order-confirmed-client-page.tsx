@@ -15,9 +15,10 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import { StaticSparkleBackground } from '@/components/static-sparkle-background';
 import { Loader } from '@/components/loader';
 import { motion } from 'framer-motion';
-import { useAppContext, type Order, type OrderItem } from '@/context/app-context';
-import type { SanityProduct } from '@/types';
+import { useAppContext } from '@/context/app-context';
+import type { SanityProduct, Order, OrderItem } from '@/types';
 import { ProductOrderDetailsPopup } from '@/components/product-order-details-popup';
+import type { ActiveView } from '@/app/page';
 
 const ProcessingView = () => (
     <div className="flex flex-col items-center justify-center h-full text-center gap-6">
@@ -78,7 +79,7 @@ function OrderConfirmedPageComponent({ allProducts }: { allProducts: SanityProdu
     setSelectedProductDetails({product, orderItem});
   };
 
-  const handleNavigation = (view: 'home' | 'cart' | 'profile') => {
+  const handleNavigation = (view: ActiveView) => {
     if (view === 'cart') router.push('/cart');
     else if (view === 'profile') router.push('/profile');
     else router.push('/');
