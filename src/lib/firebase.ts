@@ -1,3 +1,4 @@
+
 // src/lib/firebase.ts
 import { initializeApp, getApps, getApp, type FirebaseApp } from 'firebase/app';
 import {
@@ -12,7 +13,8 @@ import {
   type User
 } from 'firebase/auth';
 import { getFirestore, doc, getDoc, setDoc, updateDoc, collection, addDoc, getDocs, query, collectionGroup, where, writeBatch } from 'firebase/firestore';
-import type { ProfileInfo, Order } from '@/context/app-context';
+import type { ProfileInfo } from '@/context/app-context';
+import type { Order } from '@/types';
 
 
 // Initialize Firebase on the client side
