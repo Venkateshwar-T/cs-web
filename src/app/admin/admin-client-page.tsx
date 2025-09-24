@@ -132,7 +132,7 @@ export default function AdminClientPage() {
                             onClick={() => handleStatusSelect(option)}
                             className={cn(
                               "justify-start text-base py-3 h-auto hover:bg-transparent",
-                              statusFilter === option ? "font-bold text-custom-gold" : "hover:text-white"
+                              statusFilter === option ? "font-bold text-custom-gold" : "text-white/80 hover:text-white"
                             )}
                           >
                             {option === 'All' ? 'All Statuses' : option}
