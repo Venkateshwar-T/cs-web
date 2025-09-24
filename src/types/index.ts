@@ -49,3 +49,18 @@ export type OrderItem = {
   finalSubtotal?: number;
   coverImage?: string;
 };
+
+export interface Order {
+  id: string;
+  uid: string;
+  date: string;
+  items: OrderItem[];
+  status: 'Order Requested' | 'In Progress' | 'Completed' | 'Cancelled';
+  total: number;
+  totalDiscount?: number;
+  gstPercentage?: number;
+  customerName?: string;
+  customerEmail?: string;
+  customerPhone?: string;
+  address?: string;
+}

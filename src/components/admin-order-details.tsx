@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/sheet"
 import { Button } from "./ui/button";
 import { X, User, Mail, Phone, Home, ShoppingCart, Percent, FileText } from "lucide-react";
-import type { Order } from "@/context/app-context";
+import type { Order } from "@/types";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { Separator } from "./ui/separator";
@@ -64,8 +64,8 @@ const OrderDetailsContent = ({ order }: { order: Order }) => {
     };
 
     const handleStatusChange = (newStatus: Order['status']) => {
-        if (order.id) {
-            updateOrderStatus(order.id, newStatus);
+        if (order.id && order.uid) {
+            updateOrderStatus(order.uid, order.id, newStatus);
         }
     };
 

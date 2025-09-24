@@ -18,7 +18,7 @@ import {
   updateOrderStatus,
 } from '@/lib/firebase';
 import type { User } from 'firebase/auth';
-
+import type { Order } from '@/types';
 
 
 const defaultProfileInfo: ProfileInfo = {
@@ -41,20 +41,6 @@ export type OrderItem = {
   coverImage?: string;
 };
 
-export type Order = {
-  id: string;
-  date: string;
-  items: OrderItem[];
-  status: 'Order Requested' | 'In Progress' | 'Completed' | 'Cancelled';
-  total: number;
-  totalDiscount?: number;
-  gstPercentage?: number;
-  customerName?: string;
-  customerEmail?: string;
-  customerPhone?: string;
-  address?: string;
-};
-
 type Cart = Record<string, {
   name: string;
   quantity: number;
@@ -72,7 +58,7 @@ interface AppContextType {
   clearWishlist: () => void;
   
   orders: Order[];
-  addOrder: (newOrder: Omit<Order, 'id'>) => Promise<string | null>;
+  addOrder: (newOrder: Omit<Order, 'id' | 'uid'>) => Promise<string | null>;
   isOrdersLoaded: boolean;
   clearOrders: () => void;
   reorder: (orderId: string) => void;
@@ -80,7 +66,7 @@ interface AppContextType {
   
   allOrders: Order[];
   isAllOrdersLoaded: boolean;
-  updateOrderStatus: (orderId: string, newStatus: Order['status']) => void;
+  updateOrderStatus: (uid: string, orderId: string, newStatus: Order['status']) => void;
 
   cart: Cart;
   updateCart: (productName: string, quantity: number, flavours?: string[]) => void;
@@ -222,11 +208,11 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
     setLikedProducts({});
   }, [setLikedProducts]);
 
-  const addOrder = useCallback(async (newOrder: Omit<Order, 'id'>): Promise<string | null> => {
+  const addOrder = useCallback(async (newOrder: Omit<Order, 'id' | 'uid'>): Promise<string | null> => {
     if (user) {
       try {
         const newOrderId = await addUserOrder(user.uid, newOrder);
-        const fullOrder = { ...newOrder, id: newOrderId };
+        const fullOrder = { ...newOrder, id: newOrderId, uid: user.uid };
         setOrders(prevOrders => [fullOrder, ...prevOrders].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()));
         if (isAdmin) {
             setAllOrders(prevAllOrders => [fullOrder, ...prevAllOrders].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()));
@@ -374,9 +360,9 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
     }
   }, [toast]);
   
-  const handleUpdateOrderStatus = async (orderId: string, newStatus: Order['status']) => {
+  const handleUpdateOrderStatus = async (uid: string, orderId: string, newStatus: Order['status']) => {
     try {
-      await updateOrderStatus(orderId, newStatus);
+      await updateOrderStatus(uid, orderId, newStatus);
       const update = (orders: Order[]) => orders.map(o => o.id === orderId ? { ...o, status: newStatus } : o);
       setAllOrders(update);
       setOrders(update);

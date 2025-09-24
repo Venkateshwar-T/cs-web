@@ -130,12 +130,13 @@ export const updateUserProfile = async (uid: string, data: Partial<ProfileInfo>)
     await updateDoc(userDocRef, data);
 };
 
-export const addUserOrder = async (uid: string, orderData: Omit<Order, 'id'>): Promise<string> => {
+export const addUserOrder = async (uid: string, orderData: Omit<Order, 'id' | 'uid'>): Promise<string> => {
     const db = getClientFirestore();
     if (!db) throw new Error("Firestore not initialized");
     const ordersCollectionRef = collection(db, 'users', uid, 'orders');
     const docRef = await addDoc(ordersCollectionRef, {
         ...orderData,
+        uid: uid,
         id: '' // Firestore will generate an ID, we'll update it later
     });
     // Now update the document with its own ID
@@ -170,6 +171,7 @@ export const getAllOrders = async (): Promise<Order[]> => {
                   return {
                       ...orderData,
                       id: orderDoc.id,
+                      uid: userDocRef.id,
                       customerName: userData.name,
                       customerEmail: userData.email,
                       customerPhone: userData.phone,
@@ -177,27 +179,22 @@ export const getAllOrders = async (): Promise<Order[]> => {
                   } as Order;
               }
           }
-          return { ...orderData, id: orderDoc.id } as Order; // Fallback if user data is not found
+          return { ...orderData, id: orderDoc.id, uid: userDocRef?.id || '' } as Order; // Fallback if user data is not found
       })
   );
   return ordersWithUserDetails;
 };
 
 
-export const updateOrderStatus = async (orderId: string, newStatus: Order['status']): Promise<void> => {
+export const updateOrderStatus = async (uid: string, orderId: string, newStatus: Order['status']): Promise<void> => {
     const db = getClientFirestore();
     if (!db) throw new Error("Firestore not initialized");
 
-    const ordersRef = collectionGroup(db, 'orders');
-    const q = query(ordersRef, where('id', '==', orderId));
-    
-    const querySnapshot = await getDocs(q);
-    
-    if (querySnapshot.empty) {
-        throw new Error(`Order with ID ${orderId} not found.`);
+    if (!uid) {
+      throw new Error("User ID is missing, cannot update order status.");
     }
-
-    // Since order IDs are unique, we expect only one document.
-    const orderDoc = querySnapshot.docs[0];
-    await updateDoc(orderDoc.ref, { status: newStatus });
+    
+    const orderDocRef = doc(db, 'users', uid, 'orders', orderId);
+    
+    await updateDoc(orderDocRef, { status: newStatus });
 };

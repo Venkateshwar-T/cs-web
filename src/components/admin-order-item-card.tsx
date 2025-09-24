@@ -2,7 +2,7 @@
 'use client';
 
 import Image from 'next/image';
-import type { Order } from '@/context/app-context';
+import type { Order } from '@/types';
 import { cn } from '@/lib/utils';
 import { Badge } from './ui/badge';
 import { Separator } from './ui/separator';
@@ -35,8 +35,8 @@ export function AdminOrderItemCard({ order, onClick }: AdminOrderItemCardProps) 
     };
     
     const handleStatusChange = (newStatus: Order['status']) => {
-        if (order.id) {
-            updateOrderStatus(order.id, newStatus);
+        if (order.id && order.uid) {
+            updateOrderStatus(order.uid, order.id, newStatus);
         }
     };
 
