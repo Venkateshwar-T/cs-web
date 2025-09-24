@@ -46,17 +46,36 @@ async function getFilteredProducts(searchParams: { [key: string]: string | strin
         params.queryTerm = `*${queryTerm}*`;
     }
 
-    // Add price filter
-    const minPrice = searchParams.minPrice;
-    const maxPrice = searchParams.maxPrice;
-    if (minPrice) {
-        filters.push(`discountedPrice >= $minPrice`);
-        params.minPrice = Number(minPrice);
+    // Handle multi-select price ranges
+    const priceRanges = searchParams.priceRange;
+    if (priceRanges && Array.isArray(priceRanges) && priceRanges.length > 0) {
+        const priceFilters = priceRanges.map((range, index) => {
+            const [min, max] = range.split('-').map(Number);
+            params[`minPrice_${index}`] = min;
+            params[`maxPrice_${index}`] = max;
+            return `(discountedPrice >= $minPrice_${index} && discountedPrice <= $maxPrice_${index})`;
+        });
+        filters.push(`(${priceFilters.join(' || ')})`);
+    } else if (priceRanges && typeof priceRanges === 'string') {
+        const [min, max] = priceRanges.split('-').map(Number);
+        params.minPrice = min;
+        params.maxPrice = max;
+        filters.push(`(discountedPrice >= $minPrice && discountedPrice <= $maxPrice)`);
     }
-    if (maxPrice) {
-        filters.push(`discountedPrice <= $maxPrice`);
-        params.maxPrice = Number(maxPrice);
+    // Handle custom price slider if no checkboxes are selected
+    else if (!priceRanges && (searchParams.minPrice || searchParams.maxPrice)) {
+        const minPrice = searchParams.minPrice;
+        const maxPrice = searchParams.maxPrice;
+        if (minPrice) {
+            filters.push(`discountedPrice >= $minPrice`);
+            params.minPrice = Number(minPrice);
+        }
+        if (maxPrice) {
+            filters.push(`discountedPrice <= $maxPrice`);
+            params.maxPrice = Number(maxPrice);
+        }
     }
+
 
     // Handle dynamic filters from Sanity
     allFilters.forEach(category => {

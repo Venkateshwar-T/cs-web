@@ -71,19 +71,27 @@ export function FilterContainer({ filters, isMobile = false }: FilterContainerPr
     
     const handlePriceRangeChange = useCallback((range: [number, number]) => {
         const params = new URLSearchParams(searchParams.toString());
+        params.delete('priceRange'); // Clear checkbox selections
         params.set('minPrice', range[0].toString());
         params.set('maxPrice', range[1].toString());
         router.replace(`?${params.toString()}`, { scroll: false });
     }, [router, searchParams]);
 
-    const handlePriceCheckboxChange = useCallback((range: [number, number] | null, isChecked: boolean) => {
+    const handlePriceCheckboxChange = useCallback((rangeString: string, isChecked: boolean) => {
         const params = new URLSearchParams(searchParams.toString());
-        if (isChecked && range) {
-            params.set('minPrice', range[0].toString());
-            params.set('maxPrice', range[1].toString());
+        // Clear slider selections
+        params.delete('minPrice');
+        params.delete('maxPrice');
+        
+        const existingRanges = params.getAll('priceRange');
+        if (isChecked) {
+            if (!existingRanges.includes(rangeString)) {
+                params.append('priceRange', rangeString);
+            }
         } else {
-            params.delete('minPrice');
-            params.delete('maxPrice');
+            const newRanges = existingRanges.filter(r => r !== rangeString);
+            params.delete('priceRange');
+            newRanges.forEach(r => params.append('priceRange', r));
         }
         router.replace(`?${params.toString()}`, { scroll: false });
     }, [router, searchParams]);

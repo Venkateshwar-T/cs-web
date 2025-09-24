@@ -43,7 +43,7 @@ interface FilterControlsProps {
     selectedFilters: Record<string, string[]>;
     onFilterChange: (categoryKey: string, optionTitle: string, checked: boolean) => void;
     onPriceRangeChange: (range: [number, number]) => void;
-    onPriceCheckboxChange: (range: [number, number] | null, checked: boolean) => void;
+    onPriceCheckboxChange: (range: string, isChecked: boolean) => void;
 }
 
 function formatCategoryTitleToKey(title: string) {
@@ -70,39 +70,31 @@ export function FilterControls({
 }: FilterControlsProps) {
     const minPrice = searchParams.get('minPrice');
     const maxPrice = searchParams.get('maxPrice');
+    const priceRanges = searchParams.getAll('priceRange');
     
     const [sliderValue, setSliderValue] = useState<[number, number]>([
         minPrice ? Number(minPrice) : 0,
         maxPrice ? Number(maxPrice) : 3000
     ]);
-
-    const [activeCheckbox, setActiveCheckbox] = useState<string | null>(null);
+    
+    const isSliderDisabled = priceRanges.length > 0;
 
     useEffect(() => {
-        const min = minPrice ? Number(minPrice) : 0;
-        const max = maxPrice ? Number(maxPrice) : 3000;
-        setSliderValue([min, max]);
-
-        const matchingOption = priceOptions.find(opt => opt.range[0] === min && opt.range[1] === max);
-        if (matchingOption) {
-            setActiveCheckbox(matchingOption.id);
-        } else {
-            setActiveCheckbox(null);
+        if (!isSliderDisabled) {
+            const min = minPrice ? Number(minPrice) : 0;
+            const max = maxPrice ? Number(maxPrice) : 3000;
+            setSliderValue([min, max]);
         }
-    }, [minPrice, maxPrice]);
+    }, [minPrice, maxPrice, isSliderDisabled]);
 
     const handleSliderCommit = (value: [number, number]) => {
-        onPriceRangeChange(value);
-    };
-
-    const handleCheckboxChange = (optionId: string, range: [number, number], isChecked: boolean) => {
-        if (isChecked) {
-            setActiveCheckbox(optionId);
-            onPriceCheckboxChange(range, true);
-        } else {
-            setActiveCheckbox(null);
-            onPriceCheckboxChange(null, false);
+        if (!isSliderDisabled) {
+            onPriceRangeChange(value);
         }
+    };
+    
+    const handleCheckboxChange = (rangeString: string, isChecked: boolean) => {
+        onPriceCheckboxChange(rangeString, isChecked);
     };
 
     const allFilters = structuredFilters;
@@ -131,7 +123,7 @@ export function FilterControls({
                     )}
                     
                     <div className="space-y-6">
-                        <div className="space-y-2">
+                        <div className={cn("space-y-2", isSliderDisabled && "opacity-50")}>
                             <p className="text-sm text-white/80 font-poppins">Price</p>
                             <p className="text-base text-white font-semibold font-plex-sans">
                                 ₹{sliderValue[0]} - ₹{sliderValue[1]}
@@ -143,19 +135,23 @@ export function FilterControls({
                                 max={3000}
                                 step={100}
                                 className="w-full"
+                                disabled={isSliderDisabled}
                             />
                         </div>
 
                          <FilterSection title="Price Range">
-                            {priceOptions.map((option) => (
-                                <CheckboxItem
-                                    key={option.id}
-                                    id={`${isMobile ? 'mobile-' : ''}${option.id}`}
-                                    label={option.title}
-                                    checked={activeCheckbox === option.id}
-                                    onCheckedChange={(checked) => handleCheckboxChange(option.id, option.range as [number, number], !!checked)}
-                                />
-                            ))}
+                            {priceOptions.map((option) => {
+                                const rangeString = `${option.range[0]}-${option.range[1]}`;
+                                return (
+                                    <CheckboxItem
+                                        key={option.id}
+                                        id={`${isMobile ? 'mobile-' : ''}${option.id}`}
+                                        label={option.title}
+                                        checked={priceRanges.includes(rangeString)}
+                                        onCheckedChange={(checked) => handleCheckboxChange(rangeString, !!checked)}
+                                    />
+                                );
+                            })}
                         </FilterSection>
                         
                         {allFilters.map((filterCategory) => {
