@@ -28,7 +28,7 @@ import {
 import { StaticSparkleBackground } from '@/components/static-sparkle-background';
 import { FloatingCartFinalizeButton } from '@/components/floating-cart-finalize-button';
 import { EmptyState } from '@/components/empty-state';
-import { useAppContext, type CartItem, type OrderItem } from '@/context/app-context';
+import { useAppContext, type Cart, type OrderItem } from '@/context/app-context';
 import type { SanityProduct } from '@/types';
 import { Loader } from '@/components/loader';
 import { useToast } from '@/hooks/use-toast';
@@ -124,7 +124,7 @@ export default function CartClientPage({ allProducts }: { allProducts: SanityPro
             const flavour = product.availableFlavours?.find(f => f.name === flavourName);
             return { name: flavourName, price: flavour?.price || 0 };
         })
-        .filter(f => f !== null) as { name: string; price: number }[];
+        .filter(f => f !== null);
 
       const totalFlavourPrice = flavoursWithPrices.reduce((acc, flavour) => acc + flavour.price, 0) * (product.numberOfChocolates || 1);
 
@@ -142,7 +142,7 @@ export default function CartClientPage({ allProducts }: { allProducts: SanityPro
       };
     });
 
-    const orderItems: OrderItem[] = mappedItems.filter((item): item is OrderItem => item !== null);
+    const orderItems: OrderItem[] = mappedItems.filter((item) => item !== null) as OrderItem[];
 
     const subtotal = orderItems.reduce((acc, item) => acc + (item.finalSubtotal || 0), 0);
     const totalMrp = orderItems.reduce((acc, item) => acc + (item.mrp || (item.finalProductPrice || 0) / item.quantity) * item.quantity, 0)
@@ -309,5 +309,3 @@ export default function CartClientPage({ allProducts }: { allProducts: SanityPro
     </>
   );
 }
-
-    
