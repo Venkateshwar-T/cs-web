@@ -36,7 +36,7 @@ export function OrderItemCard({ order, isMobile = false, onClick }: OrderItemCar
     return (
         <button 
             onClick={onClick}
-            className="bg-white/90 p-3 md:p-4 text-black w-full relative overflow-hidden rounded-xl md:rounded-2xl shadow-md text-left transition-transform hover:scale-[1.02]">
+            className="bg-white/90 p-3 md:p-4 text-black w-full relative overflow-hidden rounded-xl md:rounded-2xl shadow-md text-left">
             <div className="flex justify-between items-start mb-3">
                  <div className="flex flex-col">
                     <p className="text-xs text-black/70">{formattedDate} at {formattedTime}</p>
