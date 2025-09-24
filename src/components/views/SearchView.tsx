@@ -8,6 +8,11 @@ import { cn } from '@/lib/utils';
 import type { SanityProduct, StructuredFilter } from '@/types';
 import type { OrderItem } from '@/context/app-context';
 
+type Cart = Record<string, {
+  name: string;
+  quantity: number;
+  flavours?: string[];
+}>;
 
 interface SearchViewProps {
   filters: StructuredFilter[];
@@ -26,7 +31,7 @@ interface SearchViewProps {
   onScroll: (event: UIEvent<HTMLDivElement>) => void;
   isMobile: boolean | undefined;
   onProductClick: (product: SanityProduct) => void;
-  cart: Record<string, OrderItem>;
+  cart: Cart;
   likedProducts: Record<string, boolean>; // Sanity ID (_id) is a string
   onLikeToggle: (productId: string) => void;
   onAddToCart: (productName: string, quantity: number) => void;
