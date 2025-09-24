@@ -145,7 +145,7 @@ const OrderDetailsContent = ({ order }: { order: Order }) => {
 
              <div className="flex flex-col items-center justify-center gap-2 mt-2">
                 <p className="text-sm text-white/80">Order Status</p>
-                <div className="flex flex-col items-center gap-2">
+                <div className="flex flex-wrap justify-center gap-2">
                     {statusOptions.map((status) => (
                         <Button
                             key={status}
@@ -174,12 +174,10 @@ export function AdminOrderDetails({ order, open, onOpenChange }: AdminOrderDetai
   if (isMobile) {
     return (
       <Sheet open={open} onOpenChange={onOpenChange}>
-        <SheetContent side="bottom" className="bg-custom-purple-dark text-white border-t-2 border-custom-gold rounded-t-3xl h-[90vh] p-0">
+        <SheetContent side="bottom" className="bg-custom-purple-dark text-white border-t-2 border-custom-gold rounded-t-3xl h-[95vh] p-0">
           <SheetHeader className="p-4 border-b border-white/20 text-center">
             <SheetTitle className="text-white text-lg">Order Details</SheetTitle>
-            <SheetClose className="absolute right-3 top-3 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground text-white z-10">
-              <X className="h-5 w-5" />
-            </SheetClose>
+            
           </SheetHeader>
           <OrderDetailsContent order={order} />
         </SheetContent>
