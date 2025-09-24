@@ -23,7 +23,7 @@ export function FlavoursSection({ product, onAddToCart, cart, isMobile = false }
   const [canScrollRight, setCanScrollRight] = useState(false);
   
   const availableFlavours = product.availableFlavours || [];
-  const selectedFlavoursForProduct = cart[product.name]?.flavours || [];
+  const selectedFlavourNamesForProduct = (cart[product.name]?.flavours || []).map(f => f.name);
 
 
   useEffect(() => {
@@ -85,7 +85,7 @@ export function FlavoursSection({ product, onAddToCart, cart, isMobile = false }
             key={flavour._id}
             flavour={flavour}
             onAddToCart={() => onAddToCart(product.name, flavour.name)}
-            quantity={selectedFlavoursForProduct.includes(flavour.name) ? 1 : 0}
+            quantity={selectedFlavourNamesForProduct.includes(flavour.name) ? 1 : 0}
           />
         ))}
       </div>
