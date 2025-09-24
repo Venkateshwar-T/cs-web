@@ -62,7 +62,7 @@ const OrderDetailsContent = ({ order }: { order: Order }) => {
 
 
     return (
-        <div className="flex flex-col gap-4 p-4 md:p-6 text-white">
+        <div className="flex flex-col gap-4 px-4 pb-4 md:px-6 md:py-3 text-white">
             <div className="grid grid-cols-1 gap-4">
                 <DetailRow icon={<Hash size={16} />} label="Order ID" value={order.id} />
                 <DetailRow icon={<Calendar size={16} />} label="Date & Time" value={`${formattedDate} at ${formattedTime}`} />
@@ -115,7 +115,7 @@ const OrderDetailsContent = ({ order }: { order: Order }) => {
             <Separator className="bg-white/20" />
             
             <div>
-                 <h4 className="font-bold mb-2">Financials</h4>
+                 <h4 className="font-bold mb-2">Bill Details</h4>
                  <div className="space-y-1 bg-white/5 p-3 rounded-lg text-sm">
                     <div className="flex justify-between"><span className="text-white/80">Total MRP:</span> <span>₹{totalMrp.toFixed(2)}</span></div>
                     <div className="flex justify-between text-green-400"><span className="text-white/80">Total Discount:</span> <span>-₹{discount.toFixed(2)}</span></div>
@@ -154,9 +154,9 @@ export function OrderDetailsPopup({ order, open, onOpenChange }: OrderDetailsPop
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="justify-center h-[90vh] max-w-sm bg-custom-purple-dark border-2 border-custom-gold rounded-2xl rounded-[30px]">
+      <DialogContent className="justify-center h-[90vh] w-[55vh] bg-custom-purple-dark border-2 border-custom-gold rounded-2xl rounded-[30px]">
         <DialogHeader className="p-4 text-center border-b border-white/20 no-scrollbar">
-          <DialogTitle className="text-white text-lg md:text-xl">Order Details</DialogTitle>
+          <DialogTitle className="text-white text-xl">Order Details</DialogTitle>
           <DialogClose className="absolute right-3 top-3 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground text-white z-10">
             <X className="h-5 w-5" />
             <span className="sr-only">Close</span>
