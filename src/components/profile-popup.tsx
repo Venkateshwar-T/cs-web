@@ -1,4 +1,3 @@
-
 // @/components/profile-popup.tsx
 'use client';
 
@@ -66,11 +65,6 @@ export function ProfilePopup({
   const router = useRouter();
 
   const [selectedProductDetails, setSelectedProductDetails] = useState<{orderItem: OrderItem } | null>(null);
-  
-  const productsByName = products.reduce((acc, p) => {
-    if (p) acc[p.name] = p;
-    return acc;
-  }, {} as Record<string, SanityProduct>);
 
   const handleActionWithCheck = (action: () => void) => {
     if (hasUnsavedChanges) {
@@ -117,7 +111,7 @@ export function ProfilePopup({
   }
 
   const handleViewProductFromOrder = (productName: string) => {
-    const product = productsByName[productName];
+    const product = products.find(p => p.name === productName);
     if (product) {
       onClose();
       router.push(`/product/${product.slug.current}`);
@@ -175,7 +169,7 @@ export function ProfilePopup({
                       {activeTab === 'My Orders' && (
                         <MyOrdersTab 
                           products={products} 
-                          onProductClick={(orderItem) => setSelectedProductDetails({ orderItem })}
+                          onProductClick={(product, orderItem) => setSelectedProductDetails({ orderItem })}
                         />
                       )}
                     </>

@@ -18,16 +18,20 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { RotateCcw } from 'lucide-react';
-import type { Order, OrderItem } from '@/types';
+import type { Order, OrderItem, SanityProduct } from '@/types';
+import { useAppContext } from '@/context/app-context';
 
 interface OrderItemCardProps {
     order: Order;
+    products: SanityProduct[];
     isMobile?: boolean;
-    onProductClick: (orderItem: OrderItem) => void;
+    onProductClick: (product: SanityProduct, orderItem: OrderItem) => void;
     onOrderAgain?: () => void;
 }
 
-export function OrderItemCard({ order, isMobile = false, onProductClick, onOrderAgain }: OrderItemCardProps) {
+export function OrderItemCard({ order, products, isMobile = false, onProductClick, onOrderAgain }: OrderItemCardProps) {
+    const { isAuthenticated } = useAppContext();
+
     const orderDate = new Date(order.date);
     const formattedDate = orderDate.toLocaleDateString('en-US', {
         year: 'numeric',
@@ -47,6 +51,12 @@ export function OrderItemCard({ order, isMobile = false, onProductClick, onOrder
             default: return 'default';
         }
     };
+    
+    const productsByName = products.reduce((acc, p) => {
+        if (p) acc[p.name] = p;
+        return acc;
+    }, {} as Record<string, SanityProduct>);
+
 
     if (isMobile) {
         return (
@@ -63,8 +73,11 @@ export function OrderItemCard({ order, isMobile = false, onProductClick, onOrder
                  </div>
                  <Separator className="bg-black/10 my-2" />
                  <div className="space-y-2">
-                    {order.items.map((item: OrderItem) => (
-                        <div key={item.name} className="flex items-center gap-3 cursor-pointer" onClick={() => onProductClick(item)}>
+                    {order.items.map((item: OrderItem) => {
+                      const product = productsByName[item.name];
+                      if (!product) return null;
+                      return (
+                        <div key={item.name} className="flex items-center gap-3 cursor-pointer" onClick={() => onProductClick(product, item)}>
                             <Image
                                 src={item.coverImage || "/placeholder.png"}
                                 alt={item.name}
@@ -78,7 +91,8 @@ export function OrderItemCard({ order, isMobile = false, onProductClick, onOrder
                                 <p className="text-xs text-black/60">Quantity: {item.quantity}</p>
                             </div>
                         </div>
-                    ))}
+                      )
+                    })}
                  </div>
                  <Separator className="bg-black/10 my-2" />
                  <div className="flex justify-between items-center">
@@ -86,7 +100,7 @@ export function OrderItemCard({ order, isMobile = false, onProductClick, onOrder
                         <p className="text-xs font-medium">Total Items: {order.items.reduce((sum, item) => sum + item.quantity, 0)}</p>
                         <p className="text-base font-bold">₹{order.total.toFixed(2)}</p>
                     </div>
-                    {onOrderAgain && (
+                    {isAuthenticated && onOrderAgain && (
                          <AlertDialog>
                           <AlertDialogTrigger asChild>
                             <Button size="sm" className="bg-custom-purple-dark text-white rounded-full hover:bg-custom-purple-dark/90 h-8 px-4 text-xs">
@@ -126,22 +140,26 @@ export function OrderItemCard({ order, isMobile = false, onProductClick, onOrder
             <Separator className="my-2 bg-black/20" />
             
             <div className="space-y-3 max-h-48 overflow-y-auto custom-scrollbar pr-2">
-                {order.items.map((item: OrderItem) => (
-                    <div key={item.name} className="flex items-center gap-4 cursor-pointer" onClick={() => onProductClick(item)}>
-                        <Image
-                            src={item.coverImage || "/placeholder.png"}
-                            alt={item.name}
-                            width={56}
-                            height={56}
-                            className="rounded-md flex-shrink-0"
-                            data-ai-hint="chocolate box"
-                        />
-                        <div className="flex-grow">
-                            <p className="font-bold truncate">{item.name}</p>
-                            <p className="text-sm text-black/60">Quantity: {item.quantity}</p>
+                {order.items.map((item: OrderItem) => {
+                    const product = productsByName[item.name];
+                    if (!product) return null;
+                    return (
+                        <div key={item.name} className="flex items-center gap-4 cursor-pointer" onClick={() => onProductClick(product, item)}>
+                            <Image
+                                src={item.coverImage || "/placeholder.png"}
+                                alt={item.name}
+                                width={56}
+                                height={56}
+                                className="rounded-md flex-shrink-0"
+                                data-ai-hint="chocolate box"
+                            />
+                            <div className="flex-grow">
+                                <p className="font-bold truncate">{item.name}</p>
+                                <p className="text-sm text-black/60">Quantity: {item.quantity}</p>
+                            </div>
                         </div>
-                    </div>
-                ))}
+                    )
+                })}
             </div>
 
             <Separator className="my-2 bg-black/20" />
@@ -151,7 +169,7 @@ export function OrderItemCard({ order, isMobile = false, onProductClick, onOrder
                   <p className="font-semibold">Total Items: {order.items.reduce((sum, item) => sum + item.quantity, 0)}</p>
                   <p className="text-xl font-bold">Total: ₹{order.total.toFixed(2)}</p>
                 </div>
-                {onOrderAgain && (
+                {isAuthenticated && onOrderAgain && (
                     <AlertDialog>
                       <AlertDialogTrigger asChild>
                         <Button size="sm" className="bg-custom-purple-dark text-white rounded-full hover:bg-custom-purple-dark/90 h-9 px-4 text-sm">

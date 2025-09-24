@@ -103,6 +103,7 @@ export function MyOrdersTab({ isMobile = false, products, onProductClick }: MyOr
                                 isMobile={true} 
                                 onProductClick={onProductClick}
                                 onOrderAgain={() => reorder(latestOrder.id)}
+                                products={products}
                               />
                            </div>
                             
@@ -118,6 +119,7 @@ export function MyOrdersTab({ isMobile = false, products, onProductClick }: MyOr
                                       isMobile={true} 
                                       onProductClick={onProductClick}
                                       onOrderAgain={() => reorder(order.id)}
+                                      products={products}
                                     />
                                   ))}
                                 </div>
@@ -174,7 +176,7 @@ export function MyOrdersTab({ isMobile = false, products, onProductClick }: MyOr
              {orders.length > 0 && latestOrder ? (
                 <div className="flex-grow overflow-y-auto no-scrollbar">
                     <SectionTitle className="text-xl text-white/90 pl-3 mb-2">Latest Order</SectionTitle>
-                    <OrderItemCard key={latestOrder.id} order={latestOrder} onProductClick={onProductClick} onOrderAgain={() => reorder(latestOrder.id)} />
+                    <OrderItemCard key={latestOrder.id} order={latestOrder} products={products} onProductClick={onProductClick} onOrderAgain={() => reorder(latestOrder.id)} />
 
                     {pastOrders.length > 0 && (
                       <>
@@ -182,7 +184,7 @@ export function MyOrdersTab({ isMobile = false, products, onProductClick }: MyOr
                         <SectionTitle className="text-xl text-white/90 pl-3 mb-2">Past Orders</SectionTitle>
                         <div className="space-y-4">
                           {pastOrders.map(order => (
-                              <OrderItemCard key={order.id} order={order} onProductClick={onProductClick} onOrderAgain={() => reorder(order.id)} />
+                              <OrderItemCard key={order.id} order={order} products={products} onProductClick={onProductClick} onOrderAgain={() => reorder(order.id)} />
                           ))}
                         </div>
                       </>
