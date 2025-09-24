@@ -4,6 +4,7 @@
 
 import { useState, useEffect, type UIEvent, useCallback } from 'react';
 import { useSearchParams, useRouter, usePathname } from 'next/navigation';
+import type { ActiveView } from '@/app/page';
 import { cn } from '@/lib/utils';
 import { Header } from '@/components/header';
 import { SparkleBackground } from '@/components/sparkle-background';
@@ -71,7 +72,7 @@ export default function SearchClientPage({ initialProducts, initialFilters }: Se
     }
   }, [isNewSearch]);
 
-  const handleAddToCart = (productName: string, quantity: number, animate: boolean = true) => {
+  const handleAddToCart = (productName: string, quantity: number) => {
     const prevQuantity = cart[productName]?.quantity || 0;
     
     // If quantity is decreasing, just update the cart
@@ -92,7 +93,7 @@ export default function SearchClientPage({ initialProducts, initialFilters }: Se
     // Otherwise (for increasing quantity of existing item), update directly
     updateCart(productName, quantity);
 
-    if (animate && quantity > prevQuantity) {
+    if (quantity > prevQuantity) {
       setCartMessage(`${quantity - prevQuantity} added`);
       setIsCartButtonExpanded(true);
       setTimeout(() => setIsCartButtonExpanded(false), 1500);
@@ -151,7 +152,7 @@ export default function SearchClientPage({ initialProducts, initialFilters }: Se
     }
   };
   
-  const handleNavigation = (view: 'home' | 'cart' | 'profile') => {
+  const handleNavigation = (view: ActiveView) => {
     router.push(view === 'home' ? '/' : `/${view}`);
   };
 
@@ -246,7 +247,7 @@ export default function SearchClientPage({ initialProducts, initialFilters }: Se
         likedProducts={likedProducts}
         onLikeToggle={toggleLike}
         cart={cart}
-        onAddToCart={handleAddToCart}
+        onAddToCart={updateCart}
         onClearCart={clearCart}
         onToggleCartPopup={handleToggleCartPopup}
         allProducts={initialProducts} // Pass real products to popups
