@@ -235,6 +235,7 @@ export default function ProductDetailClientPage({ product, featuredProducts }: P
           onSearchSubmit={handleSearchSubmit}
           searchInput={searchInput}
           onSearchInputChange={setSearchInput}
+          isSearchingOnAbout={false}
         />
         <main onScroll={handleScroll} className="pt-24 md:pt-32 overflow-y-auto no-scrollbar">
              <div className="bg-[#9A7DAB] rounded-[40px] text-white mx-32 h-[82vh] flex items-center justify-center">
