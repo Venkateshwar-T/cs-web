@@ -24,10 +24,10 @@ interface ProfileDetailsViewProps {
 
 export function ProfileDetailsView({ profile, onHasChangesChange, onProfileUpdate }: ProfileDetailsViewProps) {
   const { user } = useAppContext();
-  const [name, setName] = useState(profile.name);
-  const [phone, setPhone] = useState(profile.phone);
-  const [email, setEmail] = useState(profile.email);
-  const [address, setAddress] = useState(profile.address);
+  const [name, setName] = useState(profile.name || '');
+  const [phone, setPhone] = useState(profile.phone || '');
+  const [email, setEmail] = useState(profile.email || '');
+  const [address, setAddress] = useState(profile.address || '');
   const [password, setPassword] = useState(''); // Default to empty
   const [showPassword, setShowPassword] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -40,10 +40,10 @@ export function ProfileDetailsView({ profile, onHasChangesChange, onProfileUpdat
 
   useEffect(() => {
     const changes = 
-      name !== profile.name || 
-      phone !== profile.phone || 
-      email !== profile.email || 
-      address !== profile.address ||
+      name !== (profile.name || '') || 
+      phone !== (profile.phone || '') || 
+      email !== (profile.email || '') || 
+      address !== (profile.address || '') ||
       password !== '';
     setHasChanges(changes);
     onHasChangesChange(changes);
@@ -64,18 +64,18 @@ export function ProfileDetailsView({ profile, onHasChangesChange, onProfileUpdat
   };
   
   const handleCancel = () => {
-    setName(profile.name);
-    setPhone(profile.phone);
-    setEmail(profile.email);
-    setAddress(profile.address);
+    setName(profile.name || '');
+    setPhone(profile.phone || '');
+    setEmail(profile.email || '');
+    setAddress(profile.address || '');
     setPassword('');
   };
 
   const handleSave = async () => {
-    if (phone.length !== 10 || !address.trim()) {
+    if (phone && phone.length !== 10) {
       toast({
-        title: "Invalid Details",
-        description: "Please enter a valid 10-digit phone number and your address.",
+        title: "Invalid Phone Number",
+        description: "Please enter a valid 10-digit phone number.",
         variant: "destructive",
       });
       return;
@@ -137,7 +137,7 @@ export function ProfileDetailsView({ profile, onHasChangesChange, onProfileUpdat
       
       <Avatar className="w-24 h-24 mb-4">
         <AvatarImage src={user?.photoURL ?? `https://ui-avatars.com/api/?name=${encodeURIComponent(name || email)}&background=random`} alt="User avatar" data-ai-hint="person portrait" onDragStart={(e) => e.preventDefault()}/>
-        <AvatarFallback>{profile.name.charAt(0).toUpperCase()}</AvatarFallback>
+        <AvatarFallback>{profile.name?.charAt(0).toUpperCase()}</AvatarFallback>
       </Avatar>
 
       {isGoogleSignIn && (
@@ -221,7 +221,7 @@ export function ProfileDetailsView({ profile, onHasChangesChange, onProfileUpdat
             <Button 
                 onClick={handleCancel}
                 variant="outline"
-                className="bg-transparent text-base text-white border-custom-gold border-2 rounded-full px-10 hover:bg-custom-gold hover:text-custom-purple-dark disabled:opacity-50 disabled:bg-transparent disabled:text-white disabled:hover:text-custom-purple-dark"
+                className="bg-transparent text-base text-white border-custom-gold border-2 rounded-full px-10 hover:bg-custom-gold hover:text-custom-purple-dark disabled:opacity-50 disabled:bg-transparent disabled:text-white/50 disabled:border-white/50 disabled:hover:text-white/50"
                 disabled={!hasChanges || isSaving}
             >
                 Cancel
