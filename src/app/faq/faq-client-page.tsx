@@ -24,6 +24,8 @@ export default function FaqPageClient({ children, allProducts }: { children: Rea
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const { cart, updateCart, likedProducts, toggleLike, clearWishlist } = useAppContext();
   const [isContentScrolled, setIsContentScrolled] = useState(false);
+  const [searchInput, setSearchInput] = useState('');
+
 
   const handleHeaderNavigate = (view: 'about' | 'faq' | 'admin') => {
     router.push(`/${view}`);
@@ -67,11 +69,15 @@ export default function FaqPageClient({ children, allProducts }: { children: Rea
       <div className={cn(isProfileOpen && "opacity-50")}>
         <div className="flex flex-col h-screen">
             <Header
-            onProfileOpenChange={setIsProfileOpen}
-            isContentScrolled={isMobile ? true : isContentScrolled}
-            onReset={() => router.push('/')}
-            onNavigate={handleHeaderNavigate}
-            activeView={'faq'}
+              onProfileOpenChange={setIsProfileOpen}
+              isContentScrolled={isMobile ? true : isContentScrolled}
+              onReset={() => router.push('/')}
+              onNavigate={handleHeaderNavigate}
+              activeView={'faq'}
+              onSearchSubmit={(query) => router.push(`/search?q=${encodeURIComponent(query)}`)}
+              searchInput={searchInput}
+              onSearchInputChange={setSearchInput}
+              isSearchingOnAbout={true}
             />
             <main 
             onScroll={handleScroll}
