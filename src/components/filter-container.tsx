@@ -32,6 +32,12 @@ export function FilterContainer({ filters, isMobile = false }: FilterContainerPr
                 newSelectedFilters[categoryKey] = values;
             }
         });
+        // Also sync price ranges
+        const priceRanges = searchParams.getAll('priceRange');
+        if (priceRanges.length > 0) {
+            newSelectedFilters['priceRange'] = priceRanges;
+        }
+
         setSelectedFilters(newSelectedFilters);
     }, [searchParams, filters]);
 
@@ -93,6 +99,22 @@ export function FilterContainer({ filters, isMobile = false }: FilterContainerPr
             params.delete('priceRange');
             newRanges.forEach(r => params.append('priceRange', r));
         }
+        
+        // Optimistic UI update
+        setSelectedFilters(prev => {
+            const newValues = isChecked 
+                ? [...(prev['priceRange'] || []), rangeString]
+                : (prev['priceRange'] || []).filter(v => v !== rangeString);
+            
+            const newState = { ...prev };
+            if (newValues.length > 0) {
+                newState['priceRange'] = newValues;
+            } else {
+                delete newState['priceRange'];
+            }
+            return newState;
+        });
+
         router.replace(`?${params.toString()}`, { scroll: false });
     }, [router, searchParams]);
 

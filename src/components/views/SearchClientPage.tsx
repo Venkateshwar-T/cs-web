@@ -22,6 +22,10 @@ interface SearchClientPageProps {
   initialFilters: StructuredFilter[];
 }
 
+function formatCategoryTitleToKey(title: string) {
+    return title.toLowerCase().replace(/ & /g, '-').replace(/ /g, '-');
+}
+
 export default function SearchClientPage({ initialProducts, initialFilters }: SearchClientPageProps) {
   const router = useRouter();
   const pathname = usePathname();
@@ -111,8 +115,10 @@ export default function SearchClientPage({ initialProducts, initialFilters }: Se
   
   const getActiveFilters = () => {
     const active: { type: string, value: string, label: string }[] = [];
+    const filterKeys = initialFilters.map(f => formatCategoryTitleToKey(f.title));
+    
     for (const [key, value] of searchParams.entries()) {
-      if (key !== 'q' && key !== 'minPrice' && key !== 'maxPrice' && key !== 'sort') {
+      if (filterKeys.includes(key)) {
         active.push({ type: key, value: value, label: value });
       }
     }
