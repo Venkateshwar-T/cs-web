@@ -1,4 +1,3 @@
-
 // @/components/filter-controls.tsx
 'use client';
 
@@ -41,6 +40,7 @@ interface FilterControlsProps {
     structuredFilters: StructuredFilter[];
     isMobile?: boolean;
     searchParams: ReadonlyURLSearchParams;
+    selectedFilters: Record<string, string[]>;
     onFilterChange: (categoryKey: string, optionTitle: string, checked: boolean) => void;
     onPriceRangeChange: (range: [number, number]) => void;
     onPriceCheckboxChange: (range: [number, number] | null, checked: boolean) => void;
@@ -63,6 +63,7 @@ export function FilterControls({
     structuredFilters, 
     isMobile = false,
     searchParams,
+    selectedFilters,
     onFilterChange,
     onPriceRangeChange,
     onPriceCheckboxChange
@@ -82,7 +83,6 @@ export function FilterControls({
         const max = maxPrice ? Number(maxPrice) : 3000;
         setSliderValue([min, max]);
 
-        // Check if the current slider values match a checkbox option
         const matchingOption = priceOptions.find(opt => opt.range[0] === min && opt.range[1] === max);
         if (matchingOption) {
             setActiveCheckbox(matchingOption.id);
@@ -167,7 +167,7 @@ export function FilterControls({
                                     icon={filterCategory.icon ? <Image src={filterCategory.icon} alt={filterCategory.title} width={18} height={18} /> : undefined}
                                 >
                                     {filterCategory.options.map((option) => {
-                                        const isChecked = (searchParams.getAll(categoryKey) || []).includes(option.title);
+                                        const isChecked = (selectedFilters[categoryKey] || []).includes(option.title);
                                         return (
                                             <CheckboxItem
                                                 key={option._id}
