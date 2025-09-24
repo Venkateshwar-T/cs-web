@@ -1,7 +1,7 @@
-
 // @/components/order-details-popup.tsx
 'use client';
 
+import * as React from "react";
 import {
   Dialog,
   DialogContent,
@@ -62,7 +62,7 @@ const OrderDetailsContent = ({ order }: { order: Order }) => {
 
 
     return (
-        <div className="flex flex-col gap-4 p-4 md:p-6 text-white overflow-y-auto custom-scrollbar">
+        <div className="flex flex-col gap-4 p-4 md:p-6 text-white">
             <div className="grid grid-cols-1 gap-4">
                 <DetailRow icon={<Hash size={16} />} label="Order ID" value={order.id} />
                 <DetailRow icon={<Calendar size={16} />} label="Date & Time" value={`${formattedDate} at ${formattedTime}`} />
@@ -166,7 +166,7 @@ export function OrderDetailsPopup({ order, open, onOpenChange }: OrderDetailsPop
             <span className="sr-only">Close</span>
           </DialogClose>
         </DialogHeader>
-        <div className="max-h-[80vh] overflow-y-auto">
+        <div className="overflow-y-auto">
           <OrderDetailsContent order={order} />
         </div>
       </DialogContent>
