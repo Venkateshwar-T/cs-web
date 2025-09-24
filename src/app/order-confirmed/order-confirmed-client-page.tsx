@@ -1,4 +1,3 @@
-
 // @/app/order-confirmed/order-confirmed-client-page.tsx
 'use client';
 
@@ -17,7 +16,6 @@ import { Loader } from '@/components/loader';
 import { motion } from 'framer-motion';
 import { useAppContext } from '@/context/app-context';
 import type { SanityProduct, Order, OrderItem } from '@/types';
-import { ProductOrderDetailsPopup } from '@/components/product-order-details-popup';
 import type { ActiveView } from '@/app/page';
 
 const ProcessingView = () => (
@@ -46,8 +44,6 @@ function OrderConfirmedPageComponent({ allProducts }: { allProducts: SanityProdu
   const [isLoading, setIsLoading] = useState(true);
   const isMobile = useIsMobile();
   const [isContentScrolled, setIsContentScrolled] = useState(false);
-  const [selectedProductDetails, setSelectedProductDetails] = useState<{product: SanityProduct, orderItem: OrderItem} | null>(null);
-
 
   useEffect(() => {
     const orderId = searchParams.get('orderId');
@@ -74,10 +70,6 @@ function OrderConfirmedPageComponent({ allProducts }: { allProducts: SanityProdu
   const handleSearchSubmit = (query: string) => {
     router.push(`/search?q=${encodeURIComponent(query)}`);
   };
-  
-  const handleProductClick = (product: SanityProduct, orderItem: OrderItem) => {
-    setSelectedProductDetails({product, orderItem});
-  };
 
   const handleNavigation = (view: ActiveView) => {
     if (view === 'cart') router.push('/cart');
@@ -90,7 +82,7 @@ function OrderConfirmedPageComponent({ allProducts }: { allProducts: SanityProdu
   return (
     <>
       {isMobile ? <StaticSparkleBackground /> : <SparkleBackground />}
-      <div className={cn("flex flex-col h-screen", (isProfileOpen || !!selectedProductDetails) && 'opacity-50')}>
+      <div className={cn("flex flex-col h-screen", isProfileOpen && 'opacity-50')}>
         <Header 
           onProfileOpenChange={setIsProfileOpen}
           isContentScrolled={isContentScrolled}
@@ -111,7 +103,7 @@ function OrderConfirmedPageComponent({ allProducts }: { allProducts: SanityProdu
           ) : (
             <>
               <div className={cn("flex flex-col", isMobile ? "px-4 pb-8" : "md:px-32 pb-12")}>
-                <OrderConfirmedView order={confirmedOrder} products={allProducts} onProductClick={handleProductClick} />
+                <OrderConfirmedView order={confirmedOrder} products={allProducts} />
               </div>
               <Footer />
               <div className="h-16 flex-shrink-0 md:hidden" />
@@ -132,16 +124,6 @@ function OrderConfirmedPageComponent({ allProducts }: { allProducts: SanityProdu
         onClearWishlist={clearWishlist}
         onProductClick={(p) => router.push(`/product/${p.slug.current}`)}
       />
-
-      <ProductOrderDetailsPopup
-        details={selectedProductDetails}
-        open={!!selectedProductDetails}
-        onOpenChange={(isOpen) => {
-            if (!isOpen) {
-                setSelectedProductDetails(null);
-            }
-        }}
-       />
     </>
   );
 }

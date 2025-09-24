@@ -11,7 +11,6 @@ interface OrderConfirmedSummaryProps {
     order: Order;
     products: SanityProduct[];
     isMobile: boolean;
-    onProductClick: (product: SanityProduct, orderItem: OrderItem) => void;
 }
 
 const SummaryRow = ({ label, value, valueClass }: { label: string, value: string, valueClass?: string }) => (
@@ -22,7 +21,7 @@ const SummaryRow = ({ label, value, valueClass }: { label: string, value: string
 );
 
 
-export function OrderConfirmedSummary({ order, products, isMobile, onProductClick }: OrderConfirmedSummaryProps) {
+export function OrderConfirmedSummary({ order, products, isMobile }: OrderConfirmedSummaryProps) {
     const productsByName = products.reduce((acc, product) => {
         acc[product.name] = product;
         return acc;
@@ -41,7 +40,7 @@ export function OrderConfirmedSummary({ order, products, isMobile, onProductClic
             <Separator className="bg-black/10 my-2 md:my-3" />
 
             {/* Items List */}
-            <div className="flex-grow min-h-0 space-y-2">
+            <div className="min-h-0 space-y-2">
                 {order.items.map((item: OrderItem) => {
                    const product = productsByName[item.name];
                    if (!product) return null;
@@ -51,7 +50,6 @@ export function OrderConfirmedSummary({ order, products, isMobile, onProductClic
                         item={item}
                         product={product}
                         isMobile={isMobile}
-                        onClick={() => onProductClick(product, item)}
                     />
                 )})}
             </div>

@@ -1,4 +1,3 @@
-
 // @/components/order-confirmed-view.tsx
 'use client';
 
@@ -15,7 +14,6 @@ import type { Order, OrderItem, SanityProduct } from '@/types';
 interface OrderConfirmedViewProps {
     order: Order;
     products: SanityProduct[];
-    onProductClick: (product: SanityProduct, orderItem: OrderItem) => void;
 }
 
 const containerVariants = {
@@ -42,7 +40,7 @@ const itemVariants = {
 };
 
 
-export function OrderConfirmedView({ order, products, onProductClick }: OrderConfirmedViewProps) {
+export function OrderConfirmedView({ order, products }: OrderConfirmedViewProps) {
     const isMobile = useIsMobile();
     
     if (!order) {
@@ -97,7 +95,6 @@ export function OrderConfirmedView({ order, products, onProductClick }: OrderCon
                     order={order}
                     products={products}
                     isMobile={isMobile ?? false}
-                    onProductClick={onProductClick}
                 />
             </motion.div>
         </motion.div>

@@ -10,18 +10,16 @@ interface OrderConfirmedItemCardProps {
     item: OrderItem;
     product: SanityProduct;
     isMobile: boolean;
-    onClick: () => void;
 }
 
-export function OrderConfirmedItemCard({ item, product, isMobile, onClick }: OrderConfirmedItemCardProps) {
+export function OrderConfirmedItemCard({ item, product, isMobile }: OrderConfirmedItemCardProps) {
   const pricePerItem = (item.finalProductPrice ?? 0) / item.quantity;
   const itemMrp = product.mrp ?? pricePerItem;
   const itemDiscount = (itemMrp * item.quantity) - (item.finalProductPrice ?? 0);
 
   return (
     <div 
-      className={cn("bg-gray-100 w-full flex flex-col text-black rounded-lg p-3 cursor-pointer hover:bg-gray-200 transition-colors")}
-      onClick={onClick}
+      className={cn("bg-gray-100 w-full flex flex-col text-black rounded-lg p-3 transition-colors")}
     >
         <div className={cn("flex items-start gap-3", isMobile ? "" : "md:gap-4")}>
             <div className={cn("flex-shrink-0 relative", isMobile ? "w-16 h-16" : "w-20 h-20")}>
@@ -56,8 +54,11 @@ export function OrderConfirmedItemCard({ item, product, isMobile, onClick }: Ord
                     <p className={cn("font-semibold text-black/80 mb-1", isMobile ? "text-xs" : "text-sm")}>Flavours Selected:</p>
                     <ul className="space-y-0.5">
                         {item.flavours.map(flavour => (
-                            <li key={flavour.name} className={cn("flex justify-between text-black/70", isMobile ? "text-xs" : "text-sm")}>
-                                <span>{flavour.name}</span>
+                            <li key={flavour.name} className={cn("flex justify-between items-center text-black/70", isMobile ? "text-xs" : "text-sm")}>
+                                <div className="flex items-center gap-2">
+                                  <span>{flavour.name}</span>
+                                  {product.numberOfChocolates && <span className="text-black/60 text-[10px]">(x{product.numberOfChocolates} pcs)</span>}
+                                </div>
                                 <span>+₹{flavour.price.toFixed(2)}</span>
                             </li>
                         ))}
