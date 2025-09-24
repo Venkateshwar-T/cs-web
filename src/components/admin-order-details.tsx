@@ -118,7 +118,7 @@ const OrderDetailsContent = ({ order }: { order: Order }) => {
                             </div>
                             <div className='text-right'>
                                 <p className="text-sm font-semibold">₹{item.finalSubtotal?.toFixed(2)}</p>
-                                <p className="text-xs text-green-400">-{((item.mrp || 0) * item.quantity - (item.finalProductPrice || 0)).toFixed(2)}</p>
+                                {item.mrp && item.finalProductPrice && <p className="text-xs text-green-400">-{((item.mrp || 0) * item.quantity - (item.finalProductPrice || 0)).toFixed(2)}</p>}
                             </div>
                         </div>
                     ))}
