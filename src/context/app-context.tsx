@@ -1,4 +1,3 @@
-
 // @/context/app-context.tsx
 'use client';
 
@@ -16,6 +15,7 @@ import {
   addUserOrder,
   getUserOrders,
   getAllOrders,
+  updateOrderStatus,
 } from '@/lib/firebase';
 import type { User } from 'firebase/auth';
 
@@ -41,16 +41,6 @@ export type OrderItem = {
   coverImage?: string;
 };
 
-// export type Order = {
-//   id: string;
-//   date: string;
-//   items: OrderItem[];
-//   status: 'Order Requested' | 'In Progress' | 'Completed' | 'Cancelled';
-//   total: number;
-//   totalDiscount?: number;
-//   gstPercentage?: number;
-// };
-
 export type Order = {
   id: string;
   date: string;
@@ -62,6 +52,7 @@ export type Order = {
   customerName?: string;
   customerEmail?: string;
   customerPhone?: string;
+  address?: string;
 };
 
 type Cart = Record<string, {
@@ -89,6 +80,7 @@ interface AppContextType {
   
   allOrders: Order[];
   isAllOrdersLoaded: boolean;
+  updateOrderStatus: (orderId: string, newStatus: Order['status']) => void;
 
   cart: Cart;
   updateCart: (productName: string, quantity: number, flavours?: string[]) => void;
@@ -167,7 +159,8 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
               setProfileInfo(profile);
             }
             const userOrders = await getUserOrders(newUser.uid);
-            setOrders(userOrders);
+            const sortedUserOrders = userOrders.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+            setOrders(sortedUserOrders);
             setIsOrdersLoaded(true);
             
             if (newIsAdmin) {
@@ -233,7 +226,11 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
     if (user) {
       try {
         const newOrderId = await addUserOrder(user.uid, newOrder);
-        setOrders(prevOrders => [{ ...newOrder, id: newOrderId }, ...prevOrders]);
+        const fullOrder = { ...newOrder, id: newOrderId };
+        setOrders(prevOrders => [fullOrder, ...prevOrders].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()));
+        if (isAdmin) {
+            setAllOrders(prevAllOrders => [fullOrder, ...prevAllOrders].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()));
+        }
         return newOrderId;
       } catch (error) {
         console.error("Error adding order:", error);
@@ -246,7 +243,7 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
       }
     }
     return null;
-  }, [user, toast]);
+  }, [user, toast, isAdmin]);
 
   const clearOrders = useCallback(() => {
     // This should ideally also clear from Firestore, but for now we'll just clear local state.
@@ -376,6 +373,27 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
       });
     }
   }, [toast]);
+  
+  const handleUpdateOrderStatus = async (orderId: string, newStatus: Order['status']) => {
+    try {
+      await updateOrderStatus(orderId, newStatus);
+      const update = (orders: Order[]) => orders.map(o => o.id === orderId ? { ...o, status: newStatus } : o);
+      setAllOrders(update);
+      setOrders(update);
+      toast({
+        title: "Status Updated",
+        description: `Order ${orderId} marked as ${newStatus}.`,
+        variant: 'success'
+      });
+    } catch (error) {
+      console.error("Failed to update order status:", error);
+      toast({
+        title: "Update Failed",
+        description: "Could not update the order status.",
+        variant: 'destructive'
+      });
+    }
+  };
 
   const value: AppContextType = {
     profileInfo,
@@ -392,6 +410,7 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
     reorderItem,
     allOrders,
     isAllOrdersLoaded,
+    updateOrderStatus: handleUpdateOrderStatus,
     cart,
     updateCart,
     clearCart,

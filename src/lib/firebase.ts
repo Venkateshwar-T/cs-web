@@ -1,4 +1,3 @@
-
 // src/lib/firebase.ts
 import { initializeApp, getApps, getApp, type FirebaseApp } from 'firebase/app';
 import {
@@ -12,7 +11,7 @@ import {
   updatePassword,
   type User
 } from 'firebase/auth';
-import { getFirestore, doc, getDoc, setDoc, updateDoc, collection, addDoc, getDocs, query, orderBy, collectionGroup } from 'firebase/firestore';
+import { getFirestore, doc, getDoc, setDoc, updateDoc, collection, addDoc, getDocs, query, collectionGroup, where, writeBatch } from 'firebase/firestore';
 import type { ProfileInfo, Order } from '@/context/app-context';
 
 
@@ -149,18 +148,10 @@ export const getUserOrders = async (uid: string): Promise<Order[]> => {
     const db = getClientFirestore();
     if (!db) return [];
     const ordersCollectionRef = collection(db, 'users', uid, 'orders');
-    const q = query(ordersCollectionRef, orderBy('date', 'desc'));
+    const q = query(ordersCollectionRef);
     const querySnapshot = await getDocs(q);
     return querySnapshot.docs.map(doc => doc.data() as Order);
 };
-
-// export const getAllOrders = async (): Promise<Order[]> => {
-//     const db = getClientFirestore();
-//     if (!db) return [];
-//     const ordersQuery = query(collectionGroup(db, 'orders'));
-//     const querySnapshot = await getDocs(ordersQuery);
-//     return querySnapshot.docs.map(doc => ({...doc.data(), id: doc.id} as Order));
-// };
 
 export const getAllOrders = async (): Promise<Order[]> => {
   const db = getClientFirestore();
@@ -182,6 +173,7 @@ export const getAllOrders = async (): Promise<Order[]> => {
                       customerName: userData.name,
                       customerEmail: userData.email,
                       customerPhone: userData.phone,
+                      address: userData.address
                   } as Order;
               }
           }
@@ -189,4 +181,23 @@ export const getAllOrders = async (): Promise<Order[]> => {
       })
   );
   return ordersWithUserDetails;
+};
+
+
+export const updateOrderStatus = async (orderId: string, newStatus: Order['status']): Promise<void> => {
+    const db = getClientFirestore();
+    if (!db) throw new Error("Firestore not initialized");
+
+    const ordersRef = collectionGroup(db, 'orders');
+    const q = query(ordersRef, where('id', '==', orderId));
+    
+    const querySnapshot = await getDocs(q);
+    
+    if (querySnapshot.empty) {
+        throw new Error(`Order with ID ${orderId} not found.`);
+    }
+
+    // Since order IDs are unique, we expect only one document.
+    const orderDoc = querySnapshot.docs[0];
+    await updateDoc(orderDoc.ref, { status: newStatus });
 };

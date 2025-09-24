@@ -43,5 +43,9 @@ export interface StructuredFilter {
 export type OrderItem = {
   name: string;
   quantity: number;
-  flavours?: string[];
+  flavours?: { name: string, price: number }[];
+  mrp?: number;
+  finalProductPrice?: number;
+  finalSubtotal?: number;
+  coverImage?: string;
 };

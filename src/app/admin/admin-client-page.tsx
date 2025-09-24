@@ -1,4 +1,3 @@
-
 // @/app/admin/admin-client-page.tsx
 'use client';
 
@@ -9,18 +8,20 @@ import { Header } from '@/components/header';
 import { SparkleBackground } from '@/components/sparkle-background';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { StaticSparkleBackground } from '@/components/static-sparkle-background';
-import { useAppContext } from '@/context/app-context';
+import { useAppContext, type Order } from '@/context/app-context';
 import { Loader } from '@/components/loader';
 import { EmptyState } from '@/components/empty-state';
 import { Input } from '@/components/ui/input';
 import { Search } from 'lucide-react';
 import { AdminOrderItemCard } from '@/components/admin-order-item-card';
+import { AdminOrderDetails } from '@/components/admin-order-details';
 
 export default function AdminClientPage() {
   const router = useRouter();
   const isMobile = useIsMobile();
   const { allOrders, isAllOrdersLoaded, isAdmin, user } = useAppContext();
   const [searchTerm, setSearchTerm] = useState('');
+  const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
 
   const filteredOrders = useMemo(() => {
     if (!searchTerm) {
@@ -60,7 +61,7 @@ export default function AdminClientPage() {
   return (
     <>
       {isMobile ? <StaticSparkleBackground /> : <SparkleBackground />}
-      <div className="flex flex-col h-screen">
+      <div className={cn("flex flex-col h-screen", !!selectedOrder && 'opacity-50')}>
         <Header
           onProfileOpenChange={() => {}}
           isContentScrolled={true}
@@ -76,7 +77,7 @@ export default function AdminClientPage() {
             <div className="relative mb-6">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
               <Input
-                placeholder="Search by Order ID or Product Name..."
+                placeholder="Search by Order ID, Product, or Customer..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full pl-10 h-12 rounded-full bg-white/10 border-white/20 text-white placeholder:text-gray-400"
@@ -86,7 +87,7 @@ export default function AdminClientPage() {
             {filteredOrders.length > 0 ? (
               <div className="flex-grow overflow-y-auto no-scrollbar pb-8 space-y-4">
                 {filteredOrders.map(order => (
-                  <AdminOrderItemCard key={order.id} order={order} />
+                  <AdminOrderItemCard key={order.id} order={order} onClick={() => setSelectedOrder(order)} />
                 ))}
               </div>
             ) : (
@@ -102,6 +103,16 @@ export default function AdminClientPage() {
           </div>
         </main>
       </div>
+
+      <AdminOrderDetails 
+        order={selectedOrder}
+        open={!!selectedOrder}
+        onOpenChange={(isOpen) => {
+            if (!isOpen) {
+                setSelectedOrder(null);
+            }
+        }}
+      />
     </>
   );
 }
