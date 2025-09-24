@@ -2,11 +2,9 @@
 'use client';
 
 import Image from 'next/image';
-import type { Order, OrderItem } from '@/context/app-context';
 import { cn } from '@/lib/utils';
 import { Badge } from './ui/badge';
 import { Separator } from './ui/separator';
-import type { SanityProduct } from '@/types';
 import { Button } from './ui/button';
 import {
   AlertDialog,
@@ -20,6 +18,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { RotateCcw } from 'lucide-react';
+import type { Order, OrderItem } from '@/types';
 
 interface OrderItemCardProps {
     order: Order;
@@ -41,7 +40,7 @@ export function OrderItemCard({ order, isMobile = false, onProductClick, onOrder
         hour12: true,
     });
     
-    const statusVariant = (status: Order['status']) => {
+    const statusVariant = (status: Order['status']): "success" | "destructive" | "default" => {
         switch (status) {
             case 'Completed': return 'success';
             case 'Cancelled': return 'destructive';
@@ -60,11 +59,11 @@ export function OrderItemCard({ order, isMobile = false, onProductClick, onOrder
                         <p className="text-xs text-black/70">{formattedDate}</p>
                         <p className="text-xs text-black/70">{formattedTime}</p>
                     </div>
-                     <Badge variant={statusVariant(order.status)} className="text-xs bg-custom-gold">{order.status}</Badge>
+                     <Badge variant={statusVariant(order.status)}>{order.status}</Badge>
                  </div>
                  <Separator className="bg-black/10 my-2" />
                  <div className="space-y-2">
-                    {order.items.map(item => (
+                    {order.items.map((item: OrderItem) => (
                         <div key={item.name} className="flex items-center gap-3 cursor-pointer" onClick={() => onProductClick(item)}>
                             <Image
                                 src={item.coverImage || "/placeholder.png"}
@@ -127,7 +126,7 @@ export function OrderItemCard({ order, isMobile = false, onProductClick, onOrder
             <Separator className="my-2 bg-black/20" />
             
             <div className="space-y-3 max-h-48 overflow-y-auto custom-scrollbar pr-2">
-                {order.items.map(item => (
+                {order.items.map((item: OrderItem) => (
                     <div key={item.name} className="flex items-center gap-4 cursor-pointer" onClick={() => onProductClick(item)}>
                         <Image
                             src={item.coverImage || "/placeholder.png"}
