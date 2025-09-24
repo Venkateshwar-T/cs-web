@@ -82,12 +82,9 @@ const OrderDetailsContent = ({ order }: { order: Order }) => {
                 <DetailRow icon={<User size={16} />} label="Customer Name" value={order.customerName} />
                 <DetailRow icon={<Mail size={16} />} label="Email" value={order.customerEmail} />
                 <DetailRow icon={<Phone size={16} />} label="Phone" value={
-                    <div className="flex items-center gap-2">
-                        <span>{order.customerPhone}</span>
-                         <a href={`tel:${order.customerPhone}`} className="text-white hover:text-custom-gold md:hidden">
-                            <Phone size={16} />
-                        </a>
-                    </div>
+                  <a href={`tel:${order.customerPhone}`}>
+                    {order.customerPhone}
+                  </a>   
                 } />
                 <DetailRow icon={<Home size={16} />} label="Address" value={order.address || 'Not Provided'} />
                 <Separator className="bg-white/20" />

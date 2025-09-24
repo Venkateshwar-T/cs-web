@@ -12,9 +12,18 @@ import { useAppContext, type Order } from '@/context/app-context';
 import { Loader } from '@/components/loader';
 import { EmptyState } from '@/components/empty-state';
 import { Input } from '@/components/ui/input';
-import { Search } from 'lucide-react';
+import { Search, Filter } from 'lucide-react';
 import { AdminOrderItemCard } from '@/components/admin-order-item-card';
 import { AdminOrderDetails } from '@/components/admin-order-details';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
+type StatusFilter = Order['status'] | 'All';
 
 export default function AdminClientPage() {
   const router = useRouter();
@@ -22,18 +31,22 @@ export default function AdminClientPage() {
   const { allOrders, isAllOrdersLoaded, isAdmin, user } = useAppContext();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
+  const [statusFilter, setStatusFilter] = useState<StatusFilter>('All');
 
   const filteredOrders = useMemo(() => {
-    if (!searchTerm) {
-      return allOrders;
-    }
-    return allOrders.filter(order =>
-      order.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      order.items.some(item => item.name.toLowerCase().includes(searchTerm.toLowerCase())) ||
-      order.customerName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      order.customerEmail?.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-  }, [allOrders, searchTerm]);
+    return allOrders.filter(order => {
+      const statusMatch = statusFilter === 'All' || order.status === statusFilter;
+
+      const searchMatch = !searchTerm || (
+        order.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        order.items.some(item => item.name.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        order.customerName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        order.customerEmail?.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+
+      return statusMatch && searchMatch;
+    });
+  }, [allOrders, searchTerm, statusFilter]);
 
   if (!isAllOrdersLoaded) {
     return (
@@ -74,14 +87,34 @@ export default function AdminClientPage() {
           "pt-24 md:pt-32" 
         )}>
           <div className="px-4 md:px-16 lg:px-32 flex-grow flex flex-col">
-            <div className="relative mb-6">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
-              <Input
-                placeholder="Search by Order ID, Product, or Customer..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 h-12 rounded-full bg-white/10 border-white/20 text-white placeholder:text-gray-400"
-              />
+            <div className="relative flex flex-col md:flex-row gap-4 mb-6">
+              <div className="relative flex-grow">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
+                <Input
+                  placeholder="Search by Product or Customer..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full pl-10 h-12 rounded-full bg-white/10 border-white/20 text-white placeholder:text-gray-400"
+                />
+              </div>
+              <div className="relative flex items-center gap-2">
+                 <Filter className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400 md:hidden" />
+                 <Select value={statusFilter} onValueChange={(value) => setStatusFilter(value as StatusFilter)}>
+                    <SelectTrigger className="w-full md:w-[200px] h-12 rounded-full bg-white/10 border-white/20 text-white pl-10 md:pl-4">
+                      <div className='flex items-center gap-2'>
+                        <Filter className="h-5 w-5 text-gray-400 hidden md:block" />
+                        <SelectValue placeholder="Filter by status" />
+                      </div>
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="All">All Statuses</SelectItem>
+                      <SelectItem value="Order Requested">Order Requested</SelectItem>
+                      <SelectItem value="In Progress">In Progress</SelectItem>
+                      <SelectItem value="Completed">Completed</SelectItem>
+                      <SelectItem value="Cancelled">Cancelled</SelectItem>
+                    </SelectContent>
+                  </Select>
+              </div>
             </div>
 
             {filteredOrders.length > 0 ? (
@@ -95,7 +128,7 @@ export default function AdminClientPage() {
                 <EmptyState
                   imageUrl="/icons/empty.png"
                   title="No Orders Found"
-                  description="There are no orders matching your search criteria."
+                  description="There are no orders matching your search and filter criteria."
                   showButton={false}
                 />
               </div>
