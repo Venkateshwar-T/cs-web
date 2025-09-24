@@ -1,3 +1,4 @@
+
 // @/app/admin/admin-client-page.tsx
 'use client';
 
@@ -131,7 +132,7 @@ export default function AdminClientPage() {
                             onClick={() => handleStatusSelect(option)}
                             className={cn(
                               "justify-start text-base py-3 h-auto hover:bg-transparent",
-                              statusFilter === option && "font-bold text-custom-gold"
+                              statusFilter === option ? "font-bold text-custom-gold" : "hover:text-white"
                             )}
                           >
                             {option === 'All' ? 'All Statuses' : option}
