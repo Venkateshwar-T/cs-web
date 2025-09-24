@@ -37,14 +37,23 @@ export function AdminOrderItemCard({ order }: AdminOrderItemCardProps) {
         <div className={cn(
             "w-full bg-white/10 p-4 text-white relative overflow-hidden rounded-2xl border border-white/20"
         )}>
-             <div className="flex justify-between items-center mb-3 flex-wrap gap-2">
+            <div className="flex justify-between items-center mb-3 flex-wrap gap-2">
                 <div>
                     <p className="text-sm text-white/80">Order ID: <span className="font-semibold text-white">{order.id}</span></p>
                     <p className="text-xs text-white/70">{formattedDate} at {formattedTime}</p>
                 </div>
-                 <Badge variant={statusVariant(order.status)} className="text-sm bg-custom-gold">{order.status}</Badge>
-             </div>
-             <Separator className="bg-white/20 my-3" />
+                <Badge variant={statusVariant(order.status)} className="text-sm bg-custom-gold">{order.status}</Badge>
+            </div>
+
+            {/* Customer Details */}
+            <Separator className="bg-white/20 my-3" />
+            <div>
+                <h4 className="text-base font-bold mb-2">Customer Details</h4>
+                <p className="text-sm text-white/80">Name: <span className="font-semibold text-white">{order.customerName}</span></p>
+                <p className="text-sm text-white/80">Email: <span className="font-semibold text-white">{order.customerEmail}</span></p>
+                <p className="text-sm text-white/80">Phone: <span className="font-semibold text-white">{order.customerPhone}</span></p>
+            </div>
+            <Separator className="bg-white/20 my-3" />
              <div className="space-y-3">
                 {order.items.map(item => (
                     <div key={item.name} className="flex items-center gap-4">

@@ -28,7 +28,9 @@ export default function AdminClientPage() {
     }
     return allOrders.filter(order =>
       order.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      order.items.some(item => item.name.toLowerCase().includes(searchTerm.toLowerCase()))
+      order.items.some(item => item.name.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      order.customerName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      order.customerEmail?.toLowerCase().includes(searchTerm.toLowerCase())
     );
   }, [allOrders, searchTerm]);
 

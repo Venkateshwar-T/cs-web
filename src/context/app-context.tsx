@@ -19,6 +19,8 @@ import {
 } from '@/lib/firebase';
 import type { User } from 'firebase/auth';
 
+
+
 const defaultProfileInfo: ProfileInfo = {
     name: '',
     phone: '',
@@ -38,6 +40,16 @@ export type OrderItem = {
   coverImage?: string;
 };
 
+// export type Order = {
+//   id: string;
+//   date: string;
+//   items: OrderItem[];
+//   status: 'Order Requested' | 'In Progress' | 'Completed' | 'Cancelled';
+//   total: number;
+//   totalDiscount?: number;
+//   gstPercentage?: number;
+// };
+
 export type Order = {
   id: string;
   date: string;
@@ -46,6 +58,9 @@ export type Order = {
   total: number;
   totalDiscount?: number;
   gstPercentage?: number;
+  customerName?: string;
+  customerEmail?: string;
+  customerPhone?: string;
 };
 
 type Cart = Record<string, {

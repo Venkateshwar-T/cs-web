@@ -154,10 +154,39 @@ export const getUserOrders = async (uid: string): Promise<Order[]> => {
     return querySnapshot.docs.map(doc => doc.data() as Order);
 };
 
+// export const getAllOrders = async (): Promise<Order[]> => {
+//     const db = getClientFirestore();
+//     if (!db) return [];
+//     const ordersQuery = query(collectionGroup(db, 'orders'));
+//     const querySnapshot = await getDocs(ordersQuery);
+//     return querySnapshot.docs.map(doc => ({...doc.data(), id: doc.id} as Order));
+// };
+
 export const getAllOrders = async (): Promise<Order[]> => {
-    const db = getClientFirestore();
-    if (!db) return [];
-    const ordersQuery = query(collectionGroup(db, 'orders'));
-    const querySnapshot = await getDocs(ordersQuery);
-    return querySnapshot.docs.map(doc => ({...doc.data(), id: doc.id} as Order));
+  const db = getClientFirestore();
+  if (!db) return [];
+  const ordersQuery = query(collectionGroup(db, 'orders'));
+  const querySnapshot = await getDocs(ordersQuery);
+
+  const ordersWithUserDetails = await Promise.all(
+      querySnapshot.docs.map(async (orderDoc) => {
+          const orderData = orderDoc.data() as Omit<Order, 'id'>;
+          const userDocRef = orderDoc.ref.parent.parent; // This gets the user document
+          if (userDocRef) {
+              const userDocSnap = await getDoc(userDocRef);
+              if (userDocSnap.exists()) {
+                  const userData = userDocSnap.data() as ProfileInfo;
+                  return {
+                      ...orderData,
+                      id: orderDoc.id,
+                      customerName: userData.name,
+                      customerEmail: userData.email,
+                      customerPhone: userData.phone,
+                  } as Order;
+              }
+          }
+          return { ...orderData, id: orderDoc.id } as Order; // Fallback if user data is not found
+      })
+  );
+  return ordersWithUserDetails;
 };
