@@ -24,12 +24,8 @@ export function Navigation({ isEnquireOpen, onNavigate, activeView }: Navigation
     const router = useRouter();
     const { isAdmin } = useAppContext();
 
-    const handleClick = (link: typeof navLinks[number] | {id: 'admin', label: 'Admin', href: '/admin'}) => {
-        if (link.href) {
-            router.push(link.href);
-        } else {
-            onNavigate(link.id as 'about' | 'faq' | 'admin');
-        }
+    const handleClick = (linkId: 'about' | 'faq' | 'admin') => {
+        router.push(`/${linkId}`);
     };
 
     return (
@@ -41,7 +37,7 @@ export function Navigation({ isEnquireOpen, onNavigate, activeView }: Navigation
                 return (
                     <button
                         key={link.id}
-                        onClick={() => handleClick(link)}
+                        onClick={() => handleClick(link.id)}
                         className={cn(
                             "transition-colors hover:text-custom-gold", 
                             isEnquireOpen && "opacity-50",
@@ -54,7 +50,7 @@ export function Navigation({ isEnquireOpen, onNavigate, activeView }: Navigation
             })}
              {isAdmin && (
                 <button
-                    onClick={() => handleClick({ id: "admin", label: "Admin", href: "/admin" })}
+                    onClick={() => handleClick("admin")}
                     className={cn(
                         "transition-colors hover:text-custom-gold", 
                         isEnquireOpen && "opacity-50",
