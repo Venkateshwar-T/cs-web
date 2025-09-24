@@ -25,7 +25,7 @@ export function MyProfileTab({ profile, onProfileUpdate }: MyProfileTabProps) {
   const { user } = useAppContext();
   const [name, setName] = useState(profile.name);
   const [phone, setPhone] = useState(profile.phone);
-  const [email, setEmail] useState(profile.email);
+  const [email, setEmail] = useState(profile.email);
   const [address, setAddress] = useState(profile.address);
   const [password, setPassword] = useState(''); // Default to empty
   const [showPassword, setShowPassword] = useState(false);
