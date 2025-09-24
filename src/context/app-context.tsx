@@ -155,7 +155,8 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
             
             if (newIsAdmin) {
               const allUserOrders = await getAllOrders();
-              setAllOrders(allUserOrders);
+              const sortedOrders = allUserOrders.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+              setAllOrders(sortedOrders);
             }
             setIsAllOrdersLoaded(true);
 

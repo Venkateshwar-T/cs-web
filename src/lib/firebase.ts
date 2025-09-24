@@ -157,7 +157,7 @@ export const getUserOrders = async (uid: string): Promise<Order[]> => {
 export const getAllOrders = async (): Promise<Order[]> => {
     const db = getClientFirestore();
     if (!db) return [];
-    const ordersQuery = query(collectionGroup(db, 'orders'), orderBy('date', 'desc'));
+    const ordersQuery = query(collectionGroup(db, 'orders'));
     const querySnapshot = await getDocs(ordersQuery);
     return querySnapshot.docs.map(doc => ({...doc.data(), id: doc.id} as Order));
 };
