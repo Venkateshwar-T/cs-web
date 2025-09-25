@@ -48,9 +48,6 @@ export function MyOrdersTab({ isMobile = false, products }: MyOrdersTabProps) {
       router.push('/');
     }
     
-    const latestOrders = orders.filter(o => o.status === 'Order Requested' || o.status === 'In Progress');
-    const pastOrders = orders.filter(o => o.status === 'Completed' || o.status === 'Cancelled');
-    
     if (!isAuthenticated) {
        return (
             <div className="flex-grow flex flex-col items-center justify-center h-full text-center gap-4 px-4 pb-24">
@@ -99,40 +96,15 @@ export function MyOrdersTab({ isMobile = false, products }: MyOrdersTabProps) {
                                 </AlertDialog>
                             </div>
                             <div className="overflow-y-auto no-scrollbar py-4 space-y-4">
-                              {latestOrders.length > 0 && (
-                                <>
-                                  <SectionTitle className="text-base text-white pb-2 pl-2 mb-0">Latest Orders</SectionTitle>
-                                  <div className="space-y-4">
-                                      {latestOrders.map((order) => (
-                                        <OrderItemCard 
-                                            key={order.id} 
-                                            order={order} 
-                                            isMobile={true} 
-                                            onClick={() => setSelectedOrder(order)}
-                                            onRate={() => setRatingOrder(order)}
-                                        />
-                                      ))}
-                                  </div>
-                                </>
-                              )}
-                                
-                                {pastOrders.length > 0 && (
-                                  <>
-                                    <Separator className="my-4 bg-white/20" />
-                                    <SectionTitle className="text-base text-white pb-2 pl-2 mb-0">Past Orders</SectionTitle>
-                                    <div className="space-y-4">
-                                      {pastOrders.map((order) => (
-                                        <OrderItemCard 
-                                          key={order.id} 
-                                          order={order} 
-                                          isMobile={true} 
-                                          onClick={() => setSelectedOrder(order)}
-                                          onRate={() => setRatingOrder(order)}
-                                        />
-                                      ))}
-                                    </div>
-                                  </>
-                                )}
+                              {orders.map((order) => (
+                                <OrderItemCard 
+                                    key={order.id} 
+                                    order={order} 
+                                    isMobile={true} 
+                                    onClick={() => setSelectedOrder(order)}
+                                    onRate={() => setRatingOrder(order)}
+                                />
+                              ))}
                             </div>
                         </div>
                     ) : (
@@ -196,28 +168,9 @@ export function MyOrdersTab({ isMobile = false, products }: MyOrdersTabProps) {
                 </div>
                  {orders.length > 0 ? (
                     <div className="flex-grow overflow-y-auto pr-2 custom-scrollbar space-y-4">
-                        {latestOrders.length > 0 && (
-                          <>
-                            <SectionTitle className="text-xl text-white/90 pl-3 mb-2">Latest Orders</SectionTitle>
-                            <div className="space-y-4">
-                              {latestOrders.map(order => (
-                                <OrderItemCard key={order.id} order={order} onClick={() => setSelectedOrder(order)} onRate={() => setRatingOrder(order)} />
-                              ))}
-                            </div>
-                          </>
-                        )}
-
-                        {pastOrders.length > 0 && (
-                          <>
-                            <Separator className="my-4 bg-white/20" />
-                            <SectionTitle className="text-xl text-white/90 pl-3 mb-2">Past Orders</SectionTitle>
-                            <div className="space-y-4">
-                              {pastOrders.map(order => (
-                                  <OrderItemCard key={order.id} order={order} onClick={() => setSelectedOrder(order)} onRate={() => setRatingOrder(order)} />
-                              ))}
-                            </div>
-                          </>
-                        )}
+                      {orders.map(order => (
+                          <OrderItemCard key={order.id} order={order} onClick={() => setSelectedOrder(order)} onRate={() => setRatingOrder(order)} />
+                      ))}
                     </div>
                 ) : (
                     <div className="flex-grow flex flex-col items-center justify-center h-full text-center gap-4">
