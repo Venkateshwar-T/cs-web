@@ -87,7 +87,7 @@ const OrderDetailsContent = ({ order: initialOrder, allProducts }: { order: Orde
 
 
     return (
-        <div className="flex flex-col gap-4 p-4 md:p-0 text-white h-full no-scrollbar">
+        <div className="flex flex-col gap-4 px-4 md:p-0 text-white h-full no-scrollbar">
             <div className="grid grid-cols-1 gap-4">
                 <DetailRow icon={<User size={16} />} label="Customer Name" value={order.customerName} />
                 <DetailRow icon={<Mail size={16} />} label="Email" value={order.customerEmail} />
@@ -173,7 +173,7 @@ const OrderDetailsContent = ({ order: initialOrder, allProducts }: { order: Orde
 
             <Separator className="bg-white/20" />
 
-             <div className="flex flex-col items-center justify-center gap-2 mb-8">
+             <div className="flex flex-col items-center justify-center gap-2 pb-4">
                 <p className="text-sm text-white/80">Order Status</p>
                 <div className="flex flex-wrap justify-center gap-2 w-full">
                     {statusOptions.map((status) => (
@@ -181,7 +181,7 @@ const OrderDetailsContent = ({ order: initialOrder, allProducts }: { order: Orde
                             key={status}
                             onClick={() => handleStatusChange(status)}
                             className={cn(
-                                "text-xs h-8 px-3 rounded-full border-none focus:ring-0 focus:ring-offset-0 transition-all duration-200 w-1/2",
+                                "text-xs h-8 px-3 rounded-full border-none focus:ring-0 focus:ring-offset-0 transition-all duration-200 w-1/2 hover:bg-white/20",
                                 getStatusVariant(status, order.status === status)
                             )}
                         >

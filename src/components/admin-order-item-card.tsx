@@ -1,3 +1,4 @@
+
 // @/components/admin-order-item-card.tsx
 'use client';
 
@@ -56,7 +57,14 @@ export function AdminOrderItemCard({ order, onClick }: AdminOrderItemCardProps) 
                 <div className="md:col-span-1 flex md:flex-col justify-between items-center md:items-end gap-2">
                     <p className="font-bold text-lg">₹{order.total.toFixed(2)}</p>
                     
-                    <Badge variant={statusVariant(order.status)} className="text-xs">
+                    <Badge 
+                      variant={statusVariant(order.status)} 
+                      className={cn(
+                        "text-xs", 
+                        order.status === 'Order Requested' && 'text-custom-purple-dark',
+                        "hover:bg-primary/100" // Disables hover effect on default
+                      )}
+                    >
                         {order.status}
                     </Badge>
                 </div>
