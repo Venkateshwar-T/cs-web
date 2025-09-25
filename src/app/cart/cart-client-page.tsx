@@ -74,9 +74,9 @@ export default function CartClientPage({ allProducts }: { allProducts: SanityPro
 
   const handleNavigation = (view: ActiveView) => {
     if (view === 'home') {
-      router.push('/');
+      router.push('/', { scroll: false });
     } else if (view === 'profile') {
-      router.push('/profile');
+      router.push('/profile', { scroll: false });
     }
   };
   
