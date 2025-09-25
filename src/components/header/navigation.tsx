@@ -65,7 +65,7 @@ export function Navigation({ isEnquireOpen, onNavigate, activeView }: Navigation
                             className={cn(
                                 "flex items-center gap-1 transition-colors hover:text-custom-gold",
                                 isEnquireOpen && "opacity-50",
-                                activeView === 'admin' ? "text-custom-gold font-base" : "text-foreground/80"
+                                (activeView === 'admin' || activeView === 'admin-analytics') ? "text-custom-gold font-base" : "text-foreground/80"
                             )}
                         >
                             Admin <ChevronDown className="h-4 w-4" />

@@ -68,3 +68,15 @@ export interface Order {
   rating?: number;
   feedback?: string;
 }
+
+export type ActiveView = 
+  | 'home' 
+  | 'search' 
+  | 'cart' 
+  | 'profile' 
+  | 'about' 
+  | 'faq' 
+  | 'order-confirmed' 
+  | 'product-detail' 
+  | 'admin'
+  | 'admin-analytics';
