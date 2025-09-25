@@ -20,6 +20,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { useToast } from '@/hooks/use-toast';
+import { RotateCcw } from 'lucide-react';
 
 interface OrderItemCardProps {
     order: Order;
@@ -30,7 +31,7 @@ interface OrderItemCardProps {
 }
 
 export function OrderItemCard({ order, isMobile = false, onClick, onRate, onCancel }: OrderItemCardProps) {
-    const { updateOrderStatus } = useAppContext();
+    const { updateOrderStatus, reorder } = useAppContext();
     const { toast } = useToast();
 
     const orderDate = new Date(order.date);
@@ -59,6 +60,11 @@ export function OrderItemCard({ order, isMobile = false, onClick, onRate, onCanc
         await updateOrderStatus(order.uid, order.id, 'Cancelled', 'user');
         onCancel(); // Trigger the feedback popup
       }
+    };
+
+    const handleReorder = (e: React.MouseEvent) => {
+        e.stopPropagation(); // Prevent the main card click
+        reorder(order.id);
     };
 
     return (
@@ -106,35 +112,42 @@ export function OrderItemCard({ order, isMobile = false, onClick, onRate, onCanc
             
             <div className="border-t border-black/10 -mx-3 md:-mx-4"></div>
 
-            <div className="flex items-center justify-end gap-2 pt-1">
-                {(order.status === 'Order Requested' || order.status === 'In Progress') && (
-                     <AlertDialog>
-                        <AlertDialogTrigger asChild>
-                            <Button variant="destructive" size="sm" className="text-xs h-7 rounded-full">Cancel Order</Button>
-                        </AlertDialogTrigger>
-                        <AlertDialogContent>
-                            <AlertDialogHeader>
-                            <AlertDialogTitle>Are you sure you want to cancel this order?</AlertDialogTitle>
-                            <AlertDialogDescription>
-                                This action cannot be undone.
-                            </AlertDialogDescription>
-                            </AlertDialogHeader>
-                            <AlertDialogFooter>
-                            <AlertDialogCancel>No, Keep It</AlertDialogCancel>
-                            <AlertDialogAction onClick={handleCancelOrder}>Yes, Cancel</AlertDialogAction>
-                            </AlertDialogFooter>
-                        </AlertDialogContent>
-                    </AlertDialog>
-                )}
-                {order.status === 'Completed' && (
-                    <>
-                        {order.rating ? (
-                            <p className="text-xs text-custom-purple-dark font-semibold italic">Thank you for your feedback!</p>
-                        ) : (
-                            <Button onClick={onRate} size="sm" className="text-xs h-7 rounded-full bg-custom-gold text-custom-purple-dark hover:bg-custom-gold/90">Rate Your Order</Button>
-                        )}
-                    </>
-                )}
+            <div className="flex items-center justify-between gap-2 pt-1">
+                <Button onClick={handleReorder} size="sm" variant="ghost" className="text-xs h-7 rounded-full text-custom-purple-dark hover:bg-custom-purple-dark/10 hover:text-custom-purple-dark">
+                    <RotateCcw className="mr-1.5 h-3.5 w-3.5" />
+                    Order Again
+                </Button>
+
+                <div className="flex items-center justify-end gap-2">
+                    {(order.status === 'Order Requested' || order.status === 'In Progress') && (
+                        <AlertDialog>
+                            <AlertDialogTrigger asChild>
+                                <Button variant="destructive" size="sm" className="text-xs h-7 rounded-full">Cancel Order</Button>
+                            </AlertDialogTrigger>
+                            <AlertDialogContent>
+                                <AlertDialogHeader>
+                                <AlertDialogTitle>Are you sure you want to cancel this order?</AlertDialogTitle>
+                                <AlertDialogDescription>
+                                    This action cannot be undone.
+                                </AlertDialogDescription>
+                                </AlertDialogHeader>
+                                <AlertDialogFooter>
+                                <AlertDialogCancel>No, Keep It</AlertDialogCancel>
+                                <AlertDialogAction onClick={handleCancelOrder}>Yes, Cancel</AlertDialogAction>
+                                </AlertDialogFooter>
+                            </AlertDialogContent>
+                        </AlertDialog>
+                    )}
+                    {order.status === 'Completed' && (
+                        <>
+                            {order.rating ? (
+                                <p className="text-xs text-custom-purple-dark font-semibold italic">Thank you for your feedback!</p>
+                            ) : (
+                                <Button onClick={onRate} size="sm" className="text-xs h-7 rounded-full bg-custom-gold text-custom-purple-dark hover:bg-custom-gold/90">Rate Your Order</Button>
+                            )}
+                        </>
+                    )}
+                </div>
             </div>
         </div>
     );
