@@ -201,35 +201,35 @@ export function AdminOrderDetails({ order, open, onOpenChange, allProducts }: Ad
 
   if (!order) return null;
 
-  if (isMobile) {
-    return (
-      <Sheet open={open} onOpenChange={onOpenChange}>
-        <SheetContent side="bottom" className="bg-custom-purple-dark text-white border-t-2 border-custom-gold rounded-t-3xl h-[90vh] p-0 flex flex-col">
-          <SheetHeader className="p-4 border-b border-white/20 text-center flex-shrink-0">
-            <SheetTitle className="text-white text-lg">Order Details</SheetTitle>
-          </SheetHeader>
-          <div className="flex-grow overflow-y-auto no-scrollbar">
-            <OrderDetailsContent order={order} allProducts={allProducts} />
-          </div>
-        </SheetContent>
-      </Sheet>
-    );
-  }
-
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="justify-center p-0 w-[90vw] md:w-full max-w-md bg-custom-purple-dark border-2 border-custom-gold rounded-2xl md:rounded-[30px] h-[90vh]">
-        <DialogHeader className="p-4 text-center mb-4 border-b border-white/20">
-          <DialogTitle className="text-white text-lg md:text-xl">Order Details</DialogTitle>
-          <DialogClose className="absolute right-3 top-2 md:top-3 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground text-white z-10">
-            <X className="h-5 w-5" />
-            <span className="sr-only">Close</span>
-          </DialogClose>
-        </DialogHeader>
-        <div className="overflow-y-auto no-scrollbar px-6 pb-6">
-            <OrderDetailsContent order={order} allProducts={allProducts} />
-        </div>
-      </DialogContent>
-    </Dialog>
-  )
+    <>
+      {isMobile ? (
+        <Sheet open={open} onOpenChange={onOpenChange}>
+          <SheetContent side="bottom" className="bg-custom-purple-dark text-white border-t-2 border-custom-gold rounded-t-3xl h-[90vh] p-0 flex flex-col">
+            <SheetHeader className="p-4 border-b border-white/20 text-center flex-shrink-0">
+              <SheetTitle className="text-white text-lg">Order Details</SheetTitle>
+            </SheetHeader>
+            <div className="flex-grow overflow-y-auto">
+              <OrderDetailsContent order={order} allProducts={allProducts} />
+            </div>
+          </SheetContent>
+        </Sheet>
+      ) : (
+        <Dialog open={open} onOpenChange={onOpenChange}>
+          <DialogContent className="justify-center p-0 w-[90vw] md:w-full max-w-md bg-custom-purple-dark border-2 border-custom-gold rounded-2xl md:rounded-[30px] h-[90vh]">
+            <DialogHeader className="p-4 text-center mb-4 border-b border-white/20">
+              <DialogTitle className="text-white text-lg md:text-xl">Order Details</DialogTitle>
+              <DialogClose className="absolute right-3 top-2 md:top-3 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground text-white z-10">
+                <X className="h-5 w-5" />
+                <span className="sr-only">Close</span>
+              </DialogClose>
+            </DialogHeader>
+            <div className="overflow-y-auto no-scrollbar px-6 pb-6">
+              <OrderDetailsContent order={order} allProducts={allProducts} />
+            </div>
+          </DialogContent>
+        </Dialog>
+      )}
+    </>
+  );
 }
