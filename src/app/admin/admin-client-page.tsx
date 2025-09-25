@@ -36,14 +36,12 @@ import {
 } from "@/components/ui/sheet";
 
 type StatusFilter = Order['status'] | 'All';
-type SortOption = 'newest-first' | 'oldest-first' | 'rating-high-to-low' | 'rating-low-to-high';
+type SortOption = 'newest-first' | 'oldest-first';
 
 const statusOptions: StatusFilter[] = ['All', 'Order Requested', 'In Progress', 'Completed', 'Cancelled'];
 const sortOptions: { value: SortOption; label: string, section: string }[] = [
     { value: 'newest-first', label: 'Newest First', section: 'Date' },
     { value: 'oldest-first', label: 'Oldest First', section: 'Date' },
-    { value: 'rating-high-to-low', label: 'High to Low', section: 'Rating' },
-    { value: 'rating-low-to-high', label: 'Low to High', section: 'Rating' },
 ];
 
 const FilterSection = ({ title, children }: { title: string, children: React.ReactNode }) => (
@@ -83,14 +81,6 @@ export default function AdminClientPage({ allProducts }: { allProducts: SanityPr
       switch (sortOption) {
         case 'oldest-first':
           return new Date(a.date).getTime() - new Date(b.date).getTime();
-        case 'rating-high-to-low':
-          // Orders without rating are pushed to the bottom
-          return (b.rating ?? -1) - (a.rating ?? -1);
-        case 'rating-low-to-high':
-           // Orders without rating are pushed to the bottom
-          if (a.rating === undefined) return 1;
-          if (b.rating === undefined) return -1;
-          return a.rating - b.rating;
         case 'newest-first':
         default:
           return new Date(b.date).getTime() - new Date(a.date).getTime();
@@ -202,25 +192,6 @@ export default function AdminClientPage({ allProducts }: { allProducts: SanityPr
                                 </SheetClose>
                             ))}
                         </FilterSection>
-
-                        <Separator className="bg-white/20" />
-                        
-                        <FilterSection title="Sort by Rating">
-                             {sortOptions.filter(o => o.section === 'Rating').map(option => (
-                                <SheetClose asChild key={option.value}>
-                                    <Button
-                                        variant="ghost"
-                                        onClick={() => handleSortSelect(option.value)}
-                                        className={cn(
-                                        "justify-start text-base py-3 h-auto rounded-none px-4",
-                                        sortOption === option.value ? "font-bold bg-white/10 text-custom-gold" : "text-white/80 hover:text-white"
-                                        )}
-                                    >
-                                        {option.label}
-                                    </Button>
-                                </SheetClose>
-                            ))}
-                        </FilterSection>
                       </div>
                     </SheetContent>
                   </Sheet>
@@ -253,8 +224,6 @@ export default function AdminClientPage({ allProducts }: { allProducts: SanityPr
                       <SelectContent>
                         <SelectItem value="newest-first">Newest First</SelectItem>
                         <SelectItem value="oldest-first">Oldest First</SelectItem>
-                        <SelectItem value="rating-high-to-low">Rating: High to Low</SelectItem>
-                        <SelectItem value="rating-low-to-high">Rating: Low to High</SelectItem>
                       </SelectContent>
                   </Select>
                 </div>
