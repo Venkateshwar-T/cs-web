@@ -1,8 +1,7 @@
-
 // @/app/admin/analytics/analytics-client-page.tsx
 'use client';
 
-import { useMemo, useState, useEffect } from 'react';
+import { useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { Header } from '@/components/header';
@@ -13,10 +12,7 @@ import { useAppContext } from '@/context/app-context';
 import type { SanityProduct, Order } from '@/types';
 import { Loader } from '@/components/loader';
 import { EmptyState } from '@/components/empty-state';
-import { Bar, BarChart, CartesianGrid, XAxis, YAxis, Tooltip, Pie, PieChart, Cell, ResponsiveContainer } from 'recharts';
-import { chartConfig } from '@/lib/charts';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { ChartContainer, ChartTooltipContent, ChartLegend, ChartLegendContent } from '@/components/ui/chart';
 import Image from 'next/image';
 
 const MetricCard = ({ title, value, icon, description }: { title: string, value: string | number, icon: React.ReactNode, description?: string }) => (
@@ -33,213 +29,89 @@ const MetricCard = ({ title, value, icon, description }: { title: string, value:
 )
 
 export default function AnalyticsClientPage({ allProducts }: { allProducts: SanityProduct[] }) {
-  const router = useRouter();
-  const isMobile = useIsMobile();
-  const { allOrders, isAllOrdersLoaded, isAdmin } = useAppContext();
-  const [isClient, setIsClient] = useState(false);
+    const router = useRouter();
+    const isMobile = useIsMobile();
+    const { allOrders, isAllOrdersLoaded, isAdmin } = useAppContext();
 
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
+    const analyticsData = useMemo(() => {
+        if (!isAllOrdersLoaded || allOrders.length === 0) {
+            return { totalRevenue: 0, totalOrders: 0, avgOrderValue: 0, totalProductsSold: 0, topProducts: [] };
+        }
+        const completedOrders = allOrders.filter(order => order.status === 'Completed');
+        const totalRevenue = completedOrders.reduce((acc, order) => acc + order.total, 0);
+        const totalOrders = allOrders.length;
+        const avgOrderValue = completedOrders.length > 0 ? totalRevenue / completedOrders.length : 0;
 
-  const analyticsData = useMemo(() => {
-    if (!isAllOrdersLoaded || allOrders.length === 0) {
-      return {
-        totalRevenue: 0,
-        totalOrders: 0,
-        avgOrderValue: 0,
-        totalProductsSold: 0,
-        monthlySales: [],
-        statusDistribution: [],
-        topProducts: [],
-      };
+        const productCounts = allOrders.reduce((acc, order) => {
+            order.items.forEach(item => {
+                acc[item.name] = (acc[item.name] || 0) + item.quantity;
+            });
+            return acc;
+        }, {} as Record<string, number>);
+
+        const totalProductsSold = Object.values(productCounts).reduce((acc, q) => acc + q, 0);
+
+        const topProducts = Object.entries(productCounts)
+            .sort(([, a], [, b]) => b - a)
+            .slice(0, 5)
+            .map(([name, quantity]) => ({
+                name,
+                quantity,
+                image: allProducts.find(p => p.name === name)?.images?.[0] || '/placeholder.png'
+            }));
+
+        return { totalRevenue, totalOrders, avgOrderValue, totalProductsSold, topProducts };
+    }, [allOrders, isAllOrdersLoaded, allProducts]);
+
+
+    if (!isAllOrdersLoaded) {
+        return ( <div className="flex h-screen w-full items-center justify-center bg-background"><Loader /></div> );
     }
 
-    const completedOrders = allOrders.filter(order => order.status === 'Completed');
+    if (!isAdmin) {
+        return ( <div className="flex h-screen w-full items-center justify-center bg-background"><EmptyState imageUrl="/icons/profile_drpdwn_btn.png" title="Access Denied" description="You do not have permission to view this page." buttonText="Go to Homepage" onButtonClick={() => router.push('/')} imageClassName='w-24 h-24' /></div> )
+    }
 
-    const totalRevenue = completedOrders.reduce((acc, order) => acc + order.total, 0);
-    const totalOrders = allOrders.length;
-    const avgOrderValue = completedOrders.length > 0 ? totalRevenue / completedOrders.length : 0;
-    
-    const monthlySales = completedOrders.reduce((acc, order) => {
-        const month = new Date(order.date).toLocaleString('default', { month: 'short', year: '2-digit' });
-        const existingMonth = acc.find(d => d.month === month);
-        if (existingMonth) {
-            existingMonth.revenue += order.total;
-        } else {
-            acc.push({ month, revenue: order.total });
-        }
-        return acc;
-    }, [] as { month: string; revenue: number }[]).reverse();
-
-    const statusCounts = allOrders.reduce((acc, order) => {
-      acc[order.status] = (acc[order.status] || 0) + 1;
-      return acc;
-    }, {} as Record<Order['status'], number>);
-
-    const statusDistribution = Object.entries(statusCounts).map(([status, count]) => ({
-      name: status,
-      value: count,
-      fill: chartConfig.status.colors[status as Order['status']],
-    }));
-
-    const productCounts = allOrders.reduce((acc, order) => {
-        order.items.forEach(item => {
-            acc[item.name] = (acc[item.name] || 0) + item.quantity;
-        });
-        return acc;
-    }, {} as Record<string, number>);
-
-    const totalProductsSold = Object.values(productCounts).reduce((acc, q) => acc + q, 0);
-
-    const topProducts = Object.entries(productCounts)
-        .sort(([, a], [, b]) => b - a)
-        .slice(0, 5)
-        .map(([name, quantity]) => ({
-            name,
-            quantity,
-            image: allProducts.find(p => p.name === name)?.images?.[0] || '/placeholder.png'
-        }));
-
-
-    return { totalRevenue, totalOrders, avgOrderValue, totalProductsSold, monthlySales, statusDistribution, topProducts };
-  }, [allOrders, isAllOrdersLoaded, allProducts]);
-
-
-  if (!isAllOrdersLoaded) {
     return (
-      <div className="flex h-screen w-full items-center justify-center bg-background">
-        <Loader />
-      </div>
-    );
-  }
-
-  if (!isAdmin) {
-    return (
-       <div className="flex h-screen w-full items-center justify-center bg-background">
-         <EmptyState
-            imageUrl="/icons/profile_drpdwn_btn.png"
-            title="Access Denied"
-            description="You do not have permission to view this page."
-            buttonText="Go to Homepage"
-            onButtonClick={() => router.push('/')}
-            imageClassName='w-24 h-24'
-          />
-      </div>
-    )
-  }
-
-  return (
-    <>
-      {isMobile ? <StaticSparkleBackground /> : <SparkleBackground />}
-      <div className={cn("flex flex-col h-screen")}>
-        <Header
-          onProfileOpenChange={() => {}}
-          isContentScrolled={true}
-          onReset={() => router.push('/')}
-          onNavigate={(view) => router.push(`/${view}`)}
-          activeView={'admin'}
-        />
-        <main className={cn(
-          "flex-grow flex flex-col transition-all duration-300 relative min-h-0",
-          "pt-24 md:pt-32" 
-        )}>
-          <div className="px-4 md:px-16 lg:px-32 flex-grow flex flex-col pb-12">
-            <h1 className="text-2xl md:text-3xl font-bold text-white mb-6">Analytics Dashboard</h1>
-            
-            {allOrders.length === 0 ? (
-                <div className="flex-grow flex items-center justify-center">
-                    <EmptyState
-                        imageUrl="/icons/empty.png"
-                        title="No Data Available"
-                        description="Analytics will be shown here once you have some orders."
-                        showButton={false}
-                    />
-                </div>
-            ) : (
-                <div className="flex-grow overflow-y-auto custom-scrollbar pr-2">
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                        <MetricCard title="Total Revenue" value={`₹${analyticsData.totalRevenue.toFixed(2)}`} icon={<span className="text-white/80">₹</span>} description="From completed orders" />
-                        <MetricCard title="Total Orders" value={analyticsData.totalOrders} icon={<span className="text-white/80">#</span>} />
-                        <MetricCard title="Avg. Order Value" value={`₹${analyticsData.avgOrderValue.toFixed(2)}`} icon={<span className="text-white/80">AV</span>} description="From completed orders"/>
-                        <MetricCard title="Products Sold" value={analyticsData.totalProductsSold} icon={<span className="text-white/80">QTY</span>}/>
-                    </div>
-
-                    <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
-                        {/* Sales Trends Chart */}
-                        <div className="lg:col-span-3 bg-white/10 p-4 rounded-2xl">
-                             <h2 className="text-lg font-semibold text-white mb-4 pl-8">Monthly Revenue</h2>
-                             {isClient && (
-                                <ChartContainer config={chartConfig} className="w-full h-[300px]">
-                                    <BarChart data={analyticsData.monthlySales} margin={{ top: 5, right: 20, left: -20, bottom: 5 }}>
-                                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(255,255,255,0.2)"/>
-                                        <XAxis dataKey="month" tickLine={false} axisLine={false} stroke="#fff" fontSize={12} />
-                                        <YAxis tickLine={false} axisLine={false} stroke="#fff" fontSize={12} tickFormatter={(value) => `₹${value}`} />
-                                        <Tooltip
-                                            cursor={{ fill: 'rgba(255,210,57,0.1)' }}
-                                            content={<ChartTooltipContent />}
-                                        />
-                                        <Bar dataKey="revenue" fill="var(--color-revenue)" radius={[4, 4, 0, 0]} />
-                                    </BarChart>
-                                </ChartContainer>
-                             )}
-                        </div>
+        <>
+            {isMobile ? <StaticSparkleBackground /> : <SparkleBackground />}
+            <div className={cn("flex flex-col h-screen")}>
+                <Header onProfileOpenChange={() => {}} isContentScrolled={true} onReset={() => router.push('/')} onNavigate={(view) => router.push(`/${view}`)} activeView={'admin'} />
+                <main className={cn("flex-grow flex flex-col transition-all duration-300 relative min-h-0", "pt-24 md:pt-32" )}>
+                    <div className="px-4 md:px-16 lg:px-32 flex-grow flex flex-col pb-12">
+                        <h1 className="text-2xl md:text-3xl font-bold text-white mb-6">Analytics Dashboard</h1>
                         
-                        {/* Order Status Chart */}
-                        <div className="lg:col-span-2 bg-white/10 p-4 rounded-2xl flex flex-col">
-                            <h2 className="text-lg font-semibold text-white mb-4 text-center">Order Status</h2>
-                             {isClient && (
-                                <ChartContainer config={chartConfig} className="w-full h-[300px]">
-                                    <PieChart>
-                                        <Pie 
-                                        data={analyticsData.statusDistribution} 
-                                        dataKey="value" 
-                                        nameKey="name" 
-                                        cx="50%" 
-                                        cy="50%" 
-                                        outerRadius={100}
-                                        labelLine={false}
-                                        label={({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }) => {
-                                            const RADIAN = Math.PI / 180;
-                                            const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
-                                            const x = cx + radius * Math.cos(-midAngle * RADIAN);
-                                            const y = cy + radius * Math.sin(-midAngle * RADIAN);
-                                            return (
-                                            <text x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central" className="text-xs font-bold">
-                                                {`${(percent * 100).toFixed(0)}%`}
-                                            </text>
-                                            );
-                                        }}
-                                        >
-                                            {analyticsData.statusDistribution.map((entry, index) => (
-                                            <Cell key={`cell-${index}`} fill={entry.fill} />
-                                            ))}
-                                        </Pie>
-                                        <ChartLegend content={<ChartLegendContent />} />
-                                    </PieChart>
-                                </ChartContainer>
-                             )}
-                        </div>
-                    </div>
+                        {allOrders.length === 0 ? (
+                            <div className="flex-grow flex items-center justify-center">
+                                <EmptyState imageUrl="/icons/empty.png" title="No Data Available" description="Analytics will be shown here once you have some orders." showButton={false} />
+                            </div>
+                        ) : (
+                            <div className="flex-grow overflow-y-auto custom-scrollbar pr-2">
+                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                                    <MetricCard title="Total Revenue" value={`₹${analyticsData.totalRevenue.toFixed(2)}`} icon={<span className="text-white/80">₹</span>} description="From completed orders" />
+                                    <MetricCard title="Total Orders" value={analyticsData.totalOrders} icon={<span className="text-white/80">#</span>} />
+                                    <MetricCard title="Avg. Order Value" value={`₹${analyticsData.avgOrderValue.toFixed(2)}`} icon={<span className="text-white/80">AV</span>} description="From completed orders"/>
+                                    <MetricCard title="Products Sold" value={analyticsData.totalProductsSold} icon={<span className="text-white/80">QTY</span>}/>
+                                </div>
 
-                    <div className="mt-6 bg-white/10 p-4 rounded-2xl">
-                      <h2 className="text-lg font-semibold text-white mb-4">Top Selling Products</h2>
-                      <div className="space-y-4">
-                        {analyticsData.topProducts.map((product, index) => (
-                          <div key={product.name} className="flex items-center gap-4">
-                            <span className="font-bold text-lg w-6">#{index + 1}</span>
-                            <Image src={product.image} alt={product.name} width={40} height={40} className="rounded-md" />
-                            <p className="flex-grow font-medium">{product.name}</p>
-                            <p className="font-semibold">{product.quantity} sold</p>
-                          </div>
-                        ))}
-                      </div>
+                                <div className="mt-6 bg-white/10 p-4 rounded-2xl">
+                                    <h2 className="text-lg font-semibold text-white mb-4">Top Selling Products</h2>
+                                    <div className="space-y-4">
+                                        {analyticsData.topProducts.map((product, index) => (
+                                            <div key={product.name} className="flex items-center gap-4">
+                                                <span className="font-bold text-lg w-6">#{index + 1}</span>
+                                                <Image src={product.image} alt={product.name} width={40} height={40} className="rounded-md" />
+                                                <p className="flex-grow font-medium">{product.name}</p>
+                                                <p className="font-semibold">{product.quantity} sold</p>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                        )}
                     </div>
-                </div>
-            )}
-          </div>
-        </main>
-      </div>
-    </>
-  );
+                </main>
+            </div>
+        </>
+    );
 }
