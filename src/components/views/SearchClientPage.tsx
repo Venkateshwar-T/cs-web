@@ -18,7 +18,7 @@ import { MobileSearchHeader } from '@/components/header/mobile-search-header';
 import { StaticSparkleBackground } from '@/components/static-sparkle-background';
 import { useAppContext } from '@/context/app-context';
 import { FlavourSelectionPopup } from '../flavour-selection-popup';
-import { SearchPageSkeleton } from '../search-page-skeleton';
+import { LoadingFallback } from '../loading-fallback';
 
 interface SearchClientPageProps {
   initialProducts: SanityProduct[];
@@ -46,8 +46,7 @@ export default function SearchClientPage({ initialProducts, initialFilters }: Se
     flavourSelection,
     setFlavourSelection 
   } = useAppContext();
-  const [isSearching, setIsSearching] = useState(false);
-  const [isNavigating, setIsNavigating] = useState(false);
+  const [isSearching, setIsSearching] = useState(true);
   const [isNewSearch, setIsNewSearch] = useState(true);
   const [cartMessage, setCartMessage] = useState('');
   const [isCartButtonExpanded, setIsCartButtonExpanded] = useState(false);
@@ -112,7 +111,6 @@ export default function SearchClientPage({ initialProducts, initialFilters }: Se
   };
 
   const handleSearchSubmit = (value: string) => {
-    setIsNavigating(true);
     const params = new URLSearchParams(searchParams.toString());
     params.set('q', value);
     router.push(`${pathname}?${params.toString()}`);
@@ -133,7 +131,6 @@ export default function SearchClientPage({ initialProducts, initialFilters }: Se
   const activeFilters = getActiveFilters();
 
   const handleRemoveFilter = useCallback((categoryKey: string, optionTitle: string) => {
-    setIsNavigating(true);
     const params = new URLSearchParams(searchParams.toString());
     const existingValues = params.getAll(categoryKey);
     const newValues = existingValues.filter(v => v !== optionTitle);
@@ -147,7 +144,6 @@ export default function SearchClientPage({ initialProducts, initialFilters }: Se
   const handleToggleCartPopup = () => setIsCartOpen(p => !p);
 
   const handleSortChange = (value: string) => {
-    setIsNavigating(true);
     setSortOption(value);
     const params = new URLSearchParams(searchParams.toString());
     params.set('sort', value);
@@ -186,10 +182,6 @@ export default function SearchClientPage({ initialProducts, initialFilters }: Se
       updateCart(product.name, prevQuantity - 1);
     }
   };
-  
-  if (isNavigating) {
-    return <SearchPageSkeleton />;
-  }
 
   return (
     <>

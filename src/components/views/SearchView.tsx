@@ -8,7 +8,7 @@ import { SearchResultsDetails } from '@/components/search-results-details';
 import { cn } from '@/lib/utils';
 import type { SanityProduct, StructuredFilter } from '@/types';
 import type { OrderItem } from '@/context/app-context';
-import { SearchPageSkeleton } from '../search-page-skeleton';
+import { LoadingFallback } from '../loading-fallback';
 
 type Cart = Record<string, {
   name: string;
@@ -75,7 +75,7 @@ export function SearchView({
   }, [isNewSearch]);
   
   if (isSearching) {
-    return <SearchPageSkeleton />;
+    return <LoadingFallback text="Searching for chocolates..." />;
   }
 
   return (
