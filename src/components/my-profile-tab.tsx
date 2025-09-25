@@ -13,7 +13,7 @@ import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import { updateUserPassword } from '@/lib/firebase';
 import { Loader } from './loader';
-import { Textarea } from './ui/textarea';
+import PinCode from "react-pincode";
 
 
 interface MyProfileTabProps {
@@ -26,8 +26,16 @@ export function MyProfileTab({ profile, onProfileUpdate }: MyProfileTabProps) {
   const [name, setName] = useState(profile.name || '');
   const [phone, setPhone] = useState(profile.phone || '');
   const [email, setEmail] = useState(profile.email || '');
-  const [address, setAddress] = useState(profile.address || '');
-  const [password, setPassword] = useState(''); // Default to empty
+  
+  // Address fields
+  const [house, setHouse] = useState('');
+  const [area, setArea] = useState('');
+  const [landmark, setLandmark] = useState('');
+  const [pincode, setPincode] = useState('');
+  const [city, setCity] = useState('');
+  const [state, setState] = useState('');
+
+  const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [hasChanges, setHasChanges] = useState(false);
@@ -36,23 +44,47 @@ export function MyProfileTab({ profile, onProfileUpdate }: MyProfileTabProps) {
   const isGoogleSignIn = user?.providerData.some(
     (provider) => provider.providerId === 'google.com'
   );
+  
+  // Function to parse the address string
+  const parseAddress = (fullAddress: string) => {
+    if (!fullAddress) return;
+    
+    const parts = fullAddress.split(',').map(p => p.trim());
+    
+    const pincodeMatch = fullAddress.match(/-\s*(\d{6})$/);
+    const stateMatch = pincodeMatch ? parts[parts.length - 2] : '';
+    const cityMatch = pincodeMatch ? parts[parts.length - 3] : '';
+
+    if (pincodeMatch) setPincode(pincodeMatch[1]);
+    if (cityMatch) setCity(cityMatch);
+    if (stateMatch) setState(stateMatch);
+
+    if (parts.length > 3) {
+      setHouse(parts[0]);
+      setArea(parts[1]);
+      if (parts.length > 4) {
+        setLandmark(parts.slice(2, parts.length - 3).join(', '));
+      }
+    }
+  };
 
   useEffect(() => {
+    const fullAddress = `${house}, ${area}${landmark ? `, ${landmark}` : ''}, ${city}, ${state} - ${pincode}`;
     const changes = name !== (profile.name || '') || 
                      phone !== (profile.phone || '') || 
                      email !== (profile.email || '') || 
-                     address !== (profile.address || '') || 
+                     (house && fullAddress !== (profile.address || '')) ||
                      password !== '';
     setHasChanges(changes);
-  }, [name, phone, email, address, password, profile]);
+  }, [name, phone, email, house, area, landmark, pincode, city, state, password, profile]);
 
   // When the profile from context changes, update the local state.
   useEffect(() => {
     setName(profile.name || '');
     setPhone(profile.phone || '');
     setEmail(profile.email || '');
-    setAddress(profile.address || '');
     setPassword('');
+    parseAddress(profile.address || '');
   }, [profile]);
 
 
@@ -60,8 +92,8 @@ export function MyProfileTab({ profile, onProfileUpdate }: MyProfileTabProps) {
     setName(profile.name || '');
     setPhone(profile.phone || '');
     setEmail(profile.email || '');
-    setAddress(profile.address || '');
     setPassword('');
+    parseAddress(profile.address || '');
   };
 
   const handleSave = async () => {
@@ -73,6 +105,15 @@ export function MyProfileTab({ profile, onProfileUpdate }: MyProfileTabProps) {
       });
       return;
     }
+    if (!house || !area || !pincode || !city || !state) {
+      toast({
+        title: "Incomplete Address",
+        description: "Please complete all address fields.",
+        variant: "destructive"
+      });
+      return;
+    }
+
     setIsSaving(true);
     let passwordChanged = false;
     
@@ -81,8 +122,10 @@ export function MyProfileTab({ profile, onProfileUpdate }: MyProfileTabProps) {
         await updateUserPassword(password);
         passwordChanged = true;
       }
+      
+      const fullAddress = `${house}, ${area}${landmark ? `, ${landmark}` : ''}, ${city}, ${state} - ${pincode}`;
 
-      const updatedProfile: Partial<ProfileInfo> = { name, phone, address };
+      const updatedProfile: Partial<ProfileInfo> = { name, phone, address: fullAddress };
        if (!isGoogleSignIn) {
         updatedProfile.email = email;
       }
@@ -93,7 +136,7 @@ export function MyProfileTab({ profile, onProfileUpdate }: MyProfileTabProps) {
         description: `Profile information updated successfully.${passwordChanged ? " Your password has been changed." : ""}`,
         variant: "success",
       });
-      setPassword(''); // Clear password field after successful save
+      setPassword('');
 
     } catch (error: any) {
        toast({
@@ -166,15 +209,61 @@ export function MyProfileTab({ profile, onProfileUpdate }: MyProfileTabProps) {
             />
           </div>
         </div>
+        
         <div className="space-y-1">
-          <label htmlFor="address" className="pl-3 text-sm font-medium">Address</label>
-          <Textarea
-            id="address"
-            value={address}
-            onChange={(e) => setAddress(e.target.value)}
-            className="bg-white/10 border-white/20 text-white rounded-2xl h-24"
+            <label htmlFor="pincode" className="pl-3 text-sm font-medium">Pincode</label>
+            <PinCode
+                setData={(data) => {
+                    setPincode(data.pincode);
+                    setCity(data.city);
+                    setState(data.stateName);
+                }}
+                showCity
+                showState
+                style={{
+                  input: { all: 'unset', width: '100%', height: '100%', paddingLeft: '1rem', paddingRight: '1rem', color: 'white' },
+                  main: { background: 'rgba(255,255,255,0.1)', borderRadius: '1rem', height: '3rem', overflow: 'hidden', border: '1px solid rgba(255,255,255,0.2)' },
+                  city: { color: 'white', flex: 1, textAlign: 'center', fontWeight: 500},
+                  state: { color: 'white', flex: 1, textAlign: 'center', fontWeight: 500},
+                }}
+                pincodeInput={{
+                  value: pincode,
+                  onChange: (e) => setPincode(e.target.value),
+                  className: 'text-white placeholder:text-gray-400 font-montserrat'
+                }}
+            />
+        </div>
+        
+        <div className="space-y-1">
+          <label htmlFor="house" className="pl-3 text-sm font-medium">House No., Building Name</label>
+          <Input
+            id="house"
+            value={house}
+            onChange={(e) => setHouse(e.target.value)}
+            className="bg-white/10 border-white/20 text-white rounded-2xl h-12"
           />
         </div>
+
+        <div className="space-y-1">
+          <label htmlFor="area" className="pl-3 text-sm font-medium">Street, Area, Colony</label>
+          <Input
+            id="area"
+            value={area}
+            onChange={(e) => setArea(e.target.value)}
+            className="bg-white/10 border-white/20 text-white rounded-2xl h-12"
+          />
+        </div>
+        
+        <div className="space-y-1">
+          <label htmlFor="landmark" className="pl-3 text-sm font-medium">Landmark (Optional)</label>
+          <Input
+            id="landmark"
+            value={landmark}
+            onChange={(e) => setLandmark(e.target.value)}
+            className="bg-white/10 border-white/20 text-white rounded-2xl h-12"
+          />
+        </div>
+
         {!isGoogleSignIn && (
           <div className="space-y-1">
             <label htmlFor="email" className="pl-3 text-sm font-medium">Email</label>

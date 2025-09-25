@@ -15,6 +15,8 @@ import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import { useAppContext } from '@/context/app-context';
 import { Textarea } from './ui/textarea';
+import PinCode from "react-pincode";
+
 
 interface CompleteDetailsPopupProps {
     open: boolean;
@@ -26,39 +28,51 @@ export function CompleteDetailsPopup({ open, onOpenChange, onConfirm }: Complete
   const { profileInfo } = useAppContext();
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
-  const [address, setAddress] = useState('');
+  
+  // New address fields
+  const [house, setHouse] = useState('');
+  const [area, setArea] = useState('');
+  const [landmark, setLandmark] = useState('');
+  const [pincode, setPincode] = useState('');
+  const [city, setCity] = useState('');
+  const [state, setState] = useState('');
+
+
   const { toast } = useToast();
   
   useEffect(() => {
     if (open) {
       setName(profileInfo.name || '');
       setPhone(profileInfo.phone || '');
-      setAddress(profileInfo.address || '');
-    } else {
-      // Clear fields when popup closes
-      setName('');
-      setPhone('');
-      setAddress('');
+      // We don't pre-fill address fields as they are now structured
+      setHouse('');
+      setArea('');
+      setLandmark('');
+      setPincode('');
+      setCity('');
+      setState('');
     }
   }, [open, profileInfo]);
 
 
   const handleConfirm = () => {
-    if (!name.trim() || !phone.trim() || phone.length !== 10 || !address.trim()) {
+    if (!name.trim() || !phone.trim() || phone.length !== 10 || !house.trim() || !area.trim() || !pincode || !city || !state) {
       toast({
         title: "Missing or Invalid Details",
-        description: "Please fill in your full name, a valid 10-digit phone number, and your address.",
+        description: "Please fill all required fields: name, phone, pincode, and address details.",
         variant: "destructive",
       });
       return;
     }
-    onConfirm(name, phone, address);
+    
+    // Combine address fields into a single string
+    const fullAddress = `${house}, ${area}${landmark ? `, ${landmark}`: ''}, ${city}, ${state} - ${pincode}`;
+    onConfirm(name, phone, fullAddress);
     onOpenChange(false);
   };
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    // Allow only digits and limit to 10 characters
     if (/^\d*$/.test(value) && value.length <= 10) {
       setPhone(value);
     }
@@ -67,19 +81,20 @@ export function CompleteDetailsPopup({ open, onOpenChange, onConfirm }: Complete
   return (
     <Dialog open={open} onOpenChange={(isOpen) => !isOpen && onOpenChange(false)}>
       <DialogContent 
-        onInteractOutside={(e) => e.preventDefault()}
-        className={cn("p-0 w-[90vw] max-w-sm bg-custom-purple-dark rounded-2xl md:rounded-[30px] border-2 border-custom-gold")}
+        onOpenAutoFocus={(e) => e.preventDefault()}
+        onCloseAutoFocus={(e) => e.preventDefault()}
+        className={cn("p-0 w-[90vw] max-w-md bg-custom-purple-dark rounded-2xl md:rounded-[30px] border-2 border-custom-gold")}
       >
         <DialogHeader>
           <DialogTitle className="sr-only">Important: Confirm Your Details</DialogTitle>
         </DialogHeader>
-        <div className="flex flex-col gap-4 px-6 pt-10 pb-6 text-white">
+        <div className="flex flex-col gap-3 px-6 pt-10 pb-6 text-white max-h-[85vh] overflow-y-auto custom-scrollbar">
             <h2 className="text-2xl md:text-3xl font-medium text-center font-plex-sans">Important: Confirm Your Details</h2>
             <p className="text-xs md:text-sm px-4 md:px-6 mt-2 text-center text-white/80">
                 This is a crucial step. We need your name and phone number to reach out about payment and order confirmation.
             </p>
             
-            <div className="space-y-1 px-2 md:px-5 text-left">
+            <div className="space-y-1 text-left">
                 <label className="pl-2 text-sm font-medium font-plex-sans">Name</label>
                 <Input 
                     value={name}
@@ -89,7 +104,7 @@ export function CompleteDetailsPopup({ open, onOpenChange, onConfirm }: Complete
                 />
             </div>
             
-            <div className="space-y-1 px-2 md:px-5 text-left">
+            <div className="space-y-1 text-left">
                 <label className="pl-2 text-sm font-medium font-plex-sans">Phone Number</label>
                  <div className="flex items-center bg-white rounded-2xl h-10 md:h-12 overflow-hidden">
                     <span className="text-black font-montserrat px-3 border-r border-gray-300">+91</span>
@@ -103,15 +118,58 @@ export function CompleteDetailsPopup({ open, onOpenChange, onConfirm }: Complete
                 </div>
             </div>
 
-            <div className="space-y-1 px-2 md:px-5 text-left">
-                <label className="pl-2 text-sm font-medium font-plex-sans">Address</label>
-                <Textarea 
-                    value={address}
-                    onChange={(e) => setAddress(e.target.value)}
-                    placeholder="Enter your full address"
-                    className="bg-white rounded-2xl text-black placeholder:text-gray-400 placeholder:font-montserrat font-montserrat h-24"
+            <div className="space-y-1 text-left">
+                <label className="pl-2 text-sm font-medium font-plex-sans">Pincode</label>
+                <PinCode
+                    setData={(data) => {
+                      setPincode(data.pincode);
+                      setCity(data.city);
+                      setState(data.stateName);
+                    }}
+                    showCity
+                    showState
+                    style={{
+                        input: { all: 'unset', width: '100%', height: '100%', paddingLeft: '1rem', paddingRight: '1rem' },
+                        main: { background: 'white', borderRadius: '1rem', height: '3rem', overflow: 'hidden' },
+                        city: { color: '#000', flex: 1, textAlign: 'center', fontWeight: 500},
+                        state: { color: '#000', flex: 1, textAlign: 'center', fontWeight: 500},
+                    }}
+                    pincodeInput={{
+                      className: 'text-black placeholder:text-gray-400 font-montserrat'
+                    }}
                 />
             </div>
+            
+            <div className="space-y-1 text-left">
+                <label className="pl-2 text-sm font-medium font-plex-sans">House No., Building Name</label>
+                <Input 
+                    value={house}
+                    onChange={(e) => setHouse(e.target.value)}
+                    placeholder="e.g. A-123, Sunshine Apartments"
+                    className="bg-white rounded-2xl text-black placeholder:text-gray-400 placeholder:font-montserrat font-montserrat h-10 md:h-12"
+                />
+            </div>
+            
+            <div className="space-y-1 text-left">
+                <label className="pl-2 text-sm font-medium font-plex-sans">Street, Area, Colony</label>
+                <Input 
+                    value={area}
+                    onChange={(e) => setArea(e.target.value)}
+                    placeholder="e.g. MG Road, Koramangala"
+                    className="bg-white rounded-2xl text-black placeholder:text-gray-400 placeholder:font-montserrat font-montserrat h-10 md:h-12"
+                />
+            </div>
+
+             <div className="space-y-1 text-left">
+                <label className="pl-2 text-sm font-medium font-plex-sans">Landmark (Optional)</label>
+                <Input 
+                    value={landmark}
+                    onChange={(e) => setLandmark(e.target.value)}
+                    placeholder="e.g. Near City Mall"
+                    className="bg-white rounded-2xl text-black placeholder:text-gray-400 placeholder:font-montserrat font-montserrat h-10 md:h-12"
+                />
+            </div>
+
 
             <div className="flex items-center justify-center gap-4 mt-4">
                 <Button onClick={handleConfirm} className="bg-custom-gold text-sm md:text-base text-custom-purple-dark rounded-full px-8 md:px-10 hover:bg-custom-gold/90">

@@ -13,7 +13,7 @@ import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import { updateUserPassword } from '@/lib/firebase';
 import { Loader } from './loader';
-import { Textarea } from './ui/textarea';
+import PinCode from "react-pincode";
 
 
 interface ProfileDetailsViewProps {
@@ -27,7 +27,15 @@ export function ProfileDetailsView({ profile, onHasChangesChange, onProfileUpdat
   const [name, setName] = useState(profile.name || '');
   const [phone, setPhone] = useState(profile.phone || '');
   const [email, setEmail] = useState(profile.email || '');
-  const [address, setAddress] = useState(profile.address || '');
+
+  // Address fields
+  const [house, setHouse] = useState('');
+  const [area, setArea] = useState('');
+  const [landmark, setLandmark] = useState('');
+  const [pincode, setPincode] = useState('');
+  const [city, setCity] = useState('');
+  const [state, setState] = useState('');
+  
   const [password, setPassword] = useState(''); // Default to empty
   const [showPassword, setShowPassword] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -37,24 +45,48 @@ export function ProfileDetailsView({ profile, onHasChangesChange, onProfileUpdat
   const isGoogleSignIn = user?.providerData.some(
     (provider) => provider.providerId === 'google.com'
   );
+  
+  // Function to parse the address string
+  const parseAddress = (fullAddress: string) => {
+    if (!fullAddress) return;
+    
+    const parts = fullAddress.split(',').map(p => p.trim());
+    
+    const pincodeMatch = fullAddress.match(/-\s*(\d{6})$/);
+    const stateMatch = pincodeMatch ? parts[parts.length - 2] : '';
+    const cityMatch = pincodeMatch ? parts[parts.length - 3] : '';
+
+    if (pincodeMatch) setPincode(pincodeMatch[1]);
+    if (cityMatch) setCity(cityMatch);
+    if (stateMatch) setState(stateMatch);
+
+    if (parts.length > 3) {
+      setHouse(parts[0]);
+      setArea(parts[1]);
+      if (parts.length > 4) {
+        setLandmark(parts.slice(2, parts.length - 3).join(', '));
+      }
+    }
+  };
 
   useEffect(() => {
+    const fullAddress = `${house}, ${area}${landmark ? `, ${landmark}` : ''}, ${city}, ${state} - ${pincode}`;
     const changes = 
       name !== (profile.name || '') || 
       phone !== (profile.phone || '') || 
       email !== (profile.email || '') || 
-      address !== (profile.address || '') ||
+      (house && fullAddress !== (profile.address || '')) ||
       password !== '';
     setHasChanges(changes);
     onHasChangesChange(changes);
-  }, [name, phone, email, address, password, profile, onHasChangesChange]);
+  }, [name, phone, email, house, area, landmark, pincode, city, state, password, profile, onHasChangesChange]);
   
   // When the profile prop changes from the parent, update the local state
   useEffect(() => {
     setName(profile.name || '');
     setPhone(profile.phone || '');
     setEmail(profile.email || '');
-    setAddress(profile.address || '');
+    parseAddress(profile.address || '');
     setPassword('');
   }, [profile]);
 
@@ -67,7 +99,7 @@ export function ProfileDetailsView({ profile, onHasChangesChange, onProfileUpdat
     setName(profile.name || '');
     setPhone(profile.phone || '');
     setEmail(profile.email || '');
-    setAddress(profile.address || '');
+    parseAddress(profile.address || '');
     setPassword('');
   };
 
@@ -80,6 +112,15 @@ export function ProfileDetailsView({ profile, onHasChangesChange, onProfileUpdat
       });
       return;
     }
+    if (!house || !area || !pincode || !city || !state) {
+      toast({
+        title: "Incomplete Address",
+        description: "Please complete all address fields.",
+        variant: "destructive"
+      });
+      return;
+    }
+
     setIsSaving(true);
     let passwordChanged = false;
     
@@ -89,7 +130,8 @@ export function ProfileDetailsView({ profile, onHasChangesChange, onProfileUpdat
         passwordChanged = true;
       }
 
-      const updatedProfile: Partial<ProfileInfo> = { name, phone, address };
+      const fullAddress = `${house}, ${area}${landmark ? `, ${landmark}` : ''}, ${city}, ${state} - ${pincode}`;
+      const updatedProfile: Partial<ProfileInfo> = { name, phone, address: fullAddress };
       if (!isGoogleSignIn) {
         updatedProfile.email = email;
       }
@@ -173,15 +215,62 @@ export function ProfileDetailsView({ profile, onHasChangesChange, onProfileUpdat
               />
           </div>
         </div>
+        
         <div className="space-y-1">
-          <label htmlFor="address" className="pl-3 text-m font-medium">Address</label>
-          <Textarea 
-            id="address" 
-            value={address}
-            onChange={(e) => setAddress(e.target.value)}
-            className="bg-white border-white/20 text-black rounded-2xl h-24 text-base"
-          />
+            <label htmlFor="pincode" className="p-3 text-m font-medium">Pincode</label>
+            <PinCode
+              setData={(data) => {
+                setPincode(data.pincode);
+                setCity(data.city);
+                setState(data.stateName);
+              }}
+              showCity
+              showState
+              style={{
+                input: { all: 'unset', width: '100%', height: '100%', paddingLeft: '1rem', paddingRight: '1rem' },
+                main: { background: 'white', borderRadius: '1rem', height: '3rem', overflow: 'hidden' },
+                city: { color: '#000', flex: 1, textAlign: 'center', fontWeight: 500},
+                state: { color: '#000', flex: 1, textAlign: 'center', fontWeight: 500},
+              }}
+              pincodeInput={{
+                value: pincode,
+                onChange: (e) => setPincode(e.target.value),
+                className: 'text-black placeholder:text-gray-400 font-montserrat'
+              }}
+            />
         </div>
+
+        <div className="space-y-1">
+            <label htmlFor="house" className="p-3 text-m font-medium">House No., Building Name</label>
+            <Input
+                id="house"
+                value={house}
+                onChange={(e) => setHouse(e.target.value)}
+                className="bg-white border-white/20 text-black rounded-2xl h-12 text-base"
+            />
+        </div>
+
+        <div className="space-y-1">
+            <label htmlFor="area" className="p-3 text-m font-medium">Street, Area, Colony</label>
+            <Input
+                id="area"
+                value={area}
+                onChange={(e) => setArea(e.target.value)}
+                className="bg-white border-white/20 text-black rounded-2xl h-12 text-base"
+            />
+        </div>
+        
+        <div className="space-y-1">
+            <label htmlFor="landmark" className="p-3 text-m font-medium">Landmark (Optional)</label>
+            <Input
+                id="landmark"
+                value={landmark}
+                onChange={(e) => setLandmark(e.target.value)}
+                className="bg-white border-white/20 text-black rounded-2xl h-12 text-base"
+            />
+        </div>
+
+
         {!isGoogleSignIn && (
           <div className="space-y-1">
             <label htmlFor="email" className="p-3 text-m font-medium">Email</label>
