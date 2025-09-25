@@ -179,12 +179,12 @@ export function UserActions({
                            <SheetTitle className="sr-only">Menu</SheetTitle>
                            <SheetDescription className="sr-only">Main site navigation and options.</SheetDescription>
                             <Link href="/">
-                                <Image 
-                                    src="/Choco Smiley Logo.png" 
-                                    alt="Choco Smiley Logo" 
-                                    width={150} 
-                                    height={60}
-                                    className="h-auto"
+                                <Image
+                                  src="/Choco Smiley Logo.png"
+                                  alt="Choco Smiley Logo"
+                                  width={250}
+                                  height={100}
+                                  className="w-[150px] h-auto"
                                 />
                             </Link>
                             <Separator className="bg-custom-purple-light/50"/>
