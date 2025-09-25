@@ -46,14 +46,6 @@ export default function ProfileClientPage({ allProducts }: ProfileClientPageProp
   } = useAppContext();
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   
-  if (!isProfileLoaded) {
-    return (
-      <div className="flex h-screen w-full items-center justify-center bg-background">
-        <Loader />
-      </div>
-    )
-  }
-  
   const handleNavigation = (view: ActiveView) => {
     if (view === 'home') {
       router.push('/');
