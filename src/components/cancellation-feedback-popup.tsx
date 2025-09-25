@@ -8,10 +8,8 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogClose,
 } from "@/components/ui/dialog"
 import { Button } from "./ui/button";
-import { X } from "lucide-react";
 import { Textarea } from "./ui/textarea";
 import { useToast } from '@/hooks/use-toast';
 import type { Order } from '@/types';
@@ -41,22 +39,20 @@ export function CancellationFeedbackPopup({ order, open, onOpenChange }: Cancell
     setReason('');
   };
 
-  const handleOpenChange = (isOpen: boolean) => {
-    if (!isOpen) {
-        setReason(''); // Clear text area on close
-    }
-    onOpenChange(isOpen);
-  }
+  const handleSkip = () => {
+    saveCancellationReason(order.uid, order.id, 'SKIPPED');
+    onOpenChange(false);
+    setReason('');
+  };
 
   return (
-    <Dialog open={open} onOpenChange={handleOpenChange}>
-      <DialogContent className="justify-center p-0 w-[90vw] md:w-full max-w-md bg-custom-purple-dark border-2 border-custom-gold rounded-2xl md:rounded-[30px]">
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent 
+        onInteractOutside={(e) => e.preventDefault()}
+        className="justify-center p-0 w-[90vw] md:w-full max-w-md bg-custom-purple-dark border-2 border-custom-gold rounded-2xl md:rounded-[30px]"
+      >
         <DialogHeader className="p-4 text-center mb-4 border-b border-white/20">
           <DialogTitle className="text-white text-lg md:text-xl">Reason for Cancellation</DialogTitle>
-          <DialogClose className="absolute right-3 top-2 md:top-3 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground text-white z-10">
-            <X className="h-5 w-5" />
-            <span className="sr-only">Close</span>
-          </DialogClose>
         </DialogHeader>
         <div className="flex flex-col gap-6 px-6 pb-6 text-white">
           <div className='text-center'>
@@ -70,9 +66,14 @@ export function CancellationFeedbackPopup({ order, open, onOpenChange }: Cancell
             className="bg-white/10 rounded-xl h-24 border-white/30"
           />
           
-          <Button onClick={handleSubmit} className="w-full bg-custom-gold text-custom-purple-dark font-bold hover:bg-custom-gold/90 h-10 text-base rounded-full">
-            Submit Feedback
-          </Button>
+          <div className="flex items-center justify-center gap-4">
+             <Button onClick={handleSkip} variant="outline" className="bg-transparent text-base text-white border-custom-gold border-2 rounded-full px-10 hover:bg-custom-gold hover:text-custom-purple-dark">
+                Skip
+            </Button>
+            <Button onClick={handleSubmit} className="w-auto bg-custom-gold text-custom-purple-dark font-bold hover:bg-custom-gold/90 h-10 text-base rounded-full px-8">
+              Submit Feedback
+            </Button>
+          </div>
         </div>
       </DialogContent>
     </Dialog>

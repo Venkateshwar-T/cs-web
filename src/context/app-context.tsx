@@ -418,9 +418,10 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
 
   const saveCancellationReason = async (uid: string, orderId: string, reason: string) => {
     try {
-        await addCancellationReason(uid, orderId, reason);
+        const reasonToSave = reason === 'SKIPPED' ? 'Feedback not provided by customer.' : reason;
+        await addCancellationReason(uid, orderId, reasonToSave);
         const update = (orders: Order[]) => orders.map(o =>
-            o.id === orderId ? { ...o, cancellationReason: reason } : o
+            o.id === orderId ? { ...o, cancellationReason: reasonToSave } : o
         );
         setOrders(update);
         setAllOrders(update);
