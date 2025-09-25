@@ -16,6 +16,17 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { Button } from "./ui/button";
 import { X, User, Mail, Phone, Home, ShoppingCart, Percent, Info } from "lucide-react";
 import type { Order, SanityProduct } from "@/types";
@@ -173,33 +184,48 @@ const OrderDetailsContent = ({ order: initialOrder, allProducts }: { order: Orde
 
             <Separator className="bg-white/20" />
 
-             {order.status === 'Cancelled' ? (
-                <div className="flex flex-col items-center justify-center gap-2 pb-4 text-center">
-                    <p className="text-sm text-white/80">Order Status</p>
-                    <div className="flex items-center gap-2 bg-red-600/20 border border-red-600 text-red-300 rounded-lg p-3">
-                        <Info size={18} />
-                        <span className="font-semibold text-sm">This order was cancelled by the user.</span>
-                    </div>
-                </div>
-            ) : (
-                <div className="flex flex-col items-center justify-center gap-2 pb-4">
-                    <p className="text-sm text-white/80">Order Status</p>
-                    <div className="flex flex-wrap justify-center gap-2 w-full">
-                        {statusOptions.map((status) => (
+            <div className="flex flex-col items-center justify-center gap-2 pb-4">
+                <p className="text-sm text-white/80">Order Status</p>
+                <div className="flex flex-wrap justify-center gap-2 w-full">
+                    {statusOptions.map((status) => {
+                        const buttonContent = (
                             <Button
                                 key={status}
-                                onClick={() => handleStatusChange(status)}
+                                onClick={() => { if (status !== 'Cancelled') handleStatusChange(status) }}
                                 className={cn(
-                                    "text-xs h-8 px-3 rounded-full border-none focus:ring-0 focus:ring-offset-0 transition-all duration-200 w-1/2 hover:bg-white/40",
-                                    getStatusVariant(status, order.status === status)
+                                    "text-xs h-8 px-3 rounded-full border-none focus:ring-0 focus:ring-offset-0 transition-all duration-200 w-1/2",
+                                    getStatusVariant(status, order.status === status),
+                                    order.status !== status ? 'bg-white/10 text-white/70' : ''
                                 )}
                             >
                                 {status}
                             </Button>
-                        ))}
-                    </div>
+                        );
+
+                        if (status === 'Cancelled') {
+                            return (
+                                <AlertDialog key="cancel-dialog">
+                                    <AlertDialogTrigger asChild>{buttonContent}</AlertDialogTrigger>
+                                    <AlertDialogContent>
+                                        <AlertDialogHeader>
+                                            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                                            <AlertDialogDescription>
+                                                The user's order will be cancelled. You can change the status back if you wish.
+                                            </AlertDialogDescription>
+                                        </AlertDialogHeader>
+                                        <AlertDialogFooter>
+                                            <AlertDialogCancel>No</AlertDialogCancel>
+                                            <AlertDialogAction onClick={() => handleStatusChange('Cancelled')}>Yes, Cancel Order</AlertDialogAction>
+                                        </AlertDialogFooter>
+                                    </AlertDialogContent>
+                                </AlertDialog>
+                            );
+                        }
+                        
+                        return buttonContent;
+                    })}
                 </div>
-            )}
+            </div>
 
         </div>
     );
