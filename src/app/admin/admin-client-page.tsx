@@ -1,7 +1,8 @@
+
 // @/app/admin/admin-client-page.tsx
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { Header } from '@/components/header';
@@ -37,165 +38,161 @@ type StatusFilter = Order['status'] | 'All';
 const statusOptions: StatusFilter[] = ['All', 'Order Requested', 'In Progress', 'Completed', 'Cancelled'];
 
 export default function AdminClientPage({ allProducts }: { allProducts: SanityProduct[] }) {
-    const router = useRouter();
-    const isMobile = useIsMobile();
-    const { allOrders, isAllOrdersLoaded, isAdmin } = useAppContext();
-    const [searchTerm, setSearchTerm] = useState('');
-    const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
-    const [statusFilter, setStatusFilter] = useState<StatusFilter>('All');
-    const [isFilterSheetOpen, setIsFilterSheetOpen] = useState(false);
+  const router = useRouter();
+  const isMobile = useIsMobile();
+  const { allOrders, isAllOrdersLoaded, isAdmin, user } = useAppContext();
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
+  const [statusFilter, setStatusFilter] = useState<StatusFilter>('All');
+  const [isFilterSheetOpen, setIsFilterSheetOpen] = useState(false);
 
-    const handleStatusSelect = (status: StatusFilter) => {
-        setStatusFilter(status);
-        setIsFilterSheetOpen(false);
-    }
+  const filteredOrders = useMemo(() => {
+    return allOrders.filter(order => {
+      const statusMatch = statusFilter === 'All' || order.status === statusFilter;
 
-    if (!isAllOrdersLoaded) {
-        return (
-            <div className="flex h-screen w-full items-center justify-center bg-background">
-                <Loader />
-            </div>
-        );
-    }
+      const searchMatch = !searchTerm || (
+        order.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        order.items.some(item => item.name.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        order.customerName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        order.customerEmail?.toLowerCase().includes(searchTerm.toLowerCase())
+      );
 
-    if (!isAdmin) {
-        return (
-            <div className="flex h-screen w-full items-center justify-center bg-background">
-                <EmptyState
-                    imageUrl="/icons/profile_drpdwn_btn.png"
-                    title="Access Denied"
-                    description="You do not have permission to view this page."
-                    buttonText="Go to Homepage"
-                    onButtonClick={() => router.push('/')}
-                    imageClassName='w-24 h-24'
-                />
-            </div>
-        )
-    }
-    
-    const ordersToDisplay = allOrders.filter(order => {
-        const statusMatch = statusFilter === 'All' || order.status === statusFilter;
-        const searchMatch = !searchTerm || (
-            order.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            order.items.some(item => item.name.toLowerCase().includes(searchTerm.toLowerCase())) ||
-            order.customerName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            order.customerEmail?.toLowerCase().includes(searchTerm.toLowerCase())
-        );
-        return statusMatch && searchMatch;
+      return statusMatch && searchMatch;
     });
+  }, [allOrders, searchTerm, statusFilter]);
 
-    const handleCardClick = (order: Order) => {
-        setSelectedOrder(order);
-    };
+  const handleStatusSelect = (status: StatusFilter) => {
+    setStatusFilter(status);
+    setIsFilterSheetOpen(false);
+  }
 
+  if (!isAllOrdersLoaded) {
     return (
-        <>
-            {isMobile ? <StaticSparkleBackground /> : <SparkleBackground />}
-            <div className={cn("flex flex-col h-screen", !!selectedOrder && 'opacity-50')}>
-                <Header
-                    onProfileOpenChange={() => {}}
-                    isContentScrolled={true}
-                    onReset={() => router.push('/')}
-                    onNavigate={(view) => router.push(`/${view}`)}
-                    activeView={'admin'}
-                />
-                <main className={cn(
-                    "flex-grow flex flex-col transition-all duration-300 relative min-h-0",
-                    "pt-24 md:pt-32" 
-                )}>
-                    <div className="px-4 md:px-16 lg:px-32 flex-grow flex flex-col">
-                        <div className="relative flex flex-col md:flex-row gap-4 mb-6">
-                            <div className="relative flex-grow">
-                                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
-                                <Input
-                                    placeholder="Search by Product or Customer..."
-                                    value={searchTerm}
-                                    onChange={(e) => setSearchTerm(e.target.value)}
-                                    className="w-full pl-10 pr-10 h-12 rounded-full bg-white/10 border-white/20 text-white placeholder:text-gray-400"
-                                />
-                                {isMobile && (
-                                    <Sheet open={isFilterSheetOpen} onOpenChange={setIsFilterSheetOpen}>
-                                        <SheetTrigger asChild>
-                                            <Button variant="ghost" size="icon" className="absolute right-2 top-1/2 -translate-y-1/2 h-8 w-8 text-gray-400 hover:bg-white/20 hover:text-white">
-                                                <Filter className="h-5 w-5" />
-                                            </Button>
-                                        </SheetTrigger>
-                                        <SheetContent side="bottom" className="bg-custom-purple-dark text-white border-t-2 border-custom-gold rounded-t-3xl h-auto p-0">
-                                            <SheetHeader className="p-4 border-b border-white/20">
-                                                <SheetTitle className="text-white text-center">Filter by Status</SheetTitle>
-                                            </SheetHeader>
-                                            <div className="flex flex-col p-4">
-                                                {statusOptions.map(option => (
-                                                    <Button
-                                                        key={option}
-                                                        variant="ghost"
-                                                        onClick={() => handleStatusSelect(option)}
-                                                        className={cn(
-                                                            "justify-start text-base py-3 h-auto hover:bg-transparent",
-                                                            statusFilter === option ? "font-bold text-custom-gold" : "text-white/80 hover:text-white"
-                                                        )}
-                                                    >
-                                                        {option === 'All' ? 'All Statuses' : option}
-                                                    </Button>
-                                                ))}
-                                            </div>
-                                        </SheetContent>
-                                    </Sheet>
-                                )}
-                            </div>
-                            {!isMobile && (
-                                <Select value={statusFilter} onValueChange={(value) => setStatusFilter(value as StatusFilter)}>
-                                    <SelectTrigger className="w-full md:w-[200px] h-12 rounded-full bg-white/10 border-white/20 text-white">
-                                        <div className='flex items-center gap-2'>
-                                            <Filter className="h-5 w-5 text-gray-400" />
-                                            <SelectValue placeholder="Filter by status" />
-                                        </div>
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectItem value="All">All Statuses</SelectItem>
-                                        <SelectItem value="Order Requested">Order Requested</SelectItem>
-                                        <SelectItem value="In Progress">In Progress</SelectItem>
-                                        <SelectItem value="Completed">Completed</SelectItem>
-                                        <SelectItem value="Cancelled">Cancelled</SelectItem>
-                                    </SelectContent>
-                                </Select>
-                            )}
-                        </div>
+      <div className="flex h-screen w-full items-center justify-center bg-background">
+        <Loader />
+      </div>
+    );
+  }
 
-                        {ordersToDisplay.length > 0 ? (
-                            <div className="flex-grow overflow-y-auto no-scrollbar pb-8 space-y-4">
-                                {ordersToDisplay.map(order => (
-                                    <AdminOrderItemCard 
-                                        key={order.id} 
-                                        order={order} 
-                                        onClick={() => handleCardClick(order)} 
-                                    />
-                                ))}
-                            </div>
-                        ) : (
-                            <div className="flex-grow flex items-center justify-center">
-                                <EmptyState
-                                    imageUrl="/icons/empty.png"
-                                    title="No Orders Found"
-                                    description="There are no orders matching your search and filter criteria."
-                                    showButton={false}
-                                />
-                            </div>
-                        )}
-                    </div>
-                </main>
+  if (!isAdmin) {
+    return (
+       <div className="flex h-screen w-full items-center justify-center bg-background">
+         <EmptyState
+            imageUrl="/icons/profile_drpdwn_btn.png"
+            title="Access Denied"
+            description="You do not have permission to view this page."
+            buttonText="Go to Homepage"
+            onButtonClick={() => router.push('/')}
+            imageClassName='w-24 h-24'
+          />
+      </div>
+    )
+  }
+
+  return (
+    <>
+      {isMobile ? <StaticSparkleBackground /> : <SparkleBackground />}
+      <div className={cn("flex flex-col h-screen", !!selectedOrder && 'opacity-50')}>
+        <Header
+          onProfileOpenChange={() => {}}
+          isContentScrolled={true}
+          onReset={() => router.push('/')}
+          onNavigate={(view) => router.push(`/${view}`)}
+          activeView={'admin'}
+        />
+        <main className={cn(
+          "flex-grow flex flex-col transition-all duration-300 relative min-h-0",
+          "pt-24 md:pt-32" 
+        )}>
+          <div className="px-4 md:px-16 lg:px-32 flex-grow flex flex-col">
+            <div className="relative flex flex-col md:flex-row gap-4 mb-6">
+              <div className="relative flex-grow">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
+                <Input
+                  placeholder="Search by Product or Customer..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full pl-10 pr-10 h-12 rounded-full bg-white/10 border-white/20 text-white placeholder:text-gray-400"
+                />
+                 {isMobile && (
+                  <Sheet open={isFilterSheetOpen} onOpenChange={setIsFilterSheetOpen}>
+                    <SheetTrigger asChild>
+                       <Button variant="ghost" size="icon" className="absolute right-2 top-1/2 -translate-y-1/2 h-8 w-8 text-gray-400 hover:bg-white/20 hover:text-white">
+                          <Filter className="h-5 w-5" />
+                        </Button>
+                    </SheetTrigger>
+                    <SheetContent side="bottom" className="bg-custom-purple-dark text-white border-t-2 border-custom-gold rounded-t-3xl h-auto p-0">
+                      <SheetHeader className="p-4 border-b border-white/20">
+                        <SheetTitle className="text-white text-center">Filter by Status</SheetTitle>
+                      </SheetHeader>
+                      <div className="flex flex-col p-4">
+                        {statusOptions.map(option => (
+                          <Button
+                            key={option}
+                            variant="ghost"
+                            onClick={() => handleStatusSelect(option)}
+                            className={cn(
+                              "justify-start text-base py-3 h-auto hover:bg-transparent",
+                              statusFilter === option ? "font-bold text-custom-gold" : "text-white/80 hover:text-white"
+                            )}
+                          >
+                            {option === 'All' ? 'All Statuses' : option}
+                          </Button>
+                        ))}
+                      </div>
+                    </SheetContent>
+                  </Sheet>
+                )}
+              </div>
+              {!isMobile && (
+                  <Select value={statusFilter} onValueChange={(value) => setStatusFilter(value as StatusFilter)}>
+                      <SelectTrigger className="w-full md:w-[200px] h-12 rounded-full bg-white/10 border-white/20 text-white">
+                        <div className='flex items-center gap-2'>
+                          <Filter className="h-5 w-5 text-gray-400" />
+                          <SelectValue placeholder="Filter by status" />
+                        </div>
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="All">All Statuses</SelectItem>
+                        <SelectItem value="Order Requested">Order Requested</SelectItem>
+                        <SelectItem value="In Progress">In Progress</SelectItem>
+                        <SelectItem value="Completed">Completed</SelectItem>
+                        <SelectItem value="Cancelled">Cancelled</SelectItem>
+                      </SelectContent>
+                    </Select>
+              )}
             </div>
 
-            <AdminOrderDetails 
-                order={selectedOrder}
-                open={!!selectedOrder}
-                onOpenChange={(isOpen) => {
-                    if (!isOpen) {
-                        setSelectedOrder(null);
-                    }
-                }}
-                allProducts={allProducts}
-            />
-        </>
-    );
+            {filteredOrders.length > 0 ? (
+              <div className="flex-grow overflow-y-auto no-scrollbar pb-8 space-y-4">
+                {filteredOrders.map(order => (
+                  <AdminOrderItemCard key={order.id} order={order} onClick={() => setSelectedOrder(order)} />
+                ))}
+              </div>
+            ) : (
+              <div className="flex-grow flex items-center justify-center">
+                <EmptyState
+                  imageUrl="/icons/empty.png"
+                  title="No Orders Found"
+                  description="There are no orders matching your search and filter criteria."
+                  showButton={false}
+                />
+              </div>
+            )}
+          </div>
+        </main>
+      </div>
+
+      <AdminOrderDetails 
+        order={selectedOrder}
+        open={!!selectedOrder}
+        onOpenChange={(isOpen) => {
+            if (!isOpen) {
+                setSelectedOrder(null);
+            }
+        }}
+        allProducts={allProducts}
+      />
+    </>
+  );
 }
