@@ -36,13 +36,8 @@ import {
 } from "@/components/ui/sheet";
 
 type StatusFilter = Order['status'] | 'All';
-type SortOption = 'newest-first' | 'oldest-first';
 
 const statusOptions: StatusFilter[] = ['All', 'Order Requested', 'In Progress', 'Completed', 'Cancelled'];
-const sortOptions: { value: SortOption; label: string, section: string }[] = [
-    { value: 'newest-first', label: 'Newest First', section: 'Date' },
-    { value: 'oldest-first', label: 'Oldest First', section: 'Date' },
-];
 
 const FilterSection = ({ title, children }: { title: string, children: React.ReactNode }) => (
     <div>
@@ -61,7 +56,6 @@ export default function AdminClientPage({ allProducts }: { allProducts: SanityPr
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
   const [statusFilter, setStatusFilter] = useState<StatusFilter>('All');
-  const [sortOption, setSortOption] = useState<SortOption>('newest-first');
   const [isFilterSheetOpen, setIsFilterSheetOpen] = useState(false);
 
   const filteredAndSortedOrders = useMemo(() => {
@@ -76,25 +70,13 @@ export default function AdminClientPage({ allProducts }: { allProducts: SanityPr
       return statusMatch && searchMatch;
     });
 
-    // Apply sorting
-    return filtered.sort((a, b) => {
-      switch (sortOption) {
-        case 'oldest-first':
-          return new Date(a.date).getTime() - new Date(b.date).getTime();
-        case 'newest-first':
-        default:
-          return new Date(b.date).getTime() - new Date(a.date).getTime();
-      }
-    });
+    // Default sort: newest first
+    return filtered.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
-  }, [allOrders, searchTerm, statusFilter, sortOption]);
+  }, [allOrders, searchTerm, statusFilter]);
 
   const handleStatusSelect = (status: StatusFilter) => {
     setStatusFilter(status);
-  }
-
-  const handleSortSelect = (sort: SortOption) => {
-    setSortOption(sort);
   }
 
   if (!isAllOrdersLoaded) {
@@ -154,7 +136,7 @@ export default function AdminClientPage({ allProducts }: { allProducts: SanityPr
                     </SheetTrigger>
                     <SheetContent side="right" className="bg-custom-purple-dark text-white border-l-2 border-custom-gold w-3/4 p-0">
                       <SheetHeader className="p-4 border-b border-white/20">
-                        <SheetTitle className="text-white text-center">Filters & Sorting</SheetTitle>
+                        <SheetTitle className="text-white text-center">Filters</SheetTitle>
                       </SheetHeader>
                       <div className="flex flex-col gap-6 py-4 overflow-y-auto">
                         <FilterSection title="Filter by Status">
@@ -171,25 +153,6 @@ export default function AdminClientPage({ allProducts }: { allProducts: SanityPr
                                     {option === 'All' ? 'All Statuses' : option}
                                 </Button>
                               </SheetClose>
-                            ))}
-                        </FilterSection>
-                        
-                        <Separator className="bg-white/20" />
-
-                        <FilterSection title="Sort by Date">
-                             {sortOptions.filter(o => o.section === 'Date').map(option => (
-                                <SheetClose asChild key={option.value}>
-                                    <Button
-                                        variant="ghost"
-                                        onClick={() => handleSortSelect(option.value)}
-                                        className={cn(
-                                        "justify-start text-base py-3 h-auto rounded-none px-4",
-                                        sortOption === option.value ? "font-bold bg-white/10 text-custom-gold" : "text-white/80 hover:text-white"
-                                        )}
-                                    >
-                                        {option.label}
-                                    </Button>
-                                </SheetClose>
                             ))}
                         </FilterSection>
                       </div>
@@ -212,18 +175,6 @@ export default function AdminClientPage({ allProducts }: { allProducts: SanityPr
                         <SelectItem value="In Progress">In Progress</SelectItem>
                         <SelectItem value="Completed">Completed</SelectItem>
                         <SelectItem value="Cancelled">Cancelled</SelectItem>
-                      </SelectContent>
-                  </Select>
-                   <Select value={sortOption} onValueChange={(value) => setSortOption(value as SortOption)}>
-                      <SelectTrigger className="w-full md:w-[240px] h-12 rounded-full bg-white/10 border-white/20 text-white">
-                        <div className='flex items-center gap-2'>
-                          <ArrowUpDown className="h-5 w-5 text-gray-400" />
-                          <SelectValue placeholder="Sort by" />
-                        </div>
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="newest-first">Newest First</SelectItem>
-                        <SelectItem value="oldest-first">Oldest First</SelectItem>
                       </SelectContent>
                   </Select>
                 </div>
