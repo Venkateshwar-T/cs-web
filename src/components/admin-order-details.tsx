@@ -28,7 +28,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "./ui/button";
-import { X, User, Mail, Phone, Home, ShoppingCart, Percent, Info, Star } from "lucide-react";
+import { X, User, Mail, Phone, Home, ShoppingCart, Percent, Info, Star, MessageSquareWarning } from "lucide-react";
 import type { Order, SanityProduct } from "@/types";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
@@ -207,6 +207,18 @@ const OrderDetailsContent = ({ order: initialOrder, allProducts }: { order: Orde
                         </div>
                     </div>
                  </>
+            )}
+            
+            {order.cancellationReason && (
+              <>
+                <Separator className="bg-white/20" />
+                <div>
+                  <h4 className="font-bold mb-2 flex items-center gap-2 text-red-400"><MessageSquareWarning size={18} /> Cancellation Reason</h4>
+                  <div className="bg-white/5 p-3 rounded-lg">
+                    <blockquote className="text-sm italic border-l-2 border-red-400 pl-2 ml-1">"{order.cancellationReason}"</blockquote>
+                  </div>
+                </div>
+              </>
             )}
 
 
