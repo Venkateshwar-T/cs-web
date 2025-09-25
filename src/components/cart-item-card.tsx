@@ -111,10 +111,10 @@ export function CartItemCard({ item, product, onQuantityChange, onRemove, isRemo
                                     const flavourDetails = availableFlavoursMap?.[flavour];
                                     const price = flavourDetails?.price ?? 0;
                                     return (
-                                        <li key={index} className="flex items-center gap-1.5 text-black/80">
-                                            <span>{flavour}</span>
-                                            {product.numberOfChocolates && <span className="text-black/60">x{product.numberOfChocolates}</span>}
-                                            {price > 0 && <span className="text-black/70 font-semibold">+₹{price.toFixed(2)}</span>}
+                                        <li key={index} className="flex items-center text-black/80">
+                                            <span className="w-24 inline-block truncate">{flavour}</span>
+                                            {product.numberOfChocolates && <span className="text-center w-16 inline-block">x{product.numberOfChocolates}</span>}
+                                            {price > 0 && <span className="text-right w-20 inline-block font-semibold">+₹{price.toFixed(2)}</span>}
                                         </li>
                                     )
                                 })}
