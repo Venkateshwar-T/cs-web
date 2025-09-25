@@ -61,8 +61,7 @@ export function AdminOrderItemCard({ order, onClick }: AdminOrderItemCardProps) 
                       variant={statusVariant(order.status)} 
                       className={cn(
                         "text-xs", 
-                        order.status === 'Order Requested' && 'text-custom-purple-dark',
-                        "hover:bg-primary/100" // Disables hover effect on default
+                        order.status === 'Order Requested' && 'text-custom-purple-dark hover:bg-primary'
                       )}
                     >
                         {order.status}

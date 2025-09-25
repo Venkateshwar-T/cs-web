@@ -56,10 +56,11 @@ const OrderDetailsContent = ({ order, products }: { order: Order, products: Sani
     const totalMrp = order.items.reduce((acc, item) => acc + (item.mrp || ((item.finalProductPrice || 0) / item.quantity)) * item.quantity, 0)
     const discount = totalMrp > subtotal ? totalMrp - subtotal : 0;
 
-    const statusVariant = (status: Order['status']): "success" | "destructive" | "default" => {
+    const statusVariant = (status: Order['status']): "success" | "destructive" | "default" | "info" => {
         switch (status) {
             case 'Completed': return 'success';
             case 'Cancelled': return 'destructive';
+            case 'In Progress': return 'info';
             default: return 'default';
         }
     };
@@ -76,7 +77,7 @@ const OrderDetailsContent = ({ order, products }: { order: Order, products: Sani
                     value={
                         <Badge 
                             variant={statusVariant(order.status)} 
-                            className={cn(order.status === 'Order Requested' && 'text-custom-purple-dark')}
+                            className={cn(order.status === 'Order Requested' && 'text-custom-purple-dark hover:bg-primary')}
                         >
                             {order.status}
                         </Badge>

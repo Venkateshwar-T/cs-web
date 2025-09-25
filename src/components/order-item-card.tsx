@@ -26,10 +26,11 @@ export function OrderItemCard({ order, isMobile = false, onClick }: OrderItemCar
         hour12: true
     });
     
-    const statusVariant = (status: Order['status']): "success" | "destructive" | "default" => {
+    const statusVariant = (status: Order['status']): "success" | "destructive" | "default" | "info" => {
         switch (status) {
             case 'Completed': return 'success';
             case 'Cancelled': return 'destructive';
+            case 'In Progress': return 'info';
             default: return 'default';
         }
     };
@@ -45,7 +46,7 @@ export function OrderItemCard({ order, isMobile = false, onClick }: OrderItemCar
                 </div>
                 <Badge 
                     variant={statusVariant(order.status)}
-                    className={cn(order.status === 'Order Requested' && 'text-custom-purple-dark')}
+                    className={cn(order.status === 'Order Requested' && 'text-custom-purple-dark hover:bg-primary')}
                 >
                     {order.status}
                 </Badge>
