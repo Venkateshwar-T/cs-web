@@ -1,3 +1,4 @@
+
 // @/components/admin-order-item-card.tsx
 'use client';
 
@@ -43,11 +44,11 @@ export function AdminOrderItemCard({ order, onClick }: AdminOrderItemCardProps) 
     const handleCardClick = (e: React.MouseEvent<HTMLDivElement>) => {
         // Prevent card click if the click target is inside the filter dropdown trigger
         const target = e.target as HTMLElement;
-        if (target.closest('[data-radix-collection-item]')) {
-             // This is a more reliable way to detect clicks on the filter trigger
+        if (target.closest('[data-radix-select-trigger][data-state=open]')) {
             return;
         }
-        if (target.closest('[data-radix-select-trigger]')) {
+        if (target.closest('[data-radix-collection-item]')) {
+             // This is a more reliable way to detect clicks on the filter trigger's items
             return;
         }
         onClick();
@@ -82,9 +83,11 @@ export function AdminOrderItemCard({ order, onClick }: AdminOrderItemCardProps) 
                 {/* Total & Status */}
                 <div className="md:col-span-1 flex md:flex-col justify-between items-center md:items-end gap-2">
                     <p className="font-bold text-lg">₹{order.total.toFixed(2)}</p>
-                    <div onClick={(e) => e.stopPropagation()}>
+                    <div>
                         <Select onValueChange={handleStatusChange} defaultValue={order.status}>
-                          <SelectTrigger className={cn(
+                          <SelectTrigger 
+                            onClick={(e) => e.stopPropagation()}
+                            className={cn(
                             "w-full md:w-[140px] h-8 text-xs rounded-full border-none focus:ring-0 focus:ring-offset-0",
                              statusVariant(order.status)
                           )}>
