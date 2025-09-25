@@ -1,3 +1,4 @@
+
 // @/components/header/user-actions.tsx
 'use client';
 
@@ -176,6 +177,7 @@ export function UserActions({
                     <SheetContent side="right" className="bg-background text-white w-[250px] flex flex-col p-0">
                         <SheetHeader className="p-4 pb-0">
                            <SheetTitle className="sr-only">Menu</SheetTitle>
+                           <SheetDescription className="sr-only">Main site navigation and options.</SheetDescription>
                             <Link href="/">
                                 <Image 
                                     src="/Choco Smiley Logo.png" 
