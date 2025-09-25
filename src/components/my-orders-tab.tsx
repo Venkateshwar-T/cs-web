@@ -12,7 +12,7 @@ import { Loader } from './loader';
 import { Button } from './ui/button';
 import { OrderDetailsPopup } from './order-details-popup';
 import { RatingPopup } from './rating-popup';
-import type { OrderItem, Order, SanityProduct } from '@/types';
+import type { Order, SanityProduct, OrderItem } from '@/types';
 import { CancellationFeedbackPopup } from './cancellation-feedback-popup';
 
 interface MyOrdersTabProps {
@@ -80,14 +80,10 @@ export function MyOrdersTab({ isMobile = false, products, onProductClick }: MyOr
                                         ))}
                                     </div>
                                 ) : (
-                                    <div className="px-4 py-8 text-center">
-                                      <EmptyState
-                                        imageUrl="/icons/empty.png"
-                                        title="No Active Orders"
-                                        description="Your next sweet moment is just a click away!"
-                                        buttonText="Start Shopping"
-                                        onButtonClick={handleExplore}
-                                      />
+                                    <div className="flex flex-col items-center justify-center text-center gap-2 py-8 px-4 bg-white/5 rounded-2xl">
+                                      <h3 className="text-lg font-semibold text-white">No Active Orders</h3>
+                                      <p className="text-sm text-white/70 max-w-xs">Your next sweet moment is just a click away!</p>
+                                      <Button onClick={handleExplore} className="mt-4 bg-custom-gold text-custom-purple-dark hover:bg-custom-gold/90 rounded-full px-6 font-bold">Start Shopping</Button>
                                     </div>
                                 )}
                             </div>
@@ -108,13 +104,9 @@ export function MyOrdersTab({ isMobile = false, products, onProductClick }: MyOr
                                         ))}
                                     </div>
                                 ) : (
-                                    <div className="px-4 py-8 text-center">
-                                       <EmptyState
-                                          imageUrl="/icons/empty.png"
-                                          title="No Past Orders"
-                                          description="Your past orders will appear here once they're delivered or cancelled."
-                                          showButton={false}
-                                        />
+                                    <div className="flex flex-col items-center justify-center text-center gap-2 py-8 px-4 bg-white/5 rounded-2xl">
+                                       <h3 className="text-lg font-semibold text-white">No Past Orders</h3>
+                                       <p className="text-sm text-white/70 max-w-xs">Your past orders will appear here once they're delivered or cancelled.</p>
                                     </div>
                                 )}
                             </div>
