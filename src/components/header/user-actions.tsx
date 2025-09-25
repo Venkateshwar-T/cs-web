@@ -207,7 +207,7 @@ export function UserActions({
                             })}
                             {isAdmin && (
                                 <>
-                                    <Separator className="bg-white/20 my-2"/>
+                                    <Separator className="bg-white/20"/>
                                     <p className="text-sm font-semibold text-white/70 px-1">Admin</p>
                                     {adminLinks.map((link) => {
                                         const isActive = activeView === link.id;
@@ -231,10 +231,10 @@ export function UserActions({
                            </nav>
                            {isAuthenticated && (
                             <>
-                                <Separator className="bg-white/20 my-2"/>
+                                <Separator className="bg-white/20 my-4"/>
                                 <AlertDialog>
                                   <AlertDialogTrigger asChild>
-                                    <button className="transition-colors hover:text-red-500 text-left flex items-center gap-3 text-lg text-foreground/80">
+                                    <button className="transition-colors text-red-500 text-left flex items-center gap-3 text-lg">
                                         <LogOut className="h-5 w-5" />
                                         <span>Log Out</span>
                                     </button>
