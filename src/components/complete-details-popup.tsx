@@ -3,7 +3,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import dynamic from 'next/dynamic';
 import {
   Dialog,
   DialogContent,
@@ -15,10 +14,7 @@ import { Button } from "./ui/button";
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import { useAppContext } from '@/context/app-context';
-import { Textarea } from './ui/textarea';
-
-const PinCode = dynamic(() => import('react-pincode'), { ssr: false });
-
+import { Separator } from './ui/separator';
 
 interface CompleteDetailsPopupProps {
     open: boolean;
@@ -31,14 +27,13 @@ export function CompleteDetailsPopup({ open, onOpenChange, onConfirm }: Complete
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   
-  // New address fields
   const [house, setHouse] = useState('');
   const [area, setArea] = useState('');
   const [landmark, setLandmark] = useState('');
   const [pincode, setPincode] = useState('');
-  const [city, setCity] = useState('');
-  const [state, setState] = useState('');
-
+  
+  const city = "Bangalore";
+  const state = "Karnataka";
 
   const { toast } = useToast();
   
@@ -46,29 +41,29 @@ export function CompleteDetailsPopup({ open, onOpenChange, onConfirm }: Complete
     if (open) {
       setName(profileInfo.name || '');
       setPhone(profileInfo.phone || '');
-      // We don't pre-fill address fields as they are now structured
       setHouse('');
       setArea('');
       setLandmark('');
       setPincode('');
-      setCity('');
-      setState('');
     }
   }, [open, profileInfo]);
 
 
   const handleConfirm = () => {
-    if (!name.trim() || !phone.trim() || phone.length !== 10 || !house.trim() || !area.trim() || !pincode || !city || !state) {
+    if (!name.trim() || !phone.trim() || phone.length !== 10 || !house.trim() || !area.trim() || !pincode.trim() || pincode.length !== 6) {
       toast({
         title: "Missing or Invalid Details",
-        description: "Please fill all required fields: name, phone, pincode, and address details.",
+        description: "Please fill all required fields: name, 10-digit phone, pincode, and address.",
         variant: "destructive",
       });
       return;
     }
     
-    // Combine address fields into a single string
-    const fullAddress = `${house}, ${area}${landmark ? `, ${landmark}`: ''}, ${city}, ${state} - ${pincode}`;
+    const addressParts = [house, area];
+    if (landmark) addressParts.push(landmark);
+    addressParts.push(`${city}, ${state} - ${pincode}`);
+    
+    const fullAddress = addressParts.join(', ');
     onConfirm(name, phone, fullAddress);
     onOpenChange(false);
   };
@@ -77,6 +72,13 @@ export function CompleteDetailsPopup({ open, onOpenChange, onConfirm }: Complete
     const value = e.target.value;
     if (/^\d*$/.test(value) && value.length <= 10) {
       setPhone(value);
+    }
+  };
+
+  const handlePincodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    if (/^\d*$/.test(value) && value.length <= 6) {
+      setPincode(value);
     }
   };
   
@@ -120,56 +122,61 @@ export function CompleteDetailsPopup({ open, onOpenChange, onConfirm }: Complete
                 </div>
             </div>
 
-            <div className="space-y-1 text-left">
-                <label className="pl-2 text-sm font-medium font-plex-sans">Pincode</label>
-                <PinCode
-                    setData={(data) => {
-                      if(data.pincode) setPincode(data.pincode);
-                      if(data.city) setCity(data.city);
-                      if(data.stateName) setState(data.stateName);
-                    }}
-                    showCity
-                    showState
-                    style={{
-                        input: { all: 'unset', width: '100%', height: '100%', paddingLeft: '1rem', paddingRight: '1rem' },
-                        main: { background: 'white', borderRadius: '1rem', height: '3rem', overflow: 'hidden' },
-                        city: { color: '#000', flex: 1, textAlign: 'center', fontWeight: 500},
-                        state: { color: '#000', flex: 1, textAlign: 'center', fontWeight: 500},
-                    }}
-                    pincodeInput={{
-                      className: 'text-black placeholder:text-gray-400 font-montserrat'
-                    }}
-                />
-            </div>
-            
-            <div className="space-y-1 text-left">
-                <label className="pl-2 text-sm font-medium font-plex-sans">House No., Building Name</label>
-                <Input 
-                    value={house}
-                    onChange={(e) => setHouse(e.target.value)}
-                    placeholder="e.g. A-123, Sunshine Apartments"
-                    className="bg-white rounded-2xl text-black placeholder:text-gray-400 placeholder:font-montserrat font-montserrat h-10 md:h-12"
-                />
-            </div>
-            
-            <div className="space-y-1 text-left">
-                <label className="pl-2 text-sm font-medium font-plex-sans">Street, Area, Colony</label>
-                <Input 
-                    value={area}
-                    onChange={(e) => setArea(e.target.value)}
-                    placeholder="e.g. MG Road, Koramangala"
-                    className="bg-white rounded-2xl text-black placeholder:text-gray-400 placeholder:font-montserrat font-montserrat h-10 md:h-12"
-                />
-            </div>
+            <Separator className="bg-white/20 my-2" />
 
-             <div className="space-y-1 text-left">
-                <label className="pl-2 text-sm font-medium font-plex-sans">Landmark (Optional)</label>
-                <Input 
-                    value={landmark}
-                    onChange={(e) => setLandmark(e.target.value)}
-                    placeholder="e.g. Near City Mall"
-                    className="bg-white rounded-2xl text-black placeholder:text-gray-400 placeholder:font-montserrat font-montserrat h-10 md:h-12"
-                />
+            <div className='space-y-3'>
+              <h3 className="text-lg font-medium text-center font-plex-sans">Delivery Address</h3>
+              
+              <div className="space-y-1 text-left">
+                  <label className="pl-2 text-sm font-medium font-plex-sans">Pincode</label>
+                  <Input 
+                      value={pincode}
+                      onChange={handlePincodeChange}
+                      placeholder="6-digit Pincode"
+                      className="bg-white rounded-2xl text-black placeholder:text-gray-400 placeholder:font-montserrat font-montserrat h-10 md:h-12"
+                  />
+              </div>
+
+              <div className="space-y-1 text-left">
+                  <label className="pl-2 text-sm font-medium font-plex-sans">House No., Building Name</label>
+                  <Input 
+                      value={house}
+                      onChange={(e) => setHouse(e.target.value)}
+                      placeholder="e.g. A-123, Sunshine Apartments"
+                      className="bg-white rounded-2xl text-black placeholder:text-gray-400 placeholder:font-montserrat font-montserrat h-10 md:h-12"
+                  />
+              </div>
+              
+              <div className="space-y-1 text-left">
+                  <label className="pl-2 text-sm font-medium font-plex-sans">Street, Area, Colony</label>
+                  <Input 
+                      value={area}
+                      onChange={(e) => setArea(e.target.value)}
+                      placeholder="e.g. MG Road, Koramangala"
+                      className="bg-white rounded-2xl text-black placeholder:text-gray-400 placeholder:font-montserrat font-montserrat h-10 md:h-12"
+                  />
+              </div>
+
+               <div className="space-y-1 text-left">
+                  <label className="pl-2 text-sm font-medium font-plex-sans">Landmark (Optional)</label>
+                  <Input 
+                      value={landmark}
+                      onChange={(e) => setLandmark(e.target.value)}
+                      placeholder="e.g. Near City Mall"
+                      className="bg-white rounded-2xl text-black placeholder:text-gray-400 placeholder:font-montserrat font-montserrat h-10 md:h-12"
+                  />
+              </div>
+              
+               <div className="flex gap-4">
+                  <div className="space-y-1 text-left w-1/2">
+                      <label className="pl-2 text-sm font-medium font-plex-sans">City</label>
+                      <Input value={city} disabled className="bg-white/10 rounded-2xl text-white/70 h-10 md:h-12" />
+                  </div>
+                  <div className="space-y-1 text-left w-1/2">
+                      <label className="pl-2 text-sm font-medium font-plex-sans">State</label>
+                      <Input value={state} disabled className="bg-white/10 rounded-2xl text-white/70 h-10 md:h-12" />
+                  </div>
+              </div>
             </div>
 
 

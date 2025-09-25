@@ -3,7 +3,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import dynamic from 'next/dynamic';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import { Eye, EyeOff } from 'lucide-react';
@@ -14,9 +13,7 @@ import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import { updateUserPassword } from '@/lib/firebase';
 import { Loader } from './loader';
-
-const PinCode = dynamic(() => import('react-pincode'), { ssr: false });
-
+import { Separator } from './ui/separator';
 
 interface ProfileDetailsViewProps {
   profile: ProfileInfo;
@@ -30,15 +27,14 @@ export function ProfileDetailsView({ profile, onHasChangesChange, onProfileUpdat
   const [phone, setPhone] = useState(profile.phone || '');
   const [email, setEmail] = useState(profile.email || '');
 
-  // Address fields
   const [house, setHouse] = useState('');
   const [area, setArea] = useState('');
   const [landmark, setLandmark] = useState('');
   const [pincode, setPincode] = useState('');
-  const [city, setCity] = useState('');
-  const [state, setState] = useState('');
+  const city = "Bangalore";
+  const state = "Karnataka";
   
-  const [password, setPassword] = useState(''); // Default to empty
+  const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [hasChanges, setHasChanges] = useState(false);
@@ -48,31 +44,40 @@ export function ProfileDetailsView({ profile, onHasChangesChange, onProfileUpdat
     (provider) => provider.providerId === 'google.com'
   );
   
-  // Function to parse the address string
   const parseAddress = (fullAddress: string) => {
     if (!fullAddress) return;
-    
-    const parts = fullAddress.split(',').map(p => p.trim());
-    
     const pincodeMatch = fullAddress.match(/-\s*(\d{6})$/);
-    const stateMatch = pincodeMatch ? parts[parts.length - 2] : '';
-    const cityMatch = pincodeMatch ? parts[parts.length - 3] : '';
+    const pincodeValue = pincodeMatch ? pincodeMatch[1] : '';
+    setPincode(pincodeValue);
+    
+    const addressWithoutPincode = pincodeMatch ? fullAddress.substring(0, pincodeMatch.index).trim() : fullAddress;
+    const parts = addressWithoutPincode.split(',').map(p => p.trim());
 
-    if (pincodeMatch) setPincode(pincodeMatch[1]);
-    if (cityMatch) setCity(cityMatch);
-    if (stateMatch) setState(stateMatch);
-
-    if (parts.length > 3) {
-      setHouse(parts[0]);
-      setArea(parts[1]);
-      if (parts.length > 4) {
-        setLandmark(parts.slice(2, parts.length - 3).join(', '));
-      }
+    if (parts.length >= 4) { // House, Area, City, State
+      setHouse(parts[0] || '');
+      setArea(parts[1] || '');
+      setLandmark(parts.slice(2, -2).join(', ') || '');
+    } else if (parts.length === 3) {
+      setHouse(parts[0] || '');
+      setArea(parts[1] || '');
+      setLandmark('');
+    } else if (parts.length === 2) {
+      setHouse(parts[0] || '');
+      setArea(parts[1] || '');
+      setLandmark('');
+    } else if (parts.length === 1) {
+      setHouse(parts[0] || '');
+      setArea('');
+      setLandmark('');
     }
   };
 
   useEffect(() => {
-    const fullAddress = `${house}, ${area}${landmark ? `, ${landmark}` : ''}, ${city}, ${state} - ${pincode}`;
+    const addressParts = [house, area];
+    if (landmark) addressParts.push(landmark);
+    addressParts.push(`${city}, ${state} - ${pincode}`);
+    const fullAddress = addressParts.join(', ');
+
     const changes = 
       name !== (profile.name || '') || 
       phone !== (profile.phone || '') || 
@@ -81,9 +86,8 @@ export function ProfileDetailsView({ profile, onHasChangesChange, onProfileUpdat
       password !== '';
     setHasChanges(changes);
     onHasChangesChange(changes);
-  }, [name, phone, email, house, area, landmark, pincode, city, state, password, profile, onHasChangesChange]);
+  }, [name, phone, email, house, area, landmark, pincode, password, profile, onHasChangesChange, city, state]);
   
-  // When the profile prop changes from the parent, update the local state
   useEffect(() => {
     setName(profile.name || '');
     setPhone(profile.phone || '');
@@ -114,10 +118,10 @@ export function ProfileDetailsView({ profile, onHasChangesChange, onProfileUpdat
       });
       return;
     }
-    if (!house || !area || !pincode || !city || !state) {
+    if (!house || !area || !pincode || pincode.length !== 6) {
       toast({
         title: "Incomplete Address",
-        description: "Please complete all address fields.",
+        description: "Please complete all required address fields.",
         variant: "destructive"
       });
       return;
@@ -132,7 +136,11 @@ export function ProfileDetailsView({ profile, onHasChangesChange, onProfileUpdat
         passwordChanged = true;
       }
 
-      const fullAddress = `${house}, ${area}${landmark ? `, ${landmark}` : ''}, ${city}, ${state} - ${pincode}`;
+      const addressParts = [house, area];
+      if (landmark) addressParts.push(landmark);
+      addressParts.push(`${city}, ${state} - ${pincode}`);
+      const fullAddress = addressParts.join(', ');
+
       const updatedProfile: Partial<ProfileInfo> = { name, phone, address: fullAddress };
       if (!isGoogleSignIn) {
         updatedProfile.email = email;
@@ -144,7 +152,7 @@ export function ProfileDetailsView({ profile, onHasChangesChange, onProfileUpdat
         description: `Profile information updated successfully.${passwordChanged ? " Your password has been changed." : ""}`,
         variant: "success",
       });
-       setPassword(''); // Clear password field after successful save
+       setPassword('');
 
     } catch (error: any) {
        toast({
@@ -163,6 +171,14 @@ export function ProfileDetailsView({ profile, onHasChangesChange, onProfileUpdat
       setPhone(value);
     }
   };
+
+  const handlePincodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    if (/^\d*$/.test(value) && value.length <= 6) {
+      setPincode(value);
+    }
+  };
+
 
   if (isSaving) {
     return (
@@ -217,95 +233,97 @@ export function ProfileDetailsView({ profile, onHasChangesChange, onProfileUpdat
               />
           </div>
         </div>
-        
-        <div className="space-y-1">
-            <label htmlFor="pincode" className="p-3 text-m font-medium">Pincode</label>
-            <PinCode
-              setData={(data) => {
-                if(data.pincode) setPincode(data.pincode);
-                if(data.city) setCity(data.city);
-                if(data.stateName) setState(data.stateName);
-              }}
-              showCity
-              showState
-              style={{
-                input: { all: 'unset', width: '100%', height: '100%', paddingLeft: '1rem', paddingRight: '1rem' },
-                main: { background: 'white', borderRadius: '1rem', height: '3rem', overflow: 'hidden' },
-                city: { color: '#000', flex: 1, textAlign: 'center', fontWeight: 500},
-                state: { color: '#000', flex: 1, textAlign: 'center', fontWeight: 500},
-              }}
-              pincodeInput={{
-                value: pincode,
-                onChange: (e: any) => setPincode(e.target.value),
-                className: 'text-black placeholder:text-gray-400 font-montserrat'
-              }}
-            />
-        </div>
 
-        <div className="space-y-1">
-            <label htmlFor="house" className="p-3 text-m font-medium">House No., Building Name</label>
-            <Input
-                id="house"
-                value={house}
-                onChange={(e) => setHouse(e.target.value)}
-                className="bg-white border-white/20 text-black rounded-2xl h-12 text-base"
-            />
-        </div>
+        <Separator className="bg-white/20 my-4" />
 
-        <div className="space-y-1">
-            <label htmlFor="area" className="p-3 text-m font-medium">Street, Area, Colony</label>
-            <Input
-                id="area"
-                value={area}
-                onChange={(e) => setArea(e.target.value)}
-                className="bg-white border-white/20 text-black rounded-2xl h-12 text-base"
-            />
-        </div>
-        
-        <div className="space-y-1">
-            <label htmlFor="landmark" className="p-3 text-m font-medium">Landmark (Optional)</label>
-            <Input
-                id="landmark"
-                value={landmark}
-                onChange={(e) => setLandmark(e.target.value)}
-                className="bg-white border-white/20 text-black rounded-2xl h-12 text-base"
-            />
-        </div>
-
-
-        {!isGoogleSignIn && (
+        <div className='space-y-3'>
+          <h3 className="text-lg font-medium text-center font-plex-sans">Delivery Address</h3>
           <div className="space-y-1">
-            <label htmlFor="email" className="p-3 text-m font-medium">Email</label>
-            <Input 
-              id="email" 
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="bg-white border-white/20 text-black rounded-2xl h-12 text-base"
-            />
+              <label htmlFor="pincode" className="p-3 text-m font-medium">Pincode</label>
+              <Input
+                  id="pincode"
+                  value={pincode}
+                  onChange={handlePincodeChange}
+                  className="bg-white border-white/20 text-black rounded-2xl h-12 text-base"
+              />
           </div>
-        )}
-        {!isGoogleSignIn && (
+
           <div className="space-y-1">
-              <label htmlFor="password" className="p-3 text-m font-medium">Password</label>
-              <div className="relative">
-                  <Input 
-                      id="password" 
-                      type={showPassword ? "text" : "password"} 
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      placeholder="Enter new password to change"
-                      className="bg-white border-white/20 text-black rounded-2xl h-12 text-base pr-10" 
-                  />
-                  <button
-                      type="button"
-                      onClick={togglePasswordVisibility}
-                      className="absolute inset-y-0 right-0 flex items-center pr-3 text-black/70 hover:text-black"
-                  >
-                      {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
-                  </button>
+              <label htmlFor="house" className="p-3 text-m font-medium">House No., Building Name</label>
+              <Input
+                  id="house"
+                  value={house}
+                  onChange={(e) => setHouse(e.target.value)}
+                  className="bg-white border-white/20 text-black rounded-2xl h-12 text-base"
+              />
+          </div>
+
+          <div className="space-y-1">
+              <label htmlFor="area" className="p-3 text-m font-medium">Street, Area, Colony</label>
+              <Input
+                  id="area"
+                  value={area}
+                  onChange={(e) => setArea(e.target.value)}
+                  className="bg-white border-white/20 text-black rounded-2xl h-12 text-base"
+              />
+          </div>
+          
+          <div className="space-y-1">
+              <label htmlFor="landmark" className="p-3 text-m font-medium">Landmark (Optional)</label>
+              <Input
+                  id="landmark"
+                  value={landmark}
+                  onChange={(e) => setLandmark(e.target.value)}
+                  className="bg-white border-white/20 text-black rounded-2xl h-12 text-base"
+              />
+          </div>
+
+          <div className="flex gap-4">
+              <div className="space-y-1 text-left w-1/2">
+                  <label className="pl-2 text-sm font-medium font-plex-sans">City</label>
+                  <Input value={city} disabled className="bg-white/20 rounded-2xl text-white/70 h-10 md:h-12" />
+              </div>
+              <div className="space-y-1 text-left w-1/2">
+                  <label className="pl-2 text-sm font-medium font-plex-sans">State</label>
+                  <Input value={state} disabled className="bg-white/20 rounded-2xl text-white/70 h-10 md:h-12" />
               </div>
           </div>
+        </div>
+
+        {!isGoogleSignIn && (
+          <>
+            <Separator className="bg-white/20 my-4" />
+            <div className="space-y-1">
+              <label htmlFor="email" className="p-3 text-m font-medium">Email</label>
+              <Input 
+                id="email" 
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="bg-white border-white/20 text-black rounded-2xl h-12 text-base"
+              />
+            </div>
+            <div className="space-y-1">
+                <label htmlFor="password" className="p-3 text-m font-medium">Password</label>
+                <div className="relative">
+                    <Input 
+                        id="password" 
+                        type={showPassword ? "text" : "password"} 
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        placeholder="Enter new password to change"
+                        className="bg-white border-white/20 text-black rounded-2xl h-12 text-base pr-10" 
+                    />
+                    <button
+                        type="button"
+                        onClick={togglePasswordVisibility}
+                        className="absolute inset-y-0 right-0 flex items-center pr-3 text-black/70 hover:text-black"
+                    >
+                        {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                    </button>
+                </div>
+            </div>
+          </>
         )}
 
         <div className="flex items-center justify-between gap-4 pt-4 pb-8">
