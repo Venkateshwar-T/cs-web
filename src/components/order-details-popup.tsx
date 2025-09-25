@@ -70,7 +70,18 @@ const OrderDetailsContent = ({ order, products }: { order: Order, products: Sani
             <div className="grid grid-cols-1 gap-4">
                 <DetailRow icon={<Hash size={16} />} label="Order ID" value={order.id} />
                 <DetailRow icon={<Calendar size={16} />} label="Date & Time" value={`${formattedDate} at ${formattedTime}`} />
-                <DetailRow icon={<Tag size={16} />} label="Order Status" value={<Badge variant={statusVariant(order.status)}>{order.status}</Badge>} />
+                <DetailRow 
+                    icon={<Tag size={16} />} 
+                    label="Order Status" 
+                    value={
+                        <Badge 
+                            variant={statusVariant(order.status)} 
+                            className={cn(order.status === 'Order Requested' && 'text-custom-purple-dark')}
+                        >
+                            {order.status}
+                        </Badge>
+                    } 
+                />
             </div>
 
             <Separator className="bg-white/20" />

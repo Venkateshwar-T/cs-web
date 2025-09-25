@@ -1,3 +1,4 @@
+
 // @/components/order-item-card.tsx
 'use client';
 
@@ -42,7 +43,12 @@ export function OrderItemCard({ order, isMobile = false, onClick }: OrderItemCar
                     <p className="text-xs text-black/70">{formattedDate} at {formattedTime}</p>
                     <p className="text-base md:text-lg font-bold">₹{order.total.toFixed(2)}</p>
                 </div>
-                <Badge variant={statusVariant(order.status)}>{order.status}</Badge>
+                <Badge 
+                    variant={statusVariant(order.status)}
+                    className={cn(order.status === 'Order Requested' && 'text-custom-purple-dark')}
+                >
+                    {order.status}
+                </Badge>
             </div>
 
             <div className="flex items-center gap-2 mt-3 overflow-x-auto no-scrollbar pb-1">
