@@ -6,6 +6,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
   DialogClose,
 } from "@/components/ui/dialog"
 import {
@@ -13,6 +14,7 @@ import {
   SheetContent,
   SheetHeader,
   SheetTitle,
+  SheetDescription as SheetDescriptionComponent,
 } from "@/components/ui/sheet"
 import { X, Calendar, Hash, Tag } from "lucide-react";
 import type { Order, SanityProduct } from "@/types";
@@ -166,6 +168,9 @@ export function OrderDetailsPopup({ order, open, onOpenChange, products }: Order
         <SheetContent side="bottom" className="bg-custom-purple-dark text-white border-t-2 border-custom-gold rounded-t-3xl h-[90vh] p-0 flex flex-col">
           <SheetHeader className="p-4 border-b border-white/20 text-center relative flex-shrink-0">
             <SheetTitle className="text-white text-lg">Order Details</SheetTitle>
+            <SheetDescriptionComponent className="sr-only">
+              A dialog showing the details of the selected order, including items, and bill breakdown.
+            </SheetDescriptionComponent>
           </SheetHeader>
           <div className="flex-grow overflow-y-auto">
             <OrderDetailsContent order={order} products={products} />
@@ -180,6 +185,9 @@ export function OrderDetailsPopup({ order, open, onOpenChange, products }: Order
       <DialogContent className="justify-center h-[90vh] w-[55vh] bg-custom-purple-dark border-2 border-custom-gold rounded-2xl rounded-[30px]">
         <DialogHeader className="p-4 text-center border-b border-white/20">
           <DialogTitle className="text-white text-xl">Order Details</DialogTitle>
+          <DialogDescription className="sr-only">
+            A dialog showing the details of the selected order, including items, and bill breakdown.
+          </DialogDescription>
           <DialogClose className="absolute right-3 top-3 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground text-white z-10">
             <X className="h-5 w-5" />
             <span className="sr-only">Close</span>
