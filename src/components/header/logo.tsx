@@ -18,8 +18,8 @@ export function Logo({ onLogoClick, isEnquireOpen }: LogoProps) {
                 <Image 
                     src="/Choco Smiley Logo.png" 
                     alt="Choco Smiley Logo" 
-                    width={180} 
-                    height={70}
+                    width={250} 
+                    height={100}
                     className={cn("w-28 sm:w-32 md:w-36 lg:w-44 h-auto", isEnquireOpen && "opacity-50")}
                     onDragStart={(e) => e.preventDefault()}
                     priority
