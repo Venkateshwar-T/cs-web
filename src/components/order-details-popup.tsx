@@ -1,4 +1,3 @@
-
 // @/components/order-details-popup.tsx
 import * as React from "react";
 import {
@@ -6,7 +5,6 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogClose,
 } from "@/components/ui/dialog"
 import {
   Sheet,
@@ -107,9 +105,9 @@ const OrderDetailsContent = ({ order, products }: { order: Order, products: Sani
                                             <ul className="space-y-1">
                                                 {item.flavours.map(f => (
                                                     <li key={f.name} className="flex justify-between items-center">
-                                                        <span>{f.name}</span>
-                                                        <span className="text-center">{product?.numberOfChocolates && `x${product.numberOfChocolates}`}</span>
-                                                        <span className="text-right">(+₹{f.price.toFixed(2)})</span>
+                                                        <span className="w-24 inline-block truncate">{f.name}</span>
+                                                        <span className="text-center w-16 inline-block">{product?.numberOfChocolates && `x${product.numberOfChocolates}`}</span>
+                                                        <span className="text-right w-20 inline-block">(+₹{f.price.toFixed(2)})</span>
                                                     </li>
                                                 ))}
                                             </ul>
@@ -154,10 +152,7 @@ export function OrderDetailsPopup({ order, open, onOpenChange, products }: Order
         <SheetContent side="bottom" className="bg-custom-purple-dark text-white border-t-2 border-custom-gold rounded-t-3xl h-[90vh] p-0 flex flex-col">
           <SheetHeader className="p-4 border-b border-white/20 text-center relative flex-shrink-0">
             <SheetTitle className="text-white text-lg">Order Details</SheetTitle>
-            <DialogClose className="absolute right-3 top-3 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground text-white z-10">
-              <X className="h-5 w-5" />
-              <span className="sr-only">Close</span>
-            </DialogClose>
+            
           </SheetHeader>
           <div className="flex-grow overflow-y-auto">
             <OrderDetailsContent order={order} products={products} />
