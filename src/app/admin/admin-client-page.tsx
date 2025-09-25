@@ -28,6 +28,8 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { PopupsManager } from '@/components/popups/popups-manager';
+
 
 type StatusFilter = Order['status'] | 'All';
 type SortOption = 'newest' | 'oldest' | 'rating-high' | 'rating-low';
@@ -54,12 +56,17 @@ const FilterSection = ({ title, children }: { title: string, children: React.Rea
 export default function AdminClientPage({ allProducts }: { allProducts: SanityProduct[] }) {
   const router = useRouter();
   const isMobile = useIsMobile();
-  const { allOrders, isAllOrdersLoaded, isAdmin } = useAppContext();
+  const { allOrders, isAllOrdersLoaded, isAdmin, cart, updateCart, likedProducts, toggleLike, clearWishlist, clearCart, logout } = useAppContext();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
   const [statusFilter, setStatusFilter] = useState<StatusFilter>('All');
   const [sortOption, setSortOption] = useState<SortOption>('newest');
   const [isFilterSheetOpen, setIsFilterSheetOpen] = useState(false);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
+
+  const handleProductClick = (product: SanityProduct) => {
+    router.push(`/product/${product.slug.current}`);
+  };
 
   const filteredOrders = useMemo(() => {
     let filtered = allOrders.filter(order => {
@@ -124,9 +131,9 @@ export default function AdminClientPage({ allProducts }: { allProducts: SanityPr
   return (
     <>
       {isMobile ? <StaticSparkleBackground /> : <SparkleBackground />}
-      <div className={cn("flex flex-col h-screen", !!selectedOrder && 'opacity-50')}>
+      <div className={cn("flex flex-col h-screen", (!!selectedOrder || isProfileOpen) && 'opacity-50')}>
         <Header
-          onProfileOpenChange={() => {}}
+          onProfileOpenChange={setIsProfileOpen}
           isContentScrolled={true}
           onReset={() => router.push('/')}
           onNavigate={(view) => router.push(`/${view}`)}
@@ -162,7 +169,10 @@ export default function AdminClientPage({ allProducts }: { allProducts: SanityPr
                                   <Checkbox
                                     id={`filter-status-${option}`}
                                     checked={statusFilter === option}
-                                    onCheckedChange={() => handleStatusCheckboxChange(option)}
+                                    onCheckedChange={() => {
+                                      handleStatusCheckboxChange(option);
+                                      setIsFilterSheetOpen(false);
+                                    }}
                                   />
                                   <Label htmlFor={`filter-status-${option}`} className="text-base w-full">
                                     {option === 'All' ? 'All Statuses' : option}
@@ -177,7 +187,10 @@ export default function AdminClientPage({ allProducts }: { allProducts: SanityPr
                                 <Checkbox
                                   id={`sort-${option.value}`}
                                   checked={sortOption === option.value}
-                                  onCheckedChange={() => handleSortCheckboxChange(option.value)}
+                                  onCheckedChange={() => {
+                                      handleSortCheckboxChange(option.value)
+                                      setIsFilterSheetOpen(false);
+                                  }}
                                 />
                                 <Label htmlFor={`sort-${option.value}`} className="text-base w-full">
                                   {option.label}
@@ -192,7 +205,10 @@ export default function AdminClientPage({ allProducts }: { allProducts: SanityPr
                                 <Checkbox
                                   id={`sort-${option.value}`}
                                   checked={sortOption === option.value}
-                                  onCheckedChange={() => handleSortCheckboxChange(option.value)}
+                                  onCheckedChange={() => {
+                                    handleSortCheckboxChange(option.value)
+                                    setIsFilterSheetOpen(false);
+                                  }}
                                 />
                                 <Label htmlFor={`sort-${option.value}`} className="text-base w-full">
                                   {option.label}
@@ -234,6 +250,19 @@ export default function AdminClientPage({ allProducts }: { allProducts: SanityPr
             }
         }}
         allProducts={allProducts}
+      />
+      <PopupsManager
+        isProfileOpen={isProfileOpen}
+        setIsProfileOpen={setIsProfileOpen}
+        allProducts={allProducts}
+        likedProducts={likedProducts}
+        onLikeToggle={toggleLike}
+        cart={cart}
+        onAddToCart={updateCart}
+        onClearWishlist={clearWishlist}
+        onProductClick={handleProductClick}
+        onClearCart={clearCart}
+        onLogout={logout}
       />
     </>
   );

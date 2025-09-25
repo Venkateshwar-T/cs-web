@@ -1,7 +1,7 @@
 // @/app/admin/analytics/analytics-client-page.tsx
 'use client';
 
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { Header } from '@/components/header';
@@ -14,6 +14,7 @@ import { Loader } from '@/components/loader';
 import { EmptyState } from '@/components/empty-state';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import Image from 'next/image';
+import { PopupsManager } from '@/components/popups/popups-manager';
 
 const MetricCard = ({ title, value, icon, description }: { title: string, value: string | number, icon: React.ReactNode, description?: string }) => (
     <Card className="bg-white/10 text-white border-white/20">
@@ -31,7 +32,12 @@ const MetricCard = ({ title, value, icon, description }: { title: string, value:
 export default function AnalyticsClientPage({ allProducts }: { allProducts: SanityProduct[] }) {
     const router = useRouter();
     const isMobile = useIsMobile();
-    const { allOrders, isAllOrdersLoaded, isAdmin } = useAppContext();
+    const { allOrders, isAllOrdersLoaded, isAdmin, cart, updateCart, likedProducts, toggleLike, clearWishlist, clearCart, logout } = useAppContext();
+    const [isProfileOpen, setIsProfileOpen] = useState(false);
+
+    const handleProductClick = (product: SanityProduct) => {
+      router.push(`/product/${product.slug.current}`);
+    };
 
     const analyticsData = useMemo(() => {
         if (!isAllOrdersLoaded || allOrders.length === 0) {
@@ -75,8 +81,8 @@ export default function AnalyticsClientPage({ allProducts }: { allProducts: Sani
     return (
         <>
             {isMobile ? <StaticSparkleBackground /> : <SparkleBackground />}
-            <div className={cn("flex flex-col h-screen")}>
-                <Header onProfileOpenChange={() => {}} isContentScrolled={true} onReset={() => router.push('/')} onNavigate={(view) => router.push(`/${view}`)} activeView={'admin'} />
+            <div className={cn("flex flex-col h-screen", isProfileOpen && "opacity-50")}>
+                <Header onProfileOpenChange={setIsProfileOpen} isContentScrolled={true} onReset={() => router.push('/')} onNavigate={(view) => router.push(`/${view}`)} activeView={'admin'} />
                 <main className={cn("flex-grow flex flex-col transition-all duration-300 relative min-h-0", "pt-24 md:pt-32" )}>
                     <div className="px-4 md:px-16 lg:px-32 flex-grow flex flex-col pb-12">
                         <h1 className="text-2xl md:text-3xl font-bold text-white mb-6">Analytics Dashboard</h1>
@@ -112,6 +118,19 @@ export default function AnalyticsClientPage({ allProducts }: { allProducts: Sani
                     </div>
                 </main>
             </div>
+            <PopupsManager
+              isProfileOpen={isProfileOpen}
+              setIsProfileOpen={setIsProfileOpen}
+              allProducts={allProducts}
+              likedProducts={likedProducts}
+              onLikeToggle={toggleLike}
+              cart={cart}
+              onAddToCart={updateCart}
+              onClearWishlist={clearWishlist}
+              onProductClick={handleProductClick}
+              onClearCart={clearCart}
+              onLogout={logout}
+            />
         </>
     );
 }
