@@ -1,3 +1,4 @@
+
 // src/components/views/SearchView.tsx
 'use client';
 
@@ -7,6 +8,7 @@ import { SearchResultsDetails } from '@/components/search-results-details';
 import { cn } from '@/lib/utils';
 import type { SanityProduct, StructuredFilter } from '@/types';
 import type { OrderItem } from '@/context/app-context';
+import { SearchPageSkeleton } from '../search-page-skeleton';
 
 type Cart = Record<string, {
   name: string;
@@ -71,6 +73,10 @@ export function SearchView({
       scrollContainerRef.current.scrollTop = 0;
     }
   }, [isNewSearch]);
+  
+  if (isSearching) {
+    return <SearchPageSkeleton />;
+  }
 
   return (
     <div className="flex w-full items-start h-full flex-grow min-h-0">
