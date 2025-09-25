@@ -7,8 +7,7 @@ import { OrderItemCard } from './order-item-card';
 import { EmptyState } from './empty-state';
 import { useRouter } from 'next/navigation';
 import { SectionTitle } from './section-title';
-import { Separator } from './ui/separator';
-import { useAppContext, type Order, type SanityProduct } from '@/context/app-context';
+import { useAppContext } from '@/context/app-context';
 import { Loader } from './loader';
 import { Button } from './ui/button';
 import {
@@ -24,7 +23,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { OrderDetailsPopup } from './order-details-popup';
 import { RatingPopup } from './rating-popup';
-import type { OrderItem } from '@/context/app-context';
+import type { OrderItem, Order, SanityProduct } from '@/types';
 
 
 interface MyOrdersTabProps {
@@ -97,14 +96,13 @@ export function MyOrdersTab({ isMobile = false, products, onProductClick }: MyOr
                                         description="Your next sweet moment is just a click away!"
                                         buttonText="Start Shopping"
                                         onButtonClick={handleExplore}
-                                        containerClassName="text-black"
                                       />
                                     </div>
                                 )}
                             </div>
 
                             <div>
-                                <SectionTitle className="text-lg mb-2 px-2">Completed Orders</SectionTitle>
+                                <SectionTitle className="text-lg mb-2 mt-4 px-2">Completed Orders</SectionTitle>
                                 {completedOrders.length > 0 ? (
                                     <div className="space-y-4 mb-4">
                                         {completedOrders.map((order) => (
@@ -124,7 +122,6 @@ export function MyOrdersTab({ isMobile = false, products, onProductClick }: MyOr
                                           title="No Past Orders"
                                           description="Your past orders will appear here once they're delivered or cancelled."
                                           showButton={false}
-                                          containerClassName="text-black"
                                         />
                                     </div>
                                 )}
