@@ -1,4 +1,3 @@
-
 // @/components/cart-item-card.tsx
 'use client';
 
@@ -46,7 +45,7 @@ export function CartItemCard({ item, product, onQuantityChange, onRemove, isRemo
     const availableFlavoursMap = product.availableFlavours?.reduce((acc, flavour) => {
         acc[flavour.name] = flavour;
         return acc;
-    }, {} as Record<string, typeof product.availableFlavours[number]>);
+    }, {} as Record<string, typeof product.availableFlavours[0]>);
     
     const totalFlavourPrice = (item.flavours && availableFlavoursMap)
         ? item.flavours.reduce((acc, flavourName) => acc + (availableFlavoursMap[flavourName]?.price || 0), 0) * (product.numberOfChocolates || 1)
@@ -61,6 +60,9 @@ export function CartItemCard({ item, product, onQuantityChange, onRemove, isRemo
         return priceB - priceA;
       })
     : [];
+
+    const itemMrp = (product.mrp || product.discountedPrice || 0) * item.quantity;
+    const itemDiscount = itemMrp - ((product.discountedPrice || 0) * item.quantity);
 
 
     return (
@@ -91,21 +93,33 @@ export function CartItemCard({ item, product, onQuantityChange, onRemove, isRemo
                     <h3 className="font-bold text-lg pr-8">{item.name}</h3>
                     <p className="text-sm text-black/70">{subtitle}</p>
                     
+                    <div className="flex items-baseline gap-2 mt-1">
+                        {product.mrp && product.mrp > (product.discountedPrice || 0) && (
+                            <p className="text-sm text-black/50 line-through">₹{product.mrp.toFixed(2)}</p>
+                        )}
+                        <p className="font-bold text-base">₹{(product.discountedPrice || 0).toFixed(2)}</p>
+                    </div>
+                    {itemDiscount > 0 && (
+                        <p className="text-xs text-green-600 font-semibold">You saved ₹{itemDiscount.toFixed(2)}</p>
+                    )}
+                    
                     {sortedFlavours.length > 0 && (
                         <div className="mt-2">
                             <p className="text-sm text-black/60 font-semibold">Flavours:</p>
-                            <ul className="list-disc list-inside text-xs mt-1 space-y-0.5 font-medium">
+                            <ul className="text-xs mt-1 space-y-0.5 font-medium">
                                 {sortedFlavours.map((flavour, index) => {
                                     const flavourDetails = availableFlavoursMap?.[flavour];
                                     const price = flavourDetails?.price ?? 0;
                                     return (
-                                        <li key={index} className="flex items-center gap-1.5">
+                                        <li key={index} className="flex items-center gap-1.5 text-black/80">
                                             <span>{flavour}</span>
-                                            {price > 0 && <span className="text-black/70">(+₹{price})</span>}
+                                            {product.numberOfChocolates && <span className="text-black/60">x{product.numberOfChocolates}</span>}
+                                            {price > 0 && <span className="text-black/70 font-semibold">+₹{price.toFixed(2)}</span>}
                                         </li>
                                     )
                                 })}
                             </ul>
+                            <p className="text-[10px] text-black/60 italic mt-1.5">*Additional charges may apply for special flavors*</p>
                         </div>
                     )}
                 </div>
