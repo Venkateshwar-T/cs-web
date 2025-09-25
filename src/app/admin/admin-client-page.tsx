@@ -18,6 +18,7 @@ import { Button } from '@/components/ui/button';
 import { Search, Filter, ArrowUpDown } from 'lucide-react';
 import { AdminOrderItemCard } from '@/components/admin-order-item-card';
 import { AdminOrderDetails } from '@/components/admin-order-details';
+import { Separator } from '@/components/ui/separator';
 import {
   Select,
   SelectContent,
@@ -31,12 +32,29 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
+  SheetClose,
 } from "@/components/ui/sheet";
 
 type StatusFilter = Order['status'] | 'All';
 type SortOption = 'newest-first' | 'oldest-first' | 'rating-high-to-low' | 'rating-low-to-high';
 
 const statusOptions: StatusFilter[] = ['All', 'Order Requested', 'In Progress', 'Completed', 'Cancelled'];
+const sortOptions: { value: SortOption; label: string, section: string }[] = [
+    { value: 'newest-first', label: 'Newest First', section: 'Date' },
+    { value: 'oldest-first', label: 'Oldest First', section: 'Date' },
+    { value: 'rating-high-to-low', label: 'High to Low', section: 'Rating' },
+    { value: 'rating-low-to-high', label: 'Low to High', section: 'Rating' },
+];
+
+const FilterSection = ({ title, children }: { title: string, children: React.ReactNode }) => (
+    <div>
+        <h3 className="text-sm font-semibold text-white/70 mb-2 px-4">{title}</h3>
+        <div className="flex flex-col">
+            {children}
+        </div>
+    </div>
+);
+
 
 export default function AdminClientPage({ allProducts }: { allProducts: SanityProduct[] }) {
   const router = useRouter();
@@ -83,7 +101,10 @@ export default function AdminClientPage({ allProducts }: { allProducts: SanityPr
 
   const handleStatusSelect = (status: StatusFilter) => {
     setStatusFilter(status);
-    setIsFilterSheetOpen(false);
+  }
+
+  const handleSortSelect = (sort: SortOption) => {
+    setSortOption(sort);
   }
 
   if (!isAllOrdersLoaded) {
@@ -141,24 +162,65 @@ export default function AdminClientPage({ allProducts }: { allProducts: SanityPr
                           <Filter className="h-5 w-5" />
                         </Button>
                     </SheetTrigger>
-                    <SheetContent side="bottom" className="bg-custom-purple-dark text-white border-t-2 border-custom-gold rounded-t-3xl h-auto p-0">
+                    <SheetContent side="right" className="bg-custom-purple-dark text-white border-l-2 border-custom-gold w-3/4 p-0">
                       <SheetHeader className="p-4 border-b border-white/20">
-                        <SheetTitle className="text-white text-center">Filter by Status</SheetTitle>
+                        <SheetTitle className="text-white text-center">Filters & Sorting</SheetTitle>
                       </SheetHeader>
-                      <div className="flex flex-col p-4">
-                        {statusOptions.map(option => (
-                          <Button
-                            key={option}
-                            variant="ghost"
-                            onClick={() => handleStatusSelect(option)}
-                            className={cn(
-                              "justify-start text-base py-3 h-auto hover:bg-transparent",
-                              statusFilter === option ? "font-bold text-custom-gold" : "text-white/80 hover:text-white"
-                            )}
-                          >
-                            {option === 'All' ? 'All Statuses' : option}
-                          </Button>
-                        ))}
+                      <div className="flex flex-col gap-6 py-4 overflow-y-auto">
+                        <FilterSection title="Filter by Status">
+                            {statusOptions.map(option => (
+                              <SheetClose asChild key={option}>
+                                <Button
+                                    variant="ghost"
+                                    onClick={() => handleStatusSelect(option)}
+                                    className={cn(
+                                    "justify-start text-base py-3 h-auto rounded-none px-4",
+                                    statusFilter === option ? "font-bold bg-white/10 text-custom-gold" : "text-white/80 hover:text-white"
+                                    )}
+                                >
+                                    {option === 'All' ? 'All Statuses' : option}
+                                </Button>
+                              </SheetClose>
+                            ))}
+                        </FilterSection>
+                        
+                        <Separator className="bg-white/20" />
+
+                        <FilterSection title="Sort by Date">
+                             {sortOptions.filter(o => o.section === 'Date').map(option => (
+                                <SheetClose asChild key={option.value}>
+                                    <Button
+                                        variant="ghost"
+                                        onClick={() => handleSortSelect(option.value)}
+                                        className={cn(
+                                        "justify-start text-base py-3 h-auto rounded-none px-4",
+                                        sortOption === option.value ? "font-bold bg-white/10 text-custom-gold" : "text-white/80 hover:text-white"
+                                        )}
+                                    >
+                                        {option.label}
+                                    </Button>
+                                </SheetClose>
+                            ))}
+                        </FilterSection>
+
+                        <Separator className="bg-white/20" />
+                        
+                        <FilterSection title="Sort by Rating">
+                             {sortOptions.filter(o => o.section === 'Rating').map(option => (
+                                <SheetClose asChild key={option.value}>
+                                    <Button
+                                        variant="ghost"
+                                        onClick={() => handleSortSelect(option.value)}
+                                        className={cn(
+                                        "justify-start text-base py-3 h-auto rounded-none px-4",
+                                        sortOption === option.value ? "font-bold bg-white/10 text-custom-gold" : "text-white/80 hover:text-white"
+                                        )}
+                                    >
+                                        {option.label}
+                                    </Button>
+                                </SheetClose>
+                            ))}
+                        </FilterSection>
                       </div>
                     </SheetContent>
                   </Sheet>
