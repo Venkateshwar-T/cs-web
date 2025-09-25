@@ -19,6 +19,7 @@ import { EmptyState } from '@/components/empty-state';
 import type { ProfileInfo } from '@/context/app-context';
 import { PopupsManager } from '@/components/popups/popups-manager';
 import { FlavourSelectionPopup } from '@/components/flavour-selection-popup';
+import { LoadingFallback } from '@/components/loading-fallback';
 
 interface ProfileClientPageProps {
   allProducts: SanityProduct[];
@@ -81,6 +82,10 @@ export default function ProfileClientPage({ allProducts }: ProfileClientPageProp
   };
 
   const cartItemCount = Object.values(cart).reduce((acc, item) => acc + item.quantity, 0);
+
+  if (!isProfileLoaded) {
+    return <LoadingFallback text="Loading Your Profile..." />;
+  }
 
   return (
     <>
