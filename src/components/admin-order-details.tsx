@@ -69,10 +69,10 @@ const OrderDetailsContent = ({ order: initialOrder, allProducts }: { order: Orde
     const getStatusVariant = (status: Order['status'], isActive: boolean) => {
       if (isActive) {
         switch (status) {
-          case 'Completed': return 'bg-green-600 text-white';
-          case 'Cancelled': return 'bg-red-600 text-white';
-          case 'In Progress': return 'bg-blue-500 text-white';
-          default: return 'bg-custom-gold text-custom-purple-dark';
+          case 'Completed': return 'bg-green-600 text-white hover:bg-green-600';
+          case 'Cancelled': return 'bg-red-600 text-white hover:bg-red-600';
+          case 'In Progress': return 'bg-blue-500 text-white hover:bg-blue-500';
+          default: return 'bg-custom-gold text-custom-purple-dark hover:bg-custom-gold';
         }
       }
       return 'bg-white/10 text-white/70';
