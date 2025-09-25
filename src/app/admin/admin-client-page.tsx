@@ -27,7 +27,6 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-  SheetClose,
 } from "@/components/ui/sheet";
 
 type StatusFilter = Order['status'] | 'All';
@@ -138,140 +137,75 @@ export default function AdminClientPage({ allProducts }: { allProducts: SanityPr
           "pt-24 md:pt-32" 
         )}>
           <div className="px-4 md:px-16 lg:px-32 flex-grow flex flex-col">
-            <div className="flex flex-col gap-4 mb-6">
-              <div className="relative flex-grow">
+            <div className="flex flex-col md:flex-row items-center gap-4 mb-6">
+              <div className="relative flex-grow w-full">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
                 <Input
                   placeholder="Search by Product or Customer..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-10 pr-10 h-12 rounded-full bg-white/10 border-white/20 text-white placeholder:text-gray-400"
+                  className="w-full pl-10 pr-4 h-12 rounded-full bg-white/10 border-white/20 text-white placeholder:text-gray-400"
                 />
-                 {isMobile && (
-                  <Sheet open={isFilterSheetOpen} onOpenChange={setIsFilterSheetOpen}>
-                    <SheetTrigger asChild>
-                       <Button variant="ghost" size="icon" className="absolute right-2 top-1/2 -translate-y-1/2 h-8 w-8 text-gray-400 hover:bg-white/20 hover:text-white">
-                          <Filter className="h-5 w-5" />
-                        </Button>
-                    </SheetTrigger>
-                    <SheetContent side="right" className="bg-custom-purple-dark text-white border-l-2 border-custom-gold w-3/4 p-0">
-                      <SheetHeader className="p-4 border-b border-white/20">
-                        <SheetTitle className="text-white text-center">Filters</SheetTitle>
-                      </SheetHeader>
-                      <div className="flex flex-col gap-6 py-4 overflow-y-auto custom-scrollbar">
-                        <FilterSection title="Filter by Status">
-                            {statusOptions.map(option => (
-                                <div key={option} className="flex items-center space-x-2 px-4">
-                                  <Checkbox
-                                    id={`mobile-status-${option}`}
-                                    checked={statusFilter === option}
-                                    onCheckedChange={() => handleStatusCheckboxChange(option)}
-                                  />
-                                  <Label htmlFor={`mobile-status-${option}`} className="text-base w-full">
-                                    {option === 'All' ? 'All Statuses' : option}
-                                  </Label>
-                                </div>
-                            ))}
-                        </FilterSection>
-                        <Separator className="bg-white/20" />
-                        <FilterSection title="Sort by Date">
-                           {sortOptions.filter(o => o.section === 'date').map(option => (
-                              <div key={option.value} className="flex items-center space-x-2 px-4">
-                                <Checkbox
-                                  id={`mobile-sort-${option.value}`}
-                                  checked={sortOption === option.value}
-                                  onCheckedChange={() => handleSortCheckboxChange(option.value)}
-                                />
-                                <Label htmlFor={`mobile-sort-${option.value}`} className="text-base w-full">
-                                  {option.label}
-                                </Label>
-                              </div>
-                           ))}
-                        </FilterSection>
-                        <Separator className="bg-white/20" />
-                        <FilterSection title="Sort by Rating">
-                           {sortOptions.filter(o => o.section === 'rating').map(option => (
-                              <div key={option.value} className="flex items-center space-x-2 px-4">
-                                <Checkbox
-                                  id={`mobile-sort-${option.value}`}
-                                  checked={sortOption === option.value}
-                                  onCheckedChange={() => handleSortCheckboxChange(option.value)}
-                                />
-                                <Label htmlFor={`mobile-sort-${option.value}`} className="text-base w-full">
-                                  {option.label}
-                                </Label>
-                              </div>
-                           ))}
-                        </FilterSection>
-                      </div>
-                    </SheetContent>
-                  </Sheet>
-                )}
               </div>
-              {!isMobile && (
-                <div className="md:grid md:grid-cols-3 md:gap-4">
-                    <div className="bg-white/10 p-4 rounded-2xl border border-white/20 flex-grow">
-                        <h3 className="text-sm font-semibold text-white/80 mb-2 flex items-center gap-2">
-                            <Filter className="h-4 w-4" />
-                            Filter by Status
-                        </h3>
-                        <div className="flex flex-wrap gap-x-4 gap-y-2">
-                            {statusOptions.map(option => (
-                               <div key={option} className="flex items-center space-x-2">
-                                 <Checkbox
-                                   id={`desktop-status-${option}`}
-                                   checked={statusFilter === option}
-                                   onCheckedChange={() => handleStatusCheckboxChange(option)}
-                                 />
-                                 <Label htmlFor={`desktop-status-${option}`}>
-                                   {option === 'All' ? 'All Statuses' : option}
-                                 </Label>
-                               </div>
-                            ))}
-                        </div>
-                    </div>
-                     <div className="bg-white/10 p-4 rounded-2xl border border-white/20 flex-grow">
-                        <h3 className="text-sm font-semibold text-white/80 mb-2 flex items-center gap-2">
-                            <Filter className="h-4 w-4" />
-                            Sort by Date
-                        </h3>
-                        <div className="flex flex-wrap gap-x-4 gap-y-2">
-                            {sortOptions.filter(o => o.section === 'date').map(option => (
-                               <div key={option.value} className="flex items-center space-x-2">
-                                 <Checkbox
-                                   id={`desktop-sort-${option.value}`}
-                                   checked={sortOption === option.value}
-                                   onCheckedChange={() => handleSortCheckboxChange(option.value)}
-                                 />
-                                 <Label htmlFor={`desktop-sort-${option.value}`}>
-                                   {option.label}
-                                 </Label>
-                               </div>
-                            ))}
-                        </div>
-                    </div>
-                     <div className="bg-white/10 p-4 rounded-2xl border border-white/20 flex-grow">
-                        <h3 className="text-sm font-semibold text-white/80 mb-2 flex items-center gap-2">
-                            <Filter className="h-4 w-4" />
-                            Sort by Rating
-                        </h3>
-                        <div className="flex flex-wrap gap-x-4 gap-y-2">
-                            {sortOptions.filter(o => o.section === 'rating').map(option => (
-                               <div key={option.value} className="flex items-center space-x-2">
-                                 <Checkbox
-                                   id={`desktop-sort-${option.value}`}
-                                   checked={sortOption === option.value}
-                                   onCheckedChange={() => handleSortCheckboxChange(option.value)}
-                                 />
-                                 <Label htmlFor={`desktop-sort-${option.value}`}>
-                                   {option.label}
-                                 </Label>
-                               </div>
-                            ))}
-                        </div>
-                    </div>
-                </div>
-              )}
+               <Sheet open={isFilterSheetOpen} onOpenChange={setIsFilterSheetOpen}>
+                <SheetTrigger asChild>
+                    <Button variant="ghost" className="h-12 w-full md:w-auto px-6 bg-white/10 border-white/20 text-white hover:bg-white/20 hover:text-white rounded-full">
+                      <Filter className="h-5 w-5 mr-2" />
+                      Filters
+                    </Button>
+                </SheetTrigger>
+                <SheetContent side="right" className="bg-custom-purple-dark text-white border-l-2 border-custom-gold w-3/4 max-w-sm p-0">
+                  <SheetHeader className="p-4 border-b border-white/20">
+                    <SheetTitle className="text-white text-center">Filters</SheetTitle>
+                  </SheetHeader>
+                  <div className="flex flex-col gap-6 py-4 overflow-y-auto custom-scrollbar">
+                    <FilterSection title="Filter by Status">
+                        {statusOptions.map(option => (
+                            <div key={option} className="flex items-center space-x-2 px-4">
+                              <Checkbox
+                                id={`filter-status-${option}`}
+                                checked={statusFilter === option}
+                                onCheckedChange={() => handleStatusCheckboxChange(option)}
+                              />
+                              <Label htmlFor={`filter-status-${option}`} className="text-base w-full">
+                                {option === 'All' ? 'All Statuses' : option}
+                              </Label>
+                            </div>
+                        ))}
+                    </FilterSection>
+                    <Separator className="bg-white/20" />
+                    <FilterSection title="Sort by Date">
+                        {sortOptions.filter(o => o.section === 'date').map(option => (
+                          <div key={option.value} className="flex items-center space-x-2 px-4">
+                            <Checkbox
+                              id={`sort-${option.value}`}
+                              checked={sortOption === option.value}
+                              onCheckedChange={() => handleSortCheckboxChange(option.value)}
+                            />
+                            <Label htmlFor={`sort-${option.value}`} className="text-base w-full">
+                              {option.label}
+                            </Label>
+                          </div>
+                        ))}
+                    </FilterSection>
+                    <Separator className="bg-white/20" />
+                    <FilterSection title="Sort by Rating">
+                        {sortOptions.filter(o => o.section === 'rating').map(option => (
+                          <div key={option.value} className="flex items-center space-x-2 px-4">
+                            <Checkbox
+                              id={`sort-${option.value}`}
+                              checked={sortOption === option.value}
+                              onCheckedChange={() => handleSortCheckboxChange(option.value)}
+                            />
+                            <Label htmlFor={`sort-${option.value}`} className="text-base w-full">
+                              {option.label}
+                            </Label>
+                          </div>
+                        ))}
+                    </FilterSection>
+                  </div>
+                </SheetContent>
+              </Sheet>
             </div>
 
             {filteredOrders.length > 0 ? (
