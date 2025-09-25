@@ -1,3 +1,4 @@
+
 // @/components/my-orders-tab.tsx
 'use client';
 
@@ -22,6 +23,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { OrderDetailsPopup } from './order-details-popup';
+import { RatingPopup } from './rating-popup';
 
 interface MyOrdersTabProps {
   isMobile?: boolean;
@@ -32,6 +34,7 @@ export function MyOrdersTab({ isMobile = false, products }: MyOrdersTabProps) {
     const { orders, isOrdersLoaded, clearOrders, reorder, isAuthenticated } = useAppContext();
     const router = useRouter();
     const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
+    const [ratingOrder, setRatingOrder] = useState<Order | null>(null);
 
     if (!isOrdersLoaded) {
         return (
@@ -102,6 +105,7 @@ export function MyOrdersTab({ isMobile = false, products }: MyOrdersTabProps) {
                                     order={latestOrder} 
                                     isMobile={true} 
                                     onClick={() => setSelectedOrder(latestOrder)}
+                                    onRate={() => setRatingOrder(latestOrder)}
                                 />
                               )}
                                 
@@ -116,6 +120,7 @@ export function MyOrdersTab({ isMobile = false, products }: MyOrdersTabProps) {
                                           order={order} 
                                           isMobile={true} 
                                           onClick={() => setSelectedOrder(order)}
+                                          onRate={() => setRatingOrder(order)}
                                         />
                                       ))}
                                     </div>
@@ -141,6 +146,11 @@ export function MyOrdersTab({ isMobile = false, products }: MyOrdersTabProps) {
                     open={!!selectedOrder}
                     onOpenChange={(isOpen) => { if (!isOpen) setSelectedOrder(null); }}
                     products={products}
+                />
+                <RatingPopup
+                    order={ratingOrder}
+                    open={!!ratingOrder}
+                    onOpenChange={(isOpen) => { if (!isOpen) setRatingOrder(null); }}
                 />
             </>
         )
@@ -182,7 +192,7 @@ export function MyOrdersTab({ isMobile = false, products }: MyOrdersTabProps) {
                         {latestOrder && (
                           <>
                             <SectionTitle className="text-xl text-white/90 pl-3 mb-2">Latest Order</SectionTitle>
-                            <OrderItemCard key={latestOrder.id} order={latestOrder} onClick={() => setSelectedOrder(latestOrder)} />
+                            <OrderItemCard key={latestOrder.id} order={latestOrder} onClick={() => setSelectedOrder(latestOrder)} onRate={() => setRatingOrder(latestOrder)} />
                           </>
                         )}
 
@@ -192,7 +202,7 @@ export function MyOrdersTab({ isMobile = false, products }: MyOrdersTabProps) {
                             <SectionTitle className="text-xl text-white/90 pl-3 mb-2">Past Orders</SectionTitle>
                             <div className="space-y-4">
                               {pastOrders.map(order => (
-                                  <OrderItemCard key={order.id} order={order} onClick={() => setSelectedOrder(order)} />
+                                  <OrderItemCard key={order.id} order={order} onClick={() => setSelectedOrder(order)} onRate={() => setRatingOrder(order)} />
                               ))}
                             </div>
                           </>
@@ -216,6 +226,11 @@ export function MyOrdersTab({ isMobile = false, products }: MyOrdersTabProps) {
                 open={!!selectedOrder}
                 onOpenChange={(isOpen) => { if (!isOpen) setSelectedOrder(null); }}
                 products={products}
+            />
+            <RatingPopup
+                order={ratingOrder}
+                open={!!ratingOrder}
+                onOpenChange={(isOpen) => { if (!isOpen) setRatingOrder(null); }}
             />
         </>
     );

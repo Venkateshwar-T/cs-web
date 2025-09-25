@@ -1,3 +1,4 @@
+
 // src/types/index.ts
 import type { PortableTextBlock } from '@portabletext/react';
 
@@ -64,4 +65,6 @@ export interface Order {
   customerPhone?: string;
   address?: string;
   cancelledBy?: 'user' | 'admin';
+  rating?: number;
+  feedback?: string;
 }

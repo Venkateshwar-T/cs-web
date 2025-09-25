@@ -209,3 +209,18 @@ export const updateOrderStatus = async (uid: string, orderId: string, newStatus:
 
     await updateDoc(orderDocRef, updateData);
 };
+
+export const rateOrder = async (uid: string, orderId: string, rating: number, feedback: string): Promise<void> => {
+    const db = getClientFirestore();
+    if (!db) throw new Error("Firestore not initialized");
+
+    if (!uid) {
+      throw new Error("User ID is missing, cannot rate order.");
+    }
+
+    const orderDocRef = doc(db, 'users', uid, 'orders', orderId);
+    await updateDoc(orderDocRef, {
+        rating: rating,
+        feedback: feedback
+    });
+};

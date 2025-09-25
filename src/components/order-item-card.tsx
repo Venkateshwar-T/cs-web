@@ -1,3 +1,4 @@
+
 // @/components/order-item-card.tsx
 'use client';
 
@@ -24,9 +25,10 @@ interface OrderItemCardProps {
     order: Order;
     isMobile?: boolean;
     onClick: () => void;
+    onRate: () => void;
 }
 
-export function OrderItemCard({ order, isMobile = false, onClick }: OrderItemCardProps) {
+export function OrderItemCard({ order, isMobile = false, onClick, onRate }: OrderItemCardProps) {
     const { updateOrderStatus } = useAppContext();
     const { toast } = useToast();
 
@@ -57,13 +59,6 @@ export function OrderItemCard({ order, isMobile = false, onClick }: OrderItemCar
       }
     };
 
-    const handleRateOrder = () => {
-        toast({
-            title: "Feature Coming Soon",
-            description: "Thank you for your feedback! Rating functionality is on its way."
-        });
-    }
-
     return (
         <div 
             className="bg-white/90 p-3 md:p-4 text-black w-full relative overflow-hidden rounded-xl md:rounded-2xl shadow-md text-left flex flex-col gap-3">
@@ -79,8 +74,7 @@ export function OrderItemCard({ order, isMobile = false, onClick }: OrderItemCar
                     <Badge 
                         variant={statusVariant(order.status)}
                         className={cn(
-                            'hover:bg-primary',
-                            order.status === 'Order Requested' && 'text-custom-purple-dark hover:bg-primary'
+                            order.status === 'Order Requested' && 'text-custom-purple-dark'
                         )}
                     >
                         {order.status}
@@ -131,7 +125,7 @@ export function OrderItemCard({ order, isMobile = false, onClick }: OrderItemCar
                     </AlertDialog>
                 )}
                 {order.status === 'Completed' && (
-                    <Button onClick={handleRateOrder} size="sm" className="text-xs h-7 rounded-full bg-custom-gold text-custom-purple-dark hover:bg-custom-gold/90">Rate Your Order</Button>
+                    <Button onClick={onRate} size="sm" className="text-xs h-7 rounded-full bg-custom-gold text-custom-purple-dark hover:bg-custom-gold/90">Rate Your Order</Button>
                 )}
             </div>
         </div>

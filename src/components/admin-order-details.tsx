@@ -28,7 +28,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "./ui/button";
-import { X, User, Mail, Phone, Home, ShoppingCart, Percent, Info } from "lucide-react";
+import { X, User, Mail, Phone, Home, ShoppingCart, Percent, Info, Star } from "lucide-react";
 import type { Order, SanityProduct } from "@/types";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
@@ -181,6 +181,34 @@ const OrderDetailsContent = ({ order: initialOrder, allProducts }: { order: Orde
                     <div className="flex justify-between font-bold text-base"><span className="text-white/80">Total:</span> <span className="text-custom-gold">₹{order.total.toFixed(2)}</span></div>
                 </div>
             </div>
+            
+            {(order.rating || order.feedback) && (
+                 <>
+                    <Separator className="bg-white/20" />
+                     <div>
+                        <h4 className="font-bold mb-2 flex items-center gap-2"><Star size={18} /> Customer Feedback</h4>
+                        <div className="bg-white/5 p-3 rounded-lg space-y-2">
+                           {order.rating && (
+                            <div className="flex items-center gap-2">
+                                <p className="text-sm text-white/80">Rating:</p>
+                                <div className="flex items-center">
+                                    {[...Array(5)].map((_, i) => (
+                                        <Star key={i} className={cn("h-5 w-5", (order.rating || 0) > i ? "text-custom-gold fill-custom-gold" : "text-white/50")}/>
+                                    ))}
+                                </div>
+                            </div>
+                           )}
+                           {order.feedback && (
+                            <div>
+                                <p className="text-sm text-white/80">Feedback:</p>
+                                <blockquote className="text-sm italic border-l-2 border-custom-gold pl-2 ml-1 mt-1">"{order.feedback}"</blockquote>
+                            </div>
+                           )}
+                        </div>
+                    </div>
+                 </>
+            )}
+
 
             <Separator className="bg-white/20" />
 

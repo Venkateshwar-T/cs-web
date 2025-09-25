@@ -17,6 +17,7 @@ import {
   getUserOrders,
   getAllOrders,
   updateOrderStatus,
+  rateOrder as rateOrderInDb,
 } from '@/lib/firebase';
 import type { User } from 'firebase/auth';
 import type { Order } from '@/types';
@@ -65,6 +66,7 @@ interface AppContextType {
   clearOrders: () => void;
   reorder: (orderId: string) => void;
   reorderItem: (item: OrderItem) => void;
+  rateOrder: (uid: string, orderId: string, rating: number, feedback: string) => void;
   
   allOrders: Order[];
   isAllOrdersLoaded: boolean;
@@ -393,6 +395,25 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
       });
     }
   };
+  
+  const rateOrder = async (uid: string, orderId: string, rating: number, feedback: string) => {
+    try {
+      await rateOrderInDb(uid, orderId, rating, feedback);
+      const update = (orders: Order[]) => orders.map(o => 
+        o.id === orderId ? { ...o, rating, feedback } : o
+      );
+      setOrders(update);
+      setAllOrders(update);
+    } catch (error) {
+      console.error("Failed to rate order:", error);
+      toast({
+        title: "Rating Failed",
+        description: "Could not submit your feedback.",
+        variant: 'destructive'
+      });
+    }
+  };
+
 
   const value: AppContextType = {
     profileInfo,
@@ -407,6 +428,7 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
     clearOrders,
     reorder,
     reorderItem,
+    rateOrder,
     allOrders,
     isAllOrdersLoaded,
     updateOrderStatus: handleUpdateOrderStatus,
