@@ -49,9 +49,9 @@ export default function ProfileClientPage({ allProducts }: ProfileClientPageProp
   
   const handleNavigation = (view: ActiveView) => {
     if (view === 'home') {
-      router.push('/');
+      router.push('/', { scroll: false });
     } else if (view === 'cart') {
-      router.push('/cart');
+      router.push('/cart', { scroll: false });
     }
     // If view is 'profile', do nothing as we are already on the page.
   };
