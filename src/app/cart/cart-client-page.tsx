@@ -39,17 +39,12 @@ export default function CartClientPage({ allProducts }: { allProducts: SanityPro
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const router = useRouter();
   const { cart, updateCart, clearCart, addOrder, isAuthenticated, setAuthPopup } = useAppContext();
-  const [isLoading, setIsLoading] = useState(true);
   const isMobile = useIsMobile();
   const [lastScrollTop, setLastScrollTop] = useState(0);
   const [isHeaderVisible, setIsHeaderVisible] = useState(true);
   const [isSummaryVisible, setIsSummaryVisible] = useState(false);
   const summaryRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
-  
-  useEffect(() => {
-    setIsLoading(false);
-  }, []);
 
   useEffect(() => {
     if (!isMobile) return;
@@ -207,11 +202,7 @@ export default function CartClientPage({ allProducts }: { allProducts: SanityPro
           "flex-grow flex flex-col transition-all duration-300 relative min-h-0 md:pb-0",
           isMobile ? (isHeaderVisible ? 'pt-24' : 'pt-0') : "pt-36" 
         )}>
-          {isLoading ? (
-            <div className="flex h-full w-full items-center justify-center">
-              <Loader />
-            </div>
-          ) : cartItems.length === 0 ? (
+          {cartItems.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-full px-4 pb-32">
               <EmptyState
                 imageUrl="/icons/empty.png"
