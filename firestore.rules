@@ -1,26 +1,21 @@
+
 rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
-    
-    function isOwner(userId) {
-      return request.auth != null && request.auth.uid == userId;
-    }
-
-    // IMPORTANT: Replace with your actual admin email
+  
     function isAdmin() {
+      // Make sure to replace this with your actual admin email in a real environment
       return request.auth.token.email == "admin@test.com";
     }
 
     match /users/{userId} {
-      allow read: if isOwner(userId) || isAdmin();
-      allow write: if isOwner(userId);
+      allow read: if request.auth.uid == userId || isAdmin();
+      allow write: if request.auth.uid == userId;
 
       match /orders/{orderId} {
-        allow create: if isOwner(userId);
-        allow read: if isOwner(userId) || isAdmin();
-        allow update: if isOwner(userId) || isAdmin();
-        allow delete: if isOwner(userId);
+        allow read, create: if request.auth.uid == userId || isAdmin();
+        allow update, delete: if request.auth.uid == userId || isAdmin();
       }
     }
   }
