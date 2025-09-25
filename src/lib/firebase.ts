@@ -1,3 +1,4 @@
+
 // src/lib/firebase.ts
 import { initializeApp, getApps, getApp, type FirebaseApp } from 'firebase/app';
 import {
@@ -228,5 +229,19 @@ export const rateOrder = async (uid: string, orderId: string, rating: number, fe
     await updateDoc(orderDocRef, {
         rating: rating,
         feedback: feedback
+    });
+};
+
+export const addCancellationReason = async (uid: string, orderId: string, reason: string): Promise<void> => {
+    const db = getClientFirestore();
+    if (!db) throw new Error("Firestore not initialized");
+
+    if (!uid) {
+        throw new Error("User ID is missing, cannot add cancellation reason.");
+    }
+
+    const orderDocRef = doc(db, 'users', uid, 'orders', orderId);
+    await updateDoc(orderDocRef, {
+        cancellationReason: reason,
     });
 };

@@ -10,21 +10,10 @@ import { SectionTitle } from './section-title';
 import { useAppContext } from '@/context/app-context';
 import { Loader } from './loader';
 import { Button } from './ui/button';
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
 import { OrderDetailsPopup } from './order-details-popup';
 import { RatingPopup } from './rating-popup';
 import type { OrderItem, Order, SanityProduct } from '@/types';
-
+import { CancellationFeedbackPopup } from './cancellation-feedback-popup';
 
 interface MyOrdersTabProps {
   isMobile?: boolean;
@@ -37,6 +26,7 @@ export function MyOrdersTab({ isMobile = false, products, onProductClick }: MyOr
     const router = useRouter();
     const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
     const [ratingOrder, setRatingOrder] = useState<Order | null>(null);
+    const [cancellationOrder, setCancellationOrder] = useState<Order | null>(null);
     
     const currentOrders = orders.filter(o => o.status === 'Order Requested' || o.status === 'In Progress');
     const completedOrders = orders.filter(o => o.status === 'Completed' || o.status === 'Cancelled');
@@ -85,6 +75,7 @@ export function MyOrdersTab({ isMobile = false, products, onProductClick }: MyOr
                                                 isMobile={true} 
                                                 onClick={() => setSelectedOrder(order)}
                                                 onRate={() => setRatingOrder(order)}
+                                                onCancel={() => setCancellationOrder(order)}
                                             />
                                         ))}
                                     </div>
@@ -112,6 +103,7 @@ export function MyOrdersTab({ isMobile = false, products, onProductClick }: MyOr
                                                 isMobile={true} 
                                                 onClick={() => setSelectedOrder(order)}
                                                 onRate={() => setRatingOrder(order)}
+                                                onCancel={() => setCancellationOrder(order)}
                                             />
                                         ))}
                                     </div>
@@ -151,6 +143,11 @@ export function MyOrdersTab({ isMobile = false, products, onProductClick }: MyOr
                     open={!!ratingOrder}
                     onOpenChange={(isOpen) => { if (!isOpen) setRatingOrder(null); }}
                 />
+                <CancellationFeedbackPopup
+                    order={cancellationOrder}
+                    open={!!cancellationOrder}
+                    onOpenChange={(isOpen) => { if (!isOpen) setCancellationOrder(null); }}
+                />
             </>
         )
     }
@@ -168,7 +165,7 @@ export function MyOrdersTab({ isMobile = false, products, onProductClick }: MyOr
                             {currentOrders.length > 0 ? (
                                 <div className="space-y-4">
                                     {currentOrders.map(order => (
-                                        <OrderItemCard key={order.id} order={order} onClick={() => setSelectedOrder(order)} onRate={() => setRatingOrder(order)} />
+                                        <OrderItemCard key={order.id} order={order} onClick={() => setSelectedOrder(order)} onRate={() => setRatingOrder(order)} onCancel={() => setCancellationOrder(order)} />
                                     ))}
                                 </div>
                             ) : (
@@ -185,7 +182,7 @@ export function MyOrdersTab({ isMobile = false, products, onProductClick }: MyOr
                              {completedOrders.length > 0 ? (
                                 <div className="space-y-4">
                                     {completedOrders.map(order => (
-                                        <OrderItemCard key={order.id} order={order} onClick={() => setSelectedOrder(order)} onRate={() => setRatingOrder(order)} />
+                                        <OrderItemCard key={order.id} order={order} onClick={() => setSelectedOrder(order)} onRate={() => setRatingOrder(order)} onCancel={() => setCancellationOrder(order)} />
                                     ))}
                                 </div>
                              ) : (
@@ -218,6 +215,11 @@ export function MyOrdersTab({ isMobile = false, products, onProductClick }: MyOr
                 order={ratingOrder}
                 open={!!ratingOrder}
                 onOpenChange={(isOpen) => { if (!isOpen) setRatingOrder(null); }}
+            />
+            <CancellationFeedbackPopup
+                order={cancellationOrder}
+                open={!!cancellationOrder}
+                onOpenChange={(isOpen) => { if (!isOpen) setCancellationOrder(null); }}
             />
         </>
     );

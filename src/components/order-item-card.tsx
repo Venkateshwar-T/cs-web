@@ -26,9 +26,10 @@ interface OrderItemCardProps {
     isMobile?: boolean;
     onClick: () => void;
     onRate: () => void;
+    onCancel: () => void;
 }
 
-export function OrderItemCard({ order, isMobile = false, onClick, onRate }: OrderItemCardProps) {
+export function OrderItemCard({ order, isMobile = false, onClick, onRate, onCancel }: OrderItemCardProps) {
     const { updateOrderStatus } = useAppContext();
     const { toast } = useToast();
 
@@ -53,9 +54,10 @@ export function OrderItemCard({ order, isMobile = false, onClick, onRate }: Orde
         }
     };
 
-    const handleCancelOrder = () => {
+    const handleCancelOrder = async () => {
       if (order.uid && order.id) {
-        updateOrderStatus(order.uid, order.id, 'Cancelled', 'user');
+        await updateOrderStatus(order.uid, order.id, 'Cancelled', 'user');
+        onCancel(); // Trigger the feedback popup
       }
     };
 

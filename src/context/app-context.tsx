@@ -1,3 +1,4 @@
+
 // @/context/app-context.tsx
 'use client';
 
@@ -17,6 +18,7 @@ import {
   getAllOrders,
   updateOrderStatus,
   rateOrder as rateOrderInDb,
+  addCancellationReason,
 } from '@/lib/firebase';
 import type { User } from 'firebase/auth';
 import type { Order } from '@/types';
@@ -66,10 +68,11 @@ interface AppContextType {
   reorder: (orderId: string) => void;
   reorderItem: (item: OrderItem) => void;
   rateOrder: (uid: string, orderId: string, rating: number, feedback: string) => void;
+  saveCancellationReason: (uid: string, orderId: string, reason: string) => void;
   
   allOrders: Order[];
   isAllOrdersLoaded: boolean;
-  updateOrderStatus: (uid: string, orderId: string, newStatus: Order['status'], cancelledBy?: 'user' | 'admin') => void;
+  updateOrderStatus: (uid: string, orderId: string, newStatus: Order['status'], cancelledBy?: 'user' | 'admin') => Promise<void>;
 
   cart: Cart;
   updateCart: (productName: string, quantity: number, flavours?: string[]) => void;
@@ -363,7 +366,7 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
     }
   }, [toast]);
   
-  const handleUpdateOrderStatus = async (uid: string, orderId: string, newStatus: Order['status'], cancelledBy?: 'user' | 'admin') => {
+  const handleUpdateOrderStatus = async (uid: string, orderId: string, newStatus: Order['status'], cancelledBy?: 'user' | 'admin'): Promise<void> => {
     try {
       await updateOrderStatus(uid, orderId, newStatus, cancelledBy);
       const update = (orders: Order[]) => orders.map(o => {
@@ -413,6 +416,24 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
     }
   };
 
+  const saveCancellationReason = async (uid: string, orderId: string, reason: string) => {
+    try {
+        await addCancellationReason(uid, orderId, reason);
+        const update = (orders: Order[]) => orders.map(o =>
+            o.id === orderId ? { ...o, cancellationReason: reason } : o
+        );
+        setOrders(update);
+        setAllOrders(update);
+    } catch (error) {
+        console.error("Failed to save cancellation reason:", error);
+        toast({
+            title: "Feedback Failed",
+            description: "Could not save your cancellation reason.",
+            variant: 'destructive'
+        });
+    }
+  };
+
 
   const value: AppContextType = {
     profileInfo,
@@ -428,6 +449,7 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
     reorder,
     reorderItem,
     rateOrder,
+    saveCancellationReason,
     allOrders,
     isAllOrdersLoaded,
     updateOrderStatus: handleUpdateOrderStatus,

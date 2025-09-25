@@ -67,6 +67,7 @@ export interface Order {
   cancelledBy?: 'user' | 'admin';
   rating?: number;
   feedback?: string;
+  cancellationReason?: string;
 }
 
 export type ActiveView = 
