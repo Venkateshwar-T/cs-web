@@ -1,3 +1,4 @@
+
 // src/components/search-results-details.tsx
 'use client';
 
@@ -18,6 +19,7 @@ import { FilterContainer } from "./filter-container";
 import type { SanityProduct, StructuredFilter } from '@/types';
 import { EmptyState } from "./empty-state";
 import { useRouter } from "next/navigation";
+import { Loader } from "../loader";
 
 type Cart = Record<string, {
   name: string;
@@ -212,7 +214,12 @@ export function SearchResultsDetails({
                   onScroll={onScroll}
                   className="flex-grow h-full overflow-y-auto custom-scrollbar pt-0 md:pt-4 pb-8 min-h-0 px-4 md:px-8"
               >
-                {isSearching ? null : products.length > 0 ? (
+                {isSearching ? (
+                  <div className="flex flex-col items-center justify-center h-full gap-4">
+                    <Loader className="w-16 h-16" />
+                    <p className="text-white">Searching...</p>
+                  </div>
+                ) : products.length > 0 ? (
                   <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
                       {products.map((product) => (
                           <ProductCard

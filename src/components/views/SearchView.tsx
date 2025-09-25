@@ -74,7 +74,7 @@ export function SearchView({
     }
   }, [isNewSearch]);
   
-  if (isSearching) {
+  if (isSearching && isNewSearch) {
     return <LoadingFallback text="Searching for chocolates..." />;
   }
 
@@ -89,7 +89,7 @@ export function SearchView({
         <SearchResultsDetails 
           products={products}
           query={query} 
-          isSearching={isSearching}
+          isSearching={isSearching && !isNewSearch}
           activeFilters={activeFilters}
           onRemoveFilter={onRemoveFilter}
           sortOption={sortOption}
