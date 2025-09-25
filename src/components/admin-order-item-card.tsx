@@ -1,15 +1,10 @@
-
 // @/components/admin-order-item-card.tsx
 'use client';
 
-import Image from 'next/image';
 import type { Order } from '@/types';
 import { cn } from '@/lib/utils';
-import { Badge } from './ui/badge';
-import { Separator } from './ui/separator';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useAppContext } from '@/context/app-context';
-
 
 interface AdminOrderItemCardProps {
     order: Order;
@@ -41,22 +36,15 @@ export function AdminOrderItemCard({ order, onClick }: AdminOrderItemCardProps) 
         }
     };
 
-    const handleCardClick = (e: React.MouseEvent<HTMLDivElement>) => {
-        const target = e.target as HTMLElement;
-        // Check if the click originated from within the select trigger.
-        if (target.closest('[data-trigger-click="true"]')) {
-            return;
-        }
-        onClick();
-    }
-
+    // The complex handleCardClick function is no longer needed.
+    // The logic is simplified by stopping propagation at the source.
 
     return (
         <div 
-            onClick={handleCardClick}
+            onClick={onClick} // Simplified: directly call the onClick prop
             className={cn(
-            "w-full bg-white/10 p-4 text-white relative overflow-hidden rounded-2xl border border-white/20 hover:bg-white/20 transition-colors cursor-pointer"
-        )}>
+                "w-full bg-white/10 p-4 text-white relative overflow-hidden rounded-2xl border border-white/20 hover:bg-white/20 transition-colors cursor-pointer"
+            )}>
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-center">
                 {/* Customer & Order Info */}
                 <div className="md:col-span-1">
@@ -67,10 +55,10 @@ export function AdminOrderItemCard({ order, onClick }: AdminOrderItemCardProps) 
 
                 {/* Items Summary */}
                 <div className="md:col-span-2">
-                     <div className="max-h-20 overflow-y-auto custom-scrollbar pr-2">
+                    <div className="max-h-20 overflow-y-auto custom-scrollbar pr-2">
                         {order.items.map(item => (
                             <div key={item.name} className="text-sm text-white/90">
-                               <span className="font-semibold">{item.quantity}x</span> {item.name}
+                                <span className="font-semibold">{item.quantity}x</span> {item.name}
                             </div>
                         ))}
                     </div>
@@ -79,21 +67,24 @@ export function AdminOrderItemCard({ order, onClick }: AdminOrderItemCardProps) 
                 {/* Total & Status */}
                 <div className="md:col-span-1 flex md:flex-col justify-between items-center md:items-end gap-2">
                     <p className="font-bold text-lg">₹{order.total.toFixed(2)}</p>
-                    <div data-trigger-click="true">
+                    
+                    {/* 👇 THIS IS THE FIX 👇 */}
+                    {/* Wrap the Select component and stop click propagation */}
+                    <div onClick={(e) => e.stopPropagation()}>
                         <Select onValueChange={handleStatusChange} defaultValue={order.status}>
-                          <SelectTrigger 
-                            className={cn(
-                            "w-full md:w-[140px] h-8 text-xs rounded-full border-none focus:ring-0 focus:ring-offset-0",
-                             statusVariant(order.status)
-                          )}>
-                            <SelectValue placeholder="Status" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="Order Requested">Order Requested</SelectItem>
-                            <SelectItem value="In Progress">In Progress</SelectItem>
-                            <SelectItem value="Completed">Completed</SelectItem>
-                            <SelectItem value="Cancelled">Cancelled</SelectItem>
-                          </SelectContent>
+                            <SelectTrigger 
+                                className={cn(
+                                    "w-full md:w-[140px] h-8 text-xs rounded-full border-none focus:ring-0 focus:ring-offset-0",
+                                    statusVariant(order.status)
+                                )}>
+                                <SelectValue placeholder="Status" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="Order Requested">Order Requested</SelectItem>
+                                <SelectItem value="In Progress">In Progress</SelectItem>
+                                <SelectItem value="Completed">Completed</SelectItem>
+                                <SelectItem value="Cancelled">Cancelled</SelectItem>
+                            </SelectContent>
                         </Select>
                     </div>
                 </div>
