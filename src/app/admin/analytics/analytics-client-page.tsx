@@ -1,3 +1,4 @@
+
 // @/app/admin/analytics/analytics-client-page.tsx
 'use client';
 
@@ -12,7 +13,7 @@ import { useAppContext } from '@/context/app-context';
 import type { SanityProduct, Order } from '@/types';
 import { Loader } from '@/components/loader';
 import { EmptyState } from '@/components/empty-state';
-import { Bar, BarChart, CartesianGrid, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, Pie, PieChart, Cell } from 'recharts';
+import { Bar, BarChart, CartesianGrid, XAxis, YAxis, Tooltip, Pie, PieChart, Cell, ResponsiveContainer } from 'recharts';
 import { chartConfig } from '@/lib/charts';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ChartContainer, ChartTooltipContent, ChartLegend, ChartLegendContent } from '@/components/ui/chart';
@@ -64,7 +65,7 @@ export default function AnalyticsClientPage({ allProducts }: { allProducts: Sani
             acc.push({ month, revenue: order.total });
         }
         return acc;
-    }, [] as { month: string; revenue: number }[]).reverse(); // Reverse to show latest months first
+    }, [] as { month: string; revenue: number }[]).reverse();
 
     const statusCounts = allOrders.reduce((acc, order) => {
       acc[order.status] = (acc[order.status] || 0) + 1;
@@ -164,16 +165,18 @@ export default function AnalyticsClientPage({ allProducts }: { allProducts: Sani
                         <div className="lg:col-span-3 bg-white/10 p-4 rounded-2xl">
                              <h2 className="text-lg font-semibold text-white mb-4 pl-8">Monthly Revenue</h2>
                              <ChartContainer config={chartConfig} className="w-full h-[300px]">
-                                <BarChart data={analyticsData.monthlySales} margin={{ top: 5, right: 20, left: -20, bottom: 5 }}>
-                                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(255,255,255,0.2)"/>
-                                    <XAxis dataKey="month" tickLine={false} axisLine={false} stroke="#fff" fontSize={12} />
-                                    <YAxis tickLine={false} axisLine={false} stroke="#fff" fontSize={12} tickFormatter={(value) => `₹${value}`} />
-                                    <Tooltip
-                                        cursor={{ fill: 'rgba(255,210,57,0.1)' }}
-                                        content={<ChartTooltipContent />}
-                                    />
-                                    <Bar dataKey="revenue" fill="var(--color-revenue)" radius={[4, 4, 0, 0]} />
-                                </BarChart>
+                                <ResponsiveContainer>
+                                    <BarChart data={analyticsData.monthlySales} margin={{ top: 5, right: 20, left: -20, bottom: 5 }}>
+                                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(255,255,255,0.2)"/>
+                                        <XAxis dataKey="month" tickLine={false} axisLine={false} stroke="#fff" fontSize={12} />
+                                        <YAxis tickLine={false} axisLine={false} stroke="#fff" fontSize={12} tickFormatter={(value) => `₹${value}`} />
+                                        <Tooltip
+                                            cursor={{ fill: 'rgba(255,210,57,0.1)' }}
+                                            content={<ChartTooltipContent />}
+                                        />
+                                        <Bar dataKey="revenue" fill="var(--color-revenue)" radius={[4, 4, 0, 0]} />
+                                    </BarChart>
+                                </ResponsiveContainer>
                             </ChartContainer>
                         </div>
                         
@@ -181,33 +184,35 @@ export default function AnalyticsClientPage({ allProducts }: { allProducts: Sani
                         <div className="lg:col-span-2 bg-white/10 p-4 rounded-2xl flex flex-col">
                             <h2 className="text-lg font-semibold text-white mb-4 text-center">Order Status</h2>
                             <ChartContainer config={chartConfig} className="w-full h-[300px]">
-                                <PieChart>
-                                    <Pie 
-                                      data={analyticsData.statusDistribution} 
-                                      dataKey="value" 
-                                      nameKey="name" 
-                                      cx="50%" 
-                                      cy="50%" 
-                                      outerRadius={100}
-                                      labelLine={false}
-                                      label={({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }) => {
-                                        const RADIAN = Math.PI / 180;
-                                        const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
-                                        const x = cx + radius * Math.cos(-midAngle * RADIAN);
-                                        const y = cy + radius * Math.sin(-midAngle * RADIAN);
-                                        return (
-                                          <text x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central" className="text-xs font-bold">
-                                            {`${(percent * 100).toFixed(0)}%`}
-                                          </text>
-                                        );
-                                      }}
-                                    >
-                                        {analyticsData.statusDistribution.map((entry, index) => (
-                                          <Cell key={`cell-${index}`} fill={entry.fill} />
-                                        ))}
-                                    </Pie>
-                                    <ChartLegend content={<ChartLegendContent />} />
-                                </PieChart>
+                                <ResponsiveContainer>
+                                    <PieChart>
+                                        <Pie 
+                                        data={analyticsData.statusDistribution} 
+                                        dataKey="value" 
+                                        nameKey="name" 
+                                        cx="50%" 
+                                        cy="50%" 
+                                        outerRadius={100}
+                                        labelLine={false}
+                                        label={({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }) => {
+                                            const RADIAN = Math.PI / 180;
+                                            const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+                                            const x = cx + radius * Math.cos(-midAngle * RADIAN);
+                                            const y = cy + radius * Math.sin(-midAngle * RADIAN);
+                                            return (
+                                            <text x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central" className="text-xs font-bold">
+                                                {`${(percent * 100).toFixed(0)}%`}
+                                            </text>
+                                            );
+                                        }}
+                                        >
+                                            {analyticsData.statusDistribution.map((entry, index) => (
+                                            <Cell key={`cell-${index}`} fill={entry.fill} />
+                                            ))}
+                                        </Pie>
+                                        <ChartLegend content={<ChartLegendContent />} />
+                                    </PieChart>
+                                </ResponsiveContainer>
                             </ChartContainer>
                         </div>
                     </div>
