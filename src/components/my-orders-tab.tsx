@@ -24,7 +24,6 @@ import {
 } from "@/components/ui/alert-dialog";
 import { OrderDetailsPopup } from './order-details-popup';
 import { RatingPopup } from './rating-popup';
-import { ProductOrderDetailsPopup } from './product-order-details-popup';
 import type { OrderItem } from '@/context/app-context';
 
 
@@ -39,6 +38,10 @@ export function MyOrdersTab({ isMobile = false, products, onProductClick }: MyOr
     const router = useRouter();
     const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
     const [ratingOrder, setRatingOrder] = useState<Order | null>(null);
+    
+    const currentOrders = orders.filter(o => o.status === 'Order Requested' || o.status === 'In Progress');
+    const completedOrders = orders.filter(o => o.status === 'Completed' || o.status === 'Cancelled');
+
 
     if (!isOrdersLoaded) {
         return (
@@ -71,51 +74,48 @@ export function MyOrdersTab({ isMobile = false, products, onProductClick }: MyOr
             <>
                 <div className="flex flex-col h-full text-white">
                      {orders.length > 0 ? (
-                        <div className="bg-transparent rounded-2xl flex flex-col">
-                            <div className="flex justify-end items-center px-2 pt-4">
-                               <AlertDialog>
-                                  <AlertDialogTrigger asChild>
-                                    <Button
-                                      variant="destructive"
-                                      size="sm"
-                                      className="bg-red-500 text-white rounded-full hover:bg-red-600/90 text-xs h-8 px-3 disabled:opacity-50"
-                                      disabled={orders.length === 0}
-                                    >
-                                      Clear History
-                                    </Button>
-                                  </AlertDialogTrigger>
-                                  <AlertDialogContent>
-                                    <AlertDialogHeader>
-                                      <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-                                      <AlertDialogDescription>
-                                        This will permanently remove all items from your order history.
-                                      </AlertDialogDescription>
-                                    </AlertDialogHeader>
-                                    <AlertDialogFooter>
-                                      <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                      <AlertDialogAction onClick={clearOrders}>Confirm</AlertDialogAction>
-                                    </AlertDialogFooter>
-                                  </AlertDialogContent>
-                                </AlertDialog>
-                            </div>
-                            <div className="overflow-y-auto no-scrollbar py-4 space-y-4">
-                              {orders.map((order) => (
-                                <OrderItemCard 
-                                    key={order.id} 
-                                    order={order} 
-                                    isMobile={true} 
-                                    onClick={() => setSelectedOrder(order)}
-                                    onRate={() => setRatingOrder(order)}
-                                />
-                              ))}
-                            </div>
+                        <div className="bg-transparent rounded-2xl flex flex-col pt-4">
+                           {currentOrders.length > 0 && (
+                                <div className="mb-6">
+                                    <SectionTitle className="text-lg mb-2 px-2">Current Orders</SectionTitle>
+                                    <div className="space-y-4">
+                                        {currentOrders.map((order) => (
+                                            <OrderItemCard 
+                                                key={order.id} 
+                                                order={order} 
+                                                isMobile={true} 
+                                                onClick={() => setSelectedOrder(order)}
+                                                onRate={() => setRatingOrder(order)}
+                                            />
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+
+                             {completedOrders.length > 0 && (
+                                <div>
+                                    <SectionTitle className="text-lg mb-2 px-2">Completed Orders</SectionTitle>
+                                    <div className="space-y-4">
+                                        {completedOrders.map((order) => (
+                                            <OrderItemCard 
+                                                key={order.id} 
+                                                order={order} 
+                                                isMobile={true} 
+                                                onClick={() => setSelectedOrder(order)}
+                                                onRate={() => setRatingOrder(order)}
+                                            />
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+
                         </div>
                     ) : (
                         <div className="flex-grow flex flex-col items-center justify-center h-full text-center gap-4 px-4 pb-24">
                             <EmptyState
                               imageUrl="/icons/empty.png"
                               title="You Haven't Ordered Yet"
-                              description="Looks like you haven't placed an order. Your past orders will appear here."
+                              description="Your next sweet moment is just a click away!"
                               buttonText="Explore Now"
                               onButtonClick={handleExplore}
                             />
@@ -143,47 +143,50 @@ export function MyOrdersTab({ isMobile = false, products, onProductClick }: MyOr
             <div className="p-8 text-white h-full flex flex-col relative pb-2">
                 <div className="flex justify-between items-center mb-6">
                   <h2 className="text-3xl font-normal font-poppins self-start">My Orders</h2>
-                  {orders.length > 0 && (
-                    <AlertDialog>
-                      <AlertDialogTrigger asChild>
-                        <Button
-                          variant="destructive"
-                          className="bg-red-500 text-white rounded-full hover:bg-red-500/90 text-sm h-9 px-4 disabled:opacity-50"
-                          disabled={orders.length === 0}
-                        >
-                          Clear History
-                        </Button>
-                      </AlertDialogTrigger>
-                      <AlertDialogContent>
-                        <AlertDialogHeader>
-                          <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-                          <AlertDialogDescription>
-                            This will permanently remove all items from your order history.
-                          </AlertDialogDescription>
-                        </AlertDialogHeader>
-                        <AlertDialogFooter>
-                          <AlertDialogCancel>Cancel</AlertDialogCancel>
-                          <AlertDialogAction onClick={clearOrders}>Confirm</AlertDialogAction>
-                        </AlertDialogFooter>
-                      </AlertDialogContent>
-                    </AlertDialog>
-                  )}
                 </div>
                  {orders.length > 0 ? (
-                    <div className="flex-grow overflow-y-auto pr-2 custom-scrollbar space-y-4">
-                      {orders.map(order => (
-                          <OrderItemCard key={order.id} order={order} onClick={() => setSelectedOrder(order)} onRate={() => setRatingOrder(order)} />
-                      ))}
+                    <div className="flex-grow overflow-y-auto pr-2 custom-scrollbar space-y-8">
+                        <div>
+                            <SectionTitle className="text-xl mb-4 p-0">Current Orders</SectionTitle>
+                            {currentOrders.length > 0 ? (
+                                <div className="space-y-4">
+                                    {currentOrders.map(order => (
+                                        <OrderItemCard key={order.id} order={order} onClick={() => setSelectedOrder(order)} onRate={() => setRatingOrder(order)} />
+                                    ))}
+                                </div>
+                            ) : (
+                                <div className="flex flex-col items-center justify-center text-center gap-2 py-8 px-4 bg-white/5 rounded-2xl">
+                                    <h3 className="text-lg font-semibold text-white">No Active Orders</h3>
+                                    <p className="text-sm text-white/70 max-w-xs">Your next sweet moment is just a click away!</p>
+                                    <Button onClick={handleExplore} className="mt-4 bg-custom-gold text-custom-purple-dark hover:bg-custom-gold/90 rounded-full px-6 font-bold">Start Shopping</Button>
+                                </div>
+                            )}
+                        </div>
+                        
+                        <div>
+                            <SectionTitle className="text-xl mb-4 p-0">Completed Orders</SectionTitle>
+                             {completedOrders.length > 0 ? (
+                                <div className="space-y-4">
+                                    {completedOrders.map(order => (
+                                        <OrderItemCard key={order.id} order={order} onClick={() => setSelectedOrder(order)} onRate={() => setRatingOrder(order)} />
+                                    ))}
+                                </div>
+                             ) : (
+                                <div className="flex flex-col items-center justify-center text-center gap-2 py-8 px-4 bg-white/5 rounded-2xl">
+                                    <h3 className="text-lg font-semibold text-white">No Past Orders</h3>
+                                    <p className="text-sm text-white/70 max-w-xs">Your past orders will appear here once they're delivered or cancelled.</p>
+                                </div>
+                            )}
+                        </div>
                     </div>
                 ) : (
                     <div className="flex-grow flex flex-col items-center justify-center h-full text-center gap-4">
                        <EmptyState
                           imageUrl="/icons/empty.png"
                           title="You Haven't Ordered Yet"
-                          description="Looks like you haven't placed an order. Your past orders will appear here."
+                          description="Your next sweet moment is just a click away!"
                           buttonText="Explore Now"
                           onButtonClick={handleExplore}
-                          showButton={false}
                         />
                     </div>
                  )}
