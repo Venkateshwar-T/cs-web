@@ -159,7 +159,7 @@ function toast({ ...props }: Toast) {
       ...props,
       id,
       open: true,
-      duration: 1000,
+      duration: 2000,
       onOpenChange: (open) => {
         if (!open) dismiss()
       },
