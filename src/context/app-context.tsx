@@ -1,4 +1,3 @@
-
 // @/context/app-context.tsx
 'use client';
 
@@ -49,7 +48,7 @@ export type OrderItem = {
 };
 
 export type Cart = Record<string, CartItem>;
-type AuthPopupType = 'login' | 'signup' | 'completeDetails' | null;
+type AuthPopupType = 'login' | 'signup' | 'completeDetails' | 'forgotPassword' | null;
 
 interface AppContextType {
   profileInfo: ProfileInfo;

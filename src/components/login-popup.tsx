@@ -1,4 +1,3 @@
-
 // @/components/login-popup.tsx
 'use client';
 
@@ -41,9 +40,10 @@ interface LoginPopupProps {
     open: boolean;
     onOpenChange: (open: boolean) => void;
     onSignUpClick: () => void;
+    onForgotPasswordClick: () => void;
 }
 
-export function LoginPopup({ open, onOpenChange, onSignUpClick }: LoginPopupProps) {
+export function LoginPopup({ open, onOpenChange, onSignUpClick, onForgotPasswordClick }: LoginPopupProps) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -140,7 +140,7 @@ export function LoginPopup({ open, onOpenChange, onSignUpClick }: LoginPopupProp
                     </div>
                 </div>
 
-                <a href="#" className="text-xs md:text-sm text-white font-montserrat self-center hover:underline">Forgot Password?</a>
+                <button onClick={onForgotPasswordClick} className="text-xs md:text-sm text-white font-montserrat self-center hover:underline">Forgot Password?</button>
 
                 <Button onClick={handleEmailLogin} className="w-full h-10 md:h-12 bg-custom-gold text-custom-purple-dark font-montserrat font-bold text-base md:text-lg rounded-full hover:bg-custom-gold/90 mt-1 md:mt-2">
                     Login

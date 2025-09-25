@@ -1,4 +1,3 @@
-
 // @/components/popups/popups-manager.tsx
 'use client';
 
@@ -14,6 +13,7 @@ import { CompleteDetailsPopup } from '../complete-details-popup';
 import type { OrderItem } from '@/types';
 import { useToast } from '@/hooks/use-toast';
 import { ToastAction } from '@/components/ui/toast';
+import { ForgotPasswordPopup } from '../forgot-password-popup';
 
 
 interface PopupsManagerProps {
@@ -176,6 +176,7 @@ export function PopupsManager({
             }
         }}
         onSignUpClick={() => setAuthPopup('signup')}
+        onForgotPasswordClick={() => setAuthPopup('forgotPassword')}
       />
       <SignUpPopup
         open={authPopup === 'signup'}
@@ -186,6 +187,11 @@ export function PopupsManager({
         }}
         onLoginClick={() => setAuthPopup('login')}
       />
+      <ForgotPasswordPopup
+        open={authPopup === 'forgotPassword'}
+        onOpenChange={(open) => !open && setAuthPopup(null)}
+        onLoginClick={() => setAuthPopup('login')}
+      />
       <CompleteDetailsPopup
         open={authPopup === 'completeDetails'}
         onOpenChange={(open) => !open && setAuthPopup(null)}
@@ -194,5 +200,3 @@ export function PopupsManager({
     </>
   );
 }
-
-    

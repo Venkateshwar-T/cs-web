@@ -1,4 +1,3 @@
-
 // src/lib/firebase.ts
 import { initializeApp, getApps, getApp, type FirebaseApp } from 'firebase/app';
 import {
@@ -10,6 +9,7 @@ import {
   signOut,
   onAuthStateChanged as onFirebaseAuthStateChanged,
   updatePassword,
+  sendPasswordResetEmail,
   type User
 } from 'firebase/auth';
 import { getFirestore, doc, getDoc, setDoc, updateDoc, collection, addDoc, getDocs, query, collectionGroup, where, writeBatch, serverTimestamp, deleteField } from 'firebase/firestore';
@@ -100,6 +100,12 @@ export const updateUserPassword = (newPassword: string) => {
     throw new Error("User not authenticated.");
   }
   return updatePassword(auth.currentUser, newPassword);
+};
+
+export const sendPasswordReset = (email: string) => {
+  const auth = getClientAuth();
+  if (!auth) throw new Error("Firebase auth not initialized");
+  return sendPasswordResetEmail(auth, email);
 };
 
 export function getFirebaseAuth() {
