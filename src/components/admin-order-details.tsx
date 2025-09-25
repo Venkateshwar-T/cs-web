@@ -83,7 +83,7 @@ const OrderDetailsContent = ({ order, allProducts }: { order: Order, allProducts
 
 
     return (
-        <div className="flex flex-col gap-4 p-4 md:p-0 text-white h-full overflow-y-auto custom-scrollbar">
+        <div className="flex flex-col gap-4 p-4 md:p-0 text-white h-full overflow-y-auto">
             <div className="grid grid-cols-1 gap-4">
                 <DetailRow icon={<User size={16} />} label="Customer Name" value={order.customerName} />
                 <DetailRow icon={<Mail size={16} />} label="Email" value={order.customerEmail} />
