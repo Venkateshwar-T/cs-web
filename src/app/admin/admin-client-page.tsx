@@ -209,8 +209,8 @@ export default function AdminClientPage({ allProducts }: { allProducts: SanityPr
                 )}
               </div>
               {!isMobile && (
-                <div className="flex flex-wrap gap-4">
-                    <div className="bg-white/10 p-4 rounded-2xl border border-white/20">
+                <div className="md:grid md:grid-cols-3 md:gap-4">
+                    <div className="bg-white/10 p-4 rounded-2xl border border-white/20 flex-grow">
                         <h3 className="text-sm font-semibold text-white/80 mb-2 flex items-center gap-2">
                             <Filter className="h-4 w-4" />
                             Filter by Status
@@ -230,7 +230,7 @@ export default function AdminClientPage({ allProducts }: { allProducts: SanityPr
                             ))}
                         </div>
                     </div>
-                     <div className="bg-white/10 p-4 rounded-2xl border border-white/20">
+                     <div className="bg-white/10 p-4 rounded-2xl border border-white/20 flex-grow">
                         <h3 className="text-sm font-semibold text-white/80 mb-2 flex items-center gap-2">
                             <Filter className="h-4 w-4" />
                             Sort by Date
@@ -250,7 +250,7 @@ export default function AdminClientPage({ allProducts }: { allProducts: SanityPr
                             ))}
                         </div>
                     </div>
-                     <div className="bg-white/10 p-4 rounded-2xl border border-white/20">
+                     <div className="bg-white/10 p-4 rounded-2xl border border-white/20 flex-grow">
                         <h3 className="text-sm font-semibold text-white/80 mb-2 flex items-center gap-2">
                             <Filter className="h-4 w-4" />
                             Sort by Rating
