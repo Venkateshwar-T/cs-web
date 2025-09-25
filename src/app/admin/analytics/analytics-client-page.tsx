@@ -2,7 +2,7 @@
 // @/app/admin/analytics/analytics-client-page.tsx
 'use client';
 
-import { useMemo } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { Header } from '@/components/header';
@@ -36,6 +36,11 @@ export default function AnalyticsClientPage({ allProducts }: { allProducts: Sani
   const router = useRouter();
   const isMobile = useIsMobile();
   const { allOrders, isAllOrdersLoaded, isAdmin } = useAppContext();
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   const analyticsData = useMemo(() => {
     if (!isAllOrdersLoaded || allOrders.length === 0) {
@@ -164,8 +169,8 @@ export default function AnalyticsClientPage({ allProducts }: { allProducts: Sani
                         {/* Sales Trends Chart */}
                         <div className="lg:col-span-3 bg-white/10 p-4 rounded-2xl">
                              <h2 className="text-lg font-semibold text-white mb-4 pl-8">Monthly Revenue</h2>
-                             <ChartContainer config={chartConfig} className="w-full h-[300px]">
-                                <ResponsiveContainer>
+                             {isClient && (
+                                <ChartContainer config={chartConfig} className="w-full h-[300px]">
                                     <BarChart data={analyticsData.monthlySales} margin={{ top: 5, right: 20, left: -20, bottom: 5 }}>
                                         <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(255,255,255,0.2)"/>
                                         <XAxis dataKey="month" tickLine={false} axisLine={false} stroke="#fff" fontSize={12} />
@@ -176,15 +181,15 @@ export default function AnalyticsClientPage({ allProducts }: { allProducts: Sani
                                         />
                                         <Bar dataKey="revenue" fill="var(--color-revenue)" radius={[4, 4, 0, 0]} />
                                     </BarChart>
-                                </ResponsiveContainer>
-                            </ChartContainer>
+                                </ChartContainer>
+                             )}
                         </div>
                         
                         {/* Order Status Chart */}
                         <div className="lg:col-span-2 bg-white/10 p-4 rounded-2xl flex flex-col">
                             <h2 className="text-lg font-semibold text-white mb-4 text-center">Order Status</h2>
-                            <ChartContainer config={chartConfig} className="w-full h-[300px]">
-                                <ResponsiveContainer>
+                             {isClient && (
+                                <ChartContainer config={chartConfig} className="w-full h-[300px]">
                                     <PieChart>
                                         <Pie 
                                         data={analyticsData.statusDistribution} 
@@ -212,8 +217,8 @@ export default function AnalyticsClientPage({ allProducts }: { allProducts: Sani
                                         </Pie>
                                         <ChartLegend content={<ChartLegendContent />} />
                                     </PieChart>
-                                </ResponsiveContainer>
-                            </ChartContainer>
+                                </ChartContainer>
+                             )}
                         </div>
                     </div>
 
