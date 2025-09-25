@@ -5,8 +5,7 @@ import type { SanityProduct } from '@/types';
 import { notFound } from 'next/navigation';
 import ProductDetailClientPage from '@/components/views/ProductDetailClientPage';
 import { Suspense } from 'react';
-import { Loader } from '@/components/loader';
-import Image from 'next/image';
+import { LoadingFallback } from '@/components/loading-fallback';
 
 async function getProduct(slug: string): Promise<SanityProduct | null> {
     const query = `*[_type == "product" && slug.current == $slug][0]{
@@ -47,17 +46,6 @@ async function getFeaturedProducts(): Promise<SanityProduct[]> {
     return products;
 }
 
-const LoadingFallback = () => (
-    <div className="flex h-screen w-full items-center justify-center bg-background flex-col gap-4">
-        <div className="flex flex-col items-center gap-4">
-            <Image src="/Choco Smiley Logo.png" alt="Choco Smiley" width={180} height={70} />
-            <Loader />
-        </div>
-        <p className="text-white">Loading your Chocolate...</p>
-    </div>
-);
-
-
 export default async function ProductPage({ params }: { params: { slug: string } }) {
     const product = await getProduct(params.slug);
     const featuredProducts = await getFeaturedProducts();
@@ -67,7 +55,7 @@ export default async function ProductPage({ params }: { params: { slug: string }
     }
 
     return (
-        <Suspense fallback={<LoadingFallback />}>
+        <Suspense fallback={<LoadingFallback text="Loading your Chocolate..." />}>
             <ProductDetailClientPage product={product} featuredProducts={featuredProducts} />
         </Suspense>
     );

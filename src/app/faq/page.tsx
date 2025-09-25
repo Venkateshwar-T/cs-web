@@ -5,6 +5,7 @@ import { FaqContent } from '@/components/faq-content';
 import FaqPageClient from './faq-client-page'; // Import the client shell
 import { client } from '@/lib/sanity';
 import type { SanityProduct } from '@/types';
+import { LoadingFallback } from '@/components/loading-fallback';
 
 async function getAllProducts(): Promise<SanityProduct[]> {
     const query = `*[_type == "product"]{ ..., "images": images[].asset->url, availableFlavours[]->{ _id, name, "imageUrl": image.asset->url, "price": coalesce(price, 0) }, numberOfChocolates }`;
@@ -17,7 +18,7 @@ export default async function FaqPage() {
   return (
     // The Client Component wraps the Suspense and Server Component
     <FaqPageClient allProducts={allProducts}> 
-      <Suspense fallback={<div className="flex-grow flex items-center justify-center"><p className="text-white text-center">Loading FAQs...</p></div>}>
+      <Suspense fallback={<LoadingFallback text="Loading FAQs..." />}>
         <FaqContent />
       </Suspense>
     </FaqPageClient>

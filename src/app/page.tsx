@@ -3,9 +3,8 @@
 import { client } from '@/lib/sanity';
 import type { SanityProduct } from '@/types';
 import { Suspense } from 'react';
-import { Loader } from '@/components/loader';
 import HomeClient from './home-client';
-import Image from 'next/image';
+import { LoadingFallback } from '@/components/loading-fallback';
 
 export type ActiveView = 'home' | 'search' | 'cart' | 'profile' | 'about' | 'faq' | 'order-confirmed' | 'product-detail' | 'admin';
 
@@ -37,23 +36,12 @@ async function getHomepageContent(): Promise<HomepageContent> {
     return content || { exploreCategories: [], exploreFlavours: [] };
 }
 
-
-const LoadingFallback = () => (
-    <div className="flex h-screen w-full items-center justify-center bg-background">
-        <div className="flex flex-col items-center gap-4">
-            <Image src="/Choco Smiley Logo.png" alt="Choco Smiley" width={180} height={70} />
-            <Loader />
-        </div>
-    </div>
-);
-
-
 export default async function Home() {
     const allProducts = await getAllProducts();
     const homepageContent = await getHomepageContent();
 
     return (
-        <Suspense fallback={<LoadingFallback />}>
+        <Suspense fallback={<LoadingFallback text="Welcome to ChocoSmiley..." />}>
             <HomeClient
                 allProducts={allProducts}
                 exploreCategories={homepageContent.exploreCategories}

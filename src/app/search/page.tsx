@@ -6,8 +6,7 @@ import { Suspense } from 'react';
 import { client } from '@/lib/sanity';
 import SearchClientPage from '@/components/views/SearchClientPage';
 import type { SanityProduct, StructuredFilter } from '@/types';
-import Image from 'next/image';
-import { Loader } from '@/components/loader';
+import { LoadingFallback } from '@/components/loading-fallback';
 
 // Fetches filters from Sanity
 async function getFilters(): Promise<StructuredFilter[]> {
@@ -145,23 +144,12 @@ async function getFilteredProducts(searchParams: { [key: string]: string | strin
     }
 }
 
-const LoadingFallback = () => (
-    <div className="flex h-screen w-full items-center justify-center bg-background flex-col gap-4">
-        <div className="flex flex-col items-center gap-4">
-            <Image src="/Choco Smiley Logo.png" alt="Choco Smiley" width={180} height={70} />
-            <Loader />
-        </div>
-        <p className="text-white">Loading your chocolates...</p>
-    </div>
-);
-
-
 export default async function SearchPage({ searchParams }: { searchParams: { [key: string]: string | string[] | undefined } }) {
     const filters = await getFilters();
     const products = await getFilteredProducts(searchParams, filters);
 
     return (
-        <Suspense fallback={<LoadingFallback />}>
+        <Suspense fallback={<LoadingFallback text="Searching for chocolates..." />}>
             <SearchClientPage initialProducts={products} initialFilters={filters} />
         </Suspense>
     );

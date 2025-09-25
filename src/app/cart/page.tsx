@@ -4,9 +4,8 @@
 import { Suspense } from 'react';
 import { client } from '@/lib/sanity';
 import type { SanityProduct } from '@/types';
-import { Loader } from '@/components/loader';
 import CartClientPage from './cart-client-page';
-import Image from 'next/image';
+import { LoadingFallback } from '@/components/loading-fallback';
 
 async function getAllProducts(): Promise<SanityProduct[]> {
     const query = `*[_type == "product"]{
@@ -23,20 +22,11 @@ async function getAllProducts(): Promise<SanityProduct[]> {
     return products;
 }
 
-const LoadingFallback = () => (
-    <div className="flex h-screen w-full items-center justify-center bg-background">
-        <div className="flex flex-col items-center gap-4">
-            <Image src="/Choco Smiley Logo.png" alt="Choco Smiley" width={180} height={70} />
-            <Loader />
-        </div>
-    </div>
-);
-
 export default async function CartPage() {
     const allProducts = await getAllProducts();
 
     return (
-        <Suspense fallback={<LoadingFallback />}>
+        <Suspense fallback={<LoadingFallback text="Loading Your Cart..." />}>
             <CartClientPage allProducts={allProducts} />
         </Suspense>
     );
