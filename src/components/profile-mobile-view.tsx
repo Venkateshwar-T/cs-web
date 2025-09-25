@@ -1,4 +1,3 @@
-
 // @/components/profile-mobile-view.tsx
 'use client';
 
@@ -99,6 +98,7 @@ export function ProfileMobileView({
           {activeTab === 'My Orders' && (
             <MyOrdersTab 
               isMobile={true} 
+              products={products}
             />
           )}
         </div>

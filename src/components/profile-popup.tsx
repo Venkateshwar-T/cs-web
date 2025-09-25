@@ -1,4 +1,3 @@
-
 // @/components/profile-popup.tsx
 'use client';
 
@@ -154,7 +153,7 @@ export function ProfilePopup({
                         />
                       )}
                       {activeTab === 'My Orders' && (
-                        <MyOrdersTab />
+                        <MyOrdersTab products={products} />
                       )}
                     </>
                   )}

@@ -7,7 +7,7 @@ import { EmptyState } from './empty-state';
 import { useRouter } from 'next/navigation';
 import { SectionTitle } from './section-title';
 import { Separator } from './ui/separator';
-import { useAppContext, type Order } from '@/context/app-context';
+import { useAppContext, type Order, type SanityProduct } from '@/context/app-context';
 import { Loader } from './loader';
 import { Button } from './ui/button';
 import {
@@ -25,9 +25,10 @@ import { OrderDetailsPopup } from './order-details-popup';
 
 interface MyOrdersTabProps {
   isMobile?: boolean;
+  products: SanityProduct[];
 }
 
-export function MyOrdersTab({ isMobile = false }: MyOrdersTabProps) {
+export function MyOrdersTab({ isMobile = false, products }: MyOrdersTabProps) {
     const { orders, isOrdersLoaded, clearOrders, reorder, isAuthenticated } = useAppContext();
     const router = useRouter();
     const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
@@ -139,6 +140,7 @@ export function MyOrdersTab({ isMobile = false }: MyOrdersTabProps) {
                     order={selectedOrder}
                     open={!!selectedOrder}
                     onOpenChange={(isOpen) => { if (!isOpen) setSelectedOrder(null); }}
+                    products={products}
                 />
             </>
         )
@@ -213,6 +215,7 @@ export function MyOrdersTab({ isMobile = false }: MyOrdersTabProps) {
                 order={selectedOrder}
                 open={!!selectedOrder}
                 onOpenChange={(isOpen) => { if (!isOpen) setSelectedOrder(null); }}
+                products={products}
             />
         </>
     );

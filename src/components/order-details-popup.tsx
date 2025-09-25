@@ -1,7 +1,4 @@
-
 // @/components/order-details-popup.tsx
-'use client';
-
 import * as React from "react";
 import {
   Dialog,
@@ -17,7 +14,7 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet"
 import { X, Calendar, Hash, Tag } from "lucide-react";
-import type { Order } from "@/types";
+import type { Order, SanityProduct } from "@/types";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { Separator } from "./ui/separator";
@@ -28,6 +25,7 @@ interface OrderDetailsPopupProps {
     order: Order | null;
     open: boolean;
     onOpenChange: (open: boolean) => void;
+    products: SanityProduct[];
 }
 
 const DetailRow = ({ icon, label, value }: { icon: React.ReactNode, label: string, value: React.ReactNode }) => (
@@ -40,8 +38,13 @@ const DetailRow = ({ icon, label, value }: { icon: React.ReactNode, label: strin
     </div>
 );
 
-const OrderDetailsContent = ({ order }: { order: Order }) => {
+const OrderDetailsContent = ({ order, products }: { order: Order, products: SanityProduct[] }) => {
     if (!order) return null;
+
+    const productsByName = products.reduce((acc, product) => {
+        acc[product.name] = product;
+        return acc;
+    }, {} as Record<string, SanityProduct>);
 
     const orderDate = new Date(order.date);
     const formattedDate = orderDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
@@ -74,41 +77,44 @@ const OrderDetailsContent = ({ order }: { order: Order }) => {
             <div>
                 <h4 className="font-bold mb-2">Order Items</h4>
                 <div className="bg-white/5 p-3 rounded-lg space-y-3">
-                    {order.items.map((item, index) => (
-                        <React.Fragment key={item.name}>
-                             <div className="flex flex-col">
-                                <p className="font-bold text-base mb-2">{item.name}</p>
-                                <div className="flex gap-3 items-start">
-                                    <Image
-                                        src={item.coverImage || "/placeholder.png"}
-                                        alt={item.name}
-                                        width={64}
-                                        height={64}
-                                        className="rounded-md flex-shrink-0 object-cover aspect-square w-16 h-16"
-                                    />
-                                    <div className="flex-grow min-w-0">
-                                        
-                                        <p className="text-xs text-white/70">Qty: {item.quantity} | MRP: ₹{item.mrp?.toFixed(2)}</p>
-                                        <p className="text-xs text-green-400">Discount: -₹{((item.mrp || 0) * item.quantity - (item.finalProductPrice || 0)).toFixed(2)}</p>
+                    {order.items.map((item, index) => {
+                        const product = productsByName[item.name];
+                        return (
+                            <React.Fragment key={item.name}>
+                                 <div className="flex flex-col">
+                                    <p className="font-bold text-base mb-2">{item.name}</p>
+                                    <div className="flex gap-3 items-start">
+                                        <Image
+                                            src={item.coverImage || "/placeholder.png"}
+                                            alt={item.name}
+                                            width={64}
+                                            height={64}
+                                            className="rounded-md flex-shrink-0 object-cover aspect-square w-16 h-16"
+                                        />
+                                        <div className="flex-grow min-w-0">
+                                            
+                                            <p className="text-xs text-white/70">Qty: {item.quantity} | MRP: ₹{item.mrp?.toFixed(2)}</p>
+                                            <p className="text-xs text-green-400">Discount: -₹{((item.mrp || 0) * item.quantity - (item.finalProductPrice || 0)).toFixed(2)}</p>
+                                        </div>
+                                        <div className='text-right flex-shrink-0'>
+                                            <p className="text-sm font-semibold">₹{item.finalSubtotal?.toFixed(2)}</p>
+                                        </div>
                                     </div>
-                                    <div className='text-right flex-shrink-0'>
-                                        <p className="text-sm font-semibold">₹{item.finalSubtotal?.toFixed(2)}</p>
-                                    </div>
+                                    {item.flavours && item.flavours.length > 0 && (
+                                        <div className="text-xs text-white/60 mt-2 pl-2">
+                                            <p className="font-semibold mb-1">Flavours:</p>
+                                            <ul className="list-disc list-inside space-y-1">
+                                                {item.flavours.map(f => (
+                                                    <li key={f.name}>{f.name} {product?.numberOfChocolates && `(x${product.numberOfChocolates})`} (+₹{f.price.toFixed(2)})</li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                    )}
                                 </div>
-                                {item.flavours && item.flavours.length > 0 && (
-                                    <div className="text-xs text-white/60 mt-2 pl-2">
-                                        <p className="font-semibold mb-1">Flavours:</p>
-                                        <ul className="list-disc list-inside space-y-1">
-                                            {item.flavours.map(f => (
-                                                <li key={f.name}>{f.name} (x{order.items.find(i => i.name === item.name)?.quantity || 1}) (+₹{f.price.toFixed(2)})</li>
-                                            ))}
-                                        </ul>
-                                    </div>
-                                )}
-                            </div>
-                            {index < order.items.length - 1 && <Separator className="bg-white/10 my-3" />}
-                        </React.Fragment>
-                    ))}
+                                {index < order.items.length - 1 && <Separator className="bg-white/10 my-3" />}
+                            </React.Fragment>
+                        )
+                    })}
                 </div>
             </div>
             
@@ -132,7 +138,7 @@ const OrderDetailsContent = ({ order }: { order: Order }) => {
 };
 
 
-export function OrderDetailsPopup({ order, open, onOpenChange }: OrderDetailsPopupProps) {
+export function OrderDetailsPopup({ order, open, onOpenChange, products }: OrderDetailsPopupProps) {
   const isMobile = useIsMobile();
 
   if (!order) return null;
@@ -145,7 +151,7 @@ export function OrderDetailsPopup({ order, open, onOpenChange }: OrderDetailsPop
             <SheetTitle className="text-white text-lg">Order Details</SheetTitle>
           </SheetHeader>
           <div className="flex-grow overflow-y-auto">
-            <OrderDetailsContent order={order} />
+            <OrderDetailsContent order={order} products={products} />
           </div>
         </SheetContent>
       </Sheet>
@@ -155,7 +161,7 @@ export function OrderDetailsPopup({ order, open, onOpenChange }: OrderDetailsPop
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="justify-center h-[90vh] w-[55vh] bg-custom-purple-dark border-2 border-custom-gold rounded-2xl rounded-[30px]">
-        <DialogHeader className="p-4 text-center border-b border-white/20 no-scrollbar">
+        <DialogHeader className="p-4 text-center border-b border-white/20">
           <DialogTitle className="text-white text-xl">Order Details</DialogTitle>
           <DialogClose className="absolute right-3 top-3 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground text-white z-10">
             <X className="h-5 w-5" />
@@ -163,7 +169,7 @@ export function OrderDetailsPopup({ order, open, onOpenChange }: OrderDetailsPop
           </DialogClose>
         </DialogHeader>
         <div className="overflow-y-auto no-scrollbar">
-          <OrderDetailsContent order={order} />
+          <OrderDetailsContent order={order} products={products} />
         </div>
       </DialogContent>
     </Dialog>
