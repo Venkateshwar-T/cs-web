@@ -3,6 +3,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import dynamic from 'next/dynamic';
 import {
   Dialog,
   DialogContent,
@@ -15,7 +16,8 @@ import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import { useAppContext } from '@/context/app-context';
 import { Textarea } from './ui/textarea';
-import PinCode from "react-pincode";
+
+const PinCode = dynamic(() => import('react-pincode'), { ssr: false });
 
 
 interface CompleteDetailsPopupProps {
@@ -122,9 +124,9 @@ export function CompleteDetailsPopup({ open, onOpenChange, onConfirm }: Complete
                 <label className="pl-2 text-sm font-medium font-plex-sans">Pincode</label>
                 <PinCode
                     setData={(data) => {
-                      setPincode(data.pincode);
-                      setCity(data.city);
-                      setState(data.stateName);
+                      if(data.pincode) setPincode(data.pincode);
+                      if(data.city) setCity(data.city);
+                      if(data.stateName) setState(data.stateName);
                     }}
                     showCity
                     showState

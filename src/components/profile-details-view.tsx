@@ -3,6 +3,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import dynamic from 'next/dynamic';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import { Eye, EyeOff } from 'lucide-react';
@@ -13,7 +14,8 @@ import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import { updateUserPassword } from '@/lib/firebase';
 import { Loader } from './loader';
-import PinCode from "react-pincode";
+
+const PinCode = dynamic(() => import('react-pincode'), { ssr: false });
 
 
 interface ProfileDetailsViewProps {
@@ -220,9 +222,9 @@ export function ProfileDetailsView({ profile, onHasChangesChange, onProfileUpdat
             <label htmlFor="pincode" className="p-3 text-m font-medium">Pincode</label>
             <PinCode
               setData={(data) => {
-                setPincode(data.pincode);
-                setCity(data.city);
-                setState(data.stateName);
+                if(data.pincode) setPincode(data.pincode);
+                if(data.city) setCity(data.city);
+                if(data.stateName) setState(data.stateName);
               }}
               showCity
               showState
@@ -234,7 +236,7 @@ export function ProfileDetailsView({ profile, onHasChangesChange, onProfileUpdat
               }}
               pincodeInput={{
                 value: pincode,
-                onChange: (e) => setPincode(e.target.value),
+                onChange: (e: any) => setPincode(e.target.value),
                 className: 'text-black placeholder:text-gray-400 font-montserrat'
               }}
             />
