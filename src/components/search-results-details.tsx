@@ -13,7 +13,6 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Button } from '@/components/ui/button';
-import { ProductCardSkeleton } from "./product-card-skeleton";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { FilterContainer } from "./filter-container";
 import type { SanityProduct, StructuredFilter } from '@/types';
@@ -213,11 +212,7 @@ export function SearchResultsDetails({
                   onScroll={onScroll}
                   className="flex-grow h-full overflow-y-auto custom-scrollbar pt-0 md:pt-4 pb-8 min-h-0 px-4 md:px-8"
               >
-                {isSearching ? (
-                   <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
-                    {Array.from({ length: 12 }).map((_, index) => <ProductCardSkeleton key={index} />)}
-                   </div>
-                ) : products.length > 0 ? (
+                {isSearching ? null : products.length > 0 ? (
                   <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
                       {products.map((product) => (
                           <ProductCard
