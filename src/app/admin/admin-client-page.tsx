@@ -15,17 +15,12 @@ import { Loader } from '@/components/loader';
 import { EmptyState } from '@/components/empty-state';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Search, Filter, ArrowUpDown } from 'lucide-react';
+import { Search, Filter } from 'lucide-react';
 import { AdminOrderItemCard } from '@/components/admin-order-item-card';
 import { AdminOrderDetails } from '@/components/admin-order-details';
 import { Separator } from '@/components/ui/separator';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
 import {
   Sheet,
   SheetContent,
@@ -52,13 +47,13 @@ const FilterSection = ({ title, children }: { title: string, children: React.Rea
 export default function AdminClientPage({ allProducts }: { allProducts: SanityProduct[] }) {
   const router = useRouter();
   const isMobile = useIsMobile();
-  const { allOrders, isAllOrdersLoaded, isAdmin, user } = useAppContext();
+  const { allOrders, isAllOrdersLoaded, isAdmin } = useAppContext();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
   const [statusFilter, setStatusFilter] = useState<StatusFilter>('All');
   const [isFilterSheetOpen, setIsFilterSheetOpen] = useState(false);
 
-  const filteredAndSortedOrders = useMemo(() => {
+  const filteredOrders = useMemo(() => {
     let filtered = allOrders.filter(order => {
       const statusMatch = statusFilter === 'All' || order.status === statusFilter;
       const searchMatch = !searchTerm || (
@@ -75,9 +70,9 @@ export default function AdminClientPage({ allProducts }: { allProducts: SanityPr
 
   }, [allOrders, searchTerm, statusFilter]);
 
-  const handleStatusSelect = (status: StatusFilter) => {
+  const handleStatusCheckboxChange = (status: StatusFilter) => {
     setStatusFilter(status);
-  }
+  };
 
   if (!isAllOrdersLoaded) {
     return (
@@ -142,16 +137,16 @@ export default function AdminClientPage({ allProducts }: { allProducts: SanityPr
                         <FilterSection title="Filter by Status">
                             {statusOptions.map(option => (
                               <SheetClose asChild key={option}>
-                                <Button
-                                    variant="ghost"
-                                    onClick={() => handleStatusSelect(option)}
-                                    className={cn(
-                                    "justify-start text-base py-3 h-auto rounded-none px-4",
-                                    statusFilter === option ? "font-bold bg-white/10 text-custom-gold" : "text-white/80 hover:text-white"
-                                    )}
-                                >
+                                <div className="flex items-center space-x-2 px-4 py-2">
+                                  <Checkbox
+                                    id={`mobile-${option}`}
+                                    checked={statusFilter === option}
+                                    onCheckedChange={() => handleStatusCheckboxChange(option)}
+                                  />
+                                  <Label htmlFor={`mobile-${option}`} className="text-base w-full">
                                     {option === 'All' ? 'All Statuses' : option}
-                                </Button>
+                                  </Label>
+                                </div>
                               </SheetClose>
                             ))}
                         </FilterSection>
@@ -161,29 +156,32 @@ export default function AdminClientPage({ allProducts }: { allProducts: SanityPr
                 )}
               </div>
               {!isMobile && (
-                <div className="flex gap-4">
-                  <Select value={statusFilter} onValueChange={(value) => setStatusFilter(value as StatusFilter)}>
-                      <SelectTrigger className="w-full md:w-[200px] h-12 rounded-full bg-white/10 border-white/20 text-white">
-                        <div className='flex items-center gap-2'>
-                          <Filter className="h-5 w-5 text-gray-400" />
-                          <SelectValue placeholder="Filter by status" />
-                        </div>
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="All">All Statuses</SelectItem>
-                        <SelectItem value="Order Requested">Order Requested</SelectItem>
-                        <SelectItem value="In Progress">In Progress</SelectItem>
-                        <SelectItem value="Completed">Completed</SelectItem>
-                        <SelectItem value="Cancelled">Cancelled</SelectItem>
-                      </SelectContent>
-                  </Select>
+                <div className="bg-white/10 p-4 rounded-2xl border border-white/20">
+                    <h3 className="text-sm font-semibold text-white/80 mb-2 flex items-center gap-2">
+                        <Filter className="h-4 w-4" />
+                        Filter by Status
+                    </h3>
+                    <div className="flex flex-wrap gap-x-4 gap-y-2">
+                        {statusOptions.map(option => (
+                           <div key={option} className="flex items-center space-x-2">
+                             <Checkbox
+                               id={`desktop-${option}`}
+                               checked={statusFilter === option}
+                               onCheckedChange={() => handleStatusCheckboxChange(option)}
+                             />
+                             <Label htmlFor={`desktop-${option}`}>
+                               {option === 'All' ? 'All Statuses' : option}
+                             </Label>
+                           </div>
+                        ))}
+                    </div>
                 </div>
               )}
             </div>
 
-            {filteredAndSortedOrders.length > 0 ? (
+            {filteredOrders.length > 0 ? (
               <div className="flex-grow overflow-y-auto no-scrollbar pb-8 space-y-4">
-                {filteredAndSortedOrders.map(order => (
+                {filteredOrders.map(order => (
                   <AdminOrderItemCard key={order.id} order={order} onClick={() => setSelectedOrder(order)} />
                 ))}
               </div>
