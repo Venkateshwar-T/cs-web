@@ -14,7 +14,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Button } from '@/components/ui/button';
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger, SheetDescription } from "@/components/ui/sheet";
 import { FilterContainer } from "./filter-container";
 import type { SanityProduct, StructuredFilter } from '@/types';
 import { EmptyState } from "./empty-state";
@@ -116,6 +116,7 @@ export function SearchResultsDetails({
                             <SheetContent side="bottom" className="bg-custom-purple-dark text-white border-t-2 border-custom-gold rounded-t-3xl h-auto p-0">
                                 <SheetHeader className="p-4 border-b border-white/20">
                                     <SheetTitle className="text-white text-center">Filters and Sorting</SheetTitle>
+                                    <SheetDescription className="sr-only">A dialog for filtering and sorting products.</SheetDescription>
                                 </SheetHeader>
                                 <FilterContainer 
                                   filters={filters}
@@ -132,6 +133,7 @@ export function SearchResultsDetails({
                           <SheetContent side="bottom" className="bg-custom-purple-dark text-white border-t-2 border-custom-gold rounded-t-3xl h-auto p-0">
                             <SheetHeader className="p-4 border-b border-white/20">
                               <SheetTitle className="text-white text-center">Sort By</SheetTitle>
+                              <SheetDescription className="sr-only">A dialog for sorting products.</SheetDescription>
                             </SheetHeader>
                             <div className="flex flex-col p-4">
                               {sortOptions.map(option => (
