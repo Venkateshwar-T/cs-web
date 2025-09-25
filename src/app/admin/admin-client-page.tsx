@@ -31,13 +31,21 @@ import {
 } from "@/components/ui/sheet";
 
 type StatusFilter = Order['status'] | 'All';
+type SortOption = 'newest' | 'oldest' | 'rating-high' | 'rating-low';
+
 
 const statusOptions: StatusFilter[] = ['All', 'Order Requested', 'In Progress', 'Completed', 'Cancelled'];
+const sortOptions: { label: string; value: SortOption; section: 'date' | 'rating' }[] = [
+  { label: 'Newest First', value: 'newest', section: 'date' },
+  { label: 'Oldest First', value: 'oldest', section: 'date' },
+  { label: 'High to Low', value: 'rating-high', section: 'rating' },
+  { label: 'Low to High', value: 'rating-low', section: 'rating' },
+];
 
 const FilterSection = ({ title, children }: { title: string, children: React.ReactNode }) => (
     <div>
-        <h3 className="text-sm font-semibold text-white/70 mb-2 px-4">{title}</h3>
-        <div className="flex flex-col">
+        <h3 className="text-sm font-semibold text-white/70 mb-3 px-4">{title}</h3>
+        <div className="flex flex-col space-y-2">
             {children}
         </div>
     </div>
@@ -51,6 +59,7 @@ export default function AdminClientPage({ allProducts }: { allProducts: SanityPr
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
   const [statusFilter, setStatusFilter] = useState<StatusFilter>('All');
+  const [sortOption, setSortOption] = useState<SortOption>('newest');
   const [isFilterSheetOpen, setIsFilterSheetOpen] = useState(false);
 
   const filteredOrders = useMemo(() => {
@@ -65,13 +74,29 @@ export default function AdminClientPage({ allProducts }: { allProducts: SanityPr
       return statusMatch && searchMatch;
     });
 
-    // Default sort: newest first
-    return filtered.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+    // Sorting logic
+    return filtered.sort((a, b) => {
+        switch (sortOption) {
+            case 'oldest':
+                return new Date(a.date).getTime() - new Date(b.date).getTime();
+            case 'rating-high':
+                return (b.rating ?? -1) - (a.rating ?? -1);
+            case 'rating-low':
+                return (a.rating ?? -1) - (b.rating ?? -1);
+            case 'newest':
+            default:
+                return new Date(b.date).getTime() - new Date(a.date).getTime();
+        }
+    });
 
-  }, [allOrders, searchTerm, statusFilter]);
+  }, [allOrders, searchTerm, statusFilter, sortOption]);
 
   const handleStatusCheckboxChange = (status: StatusFilter) => {
     setStatusFilter(status);
+  };
+  
+  const handleSortCheckboxChange = (option: SortOption) => {
+    setSortOption(option);
   };
 
   if (!isAllOrdersLoaded) {
@@ -133,22 +158,50 @@ export default function AdminClientPage({ allProducts }: { allProducts: SanityPr
                       <SheetHeader className="p-4 border-b border-white/20">
                         <SheetTitle className="text-white text-center">Filters</SheetTitle>
                       </SheetHeader>
-                      <div className="flex flex-col gap-6 py-4 overflow-y-auto">
+                      <div className="flex flex-col gap-6 py-4 overflow-y-auto custom-scrollbar">
                         <FilterSection title="Filter by Status">
                             {statusOptions.map(option => (
-                              <SheetClose asChild key={option}>
-                                <div className="flex items-center space-x-2 px-4 py-2">
+                                <div key={option} className="flex items-center space-x-2 px-4">
                                   <Checkbox
-                                    id={`mobile-${option}`}
+                                    id={`mobile-status-${option}`}
                                     checked={statusFilter === option}
                                     onCheckedChange={() => handleStatusCheckboxChange(option)}
                                   />
-                                  <Label htmlFor={`mobile-${option}`} className="text-base w-full">
+                                  <Label htmlFor={`mobile-status-${option}`} className="text-base w-full">
                                     {option === 'All' ? 'All Statuses' : option}
                                   </Label>
                                 </div>
-                              </SheetClose>
                             ))}
+                        </FilterSection>
+                        <Separator className="bg-white/20" />
+                        <FilterSection title="Sort by Date">
+                           {sortOptions.filter(o => o.section === 'date').map(option => (
+                              <div key={option.value} className="flex items-center space-x-2 px-4">
+                                <Checkbox
+                                  id={`mobile-sort-${option.value}`}
+                                  checked={sortOption === option.value}
+                                  onCheckedChange={() => handleSortCheckboxChange(option.value)}
+                                />
+                                <Label htmlFor={`mobile-sort-${option.value}`} className="text-base w-full">
+                                  {option.label}
+                                </Label>
+                              </div>
+                           ))}
+                        </FilterSection>
+                        <Separator className="bg-white/20" />
+                        <FilterSection title="Sort by Rating">
+                           {sortOptions.filter(o => o.section === 'rating').map(option => (
+                              <div key={option.value} className="flex items-center space-x-2 px-4">
+                                <Checkbox
+                                  id={`mobile-sort-${option.value}`}
+                                  checked={sortOption === option.value}
+                                  onCheckedChange={() => handleSortCheckboxChange(option.value)}
+                                />
+                                <Label htmlFor={`mobile-sort-${option.value}`} className="text-base w-full">
+                                  {option.label}
+                                </Label>
+                              </div>
+                           ))}
                         </FilterSection>
                       </div>
                     </SheetContent>
@@ -156,24 +209,46 @@ export default function AdminClientPage({ allProducts }: { allProducts: SanityPr
                 )}
               </div>
               {!isMobile && (
-                <div className="bg-white/10 p-4 rounded-2xl border border-white/20">
-                    <h3 className="text-sm font-semibold text-white/80 mb-2 flex items-center gap-2">
-                        <Filter className="h-4 w-4" />
-                        Filter by Status
-                    </h3>
-                    <div className="flex flex-wrap gap-x-4 gap-y-2">
-                        {statusOptions.map(option => (
-                           <div key={option} className="flex items-center space-x-2">
-                             <Checkbox
-                               id={`desktop-${option}`}
-                               checked={statusFilter === option}
-                               onCheckedChange={() => handleStatusCheckboxChange(option)}
-                             />
-                             <Label htmlFor={`desktop-${option}`}>
-                               {option === 'All' ? 'All Statuses' : option}
-                             </Label>
-                           </div>
-                        ))}
+                <div className="flex gap-4">
+                    <div className="bg-white/10 p-4 rounded-2xl border border-white/20">
+                        <h3 className="text-sm font-semibold text-white/80 mb-2 flex items-center gap-2">
+                            <Filter className="h-4 w-4" />
+                            Filter by Status
+                        </h3>
+                        <div className="flex flex-wrap gap-x-4 gap-y-2">
+                            {statusOptions.map(option => (
+                               <div key={option} className="flex items-center space-x-2">
+                                 <Checkbox
+                                   id={`desktop-status-${option}`}
+                                   checked={statusFilter === option}
+                                   onCheckedChange={() => handleStatusCheckboxChange(option)}
+                                 />
+                                 <Label htmlFor={`desktop-status-${option}`}>
+                                   {option === 'All' ? 'All Statuses' : option}
+                                 </Label>
+                               </div>
+                            ))}
+                        </div>
+                    </div>
+                     <div className="bg-white/10 p-4 rounded-2xl border border-white/20">
+                        <h3 className="text-sm font-semibold text-white/80 mb-2 flex items-center gap-2">
+                            <Filter className="h-4 w-4" />
+                            Sort By
+                        </h3>
+                        <div className="flex flex-wrap gap-x-4 gap-y-2">
+                            {sortOptions.map(option => (
+                               <div key={option.value} className="flex items-center space-x-2">
+                                 <Checkbox
+                                   id={`desktop-sort-${option.value}`}
+                                   checked={sortOption === option.value}
+                                   onCheckedChange={() => handleSortCheckboxChange(option.value)}
+                                 />
+                                 <Label htmlFor={`desktop-sort-${option.value}`}>
+                                   {option.label}
+                                 </Label>
+                               </div>
+                            ))}
+                        </div>
                     </div>
                 </div>
               )}
