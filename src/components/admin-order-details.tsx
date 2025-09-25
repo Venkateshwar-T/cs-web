@@ -161,7 +161,7 @@ const OrderDetailsContent = ({ order: initialOrder, allProducts }: { order: Orde
             <Separator className="bg-white/20" />
             
             <div>
-                <h4 className="font-bold mb-2 flex items-center gap-2"><Percent size={18} /> Financials</h4>
+                <h4 className="font-bold mb-2 flex items-center gap-2"><Percent size={18} />Bill Details</h4>
                  <div className="space-y-1 bg-white/5 p-3 rounded-lg text-sm">
                     <div className="flex justify-between"><span className="text-white/80">Subtotal:</span> <span>₹{subtotal.toFixed(2)}</span></div>
                     <div className="flex justify-between text-green-400"><span className="text-white/80">Discount ({discountPercentage.toFixed(1)}%):</span> <span>-₹{order.totalDiscount?.toFixed(2) ?? '0.00'}</span></div>
