@@ -230,15 +230,6 @@ export function MyProfileTab({ profile, onProfileUpdate }: MyProfileTabProps) {
 
         <div className='space-y-3'>
           <h3 className="text-lg font-medium text-center font-plex-sans">Delivery Address</h3>
-          <div className="space-y-1">
-              <label htmlFor="pincode" className="pl-3 text-sm font-medium">Pincode</label>
-              <Input
-                id="pincode"
-                value={pincode}
-                onChange={handlePincodeChange}
-                className="bg-white/10 border-white/20 text-white rounded-2xl h-12"
-              />
-          </div>
           
           <div className="space-y-1">
             <label htmlFor="house" className="pl-3 text-sm font-medium">House No., Building Name</label>
@@ -269,6 +260,17 @@ export function MyProfileTab({ profile, onProfileUpdate }: MyProfileTabProps) {
               className="bg-white/10 border-white/20 text-white rounded-2xl h-12"
             />
           </div>
+
+          <div className="space-y-1">
+              <label htmlFor="pincode" className="pl-3 text-sm font-medium">Pincode</label>
+              <Input
+                id="pincode"
+                value={pincode}
+                onChange={handlePincodeChange}
+                className="bg-white/10 border-white/20 text-white rounded-2xl h-12"
+              />
+          </div>
+
           <div className="flex gap-4">
               <div className="space-y-1 text-left w-1/2">
                   <label className="pl-2 text-sm font-medium font-plex-sans">City</label>

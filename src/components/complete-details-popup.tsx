@@ -128,16 +128,6 @@ export function CompleteDetailsPopup({ open, onOpenChange, onConfirm }: Complete
               <h3 className="text-lg font-medium text-center font-plex-sans">Delivery Address</h3>
               
               <div className="space-y-1 text-left">
-                  <label className="pl-2 text-sm font-medium font-plex-sans">Pincode</label>
-                  <Input 
-                      value={pincode}
-                      onChange={handlePincodeChange}
-                      placeholder="6-digit Pincode"
-                      className="bg-white rounded-2xl text-black placeholder:text-gray-400 placeholder:font-montserrat font-montserrat h-10 md:h-12"
-                  />
-              </div>
-
-              <div className="space-y-1 text-left">
                   <label className="pl-2 text-sm font-medium font-plex-sans">House No., Building Name</label>
                   <Input 
                       value={house}
@@ -163,6 +153,16 @@ export function CompleteDetailsPopup({ open, onOpenChange, onConfirm }: Complete
                       value={landmark}
                       onChange={(e) => setLandmark(e.target.value)}
                       placeholder="e.g. Near City Mall"
+                      className="bg-white rounded-2xl text-black placeholder:text-gray-400 placeholder:font-montserrat font-montserrat h-10 md:h-12"
+                  />
+              </div>
+
+              <div className="space-y-1 text-left">
+                  <label className="pl-2 text-sm font-medium font-plex-sans">Pincode</label>
+                  <Input 
+                      value={pincode}
+                      onChange={handlePincodeChange}
+                      placeholder="6-digit Pincode"
                       className="bg-white rounded-2xl text-black placeholder:text-gray-400 placeholder:font-montserrat font-montserrat h-10 md:h-12"
                   />
               </div>

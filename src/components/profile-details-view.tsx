@@ -238,16 +238,7 @@ export function ProfileDetailsView({ profile, onHasChangesChange, onProfileUpdat
 
         <div className='space-y-3'>
           <h3 className="text-lg font-medium text-center font-plex-sans">Delivery Address</h3>
-          <div className="space-y-1">
-              <label htmlFor="pincode" className="p-3 text-m font-medium">Pincode</label>
-              <Input
-                  id="pincode"
-                  value={pincode}
-                  onChange={handlePincodeChange}
-                  className="bg-white border-white/20 text-black rounded-2xl h-12 text-base"
-              />
-          </div>
-
+          
           <div className="space-y-1">
               <label htmlFor="house" className="p-3 text-m font-medium">House No., Building Name</label>
               <Input
@@ -274,6 +265,16 @@ export function ProfileDetailsView({ profile, onHasChangesChange, onProfileUpdat
                   id="landmark"
                   value={landmark}
                   onChange={(e) => setLandmark(e.target.value)}
+                  className="bg-white border-white/20 text-black rounded-2xl h-12 text-base"
+              />
+          </div>
+
+          <div className="space-y-1">
+              <label htmlFor="pincode" className="p-3 text-m font-medium">Pincode</label>
+              <Input
+                  id="pincode"
+                  value={pincode}
+                  onChange={handlePincodeChange}
                   className="bg-white border-white/20 text-black rounded-2xl h-12 text-base"
               />
           </div>
