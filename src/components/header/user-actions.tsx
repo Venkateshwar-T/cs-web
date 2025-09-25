@@ -1,4 +1,3 @@
-
 // @/components/header/user-actions.tsx
 'use client';
 
@@ -6,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { Menu, Phone, Search, Info, HelpCircle, LogOut, Shield } from "lucide-react";
+import { Menu, Phone, Search, Info, HelpCircle, LogOut, Shield, LineChart, ShoppingBag } from "lucide-react";
 import { AiOutlineInstagram } from "react-icons/ai";
 import { IoLogoFacebook, IoLogoWhatsapp } from "react-icons/io5";
 import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet";
@@ -46,7 +45,10 @@ const navLinks = [
     { id: "faq", label: "FAQ", href: "/faq", icon: HelpCircle },
 ] as const;
 
-const adminLink = { id: "admin", label: "Admin", href: "/admin", icon: Shield };
+const adminLinks = [
+    { id: "admin", label: "Manage Orders", href: "/admin", icon: ShoppingBag },
+    { id: "admin-analytics", label: "Analytics", href: "/admin/analytics", icon: LineChart },
+];
 
 export function UserActions({ 
     isEnquireOpen, 
@@ -63,10 +65,8 @@ export function UserActions({
     const router = useRouter();
     const { logout, isAuthenticated, isAdmin, setAuthPopup } = useAppContext();
 
-    const handleMobileNav = (link: typeof navLinks[number] | typeof adminLink) => {
-        if (link.href) {
-            router.push(link.href);
-        }
+    const handleMobileNav = (href: string) => {
+        router.push(href);
     };
 
     const handleLogout = () => {
@@ -186,7 +186,7 @@ export function UserActions({
                                 return (
                                     <SheetClose asChild key={link.id}>
                                         <button
-                                            onClick={() => handleMobileNav(link)}
+                                            onClick={() => handleMobileNav(link.href)}
                                             className={cn(
                                                 "transition-colors hover:text-custom-gold text-left flex items-center gap-3", 
                                                 isActive ? "text-custom-gold font-semibold" : "text-foreground/80"
@@ -199,18 +199,27 @@ export function UserActions({
                                 )
                             })}
                             {isAdmin && (
-                                <SheetClose asChild>
-                                    <button
-                                        onClick={() => handleMobileNav(adminLink)}
-                                        className={cn(
-                                            "transition-colors hover:text-custom-gold text-left flex items-center gap-3", 
-                                            activeView === 'admin' ? "text-custom-gold font-semibold" : "text-foreground/80"
-                                        )}
-                                    >
-                                        <adminLink.icon className="h-5 w-5" />
-                                        <span>{adminLink.label}</span>
-                                    </button>
-                                </SheetClose>
+                                <>
+                                    <Separator className="bg-white/20 my-2"/>
+                                    <p className="text-sm font-semibold text-white/70 px-1">Admin</p>
+                                    {adminLinks.map((link) => {
+                                        const isActive = activeView === link.id;
+                                        return (
+                                            <SheetClose asChild key={link.id}>
+                                                <button
+                                                    onClick={() => handleMobileNav(link.href)}
+                                                    className={cn(
+                                                        "transition-colors hover:text-custom-gold text-left flex items-center gap-3", 
+                                                        isActive ? "text-custom-gold font-semibold" : "text-foreground/80"
+                                                    )}
+                                                >
+                                                    <link.icon className="h-5 w-5" />
+                                                    <span>{link.label}</span>
+                                                </button>
+                                            </SheetClose>
+                                        )
+                                    })}
+                                </>
                             )}
                            </nav>
                            {isAuthenticated && (

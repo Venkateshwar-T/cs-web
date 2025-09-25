@@ -1,4 +1,3 @@
-
 // @/components/header/navigation.tsx
 'use client';
 
@@ -7,6 +6,13 @@ import { cn } from "@/lib/utils";
 import { useRouter } from 'next/navigation';
 import type { ActiveView } from '@/app/page';
 import { useAppContext } from "@/context/app-context";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { ChevronDown } from "lucide-react";
 
 interface NavigationProps {
   isEnquireOpen: boolean;
@@ -24,9 +30,13 @@ export function Navigation({ isEnquireOpen, onNavigate, activeView }: Navigation
     const router = useRouter();
     const { isAdmin } = useAppContext();
 
-    const handleClick = (linkId: 'about' | 'faq' | 'admin') => {
+    const handleClick = (linkId: 'about' | 'faq') => {
         router.push(`/${linkId}`);
     };
+    
+    const handleAdminClick = (path: string) => {
+        router.push(path);
+    }
 
     return (
         <nav className={cn(
@@ -49,16 +59,27 @@ export function Navigation({ isEnquireOpen, onNavigate, activeView }: Navigation
                 )
             })}
              {isAdmin && (
-                <button
-                    onClick={() => handleClick("admin")}
-                    className={cn(
-                        "transition-colors hover:text-custom-gold", 
-                        isEnquireOpen && "opacity-50",
-                        activeView === 'admin' ? "text-custom-gold font-base" : "text-foreground/80"
-                    )}
-                >
-                    Admin
-                </button>
+                <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                        <button
+                            className={cn(
+                                "flex items-center gap-1 transition-colors hover:text-custom-gold",
+                                isEnquireOpen && "opacity-50",
+                                activeView === 'admin' ? "text-custom-gold font-base" : "text-foreground/80"
+                            )}
+                        >
+                            Admin <ChevronDown className="h-4 w-4" />
+                        </button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent className="bg-custom-purple-dark text-white border-custom-gold">
+                        <DropdownMenuItem onClick={() => handleAdminClick('/admin')} className="cursor-pointer hover:!bg-white/20 hover:!text-white">
+                            Manage Orders
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleAdminClick('/admin/analytics')} className="cursor-pointer hover:!bg-white/20 hover:!text-white">
+                            Analytics
+                        </DropdownMenuItem>
+                    </DropdownMenuContent>
+                </DropdownMenu>
             )}
         </nav>
     );
