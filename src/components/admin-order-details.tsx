@@ -2,6 +2,7 @@
 // @/components/admin-order-details.tsx
 'use client';
 
+import * as React from "react";
 import {
   Dialog,
   DialogContent,
@@ -43,8 +44,13 @@ const DetailRow = ({ icon, label, value }: { icon: React.ReactNode, label: strin
 );
 
 const OrderDetailsContent = ({ order }: { order: Order }) => {
-    const { updateOrderStatus } = useAppContext();
+    const { updateOrderStatus, allProducts } = useAppContext();
     if (!order) return null;
+    
+    const productsByName = allProducts.reduce((acc, product) => {
+        acc[product.name] = product;
+        return acc;
+    }, {} as Record<string, any>);
 
     const orderDate = new Date(order.date);
     const formattedDate = orderDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
@@ -77,7 +83,7 @@ const OrderDetailsContent = ({ order }: { order: Order }) => {
 
 
     return (
-        <div className="flex flex-col gap-4 p-4 md:p-0 text-white max-h-[85vh] overflow-y-auto custom-scrollbar">
+        <div className="flex flex-col gap-4 p-4 md:p-0 text-white h-full overflow-y-auto custom-scrollbar">
             <div className="grid grid-cols-1 gap-4">
                 <DetailRow icon={<User size={16} />} label="Customer Name" value={order.customerName} />
                 <DetailRow icon={<Mail size={16} />} label="Email" value={order.customerEmail} />
@@ -102,34 +108,49 @@ const OrderDetailsContent = ({ order }: { order: Order }) => {
 
             <div>
                 <h4 className="font-bold mb-2 flex items-center gap-2"><ShoppingCart size={18} /> Order Items</h4>
-                <div className="space-y-3 bg-white/5 p-3 rounded-lg max-h-48 overflow-y-auto custom-scrollbar">
-                    {order.items.map(item => (
-                        <div key={item.name} className="flex gap-3">
-                            <Image
-                                src={item.coverImage || "/placeholder.png"}
-                                alt={item.name}
-                                width={64}
-                                height={64}
-                                className="rounded-md flex-shrink-0 object-cover aspect-square"
-                            />
-                            <div className="flex-grow min-w-0">
-                                <p className="font-bold truncate">{item.name}</p>
-                                <p className="text-xs text-white/70">Qty: {item.quantity} | Price: ₹{((item.finalProductPrice || 0) / item.quantity).toFixed(2)}</p>
-                                {item.flavours && item.flavours.length > 0 && (
-                                    <div className="text-xs text-white/60 mt-1">
-                                        <p className="font-semibold">Flavours:</p>
-                                        <ul className="list-disc list-inside">
-                                            {item.flavours.map(f => <li key={f.name}>{f.name} (+₹{f.price.toFixed(2)})</li>)}
-                                        </ul>
+                 <div className="bg-white/5 p-3 rounded-lg space-y-3">
+                    {order.items.map((item, index) => {
+                        const product = productsByName[item.name];
+                        return (
+                            <React.Fragment key={item.name}>
+                                 <div className="flex flex-col">
+                                    <p className="font-bold text-base mb-2">{item.name}</p>
+                                    <div className="flex gap-3 items-start">
+                                        <Image
+                                            src={item.coverImage || "/placeholder.png"}
+                                            alt={item.name}
+                                            width={64}
+                                            height={64}
+                                            className="rounded-md flex-shrink-0 object-cover aspect-square w-16 h-16"
+                                        />
+                                        <div className="flex-grow min-w-0">
+                                            
+                                            <p className="text-xs text-white/70">Qty: {item.quantity} | MRP: ₹{item.mrp?.toFixed(2)}</p>
+                                            <p className="text-xs text-green-400">Discount: -₹{((item.mrp || 0) * item.quantity - (item.finalProductPrice || 0)).toFixed(2)}</p>
+                                        </div>
+                                        <div className='text-right flex-shrink-0'>
+                                            <p className="text-sm font-semibold">₹{item.finalSubtotal?.toFixed(2)}</p>
+                                        </div>
                                     </div>
-                                )}
-                            </div>
-                            <div className='text-right flex-shrink-0'>
-                                <p className="text-sm font-semibold">₹{item.finalSubtotal?.toFixed(2)}</p>
-                                {item.mrp && item.finalProductPrice && <p className="text-xs text-green-400">-{((item.mrp || 0) * item.quantity - (item.finalProductPrice || 0)).toFixed(2)}</p>}
-                            </div>
-                        </div>
-                    ))}
+                                    {item.flavours && item.flavours.length > 0 && (
+                                        <div className="text-xs text-white/60 mt-2 pl-2">
+                                            <p className="font-semibold mb-1">Flavours:</p>
+                                            <ul className="space-y-1">
+                                                {item.flavours.map(f => (
+                                                    <li key={f.name} className="flex justify-between items-center">
+                                                        <span className="w-24 inline-block truncate">{f.name}</span>
+                                                        <span className="text-center w-16 inline-block">{product?.numberOfChocolates && `x${product.numberOfChocolates}`}</span>
+                                                        <span className="text-right w-20 inline-block">(+₹{f.price.toFixed(2)})</span>
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                    )}
+                                </div>
+                                {index < order.items.length - 1 && <Separator className="bg-white/10 my-3" />}
+                            </React.Fragment>
+                        )
+                    })}
                 </div>
             </div>
 
@@ -179,12 +200,13 @@ export function AdminOrderDetails({ order, open, onOpenChange }: AdminOrderDetai
   if (isMobile) {
     return (
       <Sheet open={open} onOpenChange={onOpenChange}>
-        <SheetContent side="bottom" className="bg-custom-purple-dark text-white border-t-2 border-custom-gold rounded-t-3xl h-[90vh] p-0">
-          <SheetHeader className="p-4 border-b border-white/20 text-center">
+        <SheetContent side="bottom" className="bg-custom-purple-dark text-white border-t-2 border-custom-gold rounded-t-3xl h-[90vh] p-0 flex flex-col">
+          <SheetHeader className="p-4 border-b border-white/20 text-center flex-shrink-0">
             <SheetTitle className="text-white text-lg">Order Details</SheetTitle>
-            
           </SheetHeader>
-          <OrderDetailsContent order={order} />
+          <div className="flex-grow overflow-y-auto no-scrollbar">
+            <OrderDetailsContent order={order} />
+          </div>
         </SheetContent>
       </Sheet>
     );
@@ -192,7 +214,7 @@ export function AdminOrderDetails({ order, open, onOpenChange }: AdminOrderDetai
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="justify-center p-0 w-[90vw] md:w-full max-w-md bg-custom-purple-dark border-2 border-custom-gold rounded-2xl md:rounded-[30px]">
+      <DialogContent className="justify-center p-0 w-[90vw] md:w-full max-w-md bg-custom-purple-dark border-2 border-custom-gold rounded-2xl md:rounded-[30px] h-[90vh]">
         <DialogHeader className="p-4 text-center mb-4 border-b border-white/20">
           <DialogTitle className="text-white text-lg md:text-xl">Order Details</DialogTitle>
           <DialogClose className="absolute right-3 top-2 md:top-3 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground text-white z-10">
@@ -200,7 +222,9 @@ export function AdminOrderDetails({ order, open, onOpenChange }: AdminOrderDetai
             <span className="sr-only">Close</span>
           </DialogClose>
         </DialogHeader>
-        <OrderDetailsContent order={order} />
+        <div className="overflow-y-auto no-scrollbar px-6 pb-6">
+            <OrderDetailsContent order={order} />
+        </div>
       </DialogContent>
     </Dialog>
   )
