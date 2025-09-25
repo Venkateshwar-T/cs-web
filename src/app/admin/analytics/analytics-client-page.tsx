@@ -1,3 +1,4 @@
+
 // @/app/admin/analytics/analytics-client-page.tsx
 'use client';
 
@@ -10,11 +11,11 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import { StaticSparkleBackground } from '@/components/static-sparkle-background';
 import { useAppContext } from '@/context/app-context';
 import type { SanityProduct, Order } from '@/types';
-import { Loader } from '@/components/loader';
 import { EmptyState } from '@/components/empty-state';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import Image from 'next/image';
 import { PopupsManager } from '@/components/popups/popups-manager';
+import { LoadingFallback } from '@/components/loading-fallback';
 
 const MetricCard = ({ title, value, icon, description }: { title: string, value: string | number, icon: React.ReactNode, description?: string }) => (
     <Card className="bg-white/10 text-white border-white/20">
@@ -71,7 +72,7 @@ export default function AnalyticsClientPage({ allProducts }: { allProducts: Sani
 
 
     if (!isAllOrdersLoaded) {
-        return ( <div className="flex h-screen w-full items-center justify-center bg-background"><Loader /></div> );
+        return <LoadingFallback text="Loading Analytics..." />;
     }
 
     if (!isAdmin) {

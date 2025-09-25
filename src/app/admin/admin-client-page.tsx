@@ -11,7 +11,6 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import { StaticSparkleBackground } from '@/components/static-sparkle-background';
 import { useAppContext } from '@/context/app-context';
 import type { Order, SanityProduct } from '@/types';
-import { Loader } from '@/components/loader';
 import { EmptyState } from '@/components/empty-state';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -29,6 +28,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { PopupsManager } from '@/components/popups/popups-manager';
+import { LoadingFallback } from '@/components/loading-fallback';
 
 
 type StatusFilter = Order['status'] | 'All';
@@ -106,11 +106,7 @@ export default function AdminClientPage({ allProducts }: { allProducts: SanityPr
   };
 
   if (!isAllOrdersLoaded) {
-    return (
-      <div className="flex h-screen w-full items-center justify-center bg-background">
-        <Loader />
-      </div>
-    );
+    return <LoadingFallback text="Loading Admin Panel..." />;
   }
 
   if (!isAdmin) {
