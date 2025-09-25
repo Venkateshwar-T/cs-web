@@ -25,6 +25,7 @@ import {
   SheetContent,
   SheetHeader,
   SheetTitle,
+  SheetDescription,
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { PopupsManager } from '@/components/popups/popups-manager';
@@ -157,6 +158,7 @@ export default function AdminClientPage({ allProducts }: { allProducts: SanityPr
                     <SheetContent side="right" className="bg-custom-purple-dark text-white border-l-2 border-custom-gold w-3/4 max-w-sm p-0">
                       <SheetHeader className="p-4 border-b border-white/20">
                         <SheetTitle className="text-white text-center">Filters</SheetTitle>
+                        <SheetDescription className="sr-only">A dialog for filtering and sorting admin orders.</SheetDescription>
                       </SheetHeader>
                       <div className="flex flex-col gap-6 py-4 overflow-y-auto custom-scrollbar">
                         <FilterSection title="Filter by Status">
