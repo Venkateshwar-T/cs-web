@@ -68,7 +68,7 @@ interface AppContextType {
   
   allOrders: Order[];
   isAllOrdersLoaded: boolean;
-  updateOrderStatus: (uid: string, orderId: string, newStatus: Order['status']) => void;
+  updateOrderStatus: (uid: string, orderId: string, newStatus: Order['status'], cancelledBy?: 'user' | 'admin') => void;
 
   cart: Cart;
   updateCart: (productName: string, quantity: number, flavours?: string[]) => void;
@@ -362,10 +362,21 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
     }
   }, [toast]);
   
-  const handleUpdateOrderStatus = async (uid: string, orderId: string, newStatus: Order['status']) => {
+  const handleUpdateOrderStatus = async (uid: string, orderId: string, newStatus: Order['status'], cancelledBy?: 'user' | 'admin') => {
     try {
-      await updateOrderStatus(uid, orderId, newStatus);
-      const update = (orders: Order[]) => orders.map(o => o.id === orderId ? { ...o, status: newStatus } : o);
+      await updateOrderStatus(uid, orderId, newStatus, cancelledBy);
+      const update = (orders: Order[]) => orders.map(o => {
+        if (o.id === orderId) {
+            const updatedOrder = { ...o, status: newStatus };
+            if (newStatus === 'Cancelled' && cancelledBy) {
+                updatedOrder.cancelledBy = cancelledBy;
+            } else if (newStatus !== 'Cancelled') {
+                delete updatedOrder.cancelledBy;
+            }
+            return updatedOrder;
+        }
+        return o;
+      });
       setAllOrders(update);
       setOrders(update);
       toast({

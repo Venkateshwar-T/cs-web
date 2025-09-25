@@ -53,7 +53,7 @@ export function OrderItemCard({ order, isMobile = false, onClick }: OrderItemCar
 
     const handleCancelOrder = () => {
       if (order.uid && order.id) {
-        updateOrderStatus(order.uid, order.id, 'Cancelled');
+        updateOrderStatus(order.uid, order.id, 'Cancelled', 'user');
       }
     };
 
@@ -78,7 +78,10 @@ export function OrderItemCard({ order, isMobile = false, onClick }: OrderItemCar
                     </div>
                     <Badge 
                         variant={statusVariant(order.status)}
-                        className={cn(order.status === 'Order Requested' && 'text-custom-purple-dark')}
+                        className={cn(
+                            'hover:bg-primary',
+                            order.status === 'Order Requested' && 'text-custom-purple-dark hover:bg-primary'
+                        )}
                     >
                         {order.status}
                     </Badge>

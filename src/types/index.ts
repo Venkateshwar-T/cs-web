@@ -63,4 +63,5 @@ export interface Order {
   customerEmail?: string;
   customerPhone?: string;
   address?: string;
+  cancelledBy?: 'user' | 'admin';
 }

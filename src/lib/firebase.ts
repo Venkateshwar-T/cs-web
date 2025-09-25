@@ -12,7 +12,7 @@ import {
   updatePassword,
   type User
 } from 'firebase/auth';
-import { getFirestore, doc, getDoc, setDoc, updateDoc, collection, addDoc, getDocs, query, collectionGroup, where, writeBatch } from 'firebase/firestore';
+import { getFirestore, doc, getDoc, setDoc, updateDoc, collection, addDoc, getDocs, query, collectionGroup, where, writeBatch, serverTimestamp, deleteField } from 'firebase/firestore';
 import type { ProfileInfo } from '@/context/app-context';
 import type { Order } from '@/types';
 
@@ -188,7 +188,7 @@ export const getAllOrders = async (): Promise<Order[]> => {
 };
 
 
-export const updateOrderStatus = async (uid: string, orderId: string, newStatus: Order['status']): Promise<void> => {
+export const updateOrderStatus = async (uid: string, orderId: string, newStatus: Order['status'], cancelledBy?: 'user' | 'admin'): Promise<void> => {
     const db = getClientFirestore();
     if (!db) throw new Error("Firestore not initialized");
 
@@ -198,5 +198,14 @@ export const updateOrderStatus = async (uid: string, orderId: string, newStatus:
     
     const orderDocRef = doc(db, 'users', uid, 'orders', orderId);
     
-    await updateDoc(orderDocRef, { status: newStatus });
+    const updateData: { status: Order['status'], cancelledBy?: 'user' | 'admin' | any } = { status: newStatus };
+
+    if (newStatus === 'Cancelled' && cancelledBy) {
+        updateData.cancelledBy = cancelledBy;
+    } else if (newStatus !== 'Cancelled') {
+        // Remove the cancelledBy field if status is changing away from Cancelled
+        updateData.cancelledBy = deleteField();
+    }
+
+    await updateDoc(orderDocRef, updateData);
 };

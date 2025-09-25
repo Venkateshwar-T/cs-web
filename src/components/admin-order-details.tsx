@@ -92,7 +92,7 @@ const OrderDetailsContent = ({ order: initialOrder, allProducts }: { order: Orde
 
     const handleStatusChange = (newStatus: Order['status']) => {
         if (order.id && order.uid && newStatus !== order.status) {
-            updateOrderStatus(order.uid, order.id, newStatus);
+            updateOrderStatus(order.uid, order.id, newStatus, 'admin');
         }
     };
 
@@ -184,48 +184,55 @@ const OrderDetailsContent = ({ order: initialOrder, allProducts }: { order: Orde
 
             <Separator className="bg-white/20" />
 
-            <div className="flex flex-col items-center justify-center gap-2 pb-4">
-                <p className="text-sm text-white/80">Order Status</p>
-                <div className="flex flex-wrap justify-center gap-2 w-full">
-                    {statusOptions.map((status) => {
-                        const buttonContent = (
-                            <Button
-                                key={status}
-                                variant="ghost"
-                                onClick={() => { if (status !== 'Cancelled') handleStatusChange(status) }}
-                                className={cn(
-                                    "text-xs h-8 px-3 rounded-full border-none focus:ring-0 focus:ring-offset-0 transition-all duration-200 w-1/2",
-                                    getStatusVariant(status, order.status === status)
-                                )}
-                            >
-                                {status}
-                            </Button>
-                        );
-
-                        if (status === 'Cancelled') {
-                            return (
-                                <AlertDialog key="cancel-dialog">
-                                    <AlertDialogTrigger asChild>{buttonContent}</AlertDialogTrigger>
-                                    <AlertDialogContent>
-                                        <AlertDialogHeader>
-                                            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-                                            <AlertDialogDescription>
-                                                The user's order will be cancelled. You can change the status back if you wish.
-                                            </AlertDialogDescription>
-                                        </AlertDialogHeader>
-                                        <AlertDialogFooter>
-                                            <AlertDialogCancel>No</AlertDialogCancel>
-                                            <AlertDialogAction onClick={() => handleStatusChange('Cancelled')}>Yes, Cancel Order</AlertDialogAction>
-                                        </AlertDialogFooter>
-                                    </AlertDialogContent>
-                                </AlertDialog>
-                            );
-                        }
-                        
-                        return buttonContent;
-                    })}
+            {order.cancelledBy === 'user' ? (
+                <div className="flex flex-col items-center justify-center gap-2 pb-4 text-center">
+                    <p className="text-sm font-semibold text-red-400">This order was cancelled by the user.</p>
+                    <p className="text-xs text-white/70">No further actions can be taken.</p>
                 </div>
-            </div>
+            ) : (
+                <div className="flex flex-col items-center justify-center gap-2 pb-4">
+                    <p className="text-sm text-white/80">Order Status</p>
+                    <div className="flex flex-wrap justify-center gap-2 w-full">
+                        {statusOptions.map((status) => {
+                            const buttonContent = (
+                                <Button
+                                    key={status}
+                                    variant="ghost"
+                                    onClick={() => { if (status !== 'Cancelled') handleStatusChange(status) }}
+                                    className={cn(
+                                        "text-xs h-8 px-3 rounded-full border-none focus:ring-0 focus:ring-offset-0 transition-all duration-200 w-1/2",
+                                        getStatusVariant(status, order.status === status)
+                                    )}
+                                >
+                                    {status}
+                                </Button>
+                            );
+
+                            if (status === 'Cancelled') {
+                                return (
+                                    <AlertDialog key="cancel-dialog">
+                                        <AlertDialogTrigger asChild>{buttonContent}</AlertDialogTrigger>
+                                        <AlertDialogContent>
+                                            <AlertDialogHeader>
+                                                <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                                                <AlertDialogDescription>
+                                                    The user's order will be cancelled. You can change the status back if you wish.
+                                                </AlertDialogDescription>
+                                            </AlertDialogHeader>
+                                            <AlertDialogFooter>
+                                                <AlertDialogCancel>No</AlertDialogCancel>
+                                                <AlertDialogAction onClick={() => handleStatusChange('Cancelled')}>Yes, Cancel Order</AlertDialogAction>
+                                            </AlertDialogFooter>
+                                        </AlertDialogContent>
+                                    </AlertDialog>
+                                );
+                            }
+                            
+                            return buttonContent;
+                        })}
+                    </div>
+                </div>
+            )}
 
         </div>
     );
