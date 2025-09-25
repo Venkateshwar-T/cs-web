@@ -1,3 +1,4 @@
+
 // @/components/order-details-popup.tsx
 import * as React from "react";
 import {
@@ -5,6 +6,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogClose,
 } from "@/components/ui/dialog"
 import {
   Sheet,
@@ -152,7 +154,6 @@ export function OrderDetailsPopup({ order, open, onOpenChange, products }: Order
         <SheetContent side="bottom" className="bg-custom-purple-dark text-white border-t-2 border-custom-gold rounded-t-3xl h-[90vh] p-0 flex flex-col">
           <SheetHeader className="p-4 border-b border-white/20 text-center relative flex-shrink-0">
             <SheetTitle className="text-white text-lg">Order Details</SheetTitle>
-            
           </SheetHeader>
           <div className="flex-grow overflow-y-auto">
             <OrderDetailsContent order={order} products={products} />
