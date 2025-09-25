@@ -190,7 +190,7 @@ const OrderDetailsContent = ({ order: initialOrder, allProducts }: { order: Orde
                                 key={status}
                                 onClick={() => handleStatusChange(status)}
                                 className={cn(
-                                    "text-xs h-8 px-3 rounded-full border-none focus:ring-0 focus:ring-offset-0 transition-all duration-200 w-1/2",
+                                    "text-xs h-8 px-3 rounded-full border-none focus:ring-0 focus:ring-offset-0 transition-all duration-200 w-1/2 hover:bg-white/40",
                                     getStatusVariant(status, order.status === status)
                                 )}
                             >
