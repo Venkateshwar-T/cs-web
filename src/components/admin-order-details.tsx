@@ -100,12 +100,14 @@ const OrderDetailsContent = ({ order: initialOrder, allProducts }: { order: Orde
     return (
         <div className="flex flex-col gap-4 px-4 md:p-0 text-white h-full no-scrollbar">
             <div className="grid grid-cols-1 gap-4">
-                <DetailRow icon={<User size={16} />} label="Customer Name" value={order.customerName} />
-                <DetailRow icon={<Mail size={16} />} label="Email" value={order.customerEmail} />
+                <DetailRow icon={<User size={16} />} label="Customer Name" value={order.customerName || 'Loading...'} />
+                <DetailRow icon={<Mail size={16} />} label="Email" value={order.customerEmail || 'Loading...'} />
                 <DetailRow icon={<Phone size={16} />} label="Phone" value={
-                  <a href={`tel:${order.customerPhone}`}>
-                    {order.customerPhone}
-                  </a>   
+                  order.customerPhone ? (
+                    <a href={`tel:${order.customerPhone}`}>
+                      {order.customerPhone}
+                    </a>
+                  ) : 'Loading...'
                 } />
                 <DetailRow icon={<Home size={16} />} label="Address" value={order.address || 'Not Provided'} />
                 <Separator className="bg-white/20" />
@@ -316,3 +318,5 @@ export function AdminOrderDetails({ order, open, onOpenChange, allProducts }: Ad
     </>
   );
 }
+
+    
