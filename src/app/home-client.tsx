@@ -70,11 +70,11 @@ export default function HomeClient({ allProducts, exploreCategories, exploreFlav
 
   const handleNavigation = (view: ActiveView) => {
     if (view === 'cart') {
-      router.push('/cart');
+      router.push('/cart', { scroll: false });
     } else if (view === 'profile') {
-      router.push('/profile');
+      router.push('/profile', { scroll: false });
     } else {
-       router.push('/');
+       router.push('/', { scroll: false });
     }
   };
   
