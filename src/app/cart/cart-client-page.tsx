@@ -33,12 +33,13 @@ import type { SanityProduct } from '@/types';
 import { Loader } from '@/components/loader';
 import { useToast } from '@/hooks/use-toast';
 import { ToastAction } from '@/components/ui/toast';
+import { LoadingFallback } from '@/components/loading-fallback';
 
 
 export default function CartClientPage({ allProducts }: { allProducts: SanityProduct[] }) {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const router = useRouter();
-  const { cart, updateCart, clearCart, addOrder, isAuthenticated, setAuthPopup } = useAppContext();
+  const { cart, updateCart, clearCart, addOrder, isAuthenticated, setAuthPopup, isCartLoaded } = useAppContext();
   const isMobile = useIsMobile();
   const [lastScrollTop, setLastScrollTop] = useState(0);
   const [isHeaderVisible, setIsHeaderVisible] = useState(true);
@@ -185,6 +186,10 @@ export default function CartClientPage({ allProducts }: { allProducts: SanityPro
     acc[product.name] = product;
     return acc;
   }, {} as Record<string, SanityProduct>);
+  
+  if (!isCartLoaded) {
+    return <LoadingFallback text="Loading Your Cart..." />;
+  }
 
   return (
     <>
