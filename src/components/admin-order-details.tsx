@@ -17,7 +17,7 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet"
 import { Button } from "./ui/button";
-import { X, User, Mail, Phone, Home, ShoppingCart, Percent } from "lucide-react";
+import { X, User, Mail, Phone, Home, ShoppingCart, Percent, Info } from "lucide-react";
 import type { Order, SanityProduct } from "@/types";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
@@ -69,10 +69,10 @@ const OrderDetailsContent = ({ order: initialOrder, allProducts }: { order: Orde
     const getStatusVariant = (status: Order['status'], isActive: boolean) => {
       if (isActive) {
         switch (status) {
-          case 'Completed': return 'bg-green-600 text-white hover:bg-green-600';
-          case 'Cancelled': return 'bg-red-600 text-white hover:bg-red-600';
-          case 'In Progress': return 'bg-blue-500 text-white hover:bg-blue-500';
-          default: return 'bg-custom-gold text-custom-purple-dark hover:bg-custom-gold';
+          case 'Completed': return 'bg-green-600 text-white';
+          case 'Cancelled': return 'bg-red-600 text-white';
+          case 'In Progress': return 'bg-blue-500 text-white';
+          default: return 'bg-custom-gold text-custom-purple-dark';
         }
       }
       return 'bg-white/10 text-white/70';
@@ -173,23 +173,33 @@ const OrderDetailsContent = ({ order: initialOrder, allProducts }: { order: Orde
 
             <Separator className="bg-white/20" />
 
-             <div className="flex flex-col items-center justify-center gap-2 pb-4">
-                <p className="text-sm text-white/80">Order Status</p>
-                <div className="flex flex-wrap justify-center gap-2 w-full">
-                    {statusOptions.map((status) => (
-                        <Button
-                            key={status}
-                            onClick={() => handleStatusChange(status)}
-                            className={cn(
-                                "text-xs h-8 px-3 rounded-full border-none focus:ring-0 focus:ring-offset-0 transition-all duration-200 w-1/2 hover:bg-white/20",
-                                getStatusVariant(status, order.status === status)
-                            )}
-                        >
-                            {status}
-                        </Button>
-                    ))}
+             {order.status === 'Cancelled' ? (
+                <div className="flex flex-col items-center justify-center gap-2 pb-4 text-center">
+                    <p className="text-sm text-white/80">Order Status</p>
+                    <div className="flex items-center gap-2 bg-red-600/20 border border-red-600 text-red-300 rounded-lg p-3">
+                        <Info size={18} />
+                        <span className="font-semibold text-sm">This order was cancelled by the user.</span>
+                    </div>
                 </div>
-            </div>
+            ) : (
+                <div className="flex flex-col items-center justify-center gap-2 pb-4">
+                    <p className="text-sm text-white/80">Order Status</p>
+                    <div className="flex flex-wrap justify-center gap-2 w-full">
+                        {statusOptions.map((status) => (
+                            <Button
+                                key={status}
+                                onClick={() => handleStatusChange(status)}
+                                className={cn(
+                                    "text-xs h-8 px-3 rounded-full border-none focus:ring-0 focus:ring-offset-0 transition-all duration-200 w-1/2",
+                                    getStatusVariant(status, order.status === status)
+                                )}
+                            >
+                                {status}
+                            </Button>
+                        ))}
+                    </div>
+                </div>
+            )}
 
         </div>
     );
