@@ -66,11 +66,11 @@ export function CancellationFeedbackPopup({ order, open, onOpenChange }: Cancell
             className="bg-white/10 rounded-xl h-24 border-white/30"
           />
           
-          <div className="flex items-center justify-center gap-4">
-             <Button onClick={handleSkip} variant="outline" className="bg-transparent text-base text-white border-custom-gold border-2 rounded-full px-10 hover:bg-custom-gold hover:text-custom-purple-dark">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+             <Button onClick={handleSkip} variant="outline" className="w-full sm:w-auto bg-transparent text-base text-white border-custom-gold border-2 rounded-full px-10 hover:bg-custom-gold hover:text-custom-purple-dark">
                 Skip
             </Button>
-            <Button onClick={handleSubmit} className="w-auto bg-custom-gold text-custom-purple-dark font-bold hover:bg-custom-gold/90 h-10 text-base rounded-full px-8">
+            <Button onClick={handleSubmit} className="w-full sm:w-auto bg-custom-gold text-custom-purple-dark font-bold hover:bg-custom-gold/90 h-10 text-base rounded-full px-8">
               Submit Feedback
             </Button>
           </div>
