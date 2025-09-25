@@ -10,7 +10,7 @@ import { SparkleBackground } from '@/components/sparkle-background';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { StaticSparkleBackground } from '@/components/static-sparkle-background';
 import { useAppContext } from '@/context/app-context';
-import type { Order } from '@/types';
+import type { Order, SanityProduct } from '@/types';
 import { Loader } from '@/components/loader';
 import { EmptyState } from '@/components/empty-state';
 import { Input } from '@/components/ui/input';
@@ -37,7 +37,7 @@ type StatusFilter = Order['status'] | 'All';
 
 const statusOptions: StatusFilter[] = ['All', 'Order Requested', 'In Progress', 'Completed', 'Cancelled'];
 
-export default function AdminClientPage() {
+export default function AdminClientPage({ allProducts }: { allProducts: SanityProduct[] }) {
   const router = useRouter();
   const isMobile = useIsMobile();
   const { allOrders, isAllOrdersLoaded, isAdmin, user } = useAppContext();
@@ -191,6 +191,7 @@ export default function AdminClientPage() {
                 setSelectedOrder(null);
             }
         }}
+        allProducts={allProducts}
       />
     </>
   );

@@ -15,11 +15,10 @@ import {
   SheetContent,
   SheetHeader,
   SheetTitle,
-  SheetClose,
 } from "@/components/ui/sheet"
 import { Button } from "./ui/button";
 import { X, User, Mail, Phone, Home, ShoppingCart, Percent } from "lucide-react";
-import type { Order } from "@/types";
+import type { Order, SanityProduct } from "@/types";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { Separator } from "./ui/separator";
@@ -31,6 +30,7 @@ interface AdminOrderDetailsProps {
     order: Order | null;
     open: boolean;
     onOpenChange: (open: boolean) => void;
+    allProducts: SanityProduct[];
 }
 
 const DetailRow = ({ icon, label, value }: { icon: React.ReactNode, label: string, value: React.ReactNode }) => (
@@ -43,14 +43,14 @@ const DetailRow = ({ icon, label, value }: { icon: React.ReactNode, label: strin
     </div>
 );
 
-const OrderDetailsContent = ({ order }: { order: Order }) => {
-    const { updateOrderStatus, allProducts } = useAppContext();
+const OrderDetailsContent = ({ order, allProducts }: { order: Order, allProducts: SanityProduct[] }) => {
+    const { updateOrderStatus } = useAppContext();
     if (!order) return null;
     
     const productsByName = allProducts.reduce((acc, product) => {
         acc[product.name] = product;
         return acc;
-    }, {} as Record<string, any>);
+    }, {} as Record<string, SanityProduct>);
 
     const orderDate = new Date(order.date);
     const formattedDate = orderDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
@@ -114,7 +114,6 @@ const OrderDetailsContent = ({ order }: { order: Order }) => {
                         return (
                             <React.Fragment key={item.name}>
                                  <div className="flex flex-col">
-                                    <p className="font-bold text-base mb-2">{item.name}</p>
                                     <div className="flex gap-3 items-start">
                                         <Image
                                             src={item.coverImage || "/placeholder.png"}
@@ -124,7 +123,7 @@ const OrderDetailsContent = ({ order }: { order: Order }) => {
                                             className="rounded-md flex-shrink-0 object-cover aspect-square w-16 h-16"
                                         />
                                         <div className="flex-grow min-w-0">
-                                            
+                                            <p className="font-bold text-base">{item.name}</p>
                                             <p className="text-xs text-white/70">Qty: {item.quantity} | MRP: ₹{item.mrp?.toFixed(2)}</p>
                                             <p className="text-xs text-green-400">Discount: -₹{((item.mrp || 0) * item.quantity - (item.finalProductPrice || 0)).toFixed(2)}</p>
                                         </div>
@@ -192,7 +191,7 @@ const OrderDetailsContent = ({ order }: { order: Order }) => {
 };
 
 
-export function AdminOrderDetails({ order, open, onOpenChange }: AdminOrderDetailsProps) {
+export function AdminOrderDetails({ order, open, onOpenChange, allProducts }: AdminOrderDetailsProps) {
   const isMobile = useIsMobile();
 
   if (!order) return null;
@@ -205,7 +204,7 @@ export function AdminOrderDetails({ order, open, onOpenChange }: AdminOrderDetai
             <SheetTitle className="text-white text-lg">Order Details</SheetTitle>
           </SheetHeader>
           <div className="flex-grow overflow-y-auto no-scrollbar">
-            <OrderDetailsContent order={order} />
+            <OrderDetailsContent order={order} allProducts={allProducts} />
           </div>
         </SheetContent>
       </Sheet>
@@ -223,7 +222,7 @@ export function AdminOrderDetails({ order, open, onOpenChange }: AdminOrderDetai
           </DialogClose>
         </DialogHeader>
         <div className="overflow-y-auto no-scrollbar px-6 pb-6">
-            <OrderDetailsContent order={order} />
+            <OrderDetailsContent order={order} allProducts={allProducts} />
         </div>
       </DialogContent>
     </Dialog>
