@@ -8,6 +8,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
   DialogClose,
 } from "@/components/ui/dialog"
 import {
@@ -15,16 +16,17 @@ import {
   SheetContent,
   SheetHeader,
   SheetTitle,
+  SheetDescription,
 } from "@/components/ui/sheet"
 import {
   AlertDialog,
   AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
-  AlertDialogDescription,
+  AlertDialogDescription as AlertDialogDescriptionComponent,
   AlertDialogFooter,
   AlertDialogHeader,
-  AlertDialogTitle,
+  AlertDialogTitle as AlertDialogTitleComponent,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "./ui/button";
@@ -256,10 +258,10 @@ const OrderDetailsContent = ({ order: initialOrder, allProducts }: { order: Orde
                                         <AlertDialogTrigger asChild>{buttonContent}</AlertDialogTrigger>
                                         <AlertDialogContent>
                                             <AlertDialogHeader>
-                                                <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-                                                <AlertDialogDescription>
+                                                <AlertDialogTitleComponent>Are you sure?</AlertDialogTitleComponent>
+                                                <AlertDialogDescriptionComponent>
                                                     The user's order will be cancelled. You can change the status back if you wish.
-                                                </AlertDialogDescription>
+                                                </AlertDialogDescriptionComponent>
                                             </AlertDialogHeader>
                                             <AlertDialogFooter>
                                                 <AlertDialogCancel>No</AlertDialogCancel>
@@ -293,6 +295,9 @@ export function AdminOrderDetails({ order, open, onOpenChange, allProducts }: Ad
           <SheetContent side="bottom" className="bg-custom-purple-dark text-white border-t-2 border-custom-gold rounded-t-3xl h-[90vh] p-0 flex flex-col">
             <SheetHeader className="p-4 border-b border-white/20 text-center flex-shrink-0">
               <SheetTitle className="text-white text-lg">Order Details</SheetTitle>
+              <SheetDescription className="sr-only">
+                A dialog showing the details of the selected order, including customer information, items, and bill breakdown.
+              </SheetDescription>
             </SheetHeader>
             <div className="flex-grow overflow-y-auto">
               <OrderDetailsContent order={order} allProducts={allProducts} />
@@ -304,6 +309,9 @@ export function AdminOrderDetails({ order, open, onOpenChange, allProducts }: Ad
           <DialogContent className="justify-center p-0 w-[90vw] md:w-full max-w-md bg-custom-purple-dark border-2 border-custom-gold rounded-2xl md:rounded-[30px] h-[90vh]">
             <DialogHeader className="p-4 text-center mb-4 border-b border-white/20">
               <DialogTitle className="text-white text-lg md:text-xl">Order Details</DialogTitle>
+              <DialogDescription className="sr-only">
+                A dialog showing the details of the selected order, including customer information, items, and bill breakdown.
+              </DialogDescription>
               <DialogClose className="absolute right-3 top-2 md:top-3 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground text-white z-10">
                 <X className="h-5 w-5" />
                 <span className="sr-only">Close</span>
@@ -318,5 +326,3 @@ export function AdminOrderDetails({ order, open, onOpenChange, allProducts }: Ad
     </>
   );
 }
-
-    
