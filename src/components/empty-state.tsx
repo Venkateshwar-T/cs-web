@@ -28,7 +28,7 @@ export function EmptyState({
     showButton = true,
 }: EmptyStateProps) {
     return (
-        <div className={cn("flex flex-col items-center justify-center text-center gap-4 h-full", containerClassName)}>
+        <div className={cn("flex flex-col items-center justify-center text-center gap-2 h-full", containerClassName)}>
             <Image
                 src={imageUrl}
                 alt="Empty state illustration"
@@ -42,7 +42,7 @@ export function EmptyState({
             {showButton && buttonText && onButtonClick && (
               <Button 
                   onClick={onButtonClick} 
-                  className="mt-4 bg-custom-gold text-custom-purple-dark hover:bg-custom-gold/90 rounded-full px-8 font-bold"
+                  className="mt-2 bg-custom-gold text-custom-purple-dark hover:bg-custom-gold/90 rounded-full px-8 font-bold"
               >
                   {buttonText}
               </Button>
