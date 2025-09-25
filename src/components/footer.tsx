@@ -25,7 +25,7 @@ export function Footer() {
                         alt="Choco Smiley Logo"
                         width={200}
                         height={80}
-                        className="w-36 md:w-48"
+                        className="w-36 md:w-48 h-auto"
                         onDragStart={(e) => e.preventDefault()}
                     />
                 </div>

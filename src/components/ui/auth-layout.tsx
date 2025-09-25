@@ -10,7 +10,7 @@ export function AuthLayout({ children }: { children: React.ReactNode }) {
                     alt="Choco Smiley Logo" 
                     width={180} 
                     height={70}
-                    className="mx-auto w-32 md:w-40"
+                    className="mx-auto w-32 md:w-40 h-auto"
                 />
             </div>
             {children}

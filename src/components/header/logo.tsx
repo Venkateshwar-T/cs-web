@@ -20,7 +20,7 @@ export function Logo({ onLogoClick, isEnquireOpen }: LogoProps) {
                     alt="Choco Smiley Logo" 
                     width={180} 
                     height={70}
-                    className={cn("w-28 sm:w-32 md:w-36 lg:w-44", isEnquireOpen && "opacity-50")}
+                    className={cn("w-28 sm:w-32 md:w-36 lg:w-44 h-auto", isEnquireOpen && "opacity-50")}
                     onDragStart={(e) => e.preventDefault()}
                     priority
                 />
@@ -30,7 +30,7 @@ export function Logo({ onLogoClick, isEnquireOpen }: LogoProps) {
                 alt="Online Chocolate Store" 
                 width={120} 
                 height={55}
-                className={cn("w-20 md:w-24 lg:w-32", isEnquireOpen && "opacity-50")}
+                className={cn("w-20 md:w-24 lg:w-32 h-auto", isEnquireOpen && "opacity-50")}
                 onDragStart={(e) => e.preventDefault()}
             />
         </div>

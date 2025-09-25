@@ -182,6 +182,7 @@ export function UserActions({
                                     alt="Choco Smiley Logo" 
                                     width={150} 
                                     height={60}
+                                    className="h-auto"
                                 />
                             </Link>
                             <Separator className="bg-custom-purple-light/50"/>
