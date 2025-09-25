@@ -15,7 +15,7 @@ import { Loader } from '@/components/loader';
 import { EmptyState } from '@/components/empty-state';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Search, Filter } from 'lucide-react';
+import { Search, Filter, ArrowUpDown } from 'lucide-react';
 import { AdminOrderItemCard } from '@/components/admin-order-item-card';
 import { AdminOrderDetails } from '@/components/admin-order-details';
 import {
@@ -34,6 +34,7 @@ import {
 } from "@/components/ui/sheet";
 
 type StatusFilter = Order['status'] | 'All';
+type SortOption = 'newest-first' | 'oldest-first' | 'rating-high-to-low' | 'rating-low-to-high';
 
 const statusOptions: StatusFilter[] = ['All', 'Order Requested', 'In Progress', 'Completed', 'Cancelled'];
 
@@ -44,22 +45,41 @@ export default function AdminClientPage({ allProducts }: { allProducts: SanityPr
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
   const [statusFilter, setStatusFilter] = useState<StatusFilter>('All');
+  const [sortOption, setSortOption] = useState<SortOption>('newest-first');
   const [isFilterSheetOpen, setIsFilterSheetOpen] = useState(false);
 
-  const filteredOrders = useMemo(() => {
-    return allOrders.filter(order => {
+  const filteredAndSortedOrders = useMemo(() => {
+    let filtered = allOrders.filter(order => {
       const statusMatch = statusFilter === 'All' || order.status === statusFilter;
-
       const searchMatch = !searchTerm || (
         order.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
         order.items.some(item => item.name.toLowerCase().includes(searchTerm.toLowerCase())) ||
         order.customerName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         order.customerEmail?.toLowerCase().includes(searchTerm.toLowerCase())
       );
-
       return statusMatch && searchMatch;
     });
-  }, [allOrders, searchTerm, statusFilter]);
+
+    // Apply sorting
+    return filtered.sort((a, b) => {
+      switch (sortOption) {
+        case 'oldest-first':
+          return new Date(a.date).getTime() - new Date(b.date).getTime();
+        case 'rating-high-to-low':
+          // Orders without rating are pushed to the bottom
+          return (b.rating ?? -1) - (a.rating ?? -1);
+        case 'rating-low-to-high':
+           // Orders without rating are pushed to the bottom
+          if (a.rating === undefined) return 1;
+          if (b.rating === undefined) return -1;
+          return a.rating - b.rating;
+        case 'newest-first':
+        default:
+          return new Date(b.date).getTime() - new Date(a.date).getTime();
+      }
+    });
+
+  }, [allOrders, searchTerm, statusFilter, sortOption]);
 
   const handleStatusSelect = (status: StatusFilter) => {
     setStatusFilter(status);
@@ -145,6 +165,7 @@ export default function AdminClientPage({ allProducts }: { allProducts: SanityPr
                 )}
               </div>
               {!isMobile && (
+                <div className="flex gap-4">
                   <Select value={statusFilter} onValueChange={(value) => setStatusFilter(value as StatusFilter)}>
                       <SelectTrigger className="w-full md:w-[200px] h-12 rounded-full bg-white/10 border-white/20 text-white">
                         <div className='flex items-center gap-2'>
@@ -159,13 +180,28 @@ export default function AdminClientPage({ allProducts }: { allProducts: SanityPr
                         <SelectItem value="Completed">Completed</SelectItem>
                         <SelectItem value="Cancelled">Cancelled</SelectItem>
                       </SelectContent>
-                    </Select>
+                  </Select>
+                   <Select value={sortOption} onValueChange={(value) => setSortOption(value as SortOption)}>
+                      <SelectTrigger className="w-full md:w-[240px] h-12 rounded-full bg-white/10 border-white/20 text-white">
+                        <div className='flex items-center gap-2'>
+                          <ArrowUpDown className="h-5 w-5 text-gray-400" />
+                          <SelectValue placeholder="Sort by" />
+                        </div>
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="newest-first">Newest First</SelectItem>
+                        <SelectItem value="oldest-first">Oldest First</SelectItem>
+                        <SelectItem value="rating-high-to-low">Rating: High to Low</SelectItem>
+                        <SelectItem value="rating-low-to-high">Rating: Low to High</SelectItem>
+                      </SelectContent>
+                  </Select>
+                </div>
               )}
             </div>
 
-            {filteredOrders.length > 0 ? (
+            {filteredAndSortedOrders.length > 0 ? (
               <div className="flex-grow overflow-y-auto no-scrollbar pb-8 space-y-4">
-                {filteredOrders.map(order => (
+                {filteredAndSortedOrders.map(order => (
                   <AdminOrderItemCard key={order.id} order={order} onClick={() => setSelectedOrder(order)} />
                 ))}
               </div>
