@@ -24,13 +24,17 @@ import {
 } from "@/components/ui/alert-dialog";
 import { OrderDetailsPopup } from './order-details-popup';
 import { RatingPopup } from './rating-popup';
+import { ProductOrderDetailsPopup } from './product-order-details-popup';
+import type { OrderItem } from '@/context/app-context';
+
 
 interface MyOrdersTabProps {
   isMobile?: boolean;
   products: SanityProduct[];
+  onProductClick?: (product: SanityProduct, orderItem: OrderItem) => void;
 }
 
-export function MyOrdersTab({ isMobile = false, products }: MyOrdersTabProps) {
+export function MyOrdersTab({ isMobile = false, products, onProductClick }: MyOrdersTabProps) {
     const { orders, isOrdersLoaded, clearOrders, reorder, isAuthenticated } = useAppContext();
     const router = useRouter();
     const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
@@ -68,8 +72,7 @@ export function MyOrdersTab({ isMobile = false, products }: MyOrdersTabProps) {
                 <div className="flex flex-col h-full text-white">
                      {orders.length > 0 ? (
                         <div className="bg-transparent rounded-2xl flex flex-col">
-                            <div className="flex justify-between items-center px-2 pt-4">
-                               <SectionTitle className="text-base text-white pb-2 pl-0 mb-0">My Orders</SectionTitle>
+                            <div className="flex justify-end items-center px-2 pt-4">
                                <AlertDialog>
                                   <AlertDialogTrigger asChild>
                                     <Button
