@@ -74,7 +74,7 @@ export function OrderItemCard({ order, isMobile = false, onClick, onRate }: Orde
                     <Badge 
                         variant={statusVariant(order.status)}
                         className={cn(
-                            order.status === 'Order Requested' && 'text-custom-purple-dark'
+                            order.status === 'Order Requested' && 'text-custom-purple-dark hover:bg-primary'
                         )}
                     >
                         {order.status}
@@ -125,7 +125,13 @@ export function OrderItemCard({ order, isMobile = false, onClick, onRate }: Orde
                     </AlertDialog>
                 )}
                 {order.status === 'Completed' && (
-                    <Button onClick={onRate} size="sm" className="text-xs h-7 rounded-full bg-custom-gold text-custom-purple-dark hover:bg-custom-gold/90">Rate Your Order</Button>
+                    <>
+                        {order.rating ? (
+                            <p className="text-xs text-custom-purple-dark font-semibold italic">Thank you for your feedback!</p>
+                        ) : (
+                            <Button onClick={onRate} size="sm" className="text-xs h-7 rounded-full bg-custom-gold text-custom-purple-dark hover:bg-custom-gold/90">Rate Your Order</Button>
+                        )}
+                    </>
                 )}
             </div>
         </div>
