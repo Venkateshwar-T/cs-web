@@ -18,10 +18,11 @@ export function AdminOrderItemCard({ order, onClick }: AdminOrderItemCardProps) 
         year: 'numeric',
     });
     
-    const statusVariant = (status: Order['status']): "success" | "destructive" | "default" => {
+    const statusVariant = (status: Order['status']): "success" | "destructive" | "default" | "info" => {
         switch (status) {
             case 'Completed': return 'success';
             case 'Cancelled': return 'destructive';
+            case 'In Progress': return 'info';
             default: return 'default';
         }
     };

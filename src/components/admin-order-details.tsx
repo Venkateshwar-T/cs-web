@@ -75,7 +75,7 @@ const OrderDetailsContent = ({ order: initialOrder, allProducts }: { order: Orde
           default: return 'bg-custom-gold text-custom-purple-dark';
         }
       }
-      return 'bg-white/10 text-white/70 hover:bg-white/20 hover:text-white';
+      return 'bg-white/10 text-white/70';
     };
 
 
@@ -87,7 +87,7 @@ const OrderDetailsContent = ({ order: initialOrder, allProducts }: { order: Orde
 
 
     return (
-        <div className="flex flex-col gap-4 p-4 md:p-0 text-white h-full overflow-y-auto no-scrollbar">
+        <div className="flex flex-col gap-4 p-4 md:p-0 text-white h-full no-scrollbar">
             <div className="grid grid-cols-1 gap-4">
                 <DetailRow icon={<User size={16} />} label="Customer Name" value={order.customerName} />
                 <DetailRow icon={<Mail size={16} />} label="Email" value={order.customerEmail} />
