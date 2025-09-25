@@ -75,9 +75,9 @@ export function MyOrdersTab({ isMobile = false, products, onProductClick }: MyOr
                 <div className="flex flex-col h-full text-white">
                      {orders.length > 0 ? (
                         <div className="bg-transparent rounded-2xl flex flex-col pt-4">
-                           {currentOrders.length > 0 && (
-                                <div className="mb-6">
-                                    <SectionTitle className="text-lg mb-2 px-2">Current Orders</SectionTitle>
+                            <div className="mb-6">
+                                <SectionTitle className="text-lg mb-2 px-2">Current Orders</SectionTitle>
+                                {currentOrders.length > 0 ? (
                                     <div className="space-y-4">
                                         {currentOrders.map((order) => (
                                             <OrderItemCard 
@@ -89,12 +89,23 @@ export function MyOrdersTab({ isMobile = false, products, onProductClick }: MyOr
                                             />
                                         ))}
                                     </div>
-                                </div>
-                            )}
+                                ) : (
+                                    <div className="px-4 py-8 text-center">
+                                      <EmptyState
+                                        imageUrl="/icons/empty.png"
+                                        title="No Active Orders"
+                                        description="Your next sweet moment is just a click away!"
+                                        buttonText="Start Shopping"
+                                        onButtonClick={handleExplore}
+                                        containerClassName="text-black"
+                                      />
+                                    </div>
+                                )}
+                            </div>
 
-                             {completedOrders.length > 0 && (
-                                <div>
-                                    <SectionTitle className="text-lg mb-2 px-2">Completed Orders</SectionTitle>
+                            <div>
+                                <SectionTitle className="text-lg mb-2 px-2">Completed Orders</SectionTitle>
+                                {completedOrders.length > 0 ? (
                                     <div className="space-y-4">
                                         {completedOrders.map((order) => (
                                             <OrderItemCard 
@@ -106,9 +117,18 @@ export function MyOrdersTab({ isMobile = false, products, onProductClick }: MyOr
                                             />
                                         ))}
                                     </div>
-                                </div>
-                            )}
-
+                                ) : (
+                                    <div className="px-4 py-8 text-center">
+                                       <EmptyState
+                                          imageUrl="/icons/empty.png"
+                                          title="No Past Orders"
+                                          description="Your past orders will appear here once they're delivered or cancelled."
+                                          showButton={false}
+                                          containerClassName="text-black"
+                                        />
+                                    </div>
+                                )}
+                            </div>
                         </div>
                     ) : (
                         <div className="flex-grow flex flex-col items-center justify-center h-full text-center gap-4 px-4 pb-24">
