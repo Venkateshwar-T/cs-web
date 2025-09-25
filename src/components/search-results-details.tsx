@@ -19,7 +19,7 @@ import { FilterContainer } from "./filter-container";
 import type { SanityProduct, StructuredFilter } from '@/types';
 import { EmptyState } from "./empty-state";
 import { useRouter } from "next/navigation";
-import { Loader } from "../loader";
+import { Loader } from "@/components/loader";
 
 type Cart = Record<string, {
   name: string;
