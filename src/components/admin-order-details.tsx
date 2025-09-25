@@ -43,8 +43,12 @@ const DetailRow = ({ icon, label, value }: { icon: React.ReactNode, label: strin
     </div>
 );
 
-const OrderDetailsContent = ({ order, allProducts }: { order: Order, allProducts: SanityProduct[] }) => {
-    const { updateOrderStatus } = useAppContext();
+const OrderDetailsContent = ({ order: initialOrder, allProducts }: { order: Order, allProducts: SanityProduct[] }) => {
+    const { updateOrderStatus, allOrders } = useAppContext();
+    
+    // Find the live order from the context to ensure status is always up-to-date
+    const order = allOrders.find(o => o.id === initialOrder.id) || initialOrder;
+
     if (!order) return null;
     
     const productsByName = allProducts.reduce((acc, product) => {
@@ -83,7 +87,7 @@ const OrderDetailsContent = ({ order, allProducts }: { order: Order, allProducts
 
 
     return (
-        <div className="flex flex-col gap-4 p-4 md:p-0 text-white h-full overflow-y-auto">
+        <div className="flex flex-col gap-4 p-4 md:p-0 text-white h-full overflow-y-auto no-scrollbar">
             <div className="grid grid-cols-1 gap-4">
                 <DetailRow icon={<User size={16} />} label="Customer Name" value={order.customerName} />
                 <DetailRow icon={<Mail size={16} />} label="Email" value={order.customerEmail} />
