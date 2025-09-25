@@ -138,7 +138,7 @@ export default function AdminClientPage({ allProducts }: { allProducts: SanityPr
           "pt-24 md:pt-32" 
         )}>
           <div className="px-4 md:px-16 lg:px-32 flex-grow flex flex-col">
-            <div className="relative flex flex-col md:flex-row gap-4 mb-6">
+            <div className="flex flex-col gap-4 mb-6">
               <div className="relative flex-grow">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
                 <Input
@@ -209,7 +209,7 @@ export default function AdminClientPage({ allProducts }: { allProducts: SanityPr
                 )}
               </div>
               {!isMobile && (
-                <div className="flex gap-4">
+                <div className="flex flex-wrap gap-4">
                     <div className="bg-white/10 p-4 rounded-2xl border border-white/20">
                         <h3 className="text-sm font-semibold text-white/80 mb-2 flex items-center gap-2">
                             <Filter className="h-4 w-4" />
@@ -233,10 +233,30 @@ export default function AdminClientPage({ allProducts }: { allProducts: SanityPr
                      <div className="bg-white/10 p-4 rounded-2xl border border-white/20">
                         <h3 className="text-sm font-semibold text-white/80 mb-2 flex items-center gap-2">
                             <Filter className="h-4 w-4" />
-                            Sort By
+                            Sort by Date
                         </h3>
                         <div className="flex flex-wrap gap-x-4 gap-y-2">
-                            {sortOptions.map(option => (
+                            {sortOptions.filter(o => o.section === 'date').map(option => (
+                               <div key={option.value} className="flex items-center space-x-2">
+                                 <Checkbox
+                                   id={`desktop-sort-${option.value}`}
+                                   checked={sortOption === option.value}
+                                   onCheckedChange={() => handleSortCheckboxChange(option.value)}
+                                 />
+                                 <Label htmlFor={`desktop-sort-${option.value}`}>
+                                   {option.label}
+                                 </Label>
+                               </div>
+                            ))}
+                        </div>
+                    </div>
+                     <div className="bg-white/10 p-4 rounded-2xl border border-white/20">
+                        <h3 className="text-sm font-semibold text-white/80 mb-2 flex items-center gap-2">
+                            <Filter className="h-4 w-4" />
+                            Sort by Rating
+                        </h3>
+                        <div className="flex flex-wrap gap-x-4 gap-y-2">
+                            {sortOptions.filter(o => o.section === 'rating').map(option => (
                                <div key={option.value} className="flex items-center space-x-2">
                                  <Checkbox
                                    id={`desktop-sort-${option.value}`}
