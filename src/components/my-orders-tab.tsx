@@ -48,8 +48,8 @@ export function MyOrdersTab({ isMobile = false, products }: MyOrdersTabProps) {
       router.push('/');
     }
     
-    const latestOrder = orders.length > 0 ? orders[0] : null;
-    const pastOrders = orders.length > 1 ? orders.slice(1) : [];
+    const latestOrders = orders.filter(o => o.status === 'Order Requested' || o.status === 'In Progress');
+    const pastOrders = orders.filter(o => o.status === 'Completed' || o.status === 'Cancelled');
     
     if (!isAuthenticated) {
        return (
@@ -72,7 +72,7 @@ export function MyOrdersTab({ isMobile = false, products }: MyOrdersTabProps) {
                      {orders.length > 0 ? (
                         <div className="bg-transparent rounded-2xl flex flex-col">
                             <div className="flex justify-between items-center px-2 pt-4">
-                               <SectionTitle className="text-base text-white pb-2 pl-0 mb-0">Latest Order</SectionTitle>
+                               <SectionTitle className="text-base text-white pb-2 pl-0 mb-0">My Orders</SectionTitle>
                                <AlertDialog>
                                   <AlertDialogTrigger asChild>
                                     <Button
@@ -99,14 +99,21 @@ export function MyOrdersTab({ isMobile = false, products }: MyOrdersTabProps) {
                                 </AlertDialog>
                             </div>
                             <div className="overflow-y-auto no-scrollbar py-4 space-y-4">
-                              {latestOrder && (
-                                <OrderItemCard 
-                                    key={latestOrder.id} 
-                                    order={latestOrder} 
-                                    isMobile={true} 
-                                    onClick={() => setSelectedOrder(latestOrder)}
-                                    onRate={() => setRatingOrder(latestOrder)}
-                                />
+                              {latestOrders.length > 0 && (
+                                <>
+                                  <SectionTitle className="text-base text-white pb-2 pl-2 mb-0">Latest Orders</SectionTitle>
+                                  <div className="space-y-4">
+                                      {latestOrders.map((order) => (
+                                        <OrderItemCard 
+                                            key={order.id} 
+                                            order={order} 
+                                            isMobile={true} 
+                                            onClick={() => setSelectedOrder(order)}
+                                            onRate={() => setRatingOrder(order)}
+                                        />
+                                      ))}
+                                  </div>
+                                </>
                               )}
                                 
                                 {pastOrders.length > 0 && (
@@ -189,10 +196,14 @@ export function MyOrdersTab({ isMobile = false, products }: MyOrdersTabProps) {
                 </div>
                  {orders.length > 0 ? (
                     <div className="flex-grow overflow-y-auto pr-2 custom-scrollbar space-y-4">
-                        {latestOrder && (
+                        {latestOrders.length > 0 && (
                           <>
-                            <SectionTitle className="text-xl text-white/90 pl-3 mb-2">Latest Order</SectionTitle>
-                            <OrderItemCard key={latestOrder.id} order={latestOrder} onClick={() => setSelectedOrder(latestOrder)} onRate={() => setRatingOrder(latestOrder)} />
+                            <SectionTitle className="text-xl text-white/90 pl-3 mb-2">Latest Orders</SectionTitle>
+                            <div className="space-y-4">
+                              {latestOrders.map(order => (
+                                <OrderItemCard key={order.id} order={order} onClick={() => setSelectedOrder(order)} onRate={() => setRatingOrder(order)} />
+                              ))}
+                            </div>
                           </>
                         )}
 
