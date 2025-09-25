@@ -55,10 +55,10 @@ export default function FaqPageClient({ children, allProducts }: { children: Rea
   };
 
   const handleNavigation = (view: ActiveView) => {
-      if (view === 'home') router.push('/');
-      else if (view === 'cart') router.push('/cart');
-      else if (view === 'profile') router.push('/profile');
-      else if (view === 'faq') router.push('/faq');
+      if (view === 'home') router.push('/', { scroll: false });
+      else if (view === 'cart') router.push('/cart', { scroll: false });
+      else if (view === 'profile') router.push('/profile', { scroll: false });
+      else if (view === 'faq') router.push('/faq', { scroll: false });
   };
 
   const cartItemCount = Object.values(cart).reduce((acc, quantity) => acc + quantity.quantity, 0);
