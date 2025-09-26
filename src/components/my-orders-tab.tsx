@@ -2,7 +2,7 @@
 // @/components/my-orders-tab.tsx
 'use client';
 
-import { useState } from 'react';
+import { useState, type UIEvent } from 'react';
 import { OrderItemCard } from './order-item-card';
 import { EmptyState } from './empty-state';
 import { useRouter } from 'next/navigation';
@@ -22,11 +22,12 @@ interface MyOrdersTabProps {
 }
 
 export function MyOrdersTab({ isMobile = false, products, onProductClick }: MyOrdersTabProps) {
-    const { orders, isOrdersLoaded, clearOrders, reorder, isAuthenticated } = useAppContext();
+    const { orders, isOrdersLoaded, clearOrders, reorder, isAuthenticated, loadMoreUserOrders, hasMoreUserOrders } = useAppContext();
     const router = useRouter();
     const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
     const [ratingOrder, setRatingOrder] = useState<Order | null>(null);
     const [cancellationOrder, setCancellationOrder] = useState<Order | null>(null);
+    const [isFetchingMore, setIsFetchingMore] = useState(false);
     
     const currentOrders = orders.filter(o => o.status === 'Order Requested' || o.status === 'In Progress');
     const completedOrders = orders.filter(o => o.status === 'Completed' || o.status === 'Cancelled');
@@ -39,6 +40,15 @@ export function MyOrdersTab({ isMobile = false, products, onProductClick }: MyOr
             </div>
         )
     }
+
+    const handleScroll = async (event: UIEvent<HTMLDivElement>) => {
+      const { scrollTop, scrollHeight, clientHeight } = event.currentTarget;
+      if (scrollHeight - scrollTop <= clientHeight + 100 && hasMoreUserOrders && !isFetchingMore) {
+          setIsFetchingMore(true);
+          await loadMoreUserOrders();
+          setIsFetchingMore(false);
+      }
+    };
     
     const handleExplore = () => {
       router.push('/');
@@ -63,7 +73,7 @@ export function MyOrdersTab({ isMobile = false, products, onProductClick }: MyOr
             <>
                 <div className="flex flex-col h-full text-white">
                      {orders.length > 0 ? (
-                        <div className="bg-transparent rounded-2xl flex flex-col pt-4">
+                        <div onScroll={handleScroll} className="bg-transparent rounded-2xl flex flex-col pt-4 overflow-y-auto custom-scrollbar">
                             <div>
                                 <SectionTitle className="text-lg mb-2 px-2">Current Orders</SectionTitle>
                                 {currentOrders.length > 0 ? (
@@ -110,6 +120,11 @@ export function MyOrdersTab({ isMobile = false, products, onProductClick }: MyOr
                                     </div>
                                 )}
                             </div>
+                             {isFetchingMore && (
+                              <div className="flex justify-center py-4">
+                                <Loader />
+                              </div>
+                            )}
                         </div>
                     ) : (
                         <div className="flex-grow flex flex-col items-center justify-center h-full text-center gap-4 px-4 pb-24">
@@ -151,7 +166,7 @@ export function MyOrdersTab({ isMobile = false, products, onProductClick }: MyOr
                   <h2 className="text-3xl font-normal font-poppins self-start">My Orders</h2>
                 </div>
                  {orders.length > 0 ? (
-                    <div className="flex-grow overflow-y-auto pr-2 custom-scrollbar space-y-8">
+                    <div onScroll={handleScroll} className="flex-grow overflow-y-auto pr-2 custom-scrollbar space-y-8">
                         <div>
                             <SectionTitle className="text-xl mb-4 p-0">Current Orders</SectionTitle>
                             {currentOrders.length > 0 ? (
@@ -184,6 +199,11 @@ export function MyOrdersTab({ isMobile = false, products, onProductClick }: MyOr
                                 </div>
                             )}
                         </div>
+                        {isFetchingMore && (
+                          <div className="flex justify-center py-4">
+                            <Loader />
+                          </div>
+                        )}
                     </div>
                 ) : (
                     <div className="flex-grow flex flex-col items-center justify-center h-full text-center gap-4">

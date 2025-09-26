@@ -1,3 +1,4 @@
+
 // src/lib/firebase.ts
 import { initializeApp, getApps, getApp, type FirebaseApp } from 'firebase/app';
 import {
@@ -169,23 +170,54 @@ export const addUserOrder = async (uid: string, orderData: Omit<Order, 'id' | 'u
         uid: uid,
         id: '' // Firestore will generate an ID, we'll update it later
     });
-    // Now update the document with its own ID
-    await updateDoc(docRef, { id: docRef.id });
+    // Now update the document with its own ID and a server-side timestamp
+    await updateDoc(docRef, { id: docRef.id, date: serverTimestamp() });
     return docRef.id;
 };
 
 
-export const onUserOrdersSnapshot = (uid: string, callback: (orders: Order[]) => void): Unsubscribe => {
-    const db = getClientFirestore();
-    if (!db) return () => {};
-    const ordersCollectionRef = collection(db, 'users', uid, 'orders');
-    const q = query(ordersCollectionRef);
-    
-    return onSnapshot(q, (querySnapshot) => {
-        const orders = querySnapshot.docs.map(doc => doc.data() as Order);
-        callback(orders);
-    });
+export const onUserOrdersSnapshotPaginated = (
+  uid: string,
+  callback: (orders: Order[], lastVisible: QueryDocumentSnapshot<DocumentData> | null) => void
+): Unsubscribe => {
+  const db = getClientFirestore();
+  if (!db) return () => {};
+  const ordersCollectionRef = collection(db, 'users', uid, 'orders');
+  const q = query(
+    ordersCollectionRef,
+    orderBy('date', 'desc'),
+    limit(5)
+  );
+
+  return onSnapshot(q, (querySnapshot) => {
+    const orders = querySnapshot.docs.map(doc => doc.data() as Order);
+    const lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1] || null;
+    callback(orders, lastVisible);
+  });
 };
+
+export const getMoreUserOrders = async (
+  uid: string,
+  startAfterDoc: QueryDocumentSnapshot<DocumentData>
+): Promise<{ orders: Order[], lastVisible: QueryDocumentSnapshot<DocumentData> | null }> => {
+  const db = getClientFirestore();
+  if (!db) return { orders: [], lastVisible: null };
+
+  const ordersCollectionRef = collection(db, 'users', uid, 'orders');
+  const q = query(
+    ordersCollectionRef,
+    orderBy('date', 'desc'),
+    startAfter(startAfterDoc),
+    limit(5)
+  );
+
+  const querySnapshot = await getDocs(q);
+  const orders = querySnapshot.docs.map(doc => doc.data() as Order);
+  const lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1] || null;
+
+  return { orders, lastVisible };
+};
+
 
 export const onAllOrdersSnapshot = (
   callback: (orders: Order[], lastVisible: QueryDocumentSnapshot<DocumentData> | null) => void

@@ -1,3 +1,4 @@
+
 // @/context/app-context.tsx
 'use client';
 
@@ -13,7 +14,8 @@ import {
   createUserProfile,
   updateUserProfile,
   addUserOrder,
-  onUserOrdersSnapshot,
+  onUserOrdersSnapshotPaginated, // Updated function
+  getMoreUserOrders,              // New function
   onAllOrdersSnapshot,
   updateOrderStatus,
   rateOrder as rateOrderInDb,
@@ -63,8 +65,10 @@ interface AppContextType {
   clearWishlist: () => void;
   
   orders: Order[];
-  addOrder: (newOrder: Omit<Order, 'id' | 'uid'>) => Promise<string | null>;
   isOrdersLoaded: boolean;
+  loadMoreUserOrders: () => Promise<void>;
+  hasMoreUserOrders: boolean;
+  addOrder: (newOrder: Omit<Order, 'id' | 'uid'>) => Promise<string | null>;
   clearOrders: () => void;
   reorder: (orderId: string) => void;
   reorderItem: (item: OrderItem) => void;
@@ -127,6 +131,8 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
   
   const [orders, setOrders] = useState<Order[]>([]);
   const [isOrdersLoaded, setIsOrdersLoaded] = useState(false);
+  const [lastUserOrderSnapshot, setLastUserOrderSnapshot] = useState<QueryDocumentSnapshot<DocumentData> | null>(null);
+  const [hasMoreUserOrders, setHasMoreUserOrders] = useState(true);
 
   const [allOrders, setAllOrders] = useState<Order[]>([]);
   const [isAllOrdersLoaded, setIsAllOrdersLoaded] = useState(false);
@@ -147,16 +153,15 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
     if (typeof window !== 'undefined') {
       const auth = getFirebaseAuth();
       if (auth) {
-        const unsubscribeFromAuth = onAuthStateChanged(async (newUser) => {
+        let unsubscribeUserOrders = () => {};
+        let unsubscribeAllOrders = () => {};
+
+        const unsubscribeFromAuth = onAuthStateChanged(auth, async (newUser) => {
           setIsProfileLoaded(false);
           setUser(newUser);
           const newIsAdmin = newUser?.email === process.env.NEXT_PUBLIC_ADMIN_EMAIL;
           setIsAuthenticated(!!newUser);
           setIsAdmin(newIsAdmin);
-
-          // Unsubscribe from any existing order listeners
-          let unsubscribeUserOrders = () => {};
-          let unsubscribeAllOrders = () => {};
 
           if (newUser) {
             let profile = await getUserProfile(newUser.uid);
@@ -164,15 +169,14 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
               setProfileInfo(profile);
             }
             
-            // Set up real-time listener for user orders
-            unsubscribeUserOrders = onUserOrdersSnapshot(newUser.uid, (userOrders) => {
-              const sortedUserOrders = userOrders.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-              setOrders(sortedUserOrders);
+            unsubscribeUserOrders = onUserOrdersSnapshotPaginated(newUser.uid, (initialUserOrders, lastVisible) => {
+              setOrders(initialUserOrders);
+              setLastUserOrderSnapshot(lastVisible);
+              setHasMoreUserOrders(initialUserOrders.length === 5);
               setIsOrdersLoaded(true);
             });
 
             if (newIsAdmin) {
-              // Set up real-time listener for all orders
               unsubscribeAllOrders = onAllOrdersSnapshot((initialOrders, lastVisible) => {
                 const sortedOrders = initialOrders.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
                 setAllOrders(sortedOrders);
@@ -186,7 +190,8 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
             }
 
           } else {
-            // User logged out, clear all data
+            unsubscribeUserOrders();
+            unsubscribeAllOrders();
             setProfileInfo(defaultProfileInfo);
             setOrders([]);
             setAllOrders([]);
@@ -195,15 +200,8 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
           }
           setIsProfileLoaded(true);
           setIsAuthLoaded(true);
-
-          // Return a cleanup function for the order listeners
-          return () => {
-            unsubscribeUserOrders();
-            unsubscribeAllOrders();
-          };
         });
 
-        // This top-level return cleans up the auth subscription
         return () => unsubscribeFromAuth();
       } else {
         // Firebase not initialized
@@ -215,6 +213,15 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
     }
   }, []);
   
+  const loadMoreUserOrders = useCallback(async () => {
+    if (!user || !lastUserOrderSnapshot || !hasMoreUserOrders) return;
+
+    const { orders: newOrders, lastVisible } = await getMoreUserOrders(user.uid, lastUserOrderSnapshot);
+    setOrders(prevOrders => [...prevOrders, ...newOrders]);
+    setLastUserOrderSnapshot(lastVisible);
+    setHasMoreUserOrders(newOrders.length === 5);
+  }, [user, lastUserOrderSnapshot, hasMoreUserOrders]);
+
   const loadMoreOrders = useCallback(async () => {
     if (!lastOrderSnapshot || !hasMoreOrders) return;
 
@@ -467,6 +474,8 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
     orders,
     addOrder,
     isOrdersLoaded,
+    loadMoreUserOrders,
+    hasMoreUserOrders,
     clearOrders,
     reorder,
     reorderItem,
