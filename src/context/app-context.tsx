@@ -1,4 +1,3 @@
-
 // @/context/app-context.tsx
 'use client';
 
@@ -14,8 +13,8 @@ import {
   createUserProfile,
   updateUserProfile,
   addUserOrder,
-  onUserOrdersSnapshotPaginated, // Updated function
-  getMoreUserOrders,              // New function
+  onUserOrdersSnapshotPaginated,
+  getMoreUserOrders,
   onAllOrdersSnapshot,
   updateOrderStatus,
   rateOrder as rateOrderInDb,
@@ -150,72 +149,66 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
   const [isGlobalLoading, setIsGlobalLoading] = useState(false);
 
   useEffect(() => {
-    let unsubscribeFromAuth: (() => void) | undefined;
+    // This effect should only run on the client
+    if (typeof window === "undefined") {
+      return;
+    }
+
     let unsubscribeUserOrders = () => {};
     let unsubscribeAllOrders = () => {};
-    
-    // This effect should only run on the client
-    if (typeof window !== "undefined") {
-      const auth = getFirebaseAuth();
-      if (auth) {
-        unsubscribeFromAuth = onAuthStateChanged(auth, async (newUser) => {
-          setIsProfileLoaded(false);
-          setUser(newUser);
-          const newIsAdmin = newUser?.email === process.env.NEXT_PUBLIC_ADMIN_EMAIL;
-          setIsAuthenticated(!!newUser);
-          setIsAdmin(newIsAdmin);
 
-          if (newUser) {
+    const unsubscribeFromAuth = onAuthStateChanged(async (newUser) => {
+        setIsProfileLoaded(false);
+        setUser(newUser);
+        const newIsAdmin = newUser?.email === process.env.NEXT_PUBLIC_ADMIN_EMAIL;
+        setIsAuthenticated(!!newUser);
+        setIsAdmin(newIsAdmin);
+
+        // Clean up previous listeners before setting new ones
+        unsubscribeUserOrders();
+        unsubscribeAllOrders();
+
+        if (newUser) {
             let profile = await getUserProfile(newUser.uid);
             if (profile) {
-              setProfileInfo(profile);
+                setProfileInfo(profile);
             }
             
             unsubscribeUserOrders = onUserOrdersSnapshotPaginated(newUser.uid, (initialUserOrders, lastVisible) => {
-              setOrders(initialUserOrders);
-              setLastUserOrderSnapshot(lastVisible);
-              setHasMoreUserOrders(initialUserOrders.length === 5);
-              setIsOrdersLoaded(true);
+                setOrders(initialUserOrders);
+                setLastUserOrderSnapshot(lastVisible);
+                setHasMoreUserOrders(initialUserOrders.length === 5);
+                setIsOrdersLoaded(true);
             });
 
             if (newIsAdmin) {
-              unsubscribeAllOrders = onAllOrdersSnapshot((initialOrders, lastVisible) => {
-                const sortedOrders = initialOrders.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-                setAllOrders(sortedOrders);
-                setLastOrderSnapshot(lastVisible);
-                setHasMoreOrders(initialOrders.length === 5); // Check if there might be more
-                setIsAllOrdersLoaded(true);
-              });
+                unsubscribeAllOrders = onAllOrdersSnapshot((initialOrders, lastVisible) => {
+                    const sortedOrders = initialOrders.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+                    setAllOrders(sortedOrders);
+                    setLastOrderSnapshot(lastVisible);
+                    setHasMoreOrders(initialOrders.length === 4); // Keep this as 4 for admin
+                    setIsAllOrdersLoaded(true);
+                });
             } else {
-              setAllOrders([]);
-              setIsAllOrdersLoaded(true);
+                setAllOrders([]);
+                setIsAllOrdersLoaded(true);
             }
-
-          } else {
-            unsubscribeUserOrders();
-            unsubscribeAllOrders();
+        } else {
+            // User is logged out, reset all user-specific state
             setProfileInfo(defaultProfileInfo);
             setOrders([]);
             setAllOrders([]);
             setIsOrdersLoaded(true);
             setIsAllOrdersLoaded(true);
-          }
-          setIsProfileLoaded(true);
-          setIsAuthLoaded(true);
-        });
-      } else {
-        // Handle case where Firebase Auth isn't immediately available
-        setIsAuthLoaded(true);
+        }
         setIsProfileLoaded(true);
-        setIsOrdersLoaded(true);
-        setIsAllOrdersLoaded(true);
-      }
-    }
+        setIsAuthLoaded(true);
+    });
 
     return () => {
-      if (unsubscribeFromAuth) unsubscribeFromAuth();
-      unsubscribeUserOrders();
-      unsubscribeAllOrders();
+        unsubscribeFromAuth();
+        unsubscribeUserOrders();
+        unsubscribeAllOrders();
     };
   }, []);
   
@@ -234,7 +227,7 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
     const { orders: newOrders, lastVisible } = await getMoreOrders(lastOrderSnapshot);
     setAllOrders(prevOrders => [...prevOrders, ...newOrders]);
     setLastOrderSnapshot(lastVisible);
-    setHasMoreOrders(newOrders.length === 5);
+    setHasMoreOrders(newOrders.length === 4); // Keep this as 4 for admin
   }, [lastOrderSnapshot, hasMoreOrders]);
   
   useEffect(() => {
@@ -278,7 +271,6 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
     if (user) {
       try {
         const newOrderId = await addUserOrder(user.uid, newOrder);
-        // The listener will automatically update the state, no need to manually setOrders here.
         return newOrderId;
       } catch (error) {
         console.error("Error adding order:", error);
@@ -294,7 +286,6 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
   }, [user, toast]);
 
   const clearOrders = useCallback(() => {
-    // This function is less relevant with real-time updates, but can be kept for manual clearing if needed.
     setOrders([]);
   }, []);
 
@@ -394,10 +385,9 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
     }
     
     setProfileInfo(profile);
-    setAuthPopup(null); // Close login/signup popup immediately
+    setAuthPopup(null);
 
     if (needsDetails) {
-       // Use a timeout to ensure the state update for closing the first popup has rendered
       setTimeout(() => {
         setAuthPopup('completeDetails');
       }, 50);
@@ -424,7 +414,6 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
   const handleUpdateOrderStatus = async (uid: string, orderId: string, newStatus: Order['status'], cancelledBy?: 'user' | 'admin'): Promise<void> => {
     try {
       await updateOrderStatus(uid, orderId, newStatus, cancelledBy);
-      // The listener will automatically update the state.
       toast({
         title: "Status Updated",
         description: `Order ${orderId} marked as ${newStatus}.`,
@@ -443,7 +432,6 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
   const rateOrder = async (uid: string, orderId: string, rating: number, feedback: string) => {
     try {
       await rateOrderInDb(uid, orderId, rating, feedback);
-      // The listener will automatically update the state.
     } catch (error) {
       console.error("Failed to rate order:", error);
       toast({
@@ -458,7 +446,6 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
     try {
         const reasonToSave = reason === 'SKIPPED' ? 'Feedback not provided by customer.' : reason;
         await addCancellationReason(uid, orderId, reasonToSave);
-        // The listener will automatically update the state.
     } catch (error) {
         console.error("Failed to save cancellation reason:", error);
         toast({
@@ -521,5 +508,3 @@ export function useAppContext() {
 }
 
 export const AppContextConsumer = AppContext.Consumer;
-
-    
