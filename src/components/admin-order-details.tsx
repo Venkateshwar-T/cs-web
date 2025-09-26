@@ -30,13 +30,14 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "./ui/button";
-import { X, User, Mail, Phone, Home, ShoppingCart, Percent, Info, Star, MessageSquareWarning, Check } from "lucide-react";
+import { X, User, Mail, Phone, Home, ShoppingCart, Percent, Info, Star, MessageSquareWarning } from "lucide-react";
 import type { Order, SanityProduct } from "@/types";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { Separator } from "./ui/separator";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useAppContext } from "@/context/app-context";
+import { Badge } from "./ui/badge";
 
 
 interface AdminOrderDetailsProps {
@@ -54,37 +55,6 @@ const DetailRow = ({ icon, label, value }: { icon: React.ReactNode, label: strin
             <div className="font-semibold">{value}</div>
         </div>
     </div>
-);
-
-const TimelineNode = ({ isCompleted, isCurrent, status, children, isCancelled }: { isCompleted: boolean, isCurrent: boolean, status: Order['status'], children: React.ReactNode, isCancelled?: boolean }) => {
-  const isBlinking = isCurrent && (status === 'Order Requested' || status === 'In Progress');
-  
-  return (
-    <div className="flex flex-col items-center">
-      <div
-        className={cn(
-          'w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all duration-500',
-          isCancelled ? 'bg-red-500 border-red-500' :
-          isCurrent && status === 'Order Requested' ? 'bg-custom-gold border-custom-gold' :
-          isCurrent && status === 'In Progress' ? 'bg-blue-500 border-blue-500' :
-          isCompleted ? 'bg-green-500 border-green-500' : 
-          'bg-transparent border-white/50',
-          isBlinking && 'animate-pulse'
-        )}
-      >
-        {isCompleted && !isBlinking && <Check className="h-4 w-4 text-white" />}
-        {isBlinking && <div className="w-2 h-2 md:w-3 md:h-3 bg-custom-purple-dark rounded-full"></div>}
-      </div>
-      <p className={cn('text-xs mt-2 text-center', (isCompleted || isCurrent || isCancelled) ? 'text-white font-semibold' : 'text-white/60')}>
-        {children}
-      </p>
-    </div>
-  );
-};
-
-
-const TimelineConnector = ({ isCompleted, isCancelled }: { isCompleted: boolean, isCancelled?: boolean }) => (
-  <div className="flex-1 h-0.5 transition-all duration-500" style={{ background: isCancelled ? 'hsl(0, 100%, 50%)' : (isCompleted ? 'hsl(142.1, 76.2%, 36.3%)' : 'hsla(0, 0%, 100%, 0.3)') }} />
 );
 
 const OrderDetailsContent = ({ order: initialOrder, allProducts }: { order: Order, allProducts: SanityProduct[] }) => {
@@ -122,17 +92,21 @@ const OrderDetailsContent = ({ order: initialOrder, allProducts }: { order: Orde
       return 'bg-white/10 text-white/70 hover:bg-white/20';
     };
 
+    const badgeStatusVariant = (status: Order['status']): "success" | "destructive" | "default" | "info" => {
+        switch (status) {
+            case 'Completed': return 'success';
+            case 'Cancelled': return 'destructive';
+            case 'In Progress': return 'info';
+            default: return 'default';
+        }
+    };
+
 
     const handleStatusChange = (newStatus: Order['status']) => {
         if (order.id && order.uid && newStatus !== order.status) {
             updateOrderStatus(order.uid, order.id, newStatus, 'admin');
         }
     };
-
-    const statusSteps = ['Order Requested', 'In Progress', 'Completed'];
-    const currentStatusIndex = statusSteps.indexOf(order.status);
-    const isCancelled = order.status === 'Cancelled';
-
 
     return (
         <div className="flex flex-col gap-4 px-4 md:p-0 text-white h-full no-scrollbar">
@@ -156,23 +130,22 @@ const OrderDetailsContent = ({ order: initialOrder, allProducts }: { order: Orde
                     <p className="text-xs text-white/70">Date & Time</p>
                     <p className="font-semibold">{formattedDate} at {formattedTime}</p>
                 </div>
+                <DetailRow 
+                    icon={<Info size={16} />} 
+                    label="Order Status" 
+                    value={
+                        <Badge 
+                            variant={badgeStatusVariant(order.status)}
+                            className={cn(order.status === 'Order Requested' && 'text-custom-purple-dark')}
+                        >
+                            {order.status}
+                        </Badge>
+                    } 
+                />
             </div>
 
             <Separator className="bg-white/20" />
-
-            <div className="w-full">
-              <h4 className="font-bold mb-3">Order Status</h4>
-              <div className="flex items-center w-full px-4">
-                <TimelineNode isCompleted={currentStatusIndex >= 0} isCurrent={currentStatusIndex === 0} status={order.status} isCancelled={isCancelled}>Order<br/>Requested</TimelineNode>
-                <TimelineConnector isCompleted={currentStatusIndex >= 1} isCancelled={isCancelled} />
-                <TimelineNode isCompleted={currentStatusIndex >= 1} isCurrent={currentStatusIndex === 1} status={order.status} isCancelled={isCancelled}>In<br/>Progress</TimelineNode>
-                <TimelineConnector isCompleted={currentStatusIndex >= 2} isCancelled={isCancelled}/>
-                <TimelineNode isCompleted={currentStatusIndex >= 2} isCurrent={currentStatusIndex === 2} status={order.status} isCancelled={isCancelled}>Order<br />Delivered</TimelineNode>
-              </div>
-            </div>
-
-            <Separator className="bg-white/20" />
-
+            
             <div>
                 <h4 className="font-bold mb-2 flex items-center gap-2"><ShoppingCart size={18} /> Order Items</h4>
                  <div className="bg-white/5 p-3 rounded-lg space-y-3">
