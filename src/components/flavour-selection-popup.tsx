@@ -1,4 +1,3 @@
-
 // @/components/flavour-selection-popup.tsx
 'use client';
 
@@ -74,7 +73,7 @@ export function FlavourSelectionPopup({ product, open, onOpenChange, onConfirm }
           </DialogClose>
         </DialogHeader>
         <div className="flex flex-col gap-4 px-6 pt-10 pb-6 text-white max-h-[80vh]">
-            <SectionTitle className="flex justify-center text-2xl md:text-3xl text-center mb-0 font-poppins">
+            <SectionTitle className="justify-center text-2xl md:text-3xl text-center mb-0 font-poppins">
                 {hasFlavours ? 'Customize Your Box' : 'Confirm Your Addition'}
             </SectionTitle>
             
