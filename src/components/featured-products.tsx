@@ -47,37 +47,70 @@ export function FeaturedProducts({
       )}>
         You might also like
       </SectionTitle>
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6">
-        {products.map(product => (
-          <div key={product._id} className={cn("aspect-[3/4]", isMobile ? "" : "")}>
-            <FeaturedProductCard
-              product={product}
-              onProductClick={onProductClick}
-              onAddToCart={onAddToCart}
-              onRemoveFromCart={onRemoveFromCart}
-              quantity={cart[product.name]?.quantity || 0}
-              isLiked={!!likedProducts[product._id]}
-              onLikeToggle={onLikeToggle}
-              isMobile={isMobile}
-            />
-          </div>
-        ))}
-        <div className={cn("flex aspect-[3/4]", isMobile ? "" : "")}>
-           <Button
-            variant="outline"
-            onClick={handleViewMore}
-            className="w-full h-full bg-white/20 border-2 border-dashed border-white/50 text-white hover:bg-white/30 hover:text-white flex flex-col items-center justify-center gap-2 rounded-2xl"
-          >
-            <div className={cn(
-              "rounded-full bg-white/20 flex items-center justify-center",
-              isMobile ? "h-12 w-12" : "h-16 w-16"
-            )}>
-                <ChevronRight className={cn(isMobile ? "h-8 w-8" : "h-10 w-10")} />
+      
+      {isMobile ? (
+        <div className="flex gap-4 overflow-x-auto no-scrollbar pb-2">
+          {products.map(product => (
+            <div key={product._id} className="w-40 flex-shrink-0">
+              <div className="aspect-[3/4] h-full w-full">
+                <FeaturedProductCard
+                  product={product}
+                  onProductClick={onProductClick}
+                  onAddToCart={onAddToCart}
+                  onRemoveFromCart={onRemoveFromCart}
+                  quantity={cart[product.name]?.quantity || 0}
+                  isLiked={!!likedProducts[product._id]}
+                  onLikeToggle={onLikeToggle}
+                  isMobile={isMobile}
+                />
+              </div>
             </div>
-            <span className={cn("font-semibold", isMobile ? "text-base" : "text-lg")}>View More</span>
-          </Button>
+          ))}
+          <div className="w-40 flex-shrink-0">
+            <div className="flex aspect-[3/4] h-full w-full">
+              <Button
+                variant="outline"
+                onClick={handleViewMore}
+                className="w-full h-full bg-white/20 border-2 border-dashed border-white/50 text-white hover:bg-white/30 hover:text-white flex flex-col items-center justify-center gap-2 rounded-2xl"
+              >
+                <div className="h-12 w-12 rounded-full bg-white/20 flex items-center justify-center">
+                    <ChevronRight className="h-8 w-8" />
+                </div>
+                <span className="font-semibold text-base">View More</span>
+              </Button>
+            </div>
+          </div>
         </div>
-      </div>
+      ) : (
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6">
+          {products.map(product => (
+            <div key={product._id} className="aspect-[3/4]">
+              <FeaturedProductCard
+                product={product}
+                onProductClick={onProductClick}
+                onAddToCart={onAddToCart}
+                onRemoveFromCart={onRemoveFromCart}
+                quantity={cart[product.name]?.quantity || 0}
+                isLiked={!!likedProducts[product._id]}
+                onLikeToggle={onLikeToggle}
+                isMobile={isMobile}
+              />
+            </div>
+          ))}
+          <div className="flex aspect-[3/4]">
+             <Button
+              variant="outline"
+              onClick={handleViewMore}
+              className="w-full h-full bg-white/20 border-2 border-dashed border-white/50 text-white hover:bg-white/30 hover:text-white flex flex-col items-center justify-center gap-2 rounded-2xl"
+            >
+              <div className="h-16 w-16 rounded-full bg-white/20 flex items-center justify-center">
+                  <ChevronRight className="h-10 w-10" />
+              </div>
+              <span className="font-semibold text-lg">View More</span>
+            </Button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
