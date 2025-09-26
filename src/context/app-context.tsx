@@ -1,4 +1,3 @@
-
 // @/context/app-context.tsx
 'use client';
 
@@ -150,67 +149,67 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
   const [isGlobalLoading, setIsGlobalLoading] = useState(false);
 
   useEffect(() => {
+    let unsubscribeUserOrders = () => {};
+    let unsubscribeAllOrders = () => {};
+    let unsubscribeFromAuth: Unsubscribe | undefined;
+
     const auth = getFirebaseAuth();
-    if (!auth) {
-      // Firebase not initialized, maybe on server
+    if (auth) {
+      unsubscribeFromAuth = onAuthStateChanged(auth, async (newUser) => {
+        setIsProfileLoaded(false);
+        setUser(newUser);
+        const newIsAdmin = newUser?.email === process.env.NEXT_PUBLIC_ADMIN_EMAIL;
+        setIsAuthenticated(!!newUser);
+        setIsAdmin(newIsAdmin);
+
+        if (newUser) {
+          let profile = await getUserProfile(newUser.uid);
+          if (profile) {
+            setProfileInfo(profile);
+          }
+          
+          unsubscribeUserOrders = onUserOrdersSnapshotPaginated(newUser.uid, (initialUserOrders, lastVisible) => {
+            setOrders(initialUserOrders);
+            setLastUserOrderSnapshot(lastVisible);
+            setHasMoreUserOrders(initialUserOrders.length === 5);
+            setIsOrdersLoaded(true);
+          });
+
+          if (newIsAdmin) {
+            unsubscribeAllOrders = onAllOrdersSnapshot((initialOrders, lastVisible) => {
+              const sortedOrders = initialOrders.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+              setAllOrders(sortedOrders);
+              setLastOrderSnapshot(lastVisible);
+              setHasMoreOrders(initialOrders.length === 5); // Check if there might be more
+              setIsAllOrdersLoaded(true);
+            });
+          } else {
+            setAllOrders([]);
+            setIsAllOrdersLoaded(true);
+          }
+
+        } else {
+          unsubscribeUserOrders();
+          unsubscribeAllOrders();
+          setProfileInfo(defaultProfileInfo);
+          setOrders([]);
+          setAllOrders([]);
+          setIsOrdersLoaded(true);
+          setIsAllOrdersLoaded(true);
+        }
+        setIsProfileLoaded(true);
+        setIsAuthLoaded(true);
+      });
+    } else {
+      // Handle case where Firebase isn't initialized (e.g., SSR)
       setIsAuthLoaded(true);
       setIsProfileLoaded(true);
       setIsOrdersLoaded(true);
       setIsAllOrdersLoaded(true);
-      return;
     }
-    
-    let unsubscribeUserOrders = () => {};
-    let unsubscribeAllOrders = () => {};
-
-    const unsubscribeFromAuth = onAuthStateChanged(auth, async (newUser) => {
-      setIsProfileLoaded(false);
-      setUser(newUser);
-      const newIsAdmin = newUser?.email === process.env.NEXT_PUBLIC_ADMIN_EMAIL;
-      setIsAuthenticated(!!newUser);
-      setIsAdmin(newIsAdmin);
-
-      if (newUser) {
-        let profile = await getUserProfile(newUser.uid);
-        if (profile) {
-          setProfileInfo(profile);
-        }
-        
-        unsubscribeUserOrders = onUserOrdersSnapshotPaginated(newUser.uid, (initialUserOrders, lastVisible) => {
-          setOrders(initialUserOrders);
-          setLastUserOrderSnapshot(lastVisible);
-          setHasMoreUserOrders(initialUserOrders.length === 5);
-          setIsOrdersLoaded(true);
-        });
-
-        if (newIsAdmin) {
-          unsubscribeAllOrders = onAllOrdersSnapshot((initialOrders, lastVisible) => {
-            const sortedOrders = initialOrders.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-            setAllOrders(sortedOrders);
-            setLastOrderSnapshot(lastVisible);
-            setHasMoreOrders(initialOrders.length === 5); // Check if there might be more
-            setIsAllOrdersLoaded(true);
-          });
-        } else {
-          setAllOrders([]);
-          setIsAllOrdersLoaded(true);
-        }
-
-      } else {
-        unsubscribeUserOrders();
-        unsubscribeAllOrders();
-        setProfileInfo(defaultProfileInfo);
-        setOrders([]);
-        setAllOrders([]);
-        setIsOrdersLoaded(true);
-        setIsAllOrdersLoaded(true);
-      }
-      setIsProfileLoaded(true);
-      setIsAuthLoaded(true);
-    });
 
     return () => {
-      unsubscribeFromAuth();
+      if (unsubscribeFromAuth) unsubscribeFromAuth();
       unsubscribeUserOrders();
       unsubscribeAllOrders();
     };
