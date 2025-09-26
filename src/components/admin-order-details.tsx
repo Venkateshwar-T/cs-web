@@ -92,16 +92,6 @@ const OrderDetailsContent = ({ order: initialOrder, allProducts }: { order: Orde
       return 'bg-white/10 text-white/70 hover:bg-white/20';
     };
 
-    const badgeStatusVariant = (status: Order['status']): "success" | "destructive" | "default" | "info" => {
-        switch (status) {
-            case 'Completed': return 'success';
-            case 'Cancelled': return 'destructive';
-            case 'In Progress': return 'info';
-            default: return 'default';
-        }
-    };
-
-
     const handleStatusChange = (newStatus: Order['status']) => {
         if (order.id && order.uid && newStatus !== order.status) {
             updateOrderStatus(order.uid, order.id, newStatus, 'admin');
@@ -130,18 +120,6 @@ const OrderDetailsContent = ({ order: initialOrder, allProducts }: { order: Orde
                     <p className="text-xs text-white/70">Date & Time</p>
                     <p className="font-semibold">{formattedDate} at {formattedTime}</p>
                 </div>
-                <DetailRow 
-                    icon={<Info size={16} />} 
-                    label="Order Status" 
-                    value={
-                        <Badge 
-                            variant={badgeStatusVariant(order.status)}
-                            className={cn(order.status === 'Order Requested' && 'text-custom-purple-dark')}
-                        >
-                            {order.status}
-                        </Badge>
-                    } 
-                />
             </div>
 
             <Separator className="bg-white/20" />
