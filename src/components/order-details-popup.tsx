@@ -1,3 +1,4 @@
+
 // @/components/order-details-popup.tsx
 import * as React from "react";
 import {
@@ -55,7 +56,7 @@ const TimelineNode = ({ isCompleted, isCurrent, status, children, isCancelled }:
           isBlinking && 'animate-pulse'
         )}
       >
-        {isCompleted && !isCurrent && !isCancelled && <Check className="h-4 w-4 text-white" />}
+        {isCompleted && !isBlinking && <Check className="h-4 w-4 text-white" />}
         {isBlinking && <div className="w-2 h-2 md:w-3 md:h-3 bg-custom-purple-dark rounded-full"></div>}
       </div>
       <p className={cn('text-xs mt-2 text-center', (isCompleted || isCurrent || isCancelled) ? 'text-white font-semibold' : 'text-white/60')}>
