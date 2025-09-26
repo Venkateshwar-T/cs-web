@@ -78,7 +78,7 @@ export const MobileCartSummary = React.forwardRef<HTMLDivElement, MobileCartSumm
                     return (
                         <div key={item.name} className="flex justify-between items-center text-sm">
                             <span className="font-medium w-2/3 truncate pr-2">{item.name}</span>
-                            <span className="text-black/60">x{item.quantity}</span>
+                            <span className="text-black/60 pr-2">x{item.quantity}</span>
                             <span className="font-semibold w-1/4 text-right">₹{itemTotal.toFixed(2)}</span>
                         </div>
                     )

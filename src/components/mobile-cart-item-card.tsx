@@ -120,6 +120,7 @@ export function MobileCartItemCard({ item, product, onQuantityChange, onRemove, 
                             variant="ghost"
                             onClick={handleIncrement}
                             className="h-full rounded-none bg-gray-200 hover:bg-gray-300 text-black flex-1 flex items-center justify-center"
+                            disabled={item.quantity >= 99}
                         >
                             <Plus className="h-4 w-4" />
                         </Button>

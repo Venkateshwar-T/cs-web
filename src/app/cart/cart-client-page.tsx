@@ -205,7 +205,7 @@ export default function CartClientPage({ allProducts }: { allProducts: SanityPro
         />
         <main onScroll={handleScroll} className={cn(
           "flex-grow flex flex-col transition-all duration-300 relative min-h-0 md:pb-0",
-          isMobile ? (isHeaderVisible ? 'pt-24' : 'pt-0') : "pt-36" 
+          isMobile ? "pt-20" : "pt-36" 
         )}>
           {cartItems.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-full px-4 pb-32">

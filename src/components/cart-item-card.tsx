@@ -149,6 +149,7 @@ export function CartItemCard({ item, product, onQuantityChange, onRemove, isRemo
                                 variant="ghost"
                                 onClick={handleIncrement}
                                 className="h-full rounded-none bg-custom-purple-dark hover:bg-custom-purple-dark/90 text-white hover:text-white flex-shrink-0 px-3"
+                                disabled={item.quantity >= 99}
                             >
                                 <Plus className="h-4 w-4" />
                             </Button>

@@ -67,7 +67,7 @@ export function ProductCard({
       className="relative w-full h-full bg-white/90 hover:bg-custom-gold rounded-2xl overflow-hidden cursor-pointer group border border-custom-gold md:border-white hover:border-custom-gold transition-colors duration-300 flex flex-col shadow-lg"
     >
       {/* Image Section */}
-      <div className="relative w-full pt-[100%] overflow-hidden">
+      <div className="relative w-full pt-[80%] overflow-hidden">
         <Image
           src={product.images?.[0] || '/placeholder.png'}
           alt={product.name}
@@ -120,16 +120,16 @@ export function ProductCard({
                 <Button
                   size="sm"
                   onClick={handleAddToCartClick}
-                  className="w-full h-7 rounded-lg bg-custom-purple-dark text-white hover:bg-custom-purple-dark/90 text-xs"
+                  className="w-full h-7 rounded-xl bg-custom-purple-dark text-white hover:bg-custom-purple-dark/90 text-xs"
                   aria-label="Add to cart"
                 >
                   ADD
                 </Button>
               ) : (
-                <div className="flex items-center justify-center h-7 w-full rounded-lg bg-custom-purple-dark text-white overflow-hidden">
+                <div className="flex items-center justify-center h-7 w-full rounded-xl bg-custom-purple-dark text-white overflow-hidden">
                   <Button variant="ghost" size="icon" onClick={handleDecrement} className="h-full rounded-none flex-1 hover:bg-black/20 text-white hover:text-white"><Minus className="w-4 h-4" /></Button>
-                  <span className="font-bold text-sm flex-1 text-center">{quantity}</span>
-                  <Button variant="ghost" size="icon" onClick={handleIncrement} className="h-full rounded-none flex-1 hover:bg-black/20 text-white hover:text-white"><Plus className="w-4 h-4" /></Button>
+                  <span className="font-bold text-sm flex-1 text-center text-custom-purple-dark bg-white">{quantity}</span>
+                  <Button variant="ghost" size="icon" onClick={handleIncrement} className="h-full rounded-none flex-1 hover:bg-black/20 text-white hover:text-white" disabled={quantity >= 99}><Plus className="w-4 h-4" /></Button>
                 </div>
               )}
             </div>
@@ -154,9 +154,9 @@ export function ProductCard({
                   <ShoppingCart className="h-4 w-4 md:h-5 md:w-5" />
                 </Button>
               ) : (
-                <div className="flex items-center justify-center h-6 md:h-9 w-16 md:w-24 rounded-full bg-custom-purple-dark text-white overflow-hidden">
+                <div className="flex items-center justify-center h-8 w-28 rounded-full bg-custom-purple-dark text-white overflow-hidden">
                   <Button variant="ghost" size="icon" onClick={handleDecrement} className="h-full rounded-none flex-1 hover:bg-black/20 text-xs text-white hover:text-white"><Minus className="h-1 w-1" /></Button>
-                  <span className="font-bold text-sm flex-1 text-xs text-center">{quantity}</span>
+                  <span className="font-bold text-sm flex-1 text-xl text-center text-custom-purple-dark bg-white">{quantity}</span>
                   <Button variant="ghost" size="icon" onClick={handleIncrement} className="h-full rounded-none flex-1 hover:bg-black/20 text-white hover:text-white"><Plus className="h-1 w-1" /></Button>
                 </div>
               )}
