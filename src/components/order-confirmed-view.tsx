@@ -1,3 +1,4 @@
+
 // @/components/order-confirmed-view.tsx
 'use client';
 
@@ -73,12 +74,12 @@ export function OrderConfirmedView({ order, products }: OrderConfirmedViewProps)
                         To finalize your order and process the 50% advance payment, please connect with us.
                     </p>
                     <div className="flex flex-col sm:flex-row items-center gap-3 mt-4 w-full justify-center">
-                        <Button asChild className="h-auto w-full sm:w-auto py-2 px-6 text-sm md:text-base bg-custom-purple-dark hover:bg-custom-purple-dark/90 text-white rounded-full font-plex-sans shadow-lg">
+                        <Button asChild variant="outline" className="h-auto w-full sm:w-auto py-2 px-6 text-sm md:text-base text-white border-white/50 bg-transparent hover:bg-white/10 hover:text-white rounded-full font-plex-sans shadow-lg">
                             <a href="tel:+917411414007">
                                 <Phone className="h-4 w-4" /> Call Us
                             </a>
                         </Button>
-                        <Button asChild className="h-auto w-full sm:w-auto py-2 px-6 text-sm md:text-base bg-custom-purple-dark hover:bg-custom-purple-dark/90 text-white rounded-full font-plex-sans shadow-lg">
+                        <Button asChild className="h-auto w-full sm:w-auto py-2 px-6 text-sm md:text-base bg-white hover:bg-gray-200 text-custom-purple-dark rounded-full font-plex-sans shadow-lg font-semibold">
                             <a href="https://wa.me/917411414007" target="_blank" rel="noopener noreferrer">
                                 <IoLogoWhatsapp className="h-5 w-5" /> Whatsapp
                             </a>
