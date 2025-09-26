@@ -14,8 +14,8 @@ import {
   createUserProfile,
   updateUserProfile,
   addUserOrder,
-  getUserOrders,
-  getAllOrders,
+  onUserOrdersSnapshot,
+  onAllOrdersSnapshot,
   updateOrderStatus,
   rateOrder as rateOrderInDb,
   addCancellationReason,
@@ -138,31 +138,44 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
     if (typeof window !== 'undefined') {
       const auth = getFirebaseAuth();
       if (auth) {
-        const unsubscribe = onAuthStateChanged(async (newUser) => {
+        const unsubscribeFromAuth = onAuthStateChanged(async (newUser) => {
           setIsProfileLoaded(false);
           setUser(newUser);
           const newIsAdmin = newUser?.email === process.env.NEXT_PUBLIC_ADMIN_EMAIL;
           setIsAuthenticated(!!newUser);
           setIsAdmin(newIsAdmin);
 
+          // Unsubscribe from any existing order listeners
+          let unsubscribeUserOrders = () => {};
+          let unsubscribeAllOrders = () => {};
+
           if (newUser) {
             let profile = await getUserProfile(newUser.uid);
             if (profile) {
               setProfileInfo(profile);
             }
-            const userOrders = await getUserOrders(newUser.uid);
-            const sortedUserOrders = userOrders.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-            setOrders(sortedUserOrders);
-            setIsOrdersLoaded(true);
             
+            // Set up real-time listener for user orders
+            unsubscribeUserOrders = onUserOrdersSnapshot(newUser.uid, (userOrders) => {
+              const sortedUserOrders = userOrders.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+              setOrders(sortedUserOrders);
+              setIsOrdersLoaded(true);
+            });
+
             if (newIsAdmin) {
-              const allUserOrders = await getAllOrders();
-              const sortedOrders = allUserOrders.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-              setAllOrders(sortedOrders);
+              // Set up real-time listener for all orders
+              unsubscribeAllOrders = onAllOrdersSnapshot((allUserOrders) => {
+                const sortedOrders = allUserOrders.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+                setAllOrders(sortedOrders);
+                setIsAllOrdersLoaded(true);
+              });
+            } else {
+              setAllOrders([]);
+              setIsAllOrdersLoaded(true);
             }
-            setIsAllOrdersLoaded(true);
 
           } else {
+            // User logged out, clear all data
             setProfileInfo(defaultProfileInfo);
             setOrders([]);
             setAllOrders([]);
@@ -171,9 +184,18 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
           }
           setIsProfileLoaded(true);
           setIsAuthLoaded(true);
+
+          // Return a cleanup function for the order listeners
+          return () => {
+            unsubscribeUserOrders();
+            unsubscribeAllOrders();
+          };
         });
-        return () => unsubscribe();
+
+        // This top-level return cleans up the auth subscription
+        return () => unsubscribeFromAuth();
       } else {
+        // Firebase not initialized
         setIsAuthLoaded(true);
         setIsProfileLoaded(true);
         setIsOrdersLoaded(true);
@@ -218,11 +240,7 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
     if (user) {
       try {
         const newOrderId = await addUserOrder(user.uid, newOrder);
-        const fullOrder = { ...newOrder, id: newOrderId, uid: user.uid };
-        setOrders(prevOrders => [fullOrder, ...prevOrders].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()));
-        if (isAdmin) {
-            setAllOrders(prevAllOrders => [fullOrder, ...prevAllOrders].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()));
-        }
+        // The listener will automatically update the state, no need to manually setOrders here.
         return newOrderId;
       } catch (error) {
         console.error("Error adding order:", error);
@@ -235,11 +253,10 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
       }
     }
     return null;
-  }, [user, toast, isAdmin]);
+  }, [user, toast]);
 
   const clearOrders = useCallback(() => {
-    // This should ideally also clear from Firestore, but for now we'll just clear local state.
-    // A more robust implementation would call a server function.
+    // This function is less relevant with real-time updates, but can be kept for manual clearing if needed.
     setOrders([]);
   }, []);
 
@@ -369,20 +386,7 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
   const handleUpdateOrderStatus = async (uid: string, orderId: string, newStatus: Order['status'], cancelledBy?: 'user' | 'admin'): Promise<void> => {
     try {
       await updateOrderStatus(uid, orderId, newStatus, cancelledBy);
-      const update = (orders: Order[]) => orders.map(o => {
-        if (o.id === orderId) {
-            const updatedOrder = { ...o, status: newStatus };
-            if (newStatus === 'Cancelled' && cancelledBy) {
-                updatedOrder.cancelledBy = cancelledBy;
-            } else if (newStatus !== 'Cancelled') {
-                delete updatedOrder.cancelledBy;
-            }
-            return updatedOrder;
-        }
-        return o;
-      });
-      setAllOrders(update);
-      setOrders(update);
+      // The listener will automatically update the state.
       toast({
         title: "Status Updated",
         description: `Order ${orderId} marked as ${newStatus}.`,
@@ -401,11 +405,7 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
   const rateOrder = async (uid: string, orderId: string, rating: number, feedback: string) => {
     try {
       await rateOrderInDb(uid, orderId, rating, feedback);
-      const update = (orders: Order[]) => orders.map(o => 
-        o.id === orderId ? { ...o, rating, feedback } : o
-      );
-      setOrders(update);
-      setAllOrders(update);
+      // The listener will automatically update the state.
     } catch (error) {
       console.error("Failed to rate order:", error);
       toast({
@@ -420,11 +420,7 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
     try {
         const reasonToSave = reason === 'SKIPPED' ? 'Feedback not provided by customer.' : reason;
         await addCancellationReason(uid, orderId, reasonToSave);
-        const update = (orders: Order[]) => orders.map(o =>
-            o.id === orderId ? { ...o, cancellationReason: reasonToSave } : o
-        );
-        setOrders(update);
-        setAllOrders(update);
+        // The listener will automatically update the state.
     } catch (error) {
         console.error("Failed to save cancellation reason:", error);
         toast({
