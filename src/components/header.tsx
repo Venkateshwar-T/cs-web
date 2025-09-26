@@ -104,7 +104,7 @@ export function Header({
       <header className={cn(
         "fixed top-0 z-50 w-full pt-4 md:pt-6 pb-4 md:pb-4 transition-all duration-100", 
         isContentScrolled ? 'bg-background border-b-2' : 'bg-transparent',
-        (activeView === 'cart' || activeView === 'profile' || activeView === 'admin') && 'border-b border-white/20',
+        (activeView === 'cart' || activeView === 'profile' || activeView === 'admin' || activeView === 'order-confirmed') && 'border-b border-white/20',
         isEnquireOpen && isContentScrolled && 'bg-[#2e1440] border-b-2 border-custom-purple-dark',
       )}>
         <div className="container relative flex h-16 md:h-16 max-w-screen-2xl items-center justify-between px-4 sm:px-6 lg:px-8 xl:px-24">
@@ -114,7 +114,7 @@ export function Header({
           </div>
           
           <div className="hidden md:flex flex-1 justify-center px-4">
-             {(activeView === 'search' || activeView === 'order-confirmed' || activeView === 'product-detail') ? (
+             {(activeView === 'search' || activeView === 'product-detail') ? (
                 <div className={cn("w-full max-w-sm md:max-w-md lg:max-w-lg xl:max-w-2xl", isEnquireOpen && 'opacity-50 pointer-events-none')}>
                   <AnimatedSearchBar 
                       onSearchSubmit={onSearchSubmit}
