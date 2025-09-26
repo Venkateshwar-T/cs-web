@@ -60,11 +60,13 @@ const TimelineNode = ({ isCompleted, isCurrent, children, isCancelled }: { isCom
     <div
       className={cn(
         'w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all duration-500',
-        isCancelled ? 'bg-red-500 border-red-500' : (isCompleted ? 'bg-green-500 border-green-500' : 'bg-transparent border-white/50'),
-        isCurrent && !isCancelled && 'animate-pulse'
+        isCancelled ? 'bg-red-500 border-red-500' : (
+          isCurrent ? 'bg-custom-gold border-custom-gold animate-pulse' : (isCompleted ? 'bg-green-500 border-green-500' : 'bg-transparent border-white/50')
+        )
       )}
     >
-      {isCompleted && !isCancelled && <Check className="h-4 w-4 text-white" />}
+      {isCompleted && !isCurrent && !isCancelled && <Check className="h-4 w-4 text-white" />}
+      {isCurrent && !isCancelled && <div className="w-2 h-2 md:w-3 md:h-3 bg-custom-purple-dark rounded-full"></div>}
     </div>
     <p className={cn('text-xs mt-2 text-center', (isCompleted || isCurrent || isCancelled) ? 'text-white font-semibold' : 'text-white/60')}>
       {children}
@@ -156,7 +158,7 @@ const OrderDetailsContent = ({ order: initialOrder, allProducts }: { order: Orde
                 <TimelineConnector isCompleted={currentStatusIndex >= 1} isCancelled={isCancelled} />
                 <TimelineNode isCompleted={currentStatusIndex >= 1} isCurrent={currentStatusIndex === 1} isCancelled={isCancelled}>In<br/>Progress</TimelineNode>
                 <TimelineConnector isCompleted={currentStatusIndex >= 2} isCancelled={isCancelled}/>
-                <TimelineNode isCompleted={currentStatusIndex >= 2} isCurrent={currentStatusIndex === 2} isCancelled={isCancelled}>Delivered</TimelineNode>
+                <TimelineNode isCompleted={currentStatusIndex >= 2} isCurrent={currentStatusIndex === 2} isCancelled={isCancelled}>Order<br />Delivered</TimelineNode>
               </div>
             </div>
 

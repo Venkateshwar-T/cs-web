@@ -183,7 +183,7 @@ function OrderConfirmedPageComponent({ allProducts }: { allProducts: SanityProdu
                 <TimelineConnector isCompleted={currentStatusIndex >= 1} />
                 <TimelineNode isCompleted={currentStatusIndex >= 1} isCurrent={currentStatusIndex === 1}>In<br/>Progress</TimelineNode>
                 <TimelineConnector isCompleted={currentStatusIndex >= 2} />
-                <TimelineNode isCompleted={currentStatusIndex >= 2} isCurrent={currentStatusIndex === 2}>Delivered</TimelineNode>
+                <TimelineNode isCompleted={currentStatusIndex >= 2} isCurrent={currentStatusIndex === 2}>Order<br/>Delivered</TimelineNode>
               </div>
                {isCancelled && (
                 <p className="text-red-400 font-semibold mt-4 text-sm">This order has been cancelled.</p>
