@@ -74,6 +74,7 @@ function OrderConfirmedPageComponent({ allProducts }: { allProducts: SanityProdu
   const [confirmedOrder, setConfirmedOrder] = useState<Order | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [searchInput, setSearchInput] = useState('');
 
   useEffect(() => {
     const orderId = searchParams.get('orderId');
@@ -100,6 +101,10 @@ function OrderConfirmedPageComponent({ allProducts }: { allProducts: SanityProdu
   
   const handleContinueShopping = () => {
     router.push('/');
+  };
+  
+  const handleSearchSubmit = (query: string) => {
+    router.push(`/search?q=${encodeURIComponent(query)}`);
   };
 
   const handleNavigation = (view: ActiveView) => {
@@ -141,7 +146,11 @@ function OrderConfirmedPageComponent({ allProducts }: { allProducts: SanityProdu
           onReset={() => router.push('/')}
           onNavigate={handleHeaderNavigate}
           activeView={'order-confirmed'}
+          onSearchSubmit={handleSearchSubmit}
+          isSearchingOnAbout={false}
           isUsingAnimatedSearch={false}
+          searchInput={searchInput}
+          onSearchInputChange={setSearchInput}
         />
         <main className="flex-grow flex flex-col items-center justify-center px-4 pt-24 pb-16 md:pt-32 md:pb-8">
           <motion.div 
@@ -225,6 +234,7 @@ function OrderConfirmedPageComponent({ allProducts }: { allProducts: SanityProdu
           </motion.div>
         </main>
         <Footer />
+        <div className="h-16 flex-shrink-0 md:hidden" />
       </div>
       <BottomNavbar activeView={'order-confirmed'} onNavigate={handleNavigation} cartItemCount={cartItemCount} />
       <PopupsManager 
