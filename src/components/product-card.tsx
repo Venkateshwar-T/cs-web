@@ -1,4 +1,3 @@
-
 // @/components/product-card.tsx
 'use client';
 
