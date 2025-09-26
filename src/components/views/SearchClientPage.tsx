@@ -115,6 +115,11 @@ export default function SearchClientPage({ initialProducts, initialFilters }: Se
     const params = new URLSearchParams(searchParams.toString());
     params.set('q', value);
     setIsGlobalLoading(true);
+
+    if (document.activeElement instanceof HTMLElement) {
+      document.activeElement.blur();
+    }
+
     router.push(`${pathname}?${params.toString()}`);
   };
   
