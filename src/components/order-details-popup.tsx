@@ -1,4 +1,3 @@
-
 // @/components/order-details-popup.tsx
 import * as React from "react";
 import {
@@ -16,13 +15,12 @@ import {
   SheetTitle,
   SheetDescription as SheetDescriptionComponent,
 } from "@/components/ui/sheet"
-import { X, Calendar, Hash, Tag } from "lucide-react";
+import { X, Calendar, Hash, Check } from "lucide-react";
 import type { Order, SanityProduct } from "@/types";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { Separator } from "./ui/separator";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { Badge } from "./ui/badge";
 
 interface OrderDetailsPopupProps {
     order: Order | null;
@@ -41,6 +39,28 @@ const DetailRow = ({ icon, label, value }: { icon: React.ReactNode, label: strin
     </div>
 );
 
+const TimelineNode = ({ isCompleted, isCurrent, children, isCancelled }: { isCompleted: boolean, isCurrent: boolean, children: React.ReactNode, isCancelled?: boolean }) => (
+  <div className="flex flex-col items-center">
+    <div
+      className={cn(
+        'w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all duration-500',
+        isCancelled ? 'bg-red-500 border-red-500' : (isCompleted ? 'bg-green-500 border-green-500' : 'bg-transparent border-white/50'),
+        isCurrent && !isCancelled && 'animate-pulse'
+      )}
+    >
+      {isCompleted && !isCancelled && <Check className="h-4 w-4 text-white" />}
+    </div>
+    <p className={cn('text-xs mt-2 text-center', (isCompleted || isCurrent || isCancelled) ? 'text-white font-semibold' : 'text-white/60')}>
+      {children}
+    </p>
+  </div>
+);
+
+const TimelineConnector = ({ isCompleted, isCancelled }: { isCompleted: boolean, isCancelled?: boolean }) => (
+  <div className="flex-1 h-0.5 transition-all duration-500" style={{ background: isCancelled ? 'hsl(0, 100%, 50%)' : (isCompleted ? 'hsl(142.1, 76.2%, 36.3%)' : 'hsla(0, 0%, 100%, 0.3)') }} />
+);
+
+
 const OrderDetailsContent = ({ order, products }: { order: Order, products: SanityProduct[] }) => {
     if (!order) return null;
 
@@ -57,15 +77,10 @@ const OrderDetailsContent = ({ order, products }: { order: Order, products: Sani
     const gstAmount = order.total - subtotal;
     const totalMrp = order.items.reduce((acc, item) => acc + (item.mrp || ((item.finalProductPrice || 0) / item.quantity)) * item.quantity, 0)
     const discount = totalMrp > subtotal ? totalMrp - subtotal : 0;
-
-    const statusVariant = (status: Order['status']): "success" | "destructive" | "default" | "info" => {
-        switch (status) {
-            case 'Completed': return 'success';
-            case 'Cancelled': return 'destructive';
-            case 'In Progress': return 'info';
-            default: return 'default';
-        }
-    };
+    
+    const statusSteps = ['Order Requested', 'In Progress', 'Completed'];
+    const currentStatusIndex = statusSteps.indexOf(order.status);
+    const isCancelled = order.status === 'Cancelled';
 
 
     return (
@@ -73,18 +88,22 @@ const OrderDetailsContent = ({ order, products }: { order: Order, products: Sani
             <div className="grid grid-cols-1 gap-4">
                 <DetailRow icon={<Hash size={16} />} label="Order ID" value={order.id} />
                 <DetailRow icon={<Calendar size={16} />} label="Date & Time" value={`${formattedDate} at ${formattedTime}`} />
-                <DetailRow 
-                    icon={<Tag size={16} />} 
-                    label="Order Status" 
-                    value={
-                        <Badge 
-                            variant={statusVariant(order.status)} 
-                            className={cn(order.status === 'Order Requested' && 'text-custom-purple-dark hover:bg-primary')}
-                        >
-                            {order.status}
-                        </Badge>
-                    } 
-                />
+            </div>
+
+            <Separator className="bg-white/20" />
+
+            <div className="w-full">
+              <h4 className="font-bold mb-3">Order Status</h4>
+              <div className="flex items-center w-full px-4">
+                <TimelineNode isCompleted={currentStatusIndex >= 0} isCurrent={currentStatusIndex === 0} isCancelled={isCancelled}>Order<br/>Requested</TimelineNode>
+                <TimelineConnector isCompleted={currentStatusIndex >= 1} isCancelled={isCancelled} />
+                <TimelineNode isCompleted={currentStatusIndex >= 1} isCurrent={currentStatusIndex === 1} isCancelled={isCancelled}>In<br/>Progress</TimelineNode>
+                <TimelineConnector isCompleted={currentStatusIndex >= 2} isCancelled={isCancelled}/>
+                <TimelineNode isCompleted={currentStatusIndex >= 2} isCurrent={currentStatusIndex === 2} isCancelled={isCancelled}>Delivered</TimelineNode>
+              </div>
+              {isCancelled && (
+                <p className="text-red-400 font-semibold mt-4 text-sm text-center">This order has been cancelled.</p>
+              )}
             </div>
 
             <Separator className="bg-white/20" />

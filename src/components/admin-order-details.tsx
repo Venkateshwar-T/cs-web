@@ -1,4 +1,3 @@
-
 // @/components/admin-order-details.tsx
 'use client';
 
@@ -30,7 +29,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "./ui/button";
-import { X, User, Mail, Phone, Home, ShoppingCart, Percent, Info, Star, MessageSquareWarning } from "lucide-react";
+import { X, User, Mail, Phone, Home, ShoppingCart, Percent, Info, Star, MessageSquareWarning, Check } from "lucide-react";
 import type { Order, SanityProduct } from "@/types";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
@@ -54,6 +53,27 @@ const DetailRow = ({ icon, label, value }: { icon: React.ReactNode, label: strin
             <div className="font-semibold">{value}</div>
         </div>
     </div>
+);
+
+const TimelineNode = ({ isCompleted, isCurrent, children, isCancelled }: { isCompleted: boolean, isCurrent: boolean, children: React.ReactNode, isCancelled?: boolean }) => (
+  <div className="flex flex-col items-center">
+    <div
+      className={cn(
+        'w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all duration-500',
+        isCancelled ? 'bg-red-500 border-red-500' : (isCompleted ? 'bg-green-500 border-green-500' : 'bg-transparent border-white/50'),
+        isCurrent && !isCancelled && 'animate-pulse'
+      )}
+    >
+      {isCompleted && !isCancelled && <Check className="h-4 w-4 text-white" />}
+    </div>
+    <p className={cn('text-xs mt-2 text-center', (isCompleted || isCurrent || isCancelled) ? 'text-white font-semibold' : 'text-white/60')}>
+      {children}
+    </p>
+  </div>
+);
+
+const TimelineConnector = ({ isCompleted, isCancelled }: { isCompleted: boolean, isCancelled?: boolean }) => (
+  <div className="flex-1 h-0.5 transition-all duration-500" style={{ background: isCancelled ? 'hsl(0, 100%, 50%)' : (isCompleted ? 'hsl(142.1, 76.2%, 36.3%)' : 'hsla(0, 0%, 100%, 0.3)') }} />
 );
 
 const OrderDetailsContent = ({ order: initialOrder, allProducts }: { order: Order, allProducts: SanityProduct[] }) => {
@@ -98,6 +118,10 @@ const OrderDetailsContent = ({ order: initialOrder, allProducts }: { order: Orde
         }
     };
 
+    const statusSteps = ['Order Requested', 'In Progress', 'Completed'];
+    const currentStatusIndex = statusSteps.indexOf(order.status);
+    const isCancelled = order.status === 'Cancelled';
+
 
     return (
         <div className="flex flex-col gap-4 px-4 md:p-0 text-white h-full no-scrollbar">
@@ -121,6 +145,19 @@ const OrderDetailsContent = ({ order: initialOrder, allProducts }: { order: Orde
                     <p className="text-xs text-white/70">Date & Time</p>
                     <p className="font-semibold">{formattedDate} at {formattedTime}</p>
                 </div>
+            </div>
+
+            <Separator className="bg-white/20" />
+
+            <div className="w-full">
+              <h4 className="font-bold mb-3">Order Status</h4>
+              <div className="flex items-center w-full px-4">
+                <TimelineNode isCompleted={currentStatusIndex >= 0} isCurrent={currentStatusIndex === 0} isCancelled={isCancelled}>Order<br/>Requested</TimelineNode>
+                <TimelineConnector isCompleted={currentStatusIndex >= 1} isCancelled={isCancelled} />
+                <TimelineNode isCompleted={currentStatusIndex >= 1} isCurrent={currentStatusIndex === 1} isCancelled={isCancelled}>In<br/>Progress</TimelineNode>
+                <TimelineConnector isCompleted={currentStatusIndex >= 2} isCancelled={isCancelled}/>
+                <TimelineNode isCompleted={currentStatusIndex >= 2} isCurrent={currentStatusIndex === 2} isCancelled={isCancelled}>Delivered</TimelineNode>
+              </div>
             </div>
 
             <Separator className="bg-white/20" />
@@ -235,7 +272,7 @@ const OrderDetailsContent = ({ order: initialOrder, allProducts }: { order: Orde
                 </div>
             ) : (
                 <div className="flex flex-col items-center justify-center gap-2 pb-4">
-                    <p className="text-sm text-white/80">Order Status</p>
+                    <p className="text-sm text-white/80">Change Order Status</p>
                     <div className="flex flex-wrap justify-center gap-2 w-full">
                         {statusOptions.map((status) => {
                             const buttonContent = (
