@@ -1,7 +1,7 @@
 // @/components/featured-products.tsx
 'use client';
 
-import { ProductCard } from './product-card';
+import { FeaturedProductCard } from './featured-product-card';
 import { SectionTitle } from './section-title';
 import type { SanityProduct } from '@/types';
 import { useRouter } from 'next/navigation';
@@ -47,10 +47,10 @@ export function FeaturedProducts({
       )}>
         You might also like
       </SectionTitle>
-      <div className="flex items-stretch overflow-x-auto no-scrollbar gap-4 md:gap-6 px-0 md:px-4 pb-2 md:py-4">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6">
         {products.map(product => (
-          <div key={product._id} className={cn("flex-shrink-0", isMobile ? "w-40" : "w-48 md:w-64")}>
-            <ProductCard
+          <div key={product._id} className={cn("aspect-[3/4]", isMobile ? "" : "")}>
+            <FeaturedProductCard
               product={product}
               onProductClick={onProductClick}
               onAddToCart={onAddToCart}
@@ -62,7 +62,7 @@ export function FeaturedProducts({
             />
           </div>
         ))}
-        <div className={cn("flex-shrink-0 flex", isMobile ? "w-40" : "w-48 md:w-56")}>
+        <div className={cn("flex aspect-[3/4]", isMobile ? "" : "")}>
            <Button
             variant="outline"
             onClick={handleViewMore}
