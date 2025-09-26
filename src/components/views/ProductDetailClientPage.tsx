@@ -90,9 +90,6 @@ export default function ProductDetailClientPage({ product, featuredProducts }: P
       const productToSelect = featuredProducts.find(p => p.name === productName) || product;
       if (productToSelect) {
         setFlavourSelection({ product: productToSelect, isOpen: true });
-        setCartMessage(`${productName} added`);
-        setIsCartButtonExpanded(true);
-        setTimeout(() => setIsCartButtonExpanded(false), 2000);
         return;
       }
     }
@@ -128,6 +125,11 @@ export default function ProductDetailClientPage({ product, featuredProducts }: P
   const handleFlavourConfirm = (productName: string, flavours: string[]) => {
     const prevQuantity = cart[productName]?.quantity || 0;
     updateCart(productName, prevQuantity + 1, flavours);
+
+    // Show notification only after flavours are confirmed
+    setCartMessage(`${productName} added`);
+    setIsCartButtonExpanded(true);
+    setTimeout(() => setIsCartButtonExpanded(false), 2000);
   };
 
 

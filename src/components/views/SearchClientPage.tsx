@@ -90,9 +90,6 @@ export default function SearchClientPage({ initialProducts, initialFilters }: Se
       const productToSelect = initialProducts.find(p => p.name === productName);
       if (productToSelect) {
         setFlavourSelection({ product: productToSelect, isOpen: true });
-        setCartMessage(`${productName} added`);
-        setIsCartButtonExpanded(true);
-        setTimeout(() => setIsCartButtonExpanded(false), 2000);
         return;
       }
     }
@@ -103,6 +100,11 @@ export default function SearchClientPage({ initialProducts, initialFilters }: Se
   const handleFlavourConfirm = (productName: string, flavours: string[]) => {
     const prevQuantity = cart[productName]?.quantity || 0;
     updateCart(productName, prevQuantity + 1, flavours);
+
+    // Show notification only after flavours are confirmed
+    setCartMessage(`${productName} added`);
+    setIsCartButtonExpanded(true);
+    setTimeout(() => setIsCartButtonExpanded(false), 2000);
   };
 
   const handleProductClick = (product: SanityProduct) => {
@@ -173,9 +175,6 @@ export default function SearchClientPage({ initialProducts, initialFilters }: Se
     const prevQuantity = cart[product.name]?.quantity || 0;
     if (prevQuantity === 0) {
       setFlavourSelection({ product, isOpen: true });
-      setCartMessage(`${product.name} added`);
-      setIsCartButtonExpanded(true);
-      setTimeout(() => setIsCartButtonExpanded(false), 2000);
     } else {
       updateCart(product.name, prevQuantity + 1);
     }
