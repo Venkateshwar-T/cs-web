@@ -90,17 +90,14 @@ export default function ProductDetailClientPage({ product, featuredProducts }: P
       const productToSelect = featuredProducts.find(p => p.name === productName) || product;
       if (productToSelect) {
         setFlavourSelection({ product: productToSelect, isOpen: true });
+        setCartMessage(`${productName} added`);
+        setIsCartButtonExpanded(true);
+        setTimeout(() => setIsCartButtonExpanded(false), 2000);
         return;
       }
     }
 
     updateCart(productName, quantity, flavours);
-
-    if (quantity > prevQuantity) {
-      setCartMessage(`${quantity - prevQuantity} added`);
-      setIsCartButtonExpanded(true);
-      setTimeout(() => setIsCartButtonExpanded(false), 1500);
-    }
   };
 
 

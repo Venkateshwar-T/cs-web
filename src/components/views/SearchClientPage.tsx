@@ -80,30 +80,24 @@ export default function SearchClientPage({ initialProducts, initialFilters }: Se
 
   const handleAddToCart = (productName: string, quantity: number) => {
     const prevQuantity = cart[productName]?.quantity || 0;
-    
-    // If quantity is decreasing, just update the cart
+
     if (quantity < prevQuantity) {
-        updateCart(productName, quantity);
-        return;
+      updateCart(productName, quantity);
+      return;
     }
 
-    // If quantity is increasing from 0, open flavour selection
     if (quantity > 0 && prevQuantity === 0) {
-        const productToSelect = initialProducts.find(p => p.name === productName);
-        if (productToSelect) {
-            setFlavourSelection({ product: productToSelect, isOpen: true });
-            return;
-        }
+      const productToSelect = initialProducts.find(p => p.name === productName);
+      if (productToSelect) {
+        setFlavourSelection({ product: productToSelect, isOpen: true });
+        setCartMessage(`${productName} added`);
+        setIsCartButtonExpanded(true);
+        setTimeout(() => setIsCartButtonExpanded(false), 2000);
+        return;
+      }
     }
 
-    // Otherwise (for increasing quantity of existing item), update directly
     updateCart(productName, quantity);
-
-    if (quantity > prevQuantity) {
-      setCartMessage(`${quantity - prevQuantity} added`);
-      setIsCartButtonExpanded(true);
-      setTimeout(() => setIsCartButtonExpanded(false), 1500);
-    }
   };
 
   const handleFlavourConfirm = (productName: string, flavours: string[]) => {
@@ -179,6 +173,9 @@ export default function SearchClientPage({ initialProducts, initialFilters }: Se
     const prevQuantity = cart[product.name]?.quantity || 0;
     if (prevQuantity === 0) {
       setFlavourSelection({ product, isOpen: true });
+      setCartMessage(`${product.name} added`);
+      setIsCartButtonExpanded(true);
+      setTimeout(() => setIsCartButtonExpanded(false), 2000);
     } else {
       updateCart(product.name, prevQuantity + 1);
     }
