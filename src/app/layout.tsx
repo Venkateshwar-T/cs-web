@@ -4,7 +4,8 @@ import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
 import { ProgressBarComponent } from '@/components/progress-bar';
 import { Suspense } from 'react';
-import { AppContextProvider } from '@/context/app-context';
+import { AppContextProvider, AppContextConsumer } from '@/context/app-context';
+import { LoadingFallback } from '@/components/loading-fallback';
 
 export const metadata: Metadata = {
   title: 'BizHome',
@@ -27,8 +28,15 @@ export default function RootLayout({
       <body className="font-body antialiased overflow-y-auto no-scrollbar">
         <Suspense fallback={null}>
           <AppContextProvider>
-            <ProgressBarComponent />
-            {children}
+            <AppContextConsumer>
+              {(context) => (
+                <>
+                  {context?.isGlobalLoading && <LoadingFallback text="Searching..." />}
+                  <ProgressBarComponent />
+                  {children}
+                </>
+              )}
+            </AppContextConsumer>
           </AppContextProvider>
         </Suspense>
         <Toaster />

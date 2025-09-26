@@ -44,7 +44,9 @@ export default function SearchClientPage({ initialProducts, initialFilters }: Se
     toggleLike,
     clearWishlist,
     flavourSelection,
-    setFlavourSelection 
+    setFlavourSelection,
+    isGlobalLoading,
+    setIsGlobalLoading,
   } = useAppContext();
   const [isSearching, setIsSearching] = useState(true);
   const [isNewSearch, setIsNewSearch] = useState(true);
@@ -62,9 +64,12 @@ export default function SearchClientPage({ initialProducts, initialFilters }: Se
 
   useEffect(() => {
     setIsSearching(true);
-    const timer = setTimeout(() => setIsSearching(false), 500);
+    const timer = setTimeout(() => {
+      setIsSearching(false);
+      setIsGlobalLoading(false);
+    }, 500);
     return () => clearTimeout(timer);
-  }, [searchParams]);
+  }, [searchParams, setIsGlobalLoading]);
 
   useEffect(() => {
     if (isNewSearch) {
@@ -113,6 +118,7 @@ export default function SearchClientPage({ initialProducts, initialFilters }: Se
   const handleSearchSubmit = (value: string) => {
     const params = new URLSearchParams(searchParams.toString());
     params.set('q', value);
+    setIsGlobalLoading(true);
     router.push(`${pathname}?${params.toString()}`);
   };
   
@@ -138,8 +144,9 @@ export default function SearchClientPage({ initialProducts, initialFilters }: Se
     params.delete(categoryKey);
     newValues.forEach(v => params.append(categoryKey, v));
     
+    setIsGlobalLoading(true);
     router.push(`${pathname}?${params.toString()}`);
-  }, [searchParams, router, pathname]);
+  }, [searchParams, router, pathname, setIsGlobalLoading]);
 
   const handleToggleCartPopup = () => setIsCartOpen(p => !p);
 
@@ -147,6 +154,7 @@ export default function SearchClientPage({ initialProducts, initialFilters }: Se
     setSortOption(value);
     const params = new URLSearchParams(searchParams.toString());
     params.set('sort', value);
+    setIsGlobalLoading(true);
     router.push(`${pathname}?${params.toString()}`);
     if (isMobile) {
       setIsSortSheetOpen(false);
@@ -182,6 +190,10 @@ export default function SearchClientPage({ initialProducts, initialFilters }: Se
       updateCart(product.name, prevQuantity - 1);
     }
   };
+
+  if (isGlobalLoading) {
+    return <LoadingFallback text="Searching for chocolates..." />;
+  }
 
   return (
     <>

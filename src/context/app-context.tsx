@@ -92,6 +92,9 @@ interface AppContextType {
     isOpen: boolean;
   };
   setFlavourSelection: (selection: { product: SanityProduct | null; isOpen: boolean }) => void;
+  
+  isGlobalLoading: boolean;
+  setIsGlobalLoading: (isLoading: boolean) => void;
 }
 
 export type ProfileInfo = {
@@ -133,6 +136,7 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
 
   const [authPopup, setAuthPopup] = useState<AuthPopupType>(null);
   const [flavourSelection, setFlavourSelection] = useState<{ product: SanityProduct | null; isOpen: boolean }>({ product: null, isOpen: false });
+  const [isGlobalLoading, setIsGlobalLoading] = useState(false);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -203,6 +207,11 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
       }
     }
   }, []);
+  
+  useEffect(() => {
+    setIsGlobalLoading(false);
+  }, [orders, allOrders, cart, likedProducts, profileInfo]);
+
 
   const updateProfileInfo = useCallback(async (newInfo: Partial<ProfileInfo>) => {
     if (user) {
@@ -463,6 +472,8 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
     setAuthPopup,
     flavourSelection,
     setFlavourSelection,
+    isGlobalLoading,
+    setIsGlobalLoading,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
@@ -475,3 +486,5 @@ export function useAppContext() {
   }
   return context;
 }
+
+export const AppContextConsumer = AppContext.Consumer;

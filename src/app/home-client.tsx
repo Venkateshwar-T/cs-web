@@ -30,7 +30,7 @@ interface HomeClientProps extends HomepageContent {
 
 
 export default function HomeClient({ allProducts, exploreCategories, exploreFlavours }: HomeClientProps) {
-  const { cart, updateCart, likedProducts, toggleLike, clearWishlist, flavourSelection, setFlavourSelection } = useAppContext();
+  const { cart, updateCart, likedProducts, toggleLike, clearWishlist, flavourSelection, setFlavourSelection, setIsGlobalLoading } = useAppContext();
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const isMobile = useIsMobile();
   const router = useRouter();
@@ -61,6 +61,7 @@ export default function HomeClient({ allProducts, exploreCategories, exploreFlav
       return;
     }
     
+    setIsGlobalLoading(true);
     router.push(`/search?q=${encodeURIComponent(currentSearchInput.trim())}`);
   };
 
@@ -73,7 +74,7 @@ export default function HomeClient({ allProducts, exploreCategories, exploreFlav
       router.push('/cart', { scroll: false });
     } else if (view === 'profile') {
       router.push('/profile', { scroll: false });
-    } else {
+    } else if (view === 'home') {
        router.push('/', { scroll: false });
     }
   };
@@ -110,7 +111,10 @@ export default function HomeClient({ allProducts, exploreCategories, exploreFlav
           onReset={handleResetToHome}
           onNavigate={handleHeaderNavigate}
           activeView={'home'}
-          onSearchSubmit={(query) => router.push(`/search?q=${encodeURIComponent(query)}`)}
+          onSearchSubmit={(query) => {
+            setIsGlobalLoading(true);
+            router.push(`/search?q=${encodeURIComponent(query)}`);
+          }}
           searchInput={searchInput}
           onSearchInputChange={setSearchInput}
           isSearchingOnAbout={false}
