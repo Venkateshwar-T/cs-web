@@ -55,6 +55,8 @@ export function FeaturedProductCard({
   const discountPercentage = product.mrp && product.discountedPrice && product.mrp > product.discountedPrice
     ? Math.round(((product.mrp - product.discountedPrice) / product.mrp) * 100)
     : null;
+    
+  const subtitle = [product.weight, product.composition, product.packageType].filter(Boolean).join(' | ');
 
   return (
     <div
@@ -93,8 +95,9 @@ export function FeaturedProductCard({
 
       <div className="relative h-full flex flex-col justify-end p-3 md:p-4 text-white">
         <h3 className="font-bold text-sm md:text-base leading-tight truncate">{product.name}</h3>
+        <p className="text-[10px] md:text-xs text-white/80 mt-0.5 truncate">{subtitle}</p>
         
-        <div className="flex justify-between items-center mt-2">
+        <div className="flex justify-between items-center mt-1">
           {product.discountedPrice && (
             <div className="flex flex-col">
               {product.mrp && <p className="text-[10px] md:text-xs text-white/70 line-through">₹{product.mrp}</p>}
