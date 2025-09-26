@@ -2,7 +2,7 @@
 // @/components/header/search-bar.tsx
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import Image from 'next/image';
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
@@ -21,6 +21,7 @@ const textsToType = ["Corporate gifts", "Family presents", "Festive gifts", "Ann
 
 export function SearchBar({ activeView, isEnquireOpen, onSubmit, searchInput, onSearchInputChange }: SearchBarProps) {
     const [placeholder, setPlaceholder] = useState("");
+    const inputRef = useRef<HTMLInputElement>(null);
 
     const type = useCallback(() => {
         let textIndex = 0;
@@ -63,6 +64,9 @@ export function SearchBar({ activeView, isEnquireOpen, onSubmit, searchInput, on
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         onSubmit(e, searchInput);
+        if (inputRef.current) {
+            inputRef.current.blur(); // Dismiss the keyboard
+        }
     };
     
     return (
