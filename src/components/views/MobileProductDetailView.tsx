@@ -193,9 +193,9 @@ export function MobileProductDetailView({
 
   return (
     <div className={cn(
-      "bg-[#9A7DAB] h-full w-full rounded-[20px] relative flex flex-col pt-2 mt-4 overflow-hidden"
+      "bg-[#9A7DAB] w-full rounded-[20px] relative flex flex-col pt-2 mt-4"
     )}>
-      <div className="flex-grow overflow-y-auto no-scrollbar">
+      <div className="flex-grow">
         <div className="-mt-2">
           <MobileImageGallery product={product} onImageExpandChange={() => {}} />
         </div>
