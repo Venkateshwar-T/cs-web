@@ -1,3 +1,4 @@
+
 // @/context/app-context.tsx
 'use client';
 
@@ -149,63 +150,66 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
   const [isGlobalLoading, setIsGlobalLoading] = useState(false);
 
   useEffect(() => {
+    let unsubscribeFromAuth: (() => void) | undefined;
     let unsubscribeUserOrders = () => {};
     let unsubscribeAllOrders = () => {};
-    let unsubscribeFromAuth: Unsubscribe | undefined;
+    
+    // This effect should only run on the client
+    if (typeof window !== "undefined") {
+      const auth = getFirebaseAuth();
+      if (auth) {
+        unsubscribeFromAuth = onAuthStateChanged(auth, async (newUser) => {
+          setIsProfileLoaded(false);
+          setUser(newUser);
+          const newIsAdmin = newUser?.email === process.env.NEXT_PUBLIC_ADMIN_EMAIL;
+          setIsAuthenticated(!!newUser);
+          setIsAdmin(newIsAdmin);
 
-    const auth = getFirebaseAuth();
-    if (auth) {
-      unsubscribeFromAuth = onAuthStateChanged(auth, async (newUser) => {
-        setIsProfileLoaded(false);
-        setUser(newUser);
-        const newIsAdmin = newUser?.email === process.env.NEXT_PUBLIC_ADMIN_EMAIL;
-        setIsAuthenticated(!!newUser);
-        setIsAdmin(newIsAdmin);
-
-        if (newUser) {
-          let profile = await getUserProfile(newUser.uid);
-          if (profile) {
-            setProfileInfo(profile);
-          }
-          
-          unsubscribeUserOrders = onUserOrdersSnapshotPaginated(newUser.uid, (initialUserOrders, lastVisible) => {
-            setOrders(initialUserOrders);
-            setLastUserOrderSnapshot(lastVisible);
-            setHasMoreUserOrders(initialUserOrders.length === 5);
-            setIsOrdersLoaded(true);
-          });
-
-          if (newIsAdmin) {
-            unsubscribeAllOrders = onAllOrdersSnapshot((initialOrders, lastVisible) => {
-              const sortedOrders = initialOrders.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-              setAllOrders(sortedOrders);
-              setLastOrderSnapshot(lastVisible);
-              setHasMoreOrders(initialOrders.length === 5); // Check if there might be more
-              setIsAllOrdersLoaded(true);
+          if (newUser) {
+            let profile = await getUserProfile(newUser.uid);
+            if (profile) {
+              setProfileInfo(profile);
+            }
+            
+            unsubscribeUserOrders = onUserOrdersSnapshotPaginated(newUser.uid, (initialUserOrders, lastVisible) => {
+              setOrders(initialUserOrders);
+              setLastUserOrderSnapshot(lastVisible);
+              setHasMoreUserOrders(initialUserOrders.length === 5);
+              setIsOrdersLoaded(true);
             });
+
+            if (newIsAdmin) {
+              unsubscribeAllOrders = onAllOrdersSnapshot((initialOrders, lastVisible) => {
+                const sortedOrders = initialOrders.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+                setAllOrders(sortedOrders);
+                setLastOrderSnapshot(lastVisible);
+                setHasMoreOrders(initialOrders.length === 5); // Check if there might be more
+                setIsAllOrdersLoaded(true);
+              });
+            } else {
+              setAllOrders([]);
+              setIsAllOrdersLoaded(true);
+            }
+
           } else {
+            unsubscribeUserOrders();
+            unsubscribeAllOrders();
+            setProfileInfo(defaultProfileInfo);
+            setOrders([]);
             setAllOrders([]);
+            setIsOrdersLoaded(true);
             setIsAllOrdersLoaded(true);
           }
-
-        } else {
-          unsubscribeUserOrders();
-          unsubscribeAllOrders();
-          setProfileInfo(defaultProfileInfo);
-          setOrders([]);
-          setAllOrders([]);
-          setIsOrdersLoaded(true);
-          setIsAllOrdersLoaded(true);
-        }
-        setIsProfileLoaded(true);
+          setIsProfileLoaded(true);
+          setIsAuthLoaded(true);
+        });
+      } else {
+        // Handle case where Firebase Auth isn't immediately available
         setIsAuthLoaded(true);
-      });
-    } else {
-      // Handle case where Firebase isn't initialized (e.g., SSR)
-      setIsAuthLoaded(true);
-      setIsProfileLoaded(true);
-      setIsOrdersLoaded(true);
-      setIsAllOrdersLoaded(true);
+        setIsProfileLoaded(true);
+        setIsOrdersLoaded(true);
+        setIsAllOrdersLoaded(true);
+      }
     }
 
     return () => {
@@ -517,3 +521,5 @@ export function useAppContext() {
 }
 
 export const AppContextConsumer = AppContext.Consumer;
+
+    
