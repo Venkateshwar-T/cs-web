@@ -7,17 +7,6 @@ import { cn } from '@/lib/utils';
 import type { SanityProduct } from '@/types';
 import { PortableText, PortableTextComponents } from '@portabletext/react';
 
-const customComponents: PortableTextComponents = {
-    list: {
-      // For bulleted lists
-      bullet: ({ children }) => <ul className="list-disc space-y-1">{children}</ul>,
-    },
-    listItem: {
-      // For each item in the list
-      bullet: ({ children }) => <li className="text-xs">{children}</li>,
-    },
-  };
-
 interface ProductDetailsProps {
     product: SanityProduct;
     isLiked: boolean;
@@ -35,6 +24,17 @@ export function ProductDetails({ product, isLiked, onLikeToggle, isMobile = fals
     };
     
     const subtitle = [product.weight, product.composition, product.packageType].filter(Boolean).join(' | ');
+
+    const customComponents: PortableTextComponents = {
+        list: {
+          // For bulleted lists
+          bullet: ({ children }) => <ul className="list-disc space-y-1">{children}</ul>,
+        },
+        listItem: {
+          // For each item in the list
+          bullet: ({ children }) => <li className={cn(isMobile ? "text-xs" : "text-sm")}>{children}</li>,
+        },
+      };
 
     return (
         <div className={cn("flex flex-col gap-4 h-full animate-slide-in-from-right text-black")} style={{ animationDuration: '0.5s' }}>
@@ -95,7 +95,7 @@ export function ProductDetails({ product, isLiked, onLikeToggle, isMobile = fals
             
             {/* Allergen Alert */}
             {product.allergenAlert && (
-                <div className={cn("font-semibold text-black font-plex-sans text-xs")}>
+                <div className={cn("font-semibold text-black font-plex-sans", isMobile ? "text-xs" : "text-sm")}>
                     <p>Allergen Alert:</p>
         <div className="prose prose-sm list-disc list-inside pl-5">
         <PortableText value={product.allergenAlert} components={customComponents} />
