@@ -81,20 +81,23 @@ export default function ProductDetailClientPage({ product, featuredProducts }: P
   const handleAddToCart = (productName: string, quantity: number, flavours?: string[]) => {
     const prevQuantity = cart[productName]?.quantity || 0;
     
-    if (quantity < prevQuantity) {
-      updateCart(productName, quantity, flavours);
-      return;
-    }
-
-    if (quantity > 0 && prevQuantity === 0) {
+    // Only show flavour popup if adding for the first time
+    if (quantity > prevQuantity && prevQuantity === 0) {
       const productToSelect = featuredProducts.find(p => p.name === productName) || product;
-      if (productToSelect) {
+      if (productToSelect && productToSelect.availableFlavours && productToSelect.availableFlavours.length > 0) {
         setFlavourSelection({ product: productToSelect, isOpen: true });
         return;
       }
     }
 
     updateCart(productName, quantity, flavours);
+
+    // Show notification for new item added without flavours
+    if (quantity > prevQuantity && prevQuantity === 0) {
+       setCartMessage(`${productName} added`);
+       setIsCartButtonExpanded(true);
+       setTimeout(() => setIsCartButtonExpanded(false), 2000);
+    }
   };
 
 
@@ -152,6 +155,15 @@ export default function ProductDetailClientPage({ product, featuredProducts }: P
   };
 
   const handleToggleCartPopup = () => setIsCartOpen(p => !p);
+
+  const onFeaturedProductAddToCart = (product: SanityProduct) => {
+    const prevQuantity = cart[product.name]?.quantity || 0;
+    if (prevQuantity === 0) {
+      setFlavourSelection({ product: product, isOpen: true });
+    } else {
+      updateCart(product.name, prevQuantity + 1);
+    }
+  };
   
   const cartItemCount = Object.values(cart).reduce((acc, item) => acc + item.quantity, 0);
 
@@ -197,7 +209,7 @@ export default function ProductDetailClientPage({ product, featuredProducts }: P
                 <FeaturedProducts 
                     products={featuredProducts}
                     onProductClick={handleProductClick}
-                    onAddToCart={(prod) => setFlavourSelection({ product: prod, isOpen: true })}
+                    onAddToCart={onFeaturedProductAddToCart}
                     onRemoveFromCart={handleRemoveFromCart}
                     cart={cart}
                     likedProducts={likedProducts}
@@ -275,7 +287,7 @@ export default function ProductDetailClientPage({ product, featuredProducts }: P
               <FeaturedProducts 
                   products={featuredProducts}
                   onProductClick={handleProductClick}
-                  onAddToCart={(prod) => setFlavourSelection({ product: prod, isOpen: true })}
+                  onAddToCart={onFeaturedProductAddToCart}
                   onRemoveFromCart={handleRemoveFromCart}
                   cart={cart}
                   likedProducts={likedProducts}
