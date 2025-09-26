@@ -109,7 +109,7 @@ export function ProfilePopup({
       <div className="bg-transparent w-[60vw] h-[85vh] relative rounded-3xl overflow-hidden animate-fade-in">
           <button 
               onClick={handleClose} 
-              className="absolute top-4 right-4 text-white hover:text-gray-200 z-20 bg-black/30 rounded-full p-1"
+              className="absolute top-4 right-4 text-white hover:text-gray-200 z-20 rounded-full p-1"
           >
               <X size={20} />
               <span className="sr-only">Close</span>
