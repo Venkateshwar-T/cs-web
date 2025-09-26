@@ -1,8 +1,7 @@
-
 // @/app/admin/admin-client-page.tsx
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, UIEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { Header } from '@/components/header';
@@ -30,6 +29,7 @@ import {
 } from "@/components/ui/sheet";
 import { PopupsManager } from '@/components/popups/popups-manager';
 import { LoadingFallback } from '@/components/loading-fallback';
+import { Loader } from '@/components/loader';
 
 
 type StatusFilter = Order['status'] | 'All';
@@ -57,13 +57,14 @@ const FilterSection = ({ title, children }: { title: string, children: React.Rea
 export default function AdminClientPage({ allProducts }: { allProducts: SanityProduct[] }) {
   const router = useRouter();
   const isMobile = useIsMobile();
-  const { allOrders, isAllOrdersLoaded, isAdmin, cart, updateCart, likedProducts, toggleLike, clearWishlist, clearCart, logout } = useAppContext();
+  const { allOrders, isAllOrdersLoaded, isAdmin, loadMoreOrders, hasMoreOrders, cart, updateCart, likedProducts, toggleLike, clearWishlist, clearCart, logout } = useAppContext();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
   const [statusFilter, setStatusFilter] = useState<StatusFilter>('All');
   const [sortOption, setSortOption] = useState<SortOption>('newest');
   const [isFilterSheetOpen, setIsFilterSheetOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [isFetchingMore, setIsFetchingMore] = useState(false);
 
   const handleProductClick = (product: SanityProduct) => {
     router.push(`/product/${product.slug.current}`);
@@ -106,6 +107,17 @@ export default function AdminClientPage({ allProducts }: { allProducts: SanityPr
     setSortOption(option);
   };
 
+  const handleScroll = async (event: UIEvent<HTMLDivElement>) => {
+    const { scrollTop, scrollHeight, clientHeight } = event.currentTarget;
+    
+    // Check if user is near the bottom of the list (e.g., within 100px)
+    if (scrollHeight - scrollTop <= clientHeight + 100 && hasMoreOrders && !isFetchingMore) {
+        setIsFetchingMore(true);
+        await loadMoreOrders();
+        setIsFetchingMore(false);
+    }
+  };
+
   if (!isAllOrdersLoaded) {
     return <LoadingFallback text="Loading Admin Panel..." />;
   }
@@ -140,8 +152,8 @@ export default function AdminClientPage({ allProducts }: { allProducts: SanityPr
           "flex-grow flex flex-col transition-all duration-300 relative min-h-0",
           "pt-24 md:pt-32" 
         )}>
-          <div className="px-4 md:px-16 lg:px-32 flex-grow flex flex-col">
-            <div className="relative w-full mb-6">
+          <div className="px-4 md:px-16 lg:px-32 flex-grow flex flex-col min-h-0">
+            <div className="relative w-full mb-4">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
                 <Input
                   placeholder="Search by Product or Customer..."
@@ -220,10 +232,18 @@ export default function AdminClientPage({ allProducts }: { allProducts: SanityPr
             </div>
 
             {filteredOrders.length > 0 ? (
-              <div className="flex-grow overflow-y-auto no-scrollbar pb-8 space-y-4">
+              <div 
+                onScroll={handleScroll}
+                className="flex-grow overflow-y-auto no-scrollbar pb-4 space-y-4"
+              >
                 {filteredOrders.map(order => (
                   <AdminOrderItemCard key={order.id} order={order} onClick={() => setSelectedOrder(order)} />
                 ))}
+                {isFetchingMore && (
+                  <div className="flex justify-center py-4">
+                    <Loader />
+                  </div>
+                )}
               </div>
             ) : (
               <div className="flex-grow flex items-center justify-center">

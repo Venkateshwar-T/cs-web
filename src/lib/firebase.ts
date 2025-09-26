@@ -1,4 +1,3 @@
-
 // src/lib/firebase.ts
 import { initializeApp, getApps, getApp, type FirebaseApp } from 'firebase/app';
 import {
@@ -13,7 +12,29 @@ import {
   sendPasswordResetEmail,
   type User
 } from 'firebase/auth';
-import { getFirestore, doc, getDoc, setDoc, updateDoc, collection, addDoc, getDocs, query, collectionGroup, where, writeBatch, serverTimestamp, deleteField, onSnapshot, type Unsubscribe } from 'firebase/firestore';
+import {
+    getFirestore,
+    doc,
+    getDoc,
+    setDoc,
+    updateDoc,
+    collection,
+    addDoc,
+    getDocs,
+    query,
+    collectionGroup,
+    where,
+    writeBatch,
+    serverTimestamp,
+    deleteField,
+    onSnapshot,
+    type Unsubscribe,
+    limit,
+    startAfter,
+    orderBy,
+    QueryDocumentSnapshot,
+    DocumentData
+} from 'firebase/firestore';
 import type { ProfileInfo } from '@/context/app-context';
 import type { Order } from '@/types';
 
@@ -27,7 +48,7 @@ function getClientApp(): FirebaseApp | null {
   if (getApps().length) {
     return getApp();
   }
-  
+
   const firebaseConfig = {
     apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
     authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
@@ -36,7 +57,7 @@ function getClientApp(): FirebaseApp | null {
     messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
     appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID
   };
-  
+
    // Check if all required config values are present
   if (
     !firebaseConfig.apiKey ||
@@ -166,13 +187,20 @@ export const onUserOrdersSnapshot = (uid: string, callback: (orders: Order[]) =>
     });
 };
 
-export const onAllOrdersSnapshot = (callback: (orders: Order[]) => void): Unsubscribe => {
+export const onAllOrdersSnapshot = (
+  callback: (orders: Order[], lastVisible: QueryDocumentSnapshot<DocumentData> | null) => void
+): Unsubscribe => {
   const db = getClientFirestore();
   if (!db) return () => {};
 
-  const ordersQuery = query(collectionGroup(db, 'orders'));
+  const ordersQuery = query(
+      collectionGroup(db, 'orders'), 
+      orderBy('date', 'desc'), 
+      limit(5)
+  );
 
   return onSnapshot(ordersQuery, async (querySnapshot) => {
+      const lastVisible = querySnapshot.docs[querySnapshot.docs.length-1];
       const ordersWithUserDetails = await Promise.all(
           querySnapshot.docs.map(async (orderDoc) => {
               const orderData = orderDoc.data() as Omit<Order, 'id'>;
@@ -195,8 +223,48 @@ export const onAllOrdersSnapshot = (callback: (orders: Order[]) => void): Unsubs
               return { ...orderData, id: orderDoc.id, uid: userDocRef?.id || '' } as Order;
           })
       );
-      callback(ordersWithUserDetails);
+      callback(ordersWithUserDetails, lastVisible);
   });
+};
+
+export const getMoreOrders = async (startAfterDoc: QueryDocumentSnapshot<DocumentData>): Promise<{ orders: Order[], lastVisible: QueryDocumentSnapshot<DocumentData> | null }> => {
+    const db = getClientFirestore();
+    if (!db) return { orders: [], lastVisible: null };
+
+    const ordersQuery = query(
+        collectionGroup(db, 'orders'),
+        orderBy('date', 'desc'),
+        startAfter(startAfterDoc),
+        limit(5)
+    );
+
+    const querySnapshot = await getDocs(ordersQuery);
+    const lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1] || null;
+
+    const ordersWithUserDetails = await Promise.all(
+        querySnapshot.docs.map(async (orderDoc) => {
+            const orderData = orderDoc.data() as Omit<Order, 'id'>;
+            const userDocRef = orderDoc.ref.parent.parent;
+            if (userDocRef) {
+                const userDocSnap = await getDoc(userDocRef);
+                if (userDocSnap.exists()) {
+                    const userData = userDocSnap.data() as ProfileInfo;
+                    return {
+                        ...orderData,
+                        id: orderDoc.id,
+                        uid: userDocRef.id,
+                        customerName: userData.name,
+                        customerEmail: userData.email,
+                        customerPhone: userData.phone,
+                        address: userData.address
+                    } as Order;
+                }
+            }
+            return { ...orderData, id: orderDoc.id, uid: userDocRef?.id || '' } as Order;
+        })
+    );
+    
+    return { orders: ordersWithUserDetails, lastVisible };
 };
 
 

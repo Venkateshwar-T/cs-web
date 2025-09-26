@@ -1,4 +1,3 @@
-
 // @/context/app-context.tsx
 'use client';
 
@@ -19,9 +18,11 @@ import {
   updateOrderStatus,
   rateOrder as rateOrderInDb,
   addCancellationReason,
+  getMoreOrders,
 } from '@/lib/firebase';
 import type { User } from 'firebase/auth';
 import type { Order } from '@/types';
+import type { QueryDocumentSnapshot, DocumentData } from 'firebase/firestore';
 
 export type CartItem = {
   name: string;
@@ -72,6 +73,8 @@ interface AppContextType {
   
   allOrders: Order[];
   isAllOrdersLoaded: boolean;
+  loadMoreOrders: () => Promise<void>;
+  hasMoreOrders: boolean;
   updateOrderStatus: (uid: string, orderId: string, newStatus: Order['status'], cancelledBy?: 'user' | 'admin') => Promise<void>;
 
   cart: Cart;
@@ -127,6 +130,8 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
 
   const [allOrders, setAllOrders] = useState<Order[]>([]);
   const [isAllOrdersLoaded, setIsAllOrdersLoaded] = useState(false);
+  const [lastOrderSnapshot, setLastOrderSnapshot] = useState<QueryDocumentSnapshot<DocumentData> | null>(null);
+  const [hasMoreOrders, setHasMoreOrders] = useState(true);
 
 
   const [cart, setCart, isCartLoaded] = useLocalStorage<Cart>(
@@ -168,9 +173,11 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
 
             if (newIsAdmin) {
               // Set up real-time listener for all orders
-              unsubscribeAllOrders = onAllOrdersSnapshot((allUserOrders) => {
-                const sortedOrders = allUserOrders.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+              unsubscribeAllOrders = onAllOrdersSnapshot((initialOrders, lastVisible) => {
+                const sortedOrders = initialOrders.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
                 setAllOrders(sortedOrders);
+                setLastOrderSnapshot(lastVisible);
+                setHasMoreOrders(initialOrders.length === 5); // Check if there might be more
                 setIsAllOrdersLoaded(true);
               });
             } else {
@@ -207,6 +214,15 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
       }
     }
   }, []);
+  
+  const loadMoreOrders = useCallback(async () => {
+    if (!lastOrderSnapshot || !hasMoreOrders) return;
+
+    const { orders: newOrders, lastVisible } = await getMoreOrders(lastOrderSnapshot);
+    setAllOrders(prevOrders => [...prevOrders, ...newOrders]);
+    setLastOrderSnapshot(lastVisible);
+    setHasMoreOrders(newOrders.length === 5);
+  }, [lastOrderSnapshot, hasMoreOrders]);
   
   useEffect(() => {
     setIsGlobalLoading(false);
@@ -458,6 +474,8 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
     saveCancellationReason,
     allOrders,
     isAllOrdersLoaded,
+    loadMoreOrders,
+    hasMoreOrders,
     updateOrderStatus: handleUpdateOrderStatus,
     cart,
     updateCart,
