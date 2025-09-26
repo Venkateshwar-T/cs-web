@@ -60,3 +60,4 @@ export function MobileSearchHeader({ value, onChange, onSubmit, isVisible }: Mob
         </header>
     );
 }
+
