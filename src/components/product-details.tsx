@@ -14,7 +14,7 @@ const customComponents: PortableTextComponents = {
     },
     listItem: {
       // For each item in the list
-      bullet: ({ children }) => <li className="text-sm">{children}</li>,
+      bullet: ({ children }) => <li className="text-xs">{children}</li>,
     },
   };
 
