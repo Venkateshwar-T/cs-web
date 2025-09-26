@@ -103,7 +103,11 @@ function OrderConfirmedPageComponent({ allProducts }: { allProducts: SanityProdu
   };
 
   const handleNavigation = (view: ActiveView) => {
-    router.push(view === 'home' ? '/' : `/${view}`);
+    if (view === 'home') {
+      router.push('/');
+    } else {
+      router.push(`/${view}`);
+    }
   };
 
   const handleHeaderNavigate = (view: 'about' | 'faq' | 'admin') => {
@@ -139,7 +143,7 @@ function OrderConfirmedPageComponent({ allProducts }: { allProducts: SanityProdu
           activeView={'order-confirmed'}
           isUsingAnimatedSearch={false}
         />
-        <main className="flex-grow flex flex-col items-center justify-center px-4 pt-24 pb-8 md:py-16">
+        <main className="flex-grow flex flex-col items-center justify-center px-4 pt-24 pb-8 md:pt-32">
           <motion.div 
             className="w-full max-w-2xl mx-auto flex flex-col items-center gap-4 md:gap-6 text-center"
             initial="hidden"
