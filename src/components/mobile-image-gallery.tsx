@@ -1,3 +1,4 @@
+
 // @/components/mobile-image-gallery.tsx
 'use client';
 
@@ -42,7 +43,7 @@ export function MobileImageGallery({ product, onImageExpandChange }: MobileImage
             <div className="flex flex-col items-center gap-2 p-4">
                 
                 {/* Main Image */}
-                <div className="group relative w-2/3 aspect-square">
+                <div className="relative w-2/3 aspect-square cursor-pointer" onClick={handleExpandClick}>
                     <Image
                         src={images.length > 0 ? images[activeIndex] : '/placeholder.png'}
                         alt={product.name}
@@ -51,16 +52,7 @@ export function MobileImageGallery({ product, onImageExpandChange }: MobileImage
                         className="rounded-xl object-cover"
                         onDragStart={(e) => e.preventDefault()}
                     />
-                     <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/30 rounded-xl">
-                        <button 
-                            onClick={handleExpandClick} 
-                            className="text-white p-2 rounded-full hover:bg-black/30 transition-colors"
-                            aria-label="Expand image"
-                        >
-                            <Expand size={28} />
-                        </button>
-                    </div>
-
+                    
                     {images.length > 1 && (
                         <>
                              <button
@@ -130,3 +122,4 @@ export function MobileImageGallery({ product, onImageExpandChange }: MobileImage
 }
 
     
+
