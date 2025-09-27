@@ -43,7 +43,7 @@ export function TermsContent() {
 
             <PolicySection title="6. Limitation of Liability">
                  <p>In no event shall Choco Smiley, nor its directors, employees, partners, agents, suppliers, or affiliates, be liable for any indirect, incidental, special, consequential or punitive damages, including without limitation, loss of profits, data, use, goodwill, or other intangible losses, resulting from your access to or use of or inability to access or use the Service.</p>
-            </IPolicySection>
+            </PolicySection>
             
             <PolicySection title="7. Governing Law">
                 <p>These Terms shall be governed and construed in accordance with the laws of Karnataka, India, without regard to its conflict of law provisions. Any dispute arising from these Terms will be subject to the exclusive jurisdiction of the courts in Bangalore, Karnataka.</p>
