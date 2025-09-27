@@ -1,4 +1,3 @@
-
 // @/app/admin/analytics/analytics-client-page.tsx
 'use client';
 
@@ -44,7 +43,7 @@ export default function AnalyticsClientPage({ allProducts }: { allProducts: Sani
         if (!isAllOrdersLoaded || allOrders.length === 0) {
             return { totalRevenue: 0, totalOrders: 0, avgOrderValue: 0, totalProductsSold: 0, topProducts: [] };
         }
-        const completedOrders = allOrders.filter(order => order.status === 'Completed');
+        const completedOrders = allOrders.filter(order => order.status === 'Order Delivered');
         const totalRevenue = completedOrders.reduce((acc, order) => acc + order.total, 0);
         const totalOrders = allOrders.length;
         const avgOrderValue = completedOrders.length > 0 ? totalRevenue / completedOrders.length : 0;
@@ -95,9 +94,9 @@ export default function AnalyticsClientPage({ allProducts }: { allProducts: Sani
                         ) : (
                             <div className="flex-grow overflow-y-auto custom-scrollbar pr-2">
                                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                                    <MetricCard title="Total Revenue" value={`₹${analyticsData.totalRevenue.toFixed(2)}`} icon={<span className="text-white/80">₹</span>} description="From completed orders" />
+                                    <MetricCard title="Total Revenue" value={`₹${analyticsData.totalRevenue.toFixed(2)}`} icon={<span className="text-white/80">₹</span>} description="From delivered orders" />
                                     <MetricCard title="Total Orders" value={analyticsData.totalOrders} icon={<span className="text-white/80">#</span>} />
-                                    <MetricCard title="Avg. Order Value" value={`₹${analyticsData.avgOrderValue.toFixed(2)}`} icon={<span className="text-white/80">AV</span>} description="From completed orders"/>
+                                    <MetricCard title="Avg. Order Value" value={`₹${analyticsData.avgOrderValue.toFixed(2)}`} icon={<span className="text-white/80">AV</span>} description="From delivered orders"/>
                                     <MetricCard title="Products Sold" value={analyticsData.totalProductsSold} icon={<span className="text-white/80">QTY</span>}/>
                                 </div>
 

@@ -1,4 +1,3 @@
-
 // @/app/order-confirmed/order-confirmed-client-page.tsx
 'use client';
 
@@ -121,9 +120,9 @@ function OrderConfirmedPageComponent({ allProducts }: { allProducts: SanityProdu
 
   const cartItemCount = Object.values(cart).reduce((acc, item) => acc + item.quantity, 0);
 
-  const statusSteps = ['Order Requested', 'In Progress', 'Completed'];
+  const statusSteps = ['Order Requested', 'In Progress', 'Order Delivered'];
   const currentStatusIndex = confirmedOrder ? statusSteps.indexOf(confirmedOrder.status) : -1;
-  const isCancelled = confirmedOrder?.status === 'Cancelled';
+  const isCancelled = confirmedOrder?.status === 'Order Cancelled';
 
   if (isLoading || !confirmedOrder) {
     return (

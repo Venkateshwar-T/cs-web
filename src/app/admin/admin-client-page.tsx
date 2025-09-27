@@ -36,7 +36,7 @@ type StatusFilter = Order['status'] | 'All';
 type SortOption = 'newest' | 'oldest' | 'rating-high' | 'rating-low';
 
 
-const statusOptions: StatusFilter[] = ['All', 'Order Requested', 'In Progress', 'Completed', 'Cancelled'];
+const statusOptions: StatusFilter[] = ['All', 'Order Requested', 'In Progress', 'Order Delivered', 'Order Cancelled'];
 const sortOptions: { label: string; value: SortOption; section: 'date' | 'rating' }[] = [
   { label: 'Newest First', value: 'newest', section: 'date' },
   { label: 'Oldest First', value: 'oldest', section: 'date' },

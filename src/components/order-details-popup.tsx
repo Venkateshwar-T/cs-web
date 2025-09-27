@@ -1,4 +1,3 @@
-
 // @/components/order-details-popup.tsx
 import * as React from "react";
 import {
@@ -89,9 +88,9 @@ const OrderDetailsContent = ({ order, products }: { order: Order, products: Sani
     const totalMrp = order.items.reduce((acc, item) => acc + (item.mrp || ((item.finalProductPrice || 0) / item.quantity)) * item.quantity, 0)
     const discount = totalMrp > subtotal ? totalMrp - subtotal : 0;
     
-    const statusSteps = ['Order Requested', 'In Progress', 'Completed'];
+    const statusSteps = ['Order Requested', 'In Progress', 'Order Delivered'];
     const currentStatusIndex = statusSteps.indexOf(order.status);
-    const isCancelled = order.status === 'Cancelled';
+    const isCancelled = order.status === 'Order Cancelled';
 
 
     return (

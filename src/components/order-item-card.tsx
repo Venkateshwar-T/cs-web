@@ -50,8 +50,8 @@ export function OrderItemCard({ order: initialOrder, isMobile = false, onClick, 
     
     const statusVariant = (status: Order['status']): "success" | "destructive" | "default" | "info" => {
         switch (status) {
-            case 'Completed': return 'success';
-            case 'Cancelled': return 'destructive';
+            case 'Order Delivered': return 'success';
+            case 'Order Cancelled': return 'destructive';
             case 'In Progress': return 'info';
             default: return 'default';
         }
@@ -59,7 +59,7 @@ export function OrderItemCard({ order: initialOrder, isMobile = false, onClick, 
 
     const handleCancelOrder = async () => {
       if (order.uid && order.id) {
-        await updateOrderStatus(order.uid, order.id, 'Cancelled', 'user');
+        await updateOrderStatus(order.uid, order.id, 'Order Cancelled', 'user');
         onCancel(); 
       }
     };
@@ -121,7 +121,7 @@ export function OrderItemCard({ order: initialOrder, isMobile = false, onClick, 
                     Order Again
                 </Button>
                 
-                {(order.status === 'Cancelled' || <Separator orientation="vertical" className="h-4 bg-custom-purple-dark/20" />)}
+                {(order.status === 'Order Cancelled' || <Separator orientation="vertical" className="h-4 bg-custom-purple-dark/20" />)}
 
                 {(order.status === 'Order Requested' || order.status === 'In Progress') && (
                     <AlertDialog>
@@ -142,7 +142,7 @@ export function OrderItemCard({ order: initialOrder, isMobile = false, onClick, 
                         </AlertDialogContent>
                     </AlertDialog>
                 )}
-                {order.status === 'Completed' && (
+                {order.status === 'Order Delivered' && (
                     <>
                         {order.rating ? (
                             <p className="text-xs text-custom-purple-dark font-semibold italic">Thanks for rating!</p>

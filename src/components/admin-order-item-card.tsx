@@ -1,4 +1,3 @@
-
 // @/components/admin-order-item-card.tsx
 'use client';
 
@@ -22,8 +21,8 @@ export function AdminOrderItemCard({ order, onClick }: AdminOrderItemCardProps) 
     
     const statusVariant = (status: Order['status']): "success" | "destructive" | "default" | "info" => {
         switch (status) {
-            case 'Completed': return 'success';
-            case 'Cancelled': return 'destructive';
+            case 'Order Delivered': return 'success';
+            case 'Order Cancelled': return 'destructive';
             case 'In Progress': return 'info';
             default: return 'default';
         }

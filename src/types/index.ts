@@ -1,4 +1,3 @@
-
 // src/types/index.ts
 import type { PortableTextBlock } from '@portabletext/react';
 
@@ -56,7 +55,7 @@ export interface Order {
   uid: string;
   date: string;
   items: OrderItem[];
-  status: 'Order Requested' | 'In Progress' | 'Completed' | 'Cancelled';
+  status: 'Order Requested' | 'In Progress' | 'Order Delivered' | 'Order Cancelled';
   total: number;
   totalDiscount?: number;
   gstPercentage?: number;

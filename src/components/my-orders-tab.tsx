@@ -1,4 +1,3 @@
-
 // @/components/my-orders-tab.tsx
 'use client';
 
@@ -30,7 +29,7 @@ export function MyOrdersTab({ isMobile = false, products, onProductClick }: MyOr
     const [isFetchingMore, setIsFetchingMore] = useState(false);
     
     const currentOrders = orders.filter(o => o.status === 'Order Requested' || o.status === 'In Progress');
-    const completedOrders = orders.filter(o => o.status === 'Completed' || o.status === 'Cancelled');
+    const completedOrders = orders.filter(o => o.status === 'Order Delivered' || o.status === 'Order Cancelled');
 
 
     if (!isOrdersLoaded) {
@@ -99,7 +98,7 @@ export function MyOrdersTab({ isMobile = false, products, onProductClick }: MyOr
                             </div>
 
                             <div>
-                                <SectionTitle className="text-lg mb-2 mt-4 px-2">Completed Orders</SectionTitle>
+                                <SectionTitle className="text-lg mb-2 mt-4 px-2">Past Orders</SectionTitle>
                                 {completedOrders.length > 0 ? (
                                     <div className="space-y-4 mb-4">
                                         {completedOrders.map((order) => (
@@ -185,7 +184,7 @@ export function MyOrdersTab({ isMobile = false, products, onProductClick }: MyOr
                         </div>
                         
                         <div>
-                            <SectionTitle className="text-xl mb-4 p-0">Completed Orders</SectionTitle>
+                            <SectionTitle className="text-xl mb-4 p-0">Past Orders</SectionTitle>
                              {completedOrders.length > 0 ? (
                                 <div className="space-y-4">
                                     {completedOrders.map(order => (
