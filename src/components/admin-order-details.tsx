@@ -243,7 +243,7 @@ const OrderDetailsContent = ({ order: initialOrder, allProducts }: { order: Orde
             ) : (
                 <div className="flex flex-col items-center justify-center gap-2 pb-4">
                     <p className="text-sm text-white/80">Change Order Status</p>
-                    <div className="flex flex-wrap justify-center gap-2 w-full">
+                    <div className="flex flex-wrap justify-center gap-2 font-plex-sans w-full">
                         {statusOptions.map((status) => {
                             const buttonContent = (
                                 <Button

@@ -105,7 +105,7 @@ const OrderDetailsContent = ({ order, products }: { order: Order, products: Sani
 
             <div className="w-full">
               <h4 className="font-bold mb-3">Order Status</h4>
-              <div className="flex items-center w-full px-4">
+              <div className="flex items-center font-plex-sans w-full px-4">
                 <TimelineNode isCompleted={currentStatusIndex >= 0} isCurrent={currentStatusIndex === 0} status={order.status} isCancelled={isCancelled}>Order<br/>Requested</TimelineNode>
                 <TimelineConnector isCompleted={currentStatusIndex >= 1} isCancelled={isCancelled} />
                 <TimelineNode isCompleted={currentStatusIndex >= 1} isCurrent={currentStatusIndex === 1} status={order.status} isCancelled={isCancelled}>In<br/>Progress</TimelineNode>

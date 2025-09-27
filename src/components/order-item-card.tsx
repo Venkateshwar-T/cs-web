@@ -74,8 +74,8 @@ export function OrderItemCard({ order: initialOrder, isMobile = false, onClick, 
             onClick={onClick}
             className="bg-white/90 p-3 md:p-4 text-black w-full relative overflow-hidden rounded-xl md:rounded-2xl shadow-md text-left flex flex-col gap-2 cursor-pointer"
         >
-            <div className="flex flex-col gap-2">
-                <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
+            <div className="flex flex-col">
+                <div className="flex items-center overflow-x-auto no-scrollbar pb-2">
                     {order.items.map((item, index) => (
                         <div key={index} className="relative flex-shrink-0">
                              <div className="relative w-14 h-14 md:w-16 md:h-16">
@@ -84,7 +84,7 @@ export function OrderItemCard({ order: initialOrder, isMobile = false, onClick, 
                                     alt={item.name}
                                     fill
                                     sizes="(max-width: 768px) 15vw, 5vw"
-                                    className="rounded-full object-cover border-2 border-white"
+                                    className="rounded-xl object-cover border-2 border-white"
                                     data-ai-hint="chocolate box"
                                 />
                                  <div className="absolute -bottom-1 -right-1 bg-custom-purple-dark text-white text-[10px] font-bold rounded-full h-5 w-5 flex items-center justify-center border-2 border-white">
@@ -99,7 +99,7 @@ export function OrderItemCard({ order: initialOrder, isMobile = false, onClick, 
                     <Badge 
                         variant={statusVariant(order.status)}
                         className={cn(
-                            "text-xs",
+                            "text-xs font-plex-sans",
                             order.status === 'Order Requested' && 'text-custom-purple-dark hover:bg-primary'
                         )}
                     >
@@ -113,11 +113,11 @@ export function OrderItemCard({ order: initialOrder, isMobile = false, onClick, 
                 </div>
             </div>
             
-            <Separator className="bg-custom-purple-dark/20 my-1" />
+            <Separator className="bg-custom-purple-dark/20" />
 
-            <div className="flex items-center justify-between gap-2">
-                <Button onClick={handleReorder} variant="link" className="p-0 h-auto text-custom-purple-dark font-semibold text-xs md:text-sm hover:no-underline">
-                    <RotateCcw className="mr-1.5 h-3.5 w-3.5" />
+            <div className="flex items-center justify-between">
+                <Button onClick={handleReorder} variant="link" className="p-0 h-auto text-custom-purple-dark font-poppins text-xs md:text-sm hover:no-underline">
+                    <RotateCcw className="h-3.5 w-3.5" />
                     Order Again
                 </Button>
                 
@@ -126,7 +126,7 @@ export function OrderItemCard({ order: initialOrder, isMobile = false, onClick, 
                 {(order.status === 'Order Requested' || order.status === 'In Progress') && (
                     <AlertDialog>
                         <AlertDialogTrigger asChild>
-                           <Button variant="link" className="p-0 h-auto text-red-600 font-semibold text-xs md:text-sm hover:no-underline" onClick={(e) => e.stopPropagation()}>Cancel Order</Button>
+                           <Button variant="link" className="p-0 h-auto text-red-600 font-poppins text-xs md:text-sm hover:no-underline" onClick={(e) => e.stopPropagation()}>Cancel Order</Button>
                         </AlertDialogTrigger>
                         <AlertDialogContent>
                             <AlertDialogHeader>

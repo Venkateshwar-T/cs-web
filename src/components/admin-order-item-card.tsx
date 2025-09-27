@@ -57,7 +57,7 @@ export function AdminOrderItemCard({ order, onClick }: AdminOrderItemCardProps) 
                 {/* Total & Status */}
                 <div className="md:col-span-1 flex md:flex-col justify-between items-center md:items-end gap-2">
                     <p className="font-bold text-lg">₹{order.total.toFixed(2)}</p>
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center font-plex-sans gap-2">
                         {order.rating && (
                             <div className="flex items-center gap-1 text-custom-gold bg-black/20 px-2 py-1 rounded-full">
                                 <Star className="h-3 w-3 fill-current" />
