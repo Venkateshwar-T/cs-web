@@ -73,7 +73,7 @@ export function MyOrdersTab({ isMobile = false, products, onProductClick }: MyOr
             <>
                 <div className="flex flex-col h-full text-white">
                      {orders.length > 0 ? (
-                        <div onScroll={handleScroll} className="bg-transparent rounded-2xl flex flex-col pt-4 overflow-y-auto no-scrollbar">
+                        <div onScroll={handleScroll} className="bg-transparent flex flex-col pt-4 overflow-y-auto no-scrollbar">
                             <div>
                                 <SectionTitle className="text-lg mb-2 px-2">Current Orders</SectionTitle>
                                 {currentOrders.length > 0 ? (
@@ -161,12 +161,12 @@ export function MyOrdersTab({ isMobile = false, products, onProductClick }: MyOr
 
     return (
         <>
-            <div className="p-8 text-white h-full flex flex-col relative pb-3">
+            <div className="p-8 text-white h-full flex flex-col relative pb-0">
                 <div className="flex justify-between items-center mb-6">
                   <h2 className="text-3xl font-normal font-poppins self-start">My Orders</h2>
                 </div>
                  {orders.length > 0 ? (
-                    <div onScroll={handleScroll} className="flex-grow overflow-y-auto pr-2 custom-scrollbar space-y-8">
+                    <div onScroll={handleScroll} className="flex-grow overflow-y-auto pr-2 no-scrollbar space-y-8 pb-4">
                         <div>
                             <SectionTitle className="text-xl mb-4 p-0">Current Orders</SectionTitle>
                             {currentOrders.length > 0 ? (
