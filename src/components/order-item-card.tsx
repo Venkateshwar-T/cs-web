@@ -147,7 +147,7 @@ export function OrderItemCard({ order: initialOrder, isMobile = false, onClick, 
                         {order.rating ? (
                             <p className="text-xs text-custom-purple-dark font-semibold italic">Thanks for rating!</p>
                         ) : (
-                            <Button onClick={(e) => { e.stopPropagation(); onRate(); }} variant="link" className="p-0 h-auto text-custom-purple-dark font-semibold text-xs md:text-sm hover:no-underline">Rate Order</Button>
+                            <Button onClick={(e) => { e.stopPropagation(); onRate(); }} variant="link" className="p-0 h-auto text-custom-purple-dark font-poppins text-xs md:text-sm hover:no-underline">Rate Order</Button>
                         )}
                     </>
                 )}
