@@ -1,4 +1,3 @@
-
 // @/components/admin-order-details.tsx
 'use client';
 
@@ -60,8 +59,17 @@ const DetailRow = ({ icon, label, value }: { icon: React.ReactNode, label: strin
 const OrderDetailsContent = ({ order: initialOrder, allProducts }: { order: Order, allProducts: SanityProduct[] }) => {
     const { updateOrderStatus, allOrders } = useAppContext();
     
-    // Find the live order from the context to ensure status is always up-to-date
-    const order = allOrders.find(o => o.id === initialOrder.id) || initialOrder;
+    // This state will hold the most current version of the order.
+    const [order, setOrder] = React.useState(initialOrder);
+
+    // This effect hook listens for changes in the global 'allOrders' list.
+    // When it changes, we find the latest version of our order and update the local state.
+    React.useEffect(() => {
+        const updatedOrder = allOrders.find(o => o.id === initialOrder.id);
+        if (updatedOrder) {
+            setOrder(updatedOrder); // This will trigger a re-render with the new status
+        }
+    }, [allOrders, initialOrder.id]);
 
     if (!order) return null;
     
@@ -105,9 +113,9 @@ const OrderDetailsContent = ({ order: initialOrder, allProducts }: { order: Orde
                 <DetailRow icon={<Mail size={16} />} label="Email" value={order.customerEmail || 'Loading...'} />
                 <DetailRow icon={<Phone size={16} />} label="Phone" value={
                   order.customerPhone ? (
-                    <a href={`tel:${order.customerPhone}`}>
-                      {order.customerPhone}
-                    </a>
+                      <a href={`tel:${order.customerPhone}`}>
+                          {order.customerPhone}
+                      </a>
                   ) : 'Loading...'
                 } />
                 <DetailRow icon={<Home size={16} />} label="Address" value={order.address || 'Not Provided'} />
@@ -130,7 +138,7 @@ const OrderDetailsContent = ({ order: initialOrder, allProducts }: { order: Orde
                     {order.items.map((item, index) => {
                         const product = productsByName[item.name];
                         return (
-                            <React.Fragment key={item.name}>
+                            <React.Fragment key={`${item.name}-${index}`}>
                                  <div className="flex flex-col">
                                     <p className="font-bold text-base mb-2">{item.name}</p>
                                     <div className="flex gap-3 items-start">

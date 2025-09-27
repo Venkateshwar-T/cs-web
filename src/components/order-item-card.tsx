@@ -1,4 +1,3 @@
-
 // @/components/order-item-card.tsx
 'use client';
 
@@ -30,9 +29,14 @@ interface OrderItemCardProps {
     onCancel: () => void;
 }
 
-export function OrderItemCard({ order, isMobile = false, onClick, onRate, onCancel }: OrderItemCardProps) {
-    const { updateOrderStatus, reorder } = useAppContext();
+export function OrderItemCard({ order: initialOrder, isMobile = false, onClick, onRate, onCancel }: OrderItemCardProps) {
+    // We now get the master list of orders from the context.
+    const { updateOrderStatus, reorder, orders } = useAppContext();
     const { toast } = useToast();
+
+    // This is the key change: Find the 'live' version of the order from the context.
+    // If it exists, use it. Otherwise, fall back to the initial prop.
+    const order = orders.find(o => o.id === initialOrder.id) || initialOrder;
 
     const orderDate = new Date(order.date);
     const formattedDate = orderDate.toLocaleDateString('en-US', {
@@ -76,8 +80,8 @@ export function OrderItemCard({ order, isMobile = false, onClick, onRate, onCanc
             >
                 <div className="flex justify-between items-start mb-3">
                      <div className="flex flex-col">
-                        <p className="text-xs text-black/70">{formattedDate} at {formattedTime}</p>
-                        <p className="text-base md:text-lg font-bold">₹{order.total.toFixed(2)}</p>
+                         <p className="text-xs text-black/70">{formattedDate} at {formattedTime}</p>
+                         <p className="text-base md:text-lg font-bold">₹{order.total.toFixed(2)}</p>
                     </div>
                     <Badge 
                         variant={statusVariant(order.status)}
