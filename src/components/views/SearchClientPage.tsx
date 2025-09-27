@@ -1,3 +1,4 @@
+
 // src/components/views/SearchClientPage.tsx
 'use client';
 
@@ -17,6 +18,7 @@ import { MobileSearchHeader } from '@/components/header/mobile-search-header';
 import { StaticSparkleBackground } from '@/components/static-sparkle-background';
 import { useAppContext } from '@/context/app-context';
 import { FlavourSelectionPopup } from '../flavour-selection-popup';
+import { LoadingFallback } from '../loading-fallback';
 
 interface SearchClientPageProps {
   initialProducts: SanityProduct[];
@@ -179,6 +181,10 @@ export default function SearchClientPage({ initialProducts, initialFilters }: Se
     }
   };
 
+  if (isNewSearch && !initialProducts.length) {
+    return <LoadingFallback text="Searching for chocolates..." />;
+  }
+
   return (
     <>
       {isMobile ? <StaticSparkleBackground /> : <SparkleBackground />}
@@ -272,3 +278,5 @@ export default function SearchClientPage({ initialProducts, initialFilters }: Se
     </>
   );
 }
+
+    
