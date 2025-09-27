@@ -140,9 +140,8 @@ export default function SearchClientPage({ initialProducts, initialFilters }: Se
     params.delete(categoryKey);
     newValues.forEach(v => params.append(categoryKey, v));
     
-    setIsGlobalLoading(true);
     router.push(`${pathname}?${params.toString()}`);
-  }, [searchParams, router, pathname, setIsGlobalLoading]);
+  }, [searchParams, router, pathname]);
 
   const handleToggleCartPopup = () => setIsCartOpen(p => !p);
 
@@ -150,7 +149,6 @@ export default function SearchClientPage({ initialProducts, initialFilters }: Se
     setSortOption(value);
     const params = new URLSearchParams(searchParams.toString());
     params.set('sort', value);
-    setIsGlobalLoading(true);
     router.push(`${pathname}?${params.toString()}`);
     if (isMobile) {
       setIsSortSheetOpen(false);
@@ -284,4 +282,3 @@ export default function SearchClientPage({ initialProducts, initialFilters }: Se
     </>
   );
 }
-
