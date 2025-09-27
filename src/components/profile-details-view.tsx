@@ -1,3 +1,4 @@
+
 // @/components/profile-details-view.tsx
 'use client';
 
@@ -36,55 +37,46 @@ export function ProfileDetailsView({ profile, onHasChangesChange, onProfileUpdat
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
-  const [hasChanges, setHasChanges] = useState(false);
   const { toast } = useToast();
 
   const isGoogleSignIn = user?.providerData.some(
     (provider) => provider.providerId === 'google.com'
   );
   
-  // This effect runs only when the profile from the context changes
+  const populateAddressFields = (fullAddress: string) => {
+    if (!fullAddress) return;
+    const cityStatePincodeRegex = new RegExp(`,\\s*${city},\\s*${state}\\s*-\\s*(\\d{6})$`);
+    const cityStatePincodeMatch = fullAddress.match(cityStatePincodeRegex);
+    
+    const pincodeValue = cityStatePincodeMatch ? cityStatePincodeMatch[1] : '';
+    setPincode(pincodeValue);
+    
+    const mainAddress = cityStatePincodeMatch ? fullAddress.substring(0, cityStatePincodeMatch.index).trim() : fullAddress;
+    
+    const parts = mainAddress.split(',').map(p => p.trim());
+    setHouse(parts[0] || '');
+    setArea(parts[1] || '');
+    setLandmark(parts.slice(2).join(', ') || '');
+  };
+
   useEffect(() => {
     setName(profile.name || '');
     setPhone(profile.phone || '');
     setEmail(profile.email || '');
     setPassword('');
-    
-    // Parse the full address string into individual fields
-    const fullAddress = profile.address || '';
-    if (fullAddress) {
-        const cityStatePincodeRegex = new RegExp(`,\\s*${city},\\s*${state}\\s*-\\s*(\\d{6})$`);
-        const cityStatePincodeMatch = fullAddress.match(cityStatePincodeRegex);
-        const pincodeValue = cityStatePincodeMatch ? cityStatePincodeMatch[1] : '';
-        setPincode(pincodeValue);
-        
-        const mainAddress = cityStatePincodeMatch ? fullAddress.substring(0, cityStatePincodeMatch.index).trim() : fullAddress;
-        
-        const parts = mainAddress.split(',').map(p => p.trim());
-        setHouse(parts[0] || '');
-        setArea(parts[1] || '');
-        setLandmark(parts.slice(2).join(', ') || '');
-    } else {
-        setHouse('');
-        setArea('');
-        setLandmark('');
-        setPincode('');
-    }
+    populateAddressFields(profile.address || '');
+  }, [profile]);
 
-  }, [profile, city, state]);
-
-  // This effect checks for any changes compared to the initial profile state
   useEffect(() => {
-    const addressParts = [house, area, landmark].filter(Boolean).join(', ');
-    const currentFullAddress = `${addressParts}, ${city}, ${state} - ${pincode}`;
-    
+    const addressParts = [house, area, landmark].filter(p => p.trim()).join(', ');
+    const currentFullAddress = addressParts ? `${addressParts}, ${city}, ${state} - ${pincode}` : '';
+
     const changes = 
       name !== (profile.name || '') || 
       phone !== (profile.phone || '') || 
       email !== (profile.email || '') || 
-      (house && area && pincode && currentFullAddress !== (profile.address || '')) ||
+      currentFullAddress !== (profile.address || '') ||
       password !== '';
-    setHasChanges(changes);
     onHasChangesChange(changes);
   }, [name, phone, email, house, area, landmark, pincode, password, profile, onHasChangesChange, city, state]);
   
@@ -94,31 +86,11 @@ export function ProfileDetailsView({ profile, onHasChangesChange, onProfileUpdat
   };
   
   const handleCancel = () => {
-    // Reset state to match the profile from context
     setName(profile.name || '');
     setPhone(profile.phone || '');
     setEmail(profile.email || '');
     setPassword('');
-    
-    const fullAddress = profile.address || '';
-    if (fullAddress) {
-        const cityStatePincodeRegex = new RegExp(`,\\s*${city},\\s*${state}\\s*-\\s*(\\d{6})$`);
-        const cityStatePincodeMatch = fullAddress.match(cityStatePincodeRegex);
-        const pincodeValue = cityStatePincodeMatch ? cityStatePincodeMatch[1] : '';
-        setPincode(pincodeValue);
-        
-        const mainAddress = cityStatePincodeMatch ? fullAddress.substring(0, cityStatePincodeMatch.index).trim() : fullAddress;
-        
-        const parts = mainAddress.split(',').map(p => p.trim());
-        setHouse(parts[0] || '');
-        setArea(parts[1] || '');
-        setLandmark(parts.slice(2).join(', ') || '');
-    } else {
-        setHouse('');
-        setArea('');
-        setLandmark('');
-        setPincode('');
-    }
+    populateAddressFields(profile.address || '');
   };
 
   const handleSave = async () => {
@@ -148,7 +120,7 @@ export function ProfileDetailsView({ profile, onHasChangesChange, onProfileUpdat
         passwordChanged = true;
       }
 
-      const addressParts = [house, area, landmark].filter(p => p.trim() !== '').join(', ');
+      const addressParts = [house, area, landmark].filter(p => p.trim()).join(', ');
       const fullAddress = `${addressParts}, ${city}, ${state} - ${pincode}`;
 
       const updatedProfile: Partial<ProfileInfo> = { name, phone, address: fullAddress };
@@ -342,11 +314,11 @@ export function ProfileDetailsView({ profile, onHasChangesChange, onProfileUpdat
                 onClick={handleCancel}
                 variant="outline"
                 className="bg-transparent text-base text-white border-custom-gold border-2 rounded-full px-10 hover:bg-custom-gold hover:text-custom-purple-dark disabled:opacity-50 disabled:bg-transparent disabled:text-white/50 disabled:border-white/50 disabled:hover:text-white/50"
-                disabled={!hasChanges || isSaving}
+                disabled={!onHasChangesChange || isSaving}
             >
                 Cancel
             </Button>
-            <Button onClick={handleSave} className="bg-custom-gold text-base text-custom-purple-dark rounded-full px-12 hover:bg-custom-gold/90 disabled:opacity-50" disabled={!hasChanges || isSaving}>
+            <Button onClick={handleSave} className="bg-custom-gold text-base text-custom-purple-dark rounded-full px-12 hover:bg-custom-gold/90 disabled:opacity-50" disabled={!onHasChangesChange || isSaving}>
                 Save
             </Button>
         </div>
