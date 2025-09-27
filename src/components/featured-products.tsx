@@ -38,12 +38,12 @@ export function FeaturedProducts({
 
   return (
     <div className={cn(
-      "bg-[#9A7DAB] rounded-[20px] md:rounded-[40px] ring-4 ring-custom-purple-dark px-4 sm:px-6 lg:px-6",
+      "bg-white/10 rounded-[20px] md:rounded-[40px] px-4 sm:px-6 lg:px-8",
       isMobile ? "py-4" : "py-6"
     )}>
       <SectionTitle className={cn(
-        "text-black",
-        isMobile ? "mb-4 text-base px-2" : "mb-2 text-xl md:text-2xl"
+        "text-white",
+        isMobile ? "mb-4 text-base px-2" : "mb-6 text-xl md:text-2xl"
       )}>
         You might also like
       </SectionTitle>
