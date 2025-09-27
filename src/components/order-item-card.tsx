@@ -1,3 +1,4 @@
+
 // @/components/order-item-card.tsx
 'use client';
 
@@ -19,7 +20,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { useToast } from '@/hooks/use-toast';
-import { RotateCcw } from 'lucide-react';
+import { RotateCcw, Star } from 'lucide-react';
 import { Separator } from './ui/separator';
 
 interface OrderItemCardProps {
@@ -72,9 +73,9 @@ export function OrderItemCard({ order: initialOrder, isMobile = false, onClick, 
     return (
         <div 
             onClick={onClick}
-            className="bg-white/90 p-3 md:p-4 text-black w-full relative overflow-hidden rounded-xl md:rounded-2xl shadow-md text-left flex flex-col gap-2 cursor-pointer"
+            className="bg-white/90 p-3 md:p-4 text-black w-full relative overflow-hidden rounded-xl md:rounded-2xl shadow-md text-left flex flex-col cursor-pointer"
         >
-            <div className="flex flex-col">
+            <div className="flex flex-col gap-2 mb-2">
                 <div className="flex items-center overflow-x-auto no-scrollbar gap-2 pb-2">
                     {order.items.map((item, index) => (
                         <div key={index} className="relative flex-shrink-0">
@@ -115,7 +116,7 @@ export function OrderItemCard({ order: initialOrder, isMobile = false, onClick, 
             
             <Separator className="bg-custom-purple-dark/20" />
 
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between mt-2">
                 <Button onClick={handleReorder} variant="link" className="p-0 h-auto text-custom-purple-dark font-poppins text-xs md:text-sm hover:no-underline">
                     <RotateCcw className="h-3.5 w-3.5" />
                     Order Again
@@ -145,7 +146,11 @@ export function OrderItemCard({ order: initialOrder, isMobile = false, onClick, 
                 {order.status === 'Order Delivered' && (
                     <>
                         {order.rating ? (
-                            <p className="text-xs text-custom-purple-dark font-semibold italic">Thanks for rating!</p>
+                            <div className="flex items-center gap-1">
+                                {[...Array(5)].map((_, i) => (
+                                    <Star key={i} className={cn("h-4 w-4", order.rating! > i ? "text-custom-gold fill-custom-gold" : "text-gray-300")}/>
+                                ))}
+                            </div>
                         ) : (
                             <Button onClick={(e) => { e.stopPropagation(); onRate(); }} variant="link" className="p-0 h-auto text-custom-purple-dark font-poppins text-xs md:text-sm hover:no-underline">Rate Order</Button>
                         )}
