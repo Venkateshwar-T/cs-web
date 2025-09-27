@@ -227,8 +227,8 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
   }, [lastOrderSnapshot, hasMoreOrders]);
   
   useEffect(() => {
-    setIsGlobalLoading(false);
-  }, [orders, allOrders, cart, likedProducts, profileInfo]);
+    // This is now only for debugging or specific cases, as the progress bar is automatic
+  }, [isGlobalLoading]);
 
 
   const updateProfileInfo = useCallback(async (newInfo: Partial<ProfileInfo>) => {
