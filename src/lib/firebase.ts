@@ -1,4 +1,3 @@
-
 // src/lib/firebase.ts
 import { initializeApp, getApps, getApp, type FirebaseApp } from 'firebase/app';
 import {
@@ -13,22 +12,22 @@ import {
   sendPasswordResetEmail,
   type User
 } from 'firebase/auth';
-import {
-    getFirestore,
-    doc,
-    getDoc,
-    setDoc,
-    updateDoc,
-    collection,
-    addDoc,
-    getDocs,
-    query,
-    collectionGroup,
-    where,
-    writeBatch,
-    serverTimestamp,
-    deleteField,
-    onSnapshot,
+import { 
+    getFirestore, 
+    doc, 
+    getDoc, 
+    setDoc, 
+    updateDoc, 
+    collection, 
+    addDoc, 
+    getDocs, 
+    query, 
+    collectionGroup, 
+    where, 
+    writeBatch, 
+    serverTimestamp, 
+    deleteField, 
+    onSnapshot, 
     type Unsubscribe,
     limit,
     startAfter,
@@ -161,17 +160,21 @@ export const updateUserProfile = async (uid: string, data: Partial<ProfileInfo>)
     await updateDoc(userDocRef, data);
 };
 
-export const addUserOrder = async (uid: string, orderData: Omit<Order, 'id' | 'uid'>): Promise<string> => {
+export const addUserOrder = async (uid: string, orderData: Omit<Order, 'id' | 'uid' | 'date'>): Promise<string> => {
     const db = getClientFirestore();
     if (!db) throw new Error("Firestore not initialized");
     const ordersCollectionRef = collection(db, 'users', uid, 'orders');
+    
+    // Create the document with all data, including the server timestamp, in one step.
     const docRef = await addDoc(ordersCollectionRef, {
         ...orderData,
         uid: uid,
-        id: '' // Firestore will generate an ID, we'll update it later
+        id: '', // This will be updated shortly
+        date: serverTimestamp() // Use the correct server-side timestamp
     });
-    // Now update the document with its own ID and a server-side timestamp
-    await updateDoc(docRef, { id: docRef.id, date: serverTimestamp() });
+
+    // Update the document only to add its own ID for reference.
+    await updateDoc(docRef, { id: docRef.id });
     return docRef.id;
 };
 
@@ -190,7 +193,12 @@ export const onUserOrdersSnapshotPaginated = (
   );
 
   return onSnapshot(q, (querySnapshot) => {
-    const orders = querySnapshot.docs.map(doc => doc.data() as Order);
+    const orders = querySnapshot.docs.map(doc => {
+        const data = doc.data();
+        // Convert Firestore Timestamp to JS Date for the client
+        const date = data.date?.toDate ? data.date.toDate().toISOString() : new Date().toISOString();
+        return { ...data, date } as Order;
+    });
     const lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1] || null;
     callback(orders, lastVisible);
   });
@@ -212,7 +220,12 @@ export const getMoreUserOrders = async (
   );
 
   const querySnapshot = await getDocs(q);
-  const orders = querySnapshot.docs.map(doc => doc.data() as Order);
+  const orders = querySnapshot.docs.map(doc => {
+    const data = doc.data();
+    // Convert Firestore Timestamp to JS Date for the client
+    const date = data.date?.toDate ? data.date.toDate().toISOString() : new Date().toISOString();
+    return { ...data, date } as Order;
+  });
   const lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1] || null;
 
   return { orders, lastVisible };
@@ -228,14 +241,17 @@ export const onAllOrdersSnapshot = (
   const ordersQuery = query(
       collectionGroup(db, 'orders'), 
       orderBy('date', 'desc'), 
-      limit(5)
+      limit(5) // Set to 5 as requested
   );
 
   return onSnapshot(ordersQuery, async (querySnapshot) => {
       const lastVisible = querySnapshot.docs[querySnapshot.docs.length-1];
       const ordersWithUserDetails = await Promise.all(
           querySnapshot.docs.map(async (orderDoc) => {
-              const orderData = orderDoc.data() as Omit<Order, 'id'>;
+              const orderData = orderDoc.data();
+              // Convert Firestore Timestamp to JS Date for the client
+              const date = orderData.date?.toDate ? orderData.date.toDate().toISOString() : new Date().toISOString();
+              
               const userDocRef = orderDoc.ref.parent.parent;
               if (userDocRef) {
                   const userDocSnap = await getDoc(userDocRef);
@@ -243,6 +259,7 @@ export const onAllOrdersSnapshot = (
                       const userData = userDocSnap.data() as ProfileInfo;
                       return {
                           ...orderData,
+                          date, // Use the converted date
                           id: orderDoc.id,
                           uid: userDocRef.id,
                           customerName: userData.name,
@@ -252,7 +269,7 @@ export const onAllOrdersSnapshot = (
                       } as Order;
                   }
               }
-              return { ...orderData, id: orderDoc.id, uid: userDocRef?.id || '' } as Order;
+              return { ...orderData, date, id: orderDoc.id, uid: userDocRef?.id || '' } as Order;
           })
       );
       callback(ordersWithUserDetails, lastVisible);
@@ -267,7 +284,7 @@ export const getMoreOrders = async (startAfterDoc: QueryDocumentSnapshot<Documen
         collectionGroup(db, 'orders'),
         orderBy('date', 'desc'),
         startAfter(startAfterDoc),
-        limit(5)
+        limit(5) // Set to 5 as requested
     );
 
     const querySnapshot = await getDocs(ordersQuery);
@@ -275,7 +292,10 @@ export const getMoreOrders = async (startAfterDoc: QueryDocumentSnapshot<Documen
 
     const ordersWithUserDetails = await Promise.all(
         querySnapshot.docs.map(async (orderDoc) => {
-            const orderData = orderDoc.data() as Omit<Order, 'id'>;
+            const orderData = orderDoc.data();
+            // Convert Firestore Timestamp to JS Date for the client
+            const date = orderData.date?.toDate ? orderData.date.toDate().toISOString() : new Date().toISOString();
+
             const userDocRef = orderDoc.ref.parent.parent;
             if (userDocRef) {
                 const userDocSnap = await getDoc(userDocRef);
@@ -283,6 +303,7 @@ export const getMoreOrders = async (startAfterDoc: QueryDocumentSnapshot<Documen
                     const userData = userDocSnap.data() as ProfileInfo;
                     return {
                         ...orderData,
+                        date, // Use the converted date
                         id: orderDoc.id,
                         uid: userDocRef.id,
                         customerName: userData.name,
@@ -292,7 +313,7 @@ export const getMoreOrders = async (startAfterDoc: QueryDocumentSnapshot<Documen
                     } as Order;
                 }
             }
-            return { ...orderData, id: orderDoc.id, uid: userDocRef?.id || '' } as Order;
+            return { ...orderData, date, id: orderDoc.id, uid: userDocRef?.id || '' } as Order;
         })
     );
     

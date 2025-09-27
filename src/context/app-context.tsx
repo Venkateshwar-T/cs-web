@@ -67,7 +67,8 @@ interface AppContextType {
   isOrdersLoaded: boolean;
   loadMoreUserOrders: () => Promise<void>;
   hasMoreUserOrders: boolean;
-  addOrder: (newOrder: Omit<Order, 'id' | 'uid'>) => Promise<string | null>;
+  // This is the line we are correcting
+  addOrder: (newOrder: Omit<Order, 'id' | 'uid' | 'date'>) => Promise<string | null>;
   clearOrders: () => void;
   reorder: (orderId: string) => void;
   reorderItem: (item: OrderItem) => void;
@@ -149,10 +150,7 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
   const [isGlobalLoading, setIsGlobalLoading] = useState(false);
 
   useEffect(() => {
-    // This effect should only run on the client
-    if (typeof window === "undefined") {
-      return;
-    }
+    if (typeof window === "undefined") return;
 
     let unsubscribeUserOrders = () => {};
     let unsubscribeAllOrders = () => {};
@@ -164,7 +162,6 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
         setIsAuthenticated(!!newUser);
         setIsAdmin(newIsAdmin);
 
-        // Clean up previous listeners before setting new ones
         unsubscribeUserOrders();
         unsubscribeAllOrders();
 
@@ -186,7 +183,7 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
                     const sortedOrders = initialOrders.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
                     setAllOrders(sortedOrders);
                     setLastOrderSnapshot(lastVisible);
-                    setHasMoreOrders(initialOrders.length === 4); // Keep this as 4 for admin
+                    setHasMoreOrders(initialOrders.length === 5); // Set to 5
                     setIsAllOrdersLoaded(true);
                 });
             } else {
@@ -194,7 +191,6 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
                 setIsAllOrdersLoaded(true);
             }
         } else {
-            // User is logged out, reset all user-specific state
             setProfileInfo(defaultProfileInfo);
             setOrders([]);
             setAllOrders([]);
@@ -227,7 +223,7 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
     const { orders: newOrders, lastVisible } = await getMoreOrders(lastOrderSnapshot);
     setAllOrders(prevOrders => [...prevOrders, ...newOrders]);
     setLastOrderSnapshot(lastVisible);
-    setHasMoreOrders(newOrders.length === 4); // Keep this as 4 for admin
+    setHasMoreOrders(newOrders.length === 5); // Set to 5
   }, [lastOrderSnapshot, hasMoreOrders]);
   
   useEffect(() => {
@@ -267,7 +263,7 @@ export function AppContextProvider({ children }: { children: ReactNode }) {
     setLikedProducts({});
   }, [setLikedProducts]);
 
-  const addOrder = useCallback(async (newOrder: Omit<Order, 'id' | 'uid'>): Promise<string | null> => {
+  const addOrder = useCallback(async (newOrder: Omit<Order, 'id' | 'uid' | 'date'>): Promise<string | null> => {
     if (user) {
       try {
         const newOrderId = await addUserOrder(user.uid, newOrder);

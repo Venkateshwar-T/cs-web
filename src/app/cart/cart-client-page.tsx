@@ -1,4 +1,3 @@
-
 // @/app/cart/cart-client-page.tsx
 'use client';
 
@@ -149,7 +148,6 @@ export default function CartClientPage({ allProducts }: { allProducts: SanityPro
     const total = subtotal + gstAmount;
 
     const newOrderId = await addOrder({
-        date: new Date().toISOString(),
         items: orderItems,
         status: 'Order Requested',
         total: total > 0 ? total : 0,
