@@ -64,7 +64,7 @@ export function ProductCard({
   return (
     <div
       onClick={() => onProductClick(product)}
-      className="relative w-full h-full bg-white/90 hover:bg-custom-gold rounded-2xl overflow-hidden cursor-pointer group border border-custom-gold md:border-white hover:border-custom-gold transition-colors duration-300 flex flex-col shadow-lg"
+      className="relative w-full h-full bg-white/90 active:bg-custom-gold md:hover:bg-custom-gold rounded-2xl overflow-hidden cursor-pointer group border border-custom-gold md:border-white md:hover:border-custom-gold transition-colors duration-300 flex flex-col shadow-lg"
     >
       {/* Image Section */}
       <div className="relative w-full pt-[80%] overflow-hidden">
