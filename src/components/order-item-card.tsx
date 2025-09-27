@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { useToast } from '@/hooks/use-toast';
 import { RotateCcw } from 'lucide-react';
+import { Separator } from './ui/separator';
 
 interface OrderItemCardProps {
     order: Order;
@@ -30,12 +31,9 @@ interface OrderItemCardProps {
 }
 
 export function OrderItemCard({ order: initialOrder, isMobile = false, onClick, onRate, onCancel }: OrderItemCardProps) {
-    // We now get the master list of orders from the context.
     const { updateOrderStatus, reorder, orders } = useAppContext();
     const { toast } = useToast();
 
-    // This is the key change: Find the 'live' version of the order from the context.
-    // If it exists, use it. Otherwise, fall back to the initial prop.
     const order = orders.find(o => o.id === initialOrder.id) || initialOrder;
 
     const orderDate = new Date(order.date);
@@ -62,38 +60,22 @@ export function OrderItemCard({ order: initialOrder, isMobile = false, onClick, 
     const handleCancelOrder = async () => {
       if (order.uid && order.id) {
         await updateOrderStatus(order.uid, order.id, 'Cancelled', 'user');
-        onCancel(); // Trigger the feedback popup
+        onCancel(); 
       }
     };
 
     const handleReorder = (e: React.MouseEvent) => {
-        e.stopPropagation(); // Prevent the main card click
+        e.stopPropagation();
         reorder(order.id);
     };
 
     return (
         <div 
-            className="bg-white/90 p-3 md:p-4 text-black w-full relative overflow-hidden rounded-xl md:rounded-2xl shadow-md text-left flex flex-col gap-3">
-            <button 
-                onClick={onClick}
-                className="w-full text-left"
-            >
-                <div className="flex justify-between items-start mb-3">
-                     <div className="flex flex-col">
-                         <p className="text-xs text-black/70">{formattedDate} at {formattedTime}</p>
-                         <p className="text-base md:text-lg font-bold">₹{order.total.toFixed(2)}</p>
-                    </div>
-                    <Badge 
-                        variant={statusVariant(order.status)}
-                        className={cn(
-                            order.status === 'Order Requested' && 'text-custom-purple-dark hover:bg-primary'
-                        )}
-                    >
-                        {order.status}
-                    </Badge>
-                </div>
-
-                <div className="flex items-center gap-2 mt-3 overflow-x-auto no-scrollbar pb-1">
+            onClick={onClick}
+            className="bg-white/90 p-3 md:p-4 text-black w-full relative overflow-hidden rounded-xl md:rounded-2xl shadow-md text-left flex flex-col gap-3 cursor-pointer"
+        >
+            <div className="flex flex-col gap-3">
+                <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
                     {order.items.map((item, index) => (
                         <div key={index} className="relative flex-shrink-0">
                              <div className="relative w-14 h-14 md:w-16 md:h-16">
@@ -112,46 +94,63 @@ export function OrderItemCard({ order: initialOrder, isMobile = false, onClick, 
                         </div>
                     ))}
                 </div>
-            </button>
-            
-            <div className="border-t border-black/10 -mx-3 md:-mx-4"></div>
 
-            <div className="flex items-center justify-between gap-2 pt-1">
-                <Button onClick={handleReorder} size="sm" variant="ghost" className="text-xs h-7 rounded-full text-custom-purple-dark hover:bg-custom-purple-dark/10 hover:text-custom-purple-dark">
+                <div className="self-start">
+                    <Badge 
+                        variant={statusVariant(order.status)}
+                        className={cn(
+                            "text-xs",
+                            order.status === 'Order Requested' && 'text-custom-purple-dark hover:bg-primary'
+                        )}
+                    >
+                        {order.status}
+                    </Badge>
+                </div>
+                
+                <div className="flex justify-between items-center w-full">
+                    <p className="text-xs text-black/70">{formattedDate} at {formattedTime}</p>
+                    <p className="text-base md:text-lg font-bold">₹{order.total.toFixed(2)}</p>
+                </div>
+            </div>
+            
+            <Separator className="bg-custom-purple-dark/20" />
+
+            <div className="flex items-center justify-between gap-2">
+                <Button onClick={handleReorder} variant="link" className="p-0 h-auto text-custom-purple-dark font-semibold text-xs md:text-sm hover:no-underline">
                     <RotateCcw className="mr-1.5 h-3.5 w-3.5" />
                     Order Again
                 </Button>
+                
+                <Separator orientation="vertical" className="h-4 bg-custom-purple-dark/20" />
 
-                <div className="flex items-center justify-end gap-2">
-                    {(order.status === 'Order Requested' || order.status === 'In Progress') && (
-                        <AlertDialog>
-                            <AlertDialogTrigger asChild>
-                                <Button variant="destructive" size="sm" className="text-xs h-7 rounded-full">Cancel Order</Button>
-                            </AlertDialogTrigger>
-                            <AlertDialogContent>
-                                <AlertDialogHeader>
-                                <AlertDialogTitle>Are you sure you want to cancel this order?</AlertDialogTitle>
-                                <AlertDialogDescription>
-                                    This action cannot be undone.
-                                </AlertDialogDescription>
-                                </AlertDialogHeader>
-                                <AlertDialogFooter>
-                                <AlertDialogCancel>No, Keep It</AlertDialogCancel>
-                                <AlertDialogAction onClick={handleCancelOrder}>Yes, Cancel</AlertDialogAction>
-                                </AlertDialogFooter>
-                            </AlertDialogContent>
-                        </AlertDialog>
-                    )}
-                    {order.status === 'Completed' && (
-                        <>
-                            {order.rating ? (
-                                <p className="text-xs text-custom-purple-dark font-semibold italic">Thank you for your feedback!</p>
-                            ) : (
-                                <Button onClick={onRate} size="sm" className="text-xs h-7 rounded-full bg-custom-gold text-custom-purple-dark hover:bg-custom-gold/90">Rate Your Order</Button>
-                            )}
-                        </>
-                    )}
-                </div>
+                {(order.status === 'Order Requested' || order.status === 'In Progress') && (
+                    <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                           <Button variant="link" className="p-0 h-auto text-red-600 font-semibold text-xs md:text-sm hover:no-underline" onClick={(e) => e.stopPropagation()}>Cancel Order</Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                            <AlertDialogHeader>
+                            <AlertDialogTitle>Are you sure you want to cancel this order?</AlertDialogTitle>
+                            <AlertDialogDescription>
+                                This action cannot be undone.
+                            </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                            <AlertDialogCancel onClick={(e) => e.stopPropagation()}>No, Keep It</AlertDialogCancel>
+                            <AlertDialogAction onClick={handleCancelOrder}>Yes, Cancel</AlertDialogAction>
+                            </AlertDialogFooter>
+                        </AlertDialogContent>
+                    </AlertDialog>
+                )}
+                {order.status === 'Completed' && (
+                    <>
+                        {order.rating ? (
+                            <p className="text-xs text-custom-purple-dark font-semibold italic">Thanks for rating!</p>
+                        ) : (
+                            <Button onClick={(e) => { e.stopPropagation(); onRate(); }} variant="link" className="p-0 h-auto text-custom-purple-dark font-semibold text-xs md:text-sm hover:no-underline">Rate Order</Button>
+                        )}
+                    </>
+                )}
             </div>
         </div>
     );
