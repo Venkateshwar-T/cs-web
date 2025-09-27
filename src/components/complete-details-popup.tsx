@@ -109,7 +109,7 @@ export function CompleteDetailsPopup({ open, onOpenChange, onConfirm }: Complete
                   value={address}
                   onChange={(e) => setAddress(e.target.value)}
                   placeholder="Enter your full delivery address"
-                  className="bg-white rounded-2xl text-black placeholder:text-gray-400 placeholder:font-montserrat font-montserrat h-24"
+                  className="bg-white rounded-2xl text-black placeholder:text-gray-400 placeholder:font-montserrat font-montserrat h-28 no-scrollbar"
               />
             </div>
 

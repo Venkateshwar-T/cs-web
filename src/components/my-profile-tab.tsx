@@ -185,7 +185,7 @@ export function MyProfileTab({ profile, onProfileUpdate }: MyProfileTabProps) {
               value={address}
               onChange={(e) => setAddress(e.target.value)}
               placeholder="Enter your full delivery address"
-              className="bg-white/10 border-white/20 text-white rounded-2xl h-24"
+              className="bg-white/10 border-white/20 text-white rounded-2xl h-28 no-scrollbar"
             />
         </div>
 

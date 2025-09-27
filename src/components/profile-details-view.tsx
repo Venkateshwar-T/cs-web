@@ -189,7 +189,7 @@ export function ProfileDetailsView({ profile, onHasChangesChange, onProfileUpdat
               value={address}
               onChange={(e) => setAddress(e.target.value)}
               placeholder="Enter your full delivery address"
-              className="bg-white border-white/20 text-black rounded-2xl h-24 text-base"
+              className="bg-white border-white/20 text-black rounded-2xl h-28 text-base no-scrollbar"
             />
         </div>
 
