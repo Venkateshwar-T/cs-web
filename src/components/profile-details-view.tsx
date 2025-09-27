@@ -1,4 +1,3 @@
-
 // @/components/profile-details-view.tsx
 'use client';
 
@@ -22,12 +21,34 @@ interface ProfileDetailsViewProps {
   onProfileUpdate: (updatedProfile: Partial<ProfileInfo>) => void;
 }
 
+const parseAddress = (fullAddress: string) => {
+    const parts = fullAddress.split(',').map(p => p.trim());
+    const pincodeMatch = fullAddress.match(/\b\d{6}\b/);
+    const pincode = pincodeMatch ? pincodeMatch[0] : '';
+    
+    let address = fullAddress;
+    if (pincode) {
+        address = address.replace(pincode, '').trim().replace(/,$/, '').trim();
+    }
+    address = address.replace(/, Karnataka/i, '').trim().replace(/,$/, '').trim();
+    address = address.replace(/, Bangalore/i, '').trim().replace(/,$/, '').trim();
+
+    return {
+        address: address,
+        pincode: pincode
+    };
+};
+
 export function ProfileDetailsView({ profile, onHasChangesChange, onProfileUpdate }: ProfileDetailsViewProps) {
   const { user } = useAppContext();
   const [name, setName] = useState(profile.name || '');
   const [phone, setPhone] = useState(profile.phone || '');
   const [email, setEmail] = useState(profile.email || '');
-  const [address, setAddress] = useState(profile.address || '');
+
+  const [address, setAddress] = useState('');
+  const [pincode, setPincode] = useState('');
+  const city = 'Bangalore';
+  const state = 'Karnataka';
   
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -42,19 +63,22 @@ export function ProfileDetailsView({ profile, onHasChangesChange, onProfileUpdat
     setName(profile.name || '');
     setPhone(profile.phone || '');
     setEmail(profile.email || '');
-    setAddress(profile.address || '');
+    const { address: parsedAddress, pincode: parsedPincode } = parseAddress(profile.address || '');
+    setAddress(parsedAddress);
+    setPincode(parsedPincode);
     setPassword('');
   }, [profile]);
 
   useEffect(() => {
+    const fullAddressFromState = [address.trim(), city, state, pincode.trim()].filter(Boolean).join(', ');
     const changes = 
       name !== (profile.name || '') || 
       phone !== (profile.phone || '') || 
       email !== (profile.email || '') || 
-      address !== (profile.address || '') ||
+      fullAddressFromState !== (profile.address || '') ||
       password !== '';
     onHasChangesChange(changes);
-  }, [name, phone, email, address, password, profile, onHasChangesChange]);
+  }, [name, phone, email, address, pincode, password, profile, onHasChangesChange, city, state]);
   
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -64,25 +88,23 @@ export function ProfileDetailsView({ profile, onHasChangesChange, onProfileUpdat
     setName(profile.name || '');
     setPhone(profile.phone || '');
     setEmail(profile.email || '');
-    setAddress(profile.address || '');
+    const { address: parsedAddress, pincode: parsedPincode } = parseAddress(profile.address || '');
+    setAddress(parsedAddress);
+    setPincode(parsedPincode);
     setPassword('');
   };
 
   const handleSave = async () => {
     if (phone && phone.length !== 10) {
-      toast({
-        title: "Invalid Phone Number",
-        description: "Please enter a valid 10-digit phone number.",
-        variant: "destructive",
-      });
+      toast({ title: "Invalid Phone Number", description: "Please enter a valid 10-digit phone number.", variant: "destructive" });
       return;
     }
     if (!address.trim()) {
-      toast({
-        title: "Incomplete Address",
-        description: "Please provide your delivery address.",
-        variant: "destructive"
-      });
+      toast({ title: "Incomplete Address", description: "Please provide your delivery address.", variant: "destructive" });
+      return;
+    }
+    if (pincode && pincode.length !== 6) {
+      toast({ title: "Invalid Pincode", description: "Please enter a valid 6-digit pincode.", variant: "destructive" });
       return;
     }
 
@@ -95,7 +117,8 @@ export function ProfileDetailsView({ profile, onHasChangesChange, onProfileUpdat
         passwordChanged = true;
       }
 
-      const updatedProfile: Partial<ProfileInfo> = { name, phone, address };
+      const fullAddress = [address.trim(), city, state, pincode.trim()].filter(Boolean).join(', ');
+      const updatedProfile: Partial<ProfileInfo> = { name, phone, address: fullAddress };
       if (!isGoogleSignIn) {
         updatedProfile.email = email;
       }
@@ -125,6 +148,14 @@ export function ProfileDetailsView({ profile, onHasChangesChange, onProfileUpdat
       setPhone(value);
     }
   };
+  
+  const handlePincodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    if (/^\d*$/.test(value) && value.length <= 6) {
+      setPincode(value);
+    }
+  };
+
 
   if (isSaving) {
     return (
@@ -158,20 +189,20 @@ export function ProfileDetailsView({ profile, onHasChangesChange, onProfileUpdat
 
       <div className="w-full max-w-sm space-y-3">
         <div className="space-y-1">
-          <label htmlFor="name" className="p-3 text-m font-medium">Name</label>
+          <label htmlFor="name-desktop" className="p-3 text-m font-medium">Name</label>
           <Input 
-            id="name" 
+            id="name-desktop" 
             value={name}
             onChange={(e) => setName(e.target.value)}
             className="bg-white border-white/20 text-black rounded-2xl h-12 text-base" 
           />
         </div>
         <div className="space-y-1">
-          <label htmlFor="phone" className="p-3 text-m font-medium">Phone Number</label>
+          <label htmlFor="phone-desktop" className="p-3 text-m font-medium">Phone Number</label>
           <div className="flex items-center bg-white border border-white/20 rounded-2xl h-12 overflow-hidden">
               <span className="text-black font-montserrat px-3 border-r border-gray-300">+91</span>
               <Input 
-                id="phone" 
+                id="phone-desktop" 
                 type="tel"
                 value={phone}
                 onChange={handlePhoneChange}
@@ -181,25 +212,60 @@ export function ProfileDetailsView({ profile, onHasChangesChange, onProfileUpdat
         </div>
 
         <Separator className="bg-white/20 my-4" />
+        
+        <h3 className="text-lg font-medium text-center font-plex-sans -mb-2">Delivery Address</h3>
 
         <div className='space-y-1'>
-          <h3 className="text-lg font-medium text-center font-plex-sans">Delivery Address</h3>
-           <Textarea
-              id="address"
+          <label htmlFor="address-desktop" className="p-3 text-m font-medium">Address</label>
+            <Textarea
+              id="address-desktop"
               value={address}
               onChange={(e) => setAddress(e.target.value)}
-              placeholder="Enter your full delivery address"
-              className="bg-white border-white/20 text-black rounded-2xl h-28 text-base no-scrollbar"
+              placeholder="House No, Building Name, Street, Area"
+              className="bg-white border-white/20 text-black rounded-2xl h-24 text-base no-scrollbar"
             />
         </div>
+        
+        <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-1">
+                <label htmlFor="pincode-desktop" className="p-3 text-m font-medium">Pincode</label>
+                <Input
+                    id="pincode-desktop"
+                    type="tel"
+                    value={pincode}
+                    onChange={handlePincodeChange}
+                    className="bg-white border-white/20 text-black rounded-2xl h-12 text-base"
+                />
+            </div>
+             <div className="space-y-1">
+                <label htmlFor="city-desktop" className="p-3 text-m font-medium">City</label>
+                <Input
+                    id="city-desktop"
+                    value={city}
+                    readOnly
+                    className="bg-white border-white/20 text-black rounded-2xl h-12 text-base opacity-70 cursor-not-allowed"
+                />
+            </div>
+        </div>
+        
+        <div className="space-y-1">
+            <label htmlFor="state-desktop" className="p-3 text-m font-medium">State</label>
+            <Input
+                id="state-desktop"
+                value={state}
+                readOnly
+                className="bg-white border-white/20 text-black rounded-2xl h-12 text-base opacity-70 cursor-not-allowed"
+            />
+        </div>
+
 
         {!isGoogleSignIn && (
           <>
             <Separator className="bg-white/20 my-4" />
             <div className="space-y-1">
-              <label htmlFor="email" className="p-3 text-m font-medium">Email</label>
+              <label htmlFor="email-desktop" className="p-3 text-m font-medium">Email</label>
               <Input 
-                id="email" 
+                id="email-desktop" 
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -207,10 +273,10 @@ export function ProfileDetailsView({ profile, onHasChangesChange, onProfileUpdat
               />
             </div>
             <div className="space-y-1">
-                <label htmlFor="password" className="p-3 text-m font-medium">Password</label>
+                <label htmlFor="password-desktop" className="p-3 text-m font-medium">Password</label>
                 <div className="relative">
                     <Input 
-                        id="password" 
+                        id="password-desktop" 
                         type={showPassword ? "text" : "password"} 
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}

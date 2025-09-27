@@ -1,4 +1,3 @@
-
 // @/components/complete-details-popup.tsx
 'use client';
 
@@ -28,6 +27,10 @@ export function CompleteDetailsPopup({ open, onOpenChange, onConfirm }: Complete
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [address, setAddress] = useState('');
+  const [pincode, setPincode] = useState('');
+  const city = 'Bangalore';
+  const state = 'Karnataka';
+
 
   const { toast } = useToast();
   
@@ -35,22 +38,25 @@ export function CompleteDetailsPopup({ open, onOpenChange, onConfirm }: Complete
     if (open) {
       setName(profileInfo.name || '');
       setPhone(profileInfo.phone || '');
-      setAddress(profileInfo.address || '');
+      // We don't parse here, as new users won't have an address yet.
+      setAddress('');
+      setPincode('');
     }
   }, [open, profileInfo]);
 
 
   const handleConfirm = () => {
-    if (!name.trim() || !phone.trim() || phone.length !== 10 || !address.trim()) {
+    if (!name.trim() || !phone.trim() || phone.length !== 10 || !address.trim() || !pincode.trim() || pincode.length !== 6) {
       toast({
         title: "Missing or Invalid Details",
-        description: "Please fill all required fields: name, 10-digit phone, and address.",
+        description: "Please fill all required fields: name, 10-digit phone, address and a 6-digit pincode.",
         variant: "destructive",
       });
       return;
     }
     
-    onConfirm(name, phone, address);
+    const fullAddress = [address.trim(), city, state, pincode.trim()].filter(Boolean).join(', ');
+    onConfirm(name, phone, fullAddress);
     onOpenChange(false);
   };
 
@@ -58,6 +64,13 @@ export function CompleteDetailsPopup({ open, onOpenChange, onConfirm }: Complete
     const value = e.target.value;
     if (/^\d*$/.test(value) && value.length <= 10) {
       setPhone(value);
+    }
+  };
+  
+  const handlePincodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    if (/^\d*$/.test(value) && value.length <= 6) {
+      setPincode(value);
     }
   };
   
@@ -74,7 +87,7 @@ export function CompleteDetailsPopup({ open, onOpenChange, onConfirm }: Complete
         <div className="flex flex-col gap-3 px-6 pt-10 pb-6 text-white max-h-[85vh] overflow-y-auto custom-scrollbar">
             <h2 className="text-2xl md:text-3xl font-medium text-center font-plex-sans">Important: Confirm Your Details</h2>
             <p className="text-xs md:text-sm px-4 md:px-6 mt-2 text-center text-white/80">
-                This is a crucial step. We need your name and phone number to reach out about payment and order confirmation.
+                This is a crucial step. We need your name, phone number, and address to process your orders.
             </p>
             
             <div className="space-y-1 text-left">
@@ -103,14 +116,46 @@ export function CompleteDetailsPopup({ open, onOpenChange, onConfirm }: Complete
 
             <Separator className="bg-white/20 my-2" />
 
-            <div className='space-y-3'>
-              <h3 className="text-lg font-medium text-center font-plex-sans">Delivery Address</h3>
+            <h3 className="text-lg font-medium text-center font-plex-sans -mb-2">Delivery Address</h3>
+            
+            <div className='space-y-1 text-left'>
+              <label className="pl-2 text-sm font-medium font-plex-sans">Address</label>
                <Textarea
                   value={address}
                   onChange={(e) => setAddress(e.target.value)}
-                  placeholder="Enter your full delivery address"
-                  className="bg-white rounded-2xl text-black placeholder:text-gray-400 placeholder:font-montserrat font-montserrat h-28 no-scrollbar"
+                  placeholder="House No, Building Name, Street, Area"
+                  className="bg-white rounded-2xl text-black placeholder:text-gray-400 placeholder:font-montserrat font-montserrat h-24 no-scrollbar"
               />
+            </div>
+            
+            <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-1 text-left">
+                    <label className="pl-2 text-sm font-medium font-plex-sans">Pincode</label>
+                    <Input 
+                        type="tel"
+                        value={pincode}
+                        onChange={handlePincodeChange}
+                        placeholder="6-digit pincode"
+                        className="bg-white rounded-2xl text-black placeholder:text-gray-400 font-montserrat h-10 md:h-12"
+                    />
+                </div>
+                <div className="space-y-1 text-left">
+                    <label className="pl-2 text-sm font-medium font-plex-sans">City</label>
+                    <Input 
+                        value={city}
+                        readOnly
+                        className="bg-white rounded-2xl text-black font-montserrat h-10 md:h-12 opacity-70 cursor-not-allowed"
+                    />
+                </div>
+            </div>
+            
+            <div className="space-y-1 text-left">
+                <label className="pl-2 text-sm font-medium font-plex-sans">State</label>
+                <Input 
+                    value={state}
+                    readOnly
+                    className="bg-white rounded-2xl text-black font-montserrat h-10 md:h-12 opacity-70 cursor-not-allowed"
+                />
             </div>
 
 

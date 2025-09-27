@@ -1,4 +1,3 @@
-
 // @/components/my-profile-tab.tsx
 'use client';
 
@@ -21,12 +20,38 @@ interface MyProfileTabProps {
   onProfileUpdate: (updatedProfile: Partial<ProfileInfo>) => void;
 }
 
+// Helper to parse the full address string
+const parseAddress = (fullAddress: string) => {
+    const parts = fullAddress.split(',').map(p => p.trim());
+    const pincodeMatch = fullAddress.match(/\b\d{6}\b/);
+    const pincode = pincodeMatch ? pincodeMatch[0] : '';
+    
+    // Naive parsing, assuming structure: address..., city, state, pincode
+    // This is brittle, but we'll refine it.
+    let address = fullAddress;
+    if (pincode) {
+        address = address.replace(pincode, '').trim().replace(/,$/, '').trim();
+    }
+    address = address.replace(/, Karnataka/i, '').trim().replace(/,$/, '').trim();
+    address = address.replace(/, Bangalore/i, '').trim().replace(/,$/, '').trim();
+
+    return {
+        address: address,
+        pincode: pincode
+    };
+};
+
+
 export function MyProfileTab({ profile, onProfileUpdate }: MyProfileTabProps) {
   const { user } = useAppContext();
   const [name, setName] = useState(profile.name || '');
   const [phone, setPhone] = useState(profile.phone || '');
   const [email, setEmail] = useState(profile.email || '');
-  const [address, setAddress] = useState(profile.address || '');
+
+  const [address, setAddress] = useState('');
+  const [pincode, setPincode] = useState('');
+  const city = 'Bangalore';
+  const state = 'Karnataka';
 
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -42,45 +67,47 @@ export function MyProfileTab({ profile, onProfileUpdate }: MyProfileTabProps) {
     setName(profile.name || '');
     setPhone(profile.phone || '');
     setEmail(profile.email || '');
-    setAddress(profile.address || '');
+    const { address: parsedAddress, pincode: parsedPincode } = parseAddress(profile.address || '');
+    setAddress(parsedAddress);
+    setPincode(parsedPincode);
     setPassword('');
   }, [profile]);
 
 
   useEffect(() => {
+    const fullAddressFromState = [address.trim(), city, state, pincode.trim()].filter(Boolean).join(', ');
     const changes = name !== (profile.name || '') || 
                       phone !== (profile.phone || '') || 
                       email !== (profile.email || '') || 
-                      address !== (profile.address || '') ||
+                      fullAddressFromState !== (profile.address || '') ||
                       password !== '';
     setHasChanges(changes);
-  }, [name, phone, email, address, password, profile]);
+  }, [name, phone, email, address, pincode, password, profile, city, state]);
   
   const handleCancel = () => {
     setName(profile.name || '');
     setPhone(profile.phone || '');
     setEmail(profile.email || '');
-    setAddress(profile.address || '');
+    const { address: parsedAddress, pincode: parsedPincode } = parseAddress(profile.address || '');
+    setAddress(parsedAddress);
+    setPincode(parsedPincode);
     setPassword('');
   };
 
   const handleSave = async () => {
      if (phone && phone.length !== 10) {
-      toast({
-        title: "Invalid Phone Number",
-        description: "Please enter a valid 10-digit phone number.",
-        variant: "destructive",
-      });
+      toast({ title: "Invalid Phone Number", description: "Please enter a valid 10-digit phone number.", variant: "destructive" });
       return;
     }
-    if (!address.trim()) {
-      toast({
-        title: "Incomplete Address",
-        description: "Please provide your delivery address.",
-        variant: "destructive"
-      });
+     if (!address.trim()) {
+      toast({ title: "Incomplete Address", description: "Please provide your delivery address.", variant: "destructive"});
       return;
     }
+    if (pincode && pincode.length !== 6) {
+      toast({ title: "Invalid Pincode", description: "Please enter a valid 6-digit pincode.", variant: "destructive" });
+      return;
+    }
+
 
     setIsSaving(true);
     let passwordChanged = false;
@@ -91,7 +118,9 @@ export function MyProfileTab({ profile, onProfileUpdate }: MyProfileTabProps) {
         passwordChanged = true;
       }
       
-      const updatedProfile: Partial<ProfileInfo> = { name, phone, address };
+      const fullAddress = [address.trim(), city, state, pincode.trim()].filter(Boolean).join(', ');
+      const updatedProfile: Partial<ProfileInfo> = { name, phone, address: fullAddress };
+
        if (!isGoogleSignIn) {
          updatedProfile.email = email;
        }
@@ -121,6 +150,14 @@ export function MyProfileTab({ profile, onProfileUpdate }: MyProfileTabProps) {
       setPhone(value);
     }
   };
+  
+  const handlePincodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    if (/^\d*$/.test(value) && value.length <= 6) {
+      setPincode(value);
+    }
+  };
+
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -177,15 +214,49 @@ export function MyProfileTab({ profile, onProfileUpdate }: MyProfileTabProps) {
         </div>
         
         <Separator className="bg-white/20 my-4" />
+        
+        <h3 className="text-lg font-medium text-center font-plex-sans -mb-2">Delivery Address</h3>
 
         <div className='space-y-1'>
-          <label htmlFor="address" className="pl-3 text-sm font-medium">Delivery Address</label>
+          <label htmlFor="address" className="pl-3 text-sm font-medium">Address</label>
             <Textarea
               id="address"
               value={address}
               onChange={(e) => setAddress(e.target.value)}
-              placeholder="Enter your full delivery address"
-              className="bg-white/10 border-white/20 text-white rounded-2xl h-28 no-scrollbar"
+              placeholder="House No, Building Name, Street, Area"
+              className="bg-white/10 border-white/20 text-white rounded-2xl h-24 no-scrollbar"
+            />
+        </div>
+        
+        <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-1">
+                <label htmlFor="pincode" className="pl-3 text-sm font-medium">Pincode</label>
+                <Input
+                    id="pincode"
+                    type="tel"
+                    value={pincode}
+                    onChange={handlePincodeChange}
+                    className="bg-white/10 border-white/20 text-white rounded-2xl h-12"
+                />
+            </div>
+             <div className="space-y-1">
+                <label htmlFor="city" className="pl-3 text-sm font-medium">City</label>
+                <Input
+                    id="city"
+                    value={city}
+                    readOnly
+                    className="bg-white/10 border-white/20 text-white rounded-2xl h-12 opacity-70 cursor-not-allowed"
+                />
+            </div>
+        </div>
+
+        <div className="space-y-1">
+            <label htmlFor="state" className="pl-3 text-sm font-medium">State</label>
+            <Input
+                id="state"
+                value={state}
+                readOnly
+                className="bg-white/10 border-white/20 text-white rounded-2xl h-12 opacity-70 cursor-not-allowed"
             />
         </div>
 
