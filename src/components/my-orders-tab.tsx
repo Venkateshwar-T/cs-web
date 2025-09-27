@@ -73,7 +73,7 @@ export function MyOrdersTab({ isMobile = false, products, onProductClick }: MyOr
             <>
                 <div className="flex flex-col h-full text-white">
                      {orders.length > 0 ? (
-                        <div onScroll={handleScroll} className="bg-transparent rounded-2xl flex flex-col pt-4 overflow-y-auto custom-scrollbar">
+                        <div onScroll={handleScroll} className="bg-transparent rounded-2xl flex flex-col pt-4 overflow-y-auto no-scrollbar">
                             <div>
                                 <SectionTitle className="text-lg mb-2 px-2">Current Orders</SectionTitle>
                                 {currentOrders.length > 0 ? (
@@ -114,7 +114,7 @@ export function MyOrdersTab({ isMobile = false, products, onProductClick }: MyOr
                                         ))}
                                     </div>
                                 ) : (
-                                    <div className="flex flex-col items-center justify-center text-center gap-2 py-8 px-4 bg-white/5 rounded-2xl">
+                                    <div className="flex flex-col items-center justify-center text-center gap-2 py-8 px-4 mb-4 bg-white/5 rounded-2xl">
                                        <h3 className="text-lg font-semibold text-white">No Past Orders</h3>
                                        <p className="text-sm text-white/70 max-w-xs">Your past orders will appear here once they're delivered or cancelled.</p>
                                     </div>
