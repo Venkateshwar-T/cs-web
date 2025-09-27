@@ -88,7 +88,8 @@ export function SearchBar({ activeView, isEnquireOpen, onSubmit, searchInput, on
                     <Image src="/icons/search_icon.png" alt="Search" width={28} height={28} onDragStart={(e) => e.preventDefault()} />
                 </div>
                 <div className="relative flex items-center">
-                    <Input 
+                    <Input
+                        ref={inputRef}
                         name="search"
                         autoComplete="off"
                         value={searchInput}
