@@ -66,10 +66,10 @@ export default function SearchClientPage({ initialProducts, initialFilters }: Se
     setIsSearching(true);
     const timer = setTimeout(() => {
       setIsSearching(false);
-      setIsGlobalLoading(false);
+      // We don't control the progress bar directly, so no need for global loading state here.
     }, 500);
     return () => clearTimeout(timer);
-  }, [searchParams, setIsGlobalLoading]);
+  }, [searchParams]);
 
   useEffect(() => {
     if (isNewSearch) {
@@ -114,7 +114,6 @@ export default function SearchClientPage({ initialProducts, initialFilters }: Se
   const handleSearchSubmit = (value: string) => {
     const params = new URLSearchParams(searchParams.toString());
     params.set('q', value);
-    setIsGlobalLoading(true);
     router.push(`${pathname}?${params.toString()}`);
   };
   
@@ -185,7 +184,8 @@ export default function SearchClientPage({ initialProducts, initialFilters }: Se
     }
   };
 
-  if (isGlobalLoading) {
+  // The progress bar handles loading state, so a full-screen fallback isn't needed unless it's the very first load.
+  if (isGlobalLoading && !initialProducts.length) {
     return <LoadingFallback text="Searching for chocolates..." />;
   }
 
