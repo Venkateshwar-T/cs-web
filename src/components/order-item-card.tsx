@@ -76,7 +76,7 @@ export function OrderItemCard({ order: initialOrder, isMobile = false, onClick, 
             className="bg-white/90 p-3 md:p-4 text-black w-full relative overflow-hidden rounded-xl md:rounded-2xl shadow-md text-left flex flex-col cursor-pointer"
         >
             <div className="flex flex-col gap-2 mb-2">
-                <div className="flex items-center overflow-x-auto no-scrollbar gap-2 pb-2">
+                <div className="flex items-center overflow-x-auto no-scrollbar gap-2 pb-1">
                     {order.items.map((item, index) => (
                         <div key={index} className="relative flex-shrink-0">
                              <div className="relative w-14 h-14 md:w-16 md:h-16">
@@ -108,7 +108,7 @@ export function OrderItemCard({ order: initialOrder, isMobile = false, onClick, 
                     </Badge>
                 </div>
                 
-                <div className="flex justify-between items-center w-full mt-1">
+                <div className="flex justify-between items-center w-full">
                     <p className="text-xs text-black/70">{formattedDate} at {formattedTime}</p>
                     <p className="text-base md:text-lg font-bold">₹{order.total.toFixed(2)}</p>
                 </div>
