@@ -56,7 +56,7 @@ export function ProductDetails({ product, isLiked, onLikeToggle, isMobile = fals
             </div>
 
             {/* FSSAI Logo and details */}
-            <div className="flex items-center gap-2 -mt-2 font-poppins font-normal">
+            <div className="flex items-center gap-2 -mt-4 font-poppins font-normal">
                 <div className="w-6 h-6 flex items-center justify-center">
                   <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-5 h-5">
                       <rect x="1" y="1" width="22" height="22" rx="0" stroke="#137C00" strokeWidth="2"/>
@@ -69,7 +69,7 @@ export function ProductDetails({ product, isLiked, onLikeToggle, isMobile = fals
             {/* Best for */}
             {product.bestFor && (
                 <div>
-                     <p className={cn("font-semibold font-plex-sans-condensed", isMobile ? "text-xs" : "text-base")}>
+                     <p className={cn("font-semibold font-plex-sans-condensed", isMobile ? "text-sm" : "text-base")}>
                         <span className="font-semibold">Best for:</span> {product.bestFor}
                     </p>
                 </div>
@@ -87,7 +87,7 @@ export function ProductDetails({ product, isLiked, onLikeToggle, isMobile = fals
             {/* Ingredients */}
             {product.ingredients && (
                 <div>
-                     <p className={cn("font-plex-sans-condensed", isMobile ? "text-xs" : "text-base")}>
+                     <p className={cn("font-plex-sans-condensed", isMobile ? "text-sm" : "text-base")}>
                         <span className="font-medium">Ingredients:</span> {product.ingredients}
                     </p>
                 </div>
@@ -97,7 +97,7 @@ export function ProductDetails({ product, isLiked, onLikeToggle, isMobile = fals
             {product.allergenAlert && (
                 <div className={cn("font-semibold text-black font-plex-sans", isMobile ? "text-xs " : "text-sm")}>
                     <p>Allergen Alert:</p>
-        <div className="prose prose-sm list-disc list-inside pl-5">
+        <div className="prose prose-sm list-disc list-inside pt-1 pl-5">
         <PortableText value={product.allergenAlert} components={customComponents} />
         </div>
                 </div>
