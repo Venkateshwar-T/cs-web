@@ -87,12 +87,6 @@ export function SearchResultsDetails({
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
   
-  useEffect(() => {
-    if (isSearching && scrollContainerRef.current) {
-      scrollContainerRef.current.scrollTop = 0;
-    }
-  }, [isSearching]);
-
   return (
     <>
       <div className="bg-transparent h-full relative mt-0 min-h-0 flex flex-col">

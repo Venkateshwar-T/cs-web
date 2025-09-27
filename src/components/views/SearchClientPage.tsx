@@ -46,7 +46,6 @@ export default function SearchClientPage({ initialProducts, initialFilters }: Se
     flavourSelection,
     setFlavourSelection,
   } = useAppContext();
-  const [isSearching, setIsSearching] = useState(true);
   const [isNewSearch, setIsNewSearch] = useState(true);
   const [cartMessage, setCartMessage] = useState('');
   const [isCartButtonExpanded, setIsCartButtonExpanded] = useState(false);
@@ -61,19 +60,12 @@ export default function SearchClientPage({ initialProducts, initialFilters }: Se
   const [isMobileHeaderVisible, setIsMobileHeaderVisible] = useState(true);
 
   useEffect(() => {
-    setIsSearching(true);
-    const timer = setTimeout(() => {
-      setIsSearching(false);
-    }, 500);
-    return () => clearTimeout(timer);
-  }, [searchParams]);
-
-  useEffect(() => {
+    // This effect is to prevent a full page re-render flicker on filter changes.
     if (isNewSearch) {
       const timer = setTimeout(() => setIsNewSearch(false), 50);
       return () => clearTimeout(timer);
     }
-  }, [isNewSearch]);
+  }, [isNewSearch, searchParams]);
 
   const handleAddToCart = (productName: string, quantity: number) => {
     const prevQuantity = cart[productName]?.quantity || 0;
@@ -181,10 +173,6 @@ export default function SearchClientPage({ initialProducts, initialFilters }: Se
     }
   };
 
-  if (isNewSearch && !initialProducts.length) {
-    return <LoadingFallback text="Searching for chocolates..." />;
-  }
-
   return (
     <>
       {isMobile ? <StaticSparkleBackground /> : <SparkleBackground />}
@@ -219,7 +207,7 @@ export default function SearchClientPage({ initialProducts, initialFilters }: Se
         )}>
            <SearchView
              filters={initialFilters}
-             isSearching={isSearching}
+             isSearching={false}
              isNewSearch={isNewSearch}
              products={initialProducts}
              query={query}
@@ -278,5 +266,3 @@ export default function SearchClientPage({ initialProducts, initialFilters }: Se
     </>
   );
 }
-
-    
