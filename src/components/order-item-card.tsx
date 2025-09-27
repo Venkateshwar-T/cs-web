@@ -121,7 +121,7 @@ export function OrderItemCard({ order: initialOrder, isMobile = false, onClick, 
                     Order Again
                 </Button>
                 
-                <Separator orientation="vertical" className="h-4 bg-custom-purple-dark/20" />
+                {(order.status === 'Cancelled' || <Separator orientation="vertical" className="h-4 bg-custom-purple-dark/20" />)}
 
                 {(order.status === 'Order Requested' || order.status === 'In Progress') && (
                     <AlertDialog>
