@@ -76,7 +76,7 @@ export function FeaturedProductCard({
 
       <button 
         onClick={handleLikeClick} 
-        className="absolute top-2 right-2 z-10 p-1.5 bg-black/30 rounded-full text-white hover:text-red-500 transition-colors"
+        className="absolute top-2 right-2 z-10 rounded-full text-white hover:text-red-500 transition-colors"
         aria-label="Like product"
       >
         <Heart 
@@ -88,13 +88,13 @@ export function FeaturedProductCard({
       </button>
 
       {discountPercentage && (
-        <div className="absolute top-2 left-2 bg-custom-gold text-custom-purple-dark px-2 py-0.5 rounded-full text-xs font-bold">
+        <div className="absolute top-2 left-2 bg-custom-gold text-custom-purple-dark px-2 py-0.5 rounded-full text-[10px] md:text-xs font-bold">
           {discountPercentage}% OFF
         </div>
       )}
 
       <div className="relative h-full flex flex-col justify-end p-3 md:p-4 text-white">
-        <h3 className="font-bold text-sm md:text-base leading-tight truncate">{product.name}</h3>
+        <h3 className="font-bold text-xs md:text-base leading-tight truncate">{product.name}</h3>
         <p className="text-[10px] md:text-xs text-white/80 mt-0.5 truncate">{subtitle}</p>
         
         <div className="flex justify-between items-center mt-1">
@@ -105,22 +105,22 @@ export function FeaturedProductCard({
             </div>
           )}
           
-          <div className="flex-shrink-0">
+          <div className="flex-shrink-0 flex justify-end">
             {quantity === 0 ? (
               <Button
                 size="icon"
                 onClick={handleAddToCartClick}
-                className="h-8 w-8 md:h-9 md:w-9 rounded-full bg-white text-custom-purple-dark hover:bg-gray-200"
+                className="h-7 w-7 md:h-9 md:w-9 rounded-full bg-white text-custom-purple-dark hover:bg-gray-200"
                 aria-label="Add to cart"
               >
                 <ShoppingCart className="h-4 w-4 md:h-5 md:w-5" />
               </Button>
             ) : (
-              <div className="flex items-center justify-center h-8 md:h-9 w-24 rounded-full bg-white text-custom-purple-dark overflow-hidden">
-                <Button variant="ghost" size="icon" onClick={handleDecrement} className="h-full rounded-none flex-1 hover:bg-gray-200"><Minus className="h-4 w-4" /></Button>
-                <span className="font-bold text-sm flex-1 text-center">{quantity}</span>
-                <Button variant="ghost" size="icon" onClick={handleIncrement} className="h-full rounded-none flex-1 hover:bg-gray-200"><Plus className="h-4 w-4" /></Button>
-              </div>
+              <div className="flex items-center justify-center h-6 md:h-7 w-[90%] md:w-full rounded-xl bg-white text-white overflow-hidden">
+                  <Button variant="ghost" size="icon" onClick={handleDecrement} className="h-full rounded-none flex-1 hover:bg-black/20 text-custom-purple-dark hover:text-white"><Minus className="w-4 h-4" /></Button>
+                  <span className="font-bold text-sm flex-1 text-center text-custom-purple-dark bg-white">{quantity}</span>
+                  <Button variant="ghost" size="icon" onClick={handleIncrement} className="h-full rounded-none flex-1 hover:bg-black/20 text-custom-purple-dark hover:text-white" disabled={quantity >= 99}><Plus className="w-4 h-4" /></Button>
+                </div>
             )}
           </div>
         </div>

@@ -193,7 +193,7 @@ export function MobileProductDetailView({
 
   return (
     <div className={cn(
-      "bg-[#9A7DAB] w-full rounded-[20px] relative flex flex-col pt-2 mt-4"
+      "bg-white/20 w-full rounded-[20px] relative flex flex-col pt-2 mt-4"
     )}>
       <div className="flex-grow">
         <div className="-mt-2">

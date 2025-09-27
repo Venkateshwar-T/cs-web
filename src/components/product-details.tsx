@@ -95,7 +95,7 @@ export function ProductDetails({ product, isLiked, onLikeToggle, isMobile = fals
             
             {/* Allergen Alert */}
             {product.allergenAlert && (
-                <div className={cn("font-semibold text-black font-plex-sans", isMobile ? "text-xs" : "text-sm")}>
+                <div className={cn("font-semibold text-black font-plex-sans", isMobile ? "text-xs " : "text-sm")}>
                     <p>Allergen Alert:</p>
         <div className="prose prose-sm list-disc list-inside pl-5">
         <PortableText value={product.allergenAlert} components={customComponents} />

@@ -183,6 +183,7 @@ export default function ProductDetailClientPage({ product, featuredProducts }: P
   if (isMobile) {
     return (
       <>
+      {isMobile ? <StaticSparkleBackground /> : <SparkleBackground />}
         <div className="flex flex-col h-screen">
           <MobileSearchHeader 
               value={searchInput}
@@ -193,7 +194,7 @@ export default function ProductDetailClientPage({ product, featuredProducts }: P
               }}
               isVisible={isMobileHeaderVisible}
             />
-          <main onScroll={handleMobileScroll} className={cn("flex-grow flex flex-col transition-all duration-300 relative min-h-0 pb-16", isMobileHeaderVisible ? 'pt-16' : 'pt-0')}>
+          <main className={cn("flex-grow flex flex-col transition-all duration-300 relative min-h-0 pb-16 pt-16")}>
             <div className="flex-grow overflow-y-auto no-scrollbar px-4">
               <MobileProductDetailView
                 product={product}
@@ -249,7 +250,7 @@ export default function ProductDetailClientPage({ product, featuredProducts }: P
           isSearchingOnAbout={false}
         />
         <main onScroll={handleScroll} className="pt-24 md:pt-32 overflow-y-auto no-scrollbar">
-             <div className="bg-[#9A7DAB] rounded-[40px] text-white mx-32 h-[82vh] flex items-center justify-center">
+             <div className="bg-white/30 rounded-[40px] text-white mx-32 h-[82vh] flex items-center justify-center">
                 <div className="flex w-full h-full px-5 gap-4 pr-10">
                     <div className="w-1/2 h-full flex flex-col">
                         <div className="flex h-[46%] rounded-lg w-full justify-center pt-6">
@@ -263,7 +264,7 @@ export default function ProductDetailClientPage({ product, featuredProducts }: P
                             />
                         </div>
                     </div>
-                    <Separator orientation="vertical" className="bg-white/30 h-[98%] self-center mr-4" />
+                    <Separator orientation="vertical" className="bg-white/30 h-[90%] self-center mr-4" />
                     <div className="h-full relative py-4 w-1/2 flex flex-col">
                         <div className="flex-grow overflow-y-auto no-scrollbar min-h-0 pb-24">
                             <ProductDetails
