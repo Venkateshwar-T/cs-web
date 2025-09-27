@@ -1,4 +1,3 @@
-
 // @/components/my-profile-tab.tsx
 'use client';
 
@@ -43,71 +42,76 @@ export function MyProfileTab({ profile, onProfileUpdate }: MyProfileTabProps) {
     (provider) => provider.providerId === 'google.com'
   );
   
-  const parseAddress = (fullAddress: string) => {
-    if (!fullAddress) return;
-
-    // Reset fields first
-    setHouse('');
-    setArea('');
-    setLandmark('');
-    setPincode('');
-
-    const cityStatePincodeRegex = new RegExp(`,\\s*${city},\\s*${state}\\s*-\\s*(\\d{6})$`);
-    const cityStatePincodeMatch = fullAddress.match(cityStatePincodeRegex);
-    const pincodeValue = cityStatePincodeMatch ? cityStatePincodeMatch[1] : '';
-    setPincode(pincodeValue);
+  // This effect runs only when the profile from the context changes
+  useEffect(() => {
+    setName(profile.name || '');
+    setPhone(profile.phone || '');
+    setEmail(profile.email || '');
+    setPassword('');
     
-    const mainAddress = cityStatePincodeMatch ? fullAddress.substring(0, cityStatePincodeMatch.index).trim() : fullAddress;
-    
-    const parts = mainAddress.split(',').map(p => p.trim());
-    if (parts.length > 0) {
-      setHouse(parts[0]);
-    }
-    if (parts.length > 1) {
-      // Join the rest of the parts for Area and Landmark
-      const remainingParts = parts.slice(1);
-      // Heuristic: If there are multiple parts left, the last one might be a landmark.
-      if (remainingParts.length > 1) {
-          setArea(remainingParts.slice(0, -1).join(', '));
-          setLandmark(remainingParts[remainingParts.length - 1]);
-      } else {
-          setArea(remainingParts.join(', '));
-          setLandmark('');
-      }
+    // Parse the full address string into individual fields
+    const fullAddress = profile.address || '';
+    if (fullAddress) {
+        const cityStatePincodeRegex = new RegExp(`,\\s*${city},\\s*${state}\\s*-\\s*(\\d{6})$`);
+        const cityStatePincodeMatch = fullAddress.match(cityStatePincodeRegex);
+        const pincodeValue = cityStatePincodeMatch ? cityStatePincodeMatch[1] : '';
+        setPincode(pincodeValue);
+        
+        const mainAddress = cityStatePincodeMatch ? fullAddress.substring(0, cityStatePincodeMatch.index).trim() : fullAddress;
+        
+        const parts = mainAddress.split(',').map(p => p.trim());
+        setHouse(parts[0] || '');
+        setArea(parts[1] || '');
+        setLandmark(parts.slice(2).join(', ') || '');
     } else {
+        setHouse('');
         setArea('');
         setLandmark('');
+        setPincode('');
     }
-  };
+
+  }, [profile, city, state]);
 
 
+  // This effect checks for any changes compared to the initial profile state
   useEffect(() => {
     const addressParts = [house, area, landmark].filter(Boolean).join(', ');
-    const fullAddress = `${addressParts}, ${city}, ${state} - ${pincode}`;
+    const currentFullAddress = `${addressParts}, ${city}, ${state} - ${pincode}`;
 
     const changes = name !== (profile.name || '') || 
                      phone !== (profile.phone || '') || 
                      email !== (profile.email || '') || 
-                     (house && fullAddress !== (profile.address || '')) ||
+                     (house && area && pincode && currentFullAddress !== (profile.address || '')) ||
                      password !== '';
     setHasChanges(changes);
   }, [name, phone, email, house, area, landmark, pincode, password, profile, city, state]);
 
-  useEffect(() => {
-    setName(profile.name || '');
-    setPhone(profile.phone || '');
-    setEmail(profile.email || '');
-    setPassword('');
-    parseAddress(profile.address || '');
-  }, [profile]);
-
-
   const handleCancel = () => {
+    // Reset state to match the profile from context
     setName(profile.name || '');
     setPhone(profile.phone || '');
     setEmail(profile.email || '');
     setPassword('');
-    parseAddress(profile.address || '');
+    
+    const fullAddress = profile.address || '';
+    if (fullAddress) {
+        const cityStatePincodeRegex = new RegExp(`,\\s*${city},\\s*${state}\\s*-\\s*(\\d{6})$`);
+        const cityStatePincodeMatch = fullAddress.match(cityStatePincodeRegex);
+        const pincodeValue = cityStatePincodeMatch ? cityStatePincodeMatch[1] : '';
+        setPincode(pincodeValue);
+        
+        const mainAddress = cityStatePincodeMatch ? fullAddress.substring(0, cityStatePincodeMatch.index).trim() : fullAddress;
+        
+        const parts = mainAddress.split(',').map(p => p.trim());
+        setHouse(parts[0] || '');
+        setArea(parts[1] || '');
+        setLandmark(parts.slice(2).join(', ') || '');
+    } else {
+        setHouse('');
+        setArea('');
+        setLandmark('');
+        setPincode('');
+    }
   };
 
   const handleSave = async () => {
@@ -137,7 +141,7 @@ export function MyProfileTab({ profile, onProfileUpdate }: MyProfileTabProps) {
         passwordChanged = true;
       }
       
-      const addressParts = [house, area, landmark].filter(Boolean).join(', ');
+      const addressParts = [house, area, landmark].filter(p => p.trim() !== '').join(', ');
       const fullAddress = `${addressParts}, ${city}, ${state} - ${pincode}`;
 
       const updatedProfile: Partial<ProfileInfo> = { name, phone, address: fullAddress };
