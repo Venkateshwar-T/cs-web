@@ -58,10 +58,10 @@ export function WishlistItemCard({ product, onAddToCart, onUnlike, isInCart, isU
           </div>
 
           <div className="flex flex-col justify-between flex-grow self-stretch min-w-0">
-            <div>
+            <div className="">
               <div className="flex justify-between items-start gap-2">
                   <h3 className="font-bold text-sm leading-tight flex-1 truncate">{product.name}</h3>
-                  <button onClick={handleUnlikeClick} className="p-1 flex-shrink-0">
+                  <button onClick={handleUnlikeClick} className="flex-shrink-0">
                     <Heart className="h-5 w-5 text-red-500 fill-red-500" />
                   </button>
               </div>

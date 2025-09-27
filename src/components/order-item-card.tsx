@@ -75,7 +75,7 @@ export function OrderItemCard({ order: initialOrder, isMobile = false, onClick, 
             className="bg-white/90 p-3 md:p-4 text-black w-full relative overflow-hidden rounded-xl md:rounded-2xl shadow-md text-left flex flex-col gap-2 cursor-pointer"
         >
             <div className="flex flex-col">
-                <div className="flex items-center overflow-x-auto no-scrollbar pb-2">
+                <div className="flex items-center overflow-x-auto no-scrollbar gap-2 pb-2">
                     {order.items.map((item, index) => (
                         <div key={index} className="relative flex-shrink-0">
                              <div className="relative w-14 h-14 md:w-16 md:h-16">
