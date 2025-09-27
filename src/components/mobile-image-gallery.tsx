@@ -1,4 +1,3 @@
-
 // @/components/mobile-image-gallery.tsx
 'use client';
 
@@ -43,7 +42,7 @@ export function MobileImageGallery({ product, onImageExpandChange }: MobileImage
             <div className="flex flex-col items-center gap-2 p-4">
                 
                 {/* Main Image */}
-                <div className="relative w-2/3 aspect-square cursor-pointer" onClick={handleExpandClick}>
+                <div className="relative w-full aspect-square cursor-pointer" onClick={handleExpandClick}>
                     <Image
                         src={images.length > 0 ? images[activeIndex] : '/placeholder.png'}
                         alt={product.name}
@@ -122,4 +121,5 @@ export function MobileImageGallery({ product, onImageExpandChange }: MobileImage
 }
 
     
+
 
