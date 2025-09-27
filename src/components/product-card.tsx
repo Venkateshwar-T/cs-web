@@ -77,7 +77,7 @@ export function ProductCard({
         />
         <button 
           onClick={handleLikeClick} 
-          className="absolute top-2 right-2 z-10 p-1.5 rounded-full text-white hover:text-red-500 transition-colors"
+          className="absolute top-0 right-0 z-10 p-1.5 rounded-bl-lg bg-black/30 text-white hover:text-red-500 transition-colors"
           aria-label="Like product"
         >
           <Heart 
