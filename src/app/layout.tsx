@@ -27,12 +27,13 @@ export default function RootLayout({
       </head>
       <body className="font-body antialiased overflow-y-auto no-scrollbar">
         <Suspense fallback={null}>
-          <AppContextProvider>
-            <ClientLayout>
-              {children}
-            </ClientLayout>
-          </AppContextProvider>
+          <ProgressBarComponent />
         </Suspense>
+        <AppContextProvider>
+          <ClientLayout>
+            {children}
+          </ClientLayout>
+        </AppContextProvider>
         <Toaster />
       </body>
     </html>

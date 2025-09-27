@@ -1,8 +1,6 @@
 
 'use client';
 
-import { ProgressBarComponent } from "@/components/progress-bar";
-
 export default function ClientLayout({
   children,
 }: {
@@ -11,7 +9,6 @@ export default function ClientLayout({
 
   return (
     <>
-      <ProgressBarComponent />
       {children}
     </>
   );
