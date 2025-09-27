@@ -72,9 +72,9 @@ export function OrderItemCard({ order: initialOrder, isMobile = false, onClick, 
     return (
         <div 
             onClick={onClick}
-            className="bg-white/90 p-3 md:p-4 text-black w-full relative overflow-hidden rounded-xl md:rounded-2xl shadow-md text-left flex flex-col gap-3 cursor-pointer"
+            className="bg-white/90 p-3 md:p-4 text-black w-full relative overflow-hidden rounded-xl md:rounded-2xl shadow-md text-left flex flex-col gap-2 cursor-pointer"
         >
-            <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-2">
                 <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
                     {order.items.map((item, index) => (
                         <div key={index} className="relative flex-shrink-0">
@@ -107,13 +107,13 @@ export function OrderItemCard({ order: initialOrder, isMobile = false, onClick, 
                     </Badge>
                 </div>
                 
-                <div className="flex justify-between items-center w-full">
+                <div className="flex justify-between items-center w-full mt-1">
                     <p className="text-xs text-black/70">{formattedDate} at {formattedTime}</p>
                     <p className="text-base md:text-lg font-bold">₹{order.total.toFixed(2)}</p>
                 </div>
             </div>
             
-            <Separator className="bg-custom-purple-dark/20" />
+            <Separator className="bg-custom-purple-dark/20 my-1" />
 
             <div className="flex items-center justify-between gap-2">
                 <Button onClick={handleReorder} variant="link" className="p-0 h-auto text-custom-purple-dark font-semibold text-xs md:text-sm hover:no-underline">
