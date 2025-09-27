@@ -1,4 +1,3 @@
-
 // src/components/views/SearchClientPage.tsx
 'use client';
 
@@ -18,7 +17,6 @@ import { MobileSearchHeader } from '@/components/header/mobile-search-header';
 import { StaticSparkleBackground } from '@/components/static-sparkle-background';
 import { useAppContext } from '@/context/app-context';
 import { FlavourSelectionPopup } from '../flavour-selection-popup';
-import { LoadingFallback } from '../loading-fallback';
 
 interface SearchClientPageProps {
   initialProducts: SanityProduct[];
@@ -115,7 +113,7 @@ export default function SearchClientPage({ initialProducts, initialFilters }: Se
   };
   
   const getActiveFilters = () => {
-    const active: { type: string, value: string, label: string }[] = [];
+    const active: { type: string; value: string; label: string }[] = [];
     const filterKeys = initialFilters.map(f => formatCategoryTitleToKey(f.title));
     
     for (const [key, value] of searchParams.entries()) {
@@ -180,10 +178,6 @@ export default function SearchClientPage({ initialProducts, initialFilters }: Se
       updateCart(product.name, prevQuantity - 1);
     }
   };
-
-  if (isNewSearch) {
-    return <LoadingFallback text="Searching for chocolates..." />;
-  }
 
   return (
     <>

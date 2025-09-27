@@ -2,11 +2,9 @@
 
 // src/app/search/page.tsx
 
-import { Suspense } from 'react';
 import { client } from '@/lib/sanity';
 import SearchClientPage from '@/components/views/SearchClientPage';
 import type { SanityProduct, StructuredFilter } from '@/types';
-import { LoadingFallback } from '@/components/loading-fallback';
 
 // Fetches filters from Sanity
 async function getFilters(): Promise<StructuredFilter[]> {
@@ -149,8 +147,6 @@ export default async function SearchPage({ searchParams }: { searchParams: { [ke
     const products = await getFilteredProducts(searchParams, filters);
 
     return (
-        <Suspense fallback={<LoadingFallback text="Searching for chocolates..." />}>
-            <SearchClientPage initialProducts={products} initialFilters={filters} />
-        </Suspense>
+        <SearchClientPage initialProducts={products} initialFilters={filters} />
     );
 }
