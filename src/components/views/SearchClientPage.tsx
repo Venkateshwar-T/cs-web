@@ -45,8 +45,6 @@ export default function SearchClientPage({ initialProducts, initialFilters }: Se
     clearWishlist,
     flavourSelection,
     setFlavourSelection,
-    isGlobalLoading,
-    setIsGlobalLoading,
   } = useAppContext();
   const [isSearching, setIsSearching] = useState(true);
   const [isNewSearch, setIsNewSearch] = useState(true);
@@ -66,7 +64,6 @@ export default function SearchClientPage({ initialProducts, initialFilters }: Se
     setIsSearching(true);
     const timer = setTimeout(() => {
       setIsSearching(false);
-      // We don't control the progress bar directly, so no need for global loading state here.
     }, 500);
     return () => clearTimeout(timer);
   }, [searchParams]);
@@ -184,8 +181,7 @@ export default function SearchClientPage({ initialProducts, initialFilters }: Se
     }
   };
 
-  // The progress bar handles loading state, so a full-screen fallback isn't needed unless it's the very first load.
-  if (isGlobalLoading && !initialProducts.length) {
+  if (isNewSearch) {
     return <LoadingFallback text="Searching for chocolates..." />;
   }
 
